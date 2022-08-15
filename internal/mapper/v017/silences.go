@@ -6,6 +6,7 @@ import (
 
 	"github.com/Masterminds/semver/v3"
 
+	"github.com/prymitive/karma/internal/intern"
 	"github.com/prymitive/karma/internal/mapper"
 	"github.com/prymitive/karma/internal/models"
 )
@@ -22,9 +23,9 @@ func (m SilenceMapper) IsSupported(version string) bool {
 	return versionRange.Check(semver.MustParse(version))
 }
 
-func (m SilenceMapper) Collect(uri string, headers map[string]string, timeout time.Duration, httpTransport http.RoundTripper) ([]models.Silence, error) {
+func (m SilenceMapper) Collect(si *intern.Interner, uri string, headers map[string]string, timeout time.Duration, httpTransport http.RoundTripper) ([]models.Silence, error) {
 	c := newClient(uri, headers, httpTransport)
-	return silences(c, timeout)
+	return silences(c, timeout, si)
 }
 
 func (m SilenceMapper) RewriteUsername(body []byte, username string) ([]byte, error) {

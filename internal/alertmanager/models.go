@@ -11,6 +11,7 @@ import (
 
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/filters"
+	"github.com/prymitive/karma/internal/intern"
 	"github.com/prymitive/karma/internal/mapper"
 	"github.com/prymitive/karma/internal/models"
 	"github.com/prymitive/karma/internal/slices"
@@ -143,7 +144,7 @@ func (am *Alertmanager) clearStatus() {
 	am.lock.Unlock()
 }
 
-func (am *Alertmanager) pullSilences(version string) error {
+func (am *Alertmanager) pullSilences(version string, si *intern.Interner) error {
 	mapper, err := mapper.GetSilenceMapper(version)
 	if err != nil {
 		return err
@@ -152,7 +153,7 @@ func (am *Alertmanager) pullSilences(version string) error {
 	var silences []models.Silence
 
 	start := time.Now()
-	silences, err = mapper.Collect(am.URI, am.HTTPHeaders, am.RequestTimeout, am.HTTPTransport)
+	silences, err = mapper.Collect(si, am.URI, am.HTTPHeaders, am.RequestTimeout, am.HTTPTransport)
 	if err != nil {
 		return err
 	}
@@ -200,7 +201,7 @@ func (am *Alertmanager) PublicURI() string {
 	return am.URI
 }
 
-func (am *Alertmanager) pullAlerts(version string) error {
+func (am *Alertmanager) pullAlerts(version string, si *intern.Interner) error {
 	mapper, err := mapper.GetAlertMapper(version)
 	if err != nil {
 		return err
@@ -219,7 +220,7 @@ func (am *Alertmanager) pullAlerts(version string) error {
 	var groups []models.AlertGroup
 
 	start := time.Now()
-	groups, err = mapper.Collect(am.URI, am.HTTPHeaders, am.RequestTimeout, am.HTTPTransport)
+	groups, err = mapper.Collect(si, am.URI, am.HTTPHeaders, am.RequestTimeout, am.HTTPTransport)
 	if err != nil {
 		return err
 	}
@@ -373,7 +374,7 @@ func (am *Alertmanager) pullAlerts(version string) error {
 }
 
 // Pull data from upstream Alertmanager instance
-func (am *Alertmanager) Pull() error {
+func (am *Alertmanager) Pull(si *intern.Interner) error {
 	am.Metrics.Cycles++
 
 	version := am.probeVersion()
@@ -401,7 +402,7 @@ func (am *Alertmanager) Pull() error {
 	am.status = *status
 	am.lock.Unlock()
 
-	err = am.pullSilences(version)
+	err = am.pullSilences(version, si)
 	if err != nil {
 		am.clearData()
 		am.setError(err.Error())
@@ -409,7 +410,7 @@ func (am *Alertmanager) Pull() error {
 		return err
 	}
 
-	err = am.pullAlerts(version)
+	err = am.pullAlerts(version, si)
 	if err != nil {
 		am.clearData()
 		am.setError(err.Error())

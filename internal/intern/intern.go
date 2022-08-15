@@ -1,16 +1,34 @@
 package intern
 
-type StringInterner map[string]string
+import "sync"
 
-func New() StringInterner {
-	return StringInterner{}
+type Interner struct {
+	mu   sync.RWMutex
+	data map[string]string
 }
 
-func (si StringInterner) Intern(s string) string {
-	interned, ok := si[s]
+func New() *Interner {
+	return &Interner{data: map[string]string{}}
+}
+
+func (i *Interner) Flush() {
+	i.mu.Lock()
+	i.data = map[string]string{}
+	i.mu.Unlock()
+}
+
+func (i *Interner) String(s string) string {
+	i.mu.RLock()
+	interned, ok := i.data[s]
+	i.mu.RUnlock()
+
 	if ok {
 		return interned
 	}
-	si[s] = s
+
+	i.mu.Lock()
+	i.data[s] = s
+	i.mu.Unlock()
+
 	return s
 }

@@ -21,6 +21,7 @@ import (
 
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
+	"github.com/prymitive/karma/internal/intern"
 	"github.com/prymitive/karma/internal/mock"
 	"github.com/prymitive/karma/internal/models"
 	"github.com/prymitive/karma/internal/regex"
@@ -2886,7 +2887,7 @@ func TestHealthcheckAlerts(t *testing.T) {
 					return
 				}
 
-				_ = am.Pull()
+				_ = am.Pull(intern.New())
 				hasError := am.Error() != ""
 				if hasError != testCase.hasError {
 					t.Errorf("error=%q expected=%v", am.Error(), testCase.hasError)
