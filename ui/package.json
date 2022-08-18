@@ -13,7 +13,7 @@
     "@fortawesome/free-regular-svg-icons": "6.1.2",
     "@fortawesome/free-solid-svg-icons": "6.1.2",
     "@fortawesome/react-fontawesome": "0.2.0",
-    "@juggle/resize-observer": "3.3.1",
+    "@juggle/resize-observer": "3.4.0",
     "body-scroll-lock": "3.1.5",
     "bootstrap": "5.2.0",
     "bootswatch": "5.2.0",
