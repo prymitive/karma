@@ -4,7 +4,7 @@ exec bash -x ./tls.sh
 exec bash -x ./test.sh &
 karma.bin-should-work --pid-file=karma.pid --config.file=karma.yaml --listen.address=127.0.0.1 --listen.port=8087
 ! stdout .
-wait
+exec sleep 5
 cmp http1.txt pong.txt
 cmp http2.txt pong.txt
 
