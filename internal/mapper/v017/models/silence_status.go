@@ -40,7 +40,7 @@ func (m *SilenceStatus) Validate(formats strfmt.Registry) error {
 	return nil
 }
 
-var silenceStatusTypeStatePropEnum []any
+var silenceStatusTypeStatePropEnum []interface{}
 
 func init() {
 	var res []string
