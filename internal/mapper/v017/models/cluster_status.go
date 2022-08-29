@@ -77,7 +77,7 @@ func (m *ClusterStatus) validatePeers(formats strfmt.Registry) error {
 	return nil
 }
 
-var clusterStatusTypeStatusPropEnum []any
+var clusterStatusTypeStatusPropEnum []interface{}
 
 func init() {
 	var res []string
