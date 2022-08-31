@@ -1,6 +1,9 @@
-# GET /history.json
-
 exec bash -x ./tls.sh
+
+http response prometheus /api/v1/labels 200 {"status":"success","data":["alertname"]}
+http response prometheus /api/v1/query_range 200 {"status":"success","data":{"resultType":"matrix","result":[{"metric":{},"values":[]}]}}
+http start prometheus 127.0.0.1:9103 $WORK/prometheus.pem $WORK/prometheus.key
+
 exec bash -x ./test.sh &
 karma.bin-should-work --pid-file=karma.pid --config.file=karma.yaml
 ! stdout .
@@ -69,18 +72,12 @@ subjectAltName       = @alt_names
 DNS.1 = localhost
 IP.1  = 127.0.0.1
 -- test.sh --
-env GOCACHE=$TMPDIR go run prometheus.go &
-
-I=0
-while [ ! -f prometheus.pid ] && [ $I -lt 30 ]; do sleep 1; I=$((I+1)); done
-
 I=0
 while [ ! -f karma.pid ] && [ $I -lt 30 ]; do sleep 1; I=$((I+1)); done
 
 sleep 5
 curl -s -f -o /dev/null -XPOST -d @query.json http://127.0.0.1:8103/history.json
 cat karma.pid | xargs kill
-cat prometheus.pid | xargs kill
 
 -- tls.sh --
 openssl ecparam -genkey -name secp256r1 | openssl ec -out ca.key
@@ -90,77 +87,3 @@ openssl ecparam -genkey -name secp256r1 | openssl ec -out prometheus.key
 openssl req -new -sha256 -key prometheus.key -out prometheus.csr -subj "/C=CI/ST=CI/L=CI/O=CI/CN=127.0.0.1" -config prometheus.conf -extensions SAN
 openssl x509 -req -sha256 -days 7 -extfile prometheus.conf -extensions SAN -in prometheus.csr -CA ca.pem -CAkey ca.key -set_serial 01 -out prometheus.pem
 openssl x509 -in prometheus.pem -text
-
--- prometheus.go --
-package main
-
-import (
-	"context"
-	"io"
-	"log"
-	"net"
-	"net/http"
-	"os"
-	"os/signal"
-	"strconv"
-	"syscall"
-	"time"
-)
-
-func labelNames(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	io.WriteString(w, `{
-    "status": "success",
-    "data": ["alertname"]
-}`)
-}
-
-func query(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	io.WriteString(w, `{
-	"status": "success",
-	"data": {
-		"resultType": "matrix",
-		"result": [
-			{
-				"metric": {},
-				"values": []
-			}
-		]
-	}
-}`)
-}
-
-func main() {
-	pid := os.Getpid()
-	err := os.WriteFile("prometheus.pid", []byte(strconv.Itoa(pid)), 0644)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	http.HandleFunc("/api/v1/labels", labelNames)
-	http.HandleFunc("/api/v1/query_range", query)
-
-	listener, err := net.Listen("tcp", "127.0.0.1:9103")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	server := &http.Server{
-		Addr: "127.0.0.1:9103",
-	}
-
-	go func() {
-		err := server.ServeTLS(listener, "prometheus.pem", "prometheus.key")
-		if err != nil {
-			log.Printf("Serve returned error: %v", err)
-		}
-	}()
-
-	stop := make(chan os.Signal, 1)
-	signal.Notify(stop, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
-	<-stop
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-	server.Shutdown(ctx)
-}

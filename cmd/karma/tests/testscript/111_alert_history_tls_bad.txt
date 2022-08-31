@@ -1,4 +1,6 @@
-# GET /history.json
+http response prometheus /api/v1/labels 200 {"status":"success","data":["alertname"]}
+http response prometheus /api/v1/query_range 200 {"status":"success","data":{"resultType":"matrix","result":[{"metric":{},"values":[]}]}}
+http start prometheus 127.0.0.1:9111
 
 exec bash -x ./test.sh &
 karma.bin-should-work --pid-file=karma.pid --config.file=karma.yaml
@@ -55,89 +57,9 @@ history:
     }
 }
 -- test.sh --
-env GOCACHE=$TMPDIR go run prometheus.go &
-
-I=0
-while [ ! -f prometheus.pid ] && [ $I -lt 30 ]; do sleep 1; I=$((I+1)); done
-
 I=0
 while [ ! -f karma.pid ] && [ $I -lt 30 ]; do sleep 1; I=$((I+1)); done
 
 sleep 5
 curl -s -f -o /dev/null -XPOST -d @query.json http://127.0.0.1:8111/history.json
 cat karma.pid | xargs kill
-cat prometheus.pid | xargs kill
-
--- prometheus.go --
-package main
-
-import (
-	"context"
-	"io"
-	"log"
-	"net"
-	"net/http"
-	"os"
-	"os/signal"
-	"strconv"
-	"syscall"
-	"time"
-)
-
-func labelNames(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	io.WriteString(w, `{
-    "status": "success",
-    "data": ["alertname"]
-}`)
-}
-
-func query(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	io.WriteString(w, `{
-	"status": "success",
-	"data": {
-		"resultType": "matrix",
-		"result": [
-			{
-				"metric": {},
-				"values": []
-			}
-		]
-	}
-}`)
-}
-
-func main() {
-	pid := os.Getpid()
-	err := os.WriteFile("prometheus.pid", []byte(strconv.Itoa(pid)), 0644)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	http.HandleFunc("/api/v1/labels", labelNames)
-	http.HandleFunc("/api/v1/query_range", query)
-
-	listener, err := net.Listen("tcp", "127.0.0.1:9111")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	server := &http.Server{
-		Addr: "127.0.0.1:9111",
-	}
-
-	go func() {
-		err := server.Serve(listener)
-		if err != nil {
-			log.Printf("Serve returned error: %v", err)
-		}
-	}()
-
-	stop := make(chan os.Signal, 1)
-	signal.Notify(stop, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
-	<-stop
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-	server.Shutdown(ctx)
-}
