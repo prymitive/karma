@@ -1,12 +1,10 @@
 # Fails on missing TLS key
 
-exec sh -x ./tls.sh
+cert $WORK karma
 karma.bin-should-work --pid-file=karma.pid --config.file=karma.yaml --listen.address=127.0.0.1 --listen.port=8090
 ! stdout .
 cmp stderr stderr.txt
 
--- server.bad --
-BAD CERT
 -- stderr.txt --
 level=info msg="Reading configuration file" path=karma.yaml
 level=info msg="Version: dev"
@@ -36,13 +34,5 @@ alertmanager:
       timeout: 10s
 listen:
   tls:
-    cert: server.pem
+    cert: karma.pem
     key: server.nofound
-
--- tls.sh --
-openssl genrsa -out ca.key 2048
-openssl req -x509 -new -nodes -key ca.key -days 7 -out ca.pem -subj "/C=CI/ST=CI/L=CI/O=CI/CN=FakeCA"
-
-openssl genrsa -out server.key 2048
-openssl req -new -sha256 -key server.key -out server.csr -subj "/C=CI/ST=CI/L=CI/O=CI/CN=karma.example.com"
-openssl x509 -req -in server.csr -CA ca.pem -CAkey ca.key -CAcreateserial -out server.pem -days 7

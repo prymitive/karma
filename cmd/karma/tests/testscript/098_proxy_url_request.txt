@@ -122,7 +122,7 @@ func main() {
 
 	go func() {
 		err := server.Serve(listener)
-		if err != nil {
+		if err != nil && err != http.ErrServerClosed {
 			log.Printf("Serve returned error: %v", err)
 		}
 	}()
