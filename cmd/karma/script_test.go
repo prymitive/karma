@@ -2,11 +2,18 @@ package main
 
 import (
 	"context"
+	"crypto/rand"
+	"crypto/rsa"
+	"crypto/x509"
+	"crypto/x509/pkix"
+	"encoding/pem"
 	"errors"
 	"fmt"
+	"math/big"
 	"net"
 	"net/http"
 	"os"
+	"path"
 	"strconv"
 	"strings"
 	"testing"
@@ -58,6 +65,7 @@ func TestScripts(t *testing.T) {
 		UpdateScripts: os.Getenv("UPDATE_SNAPSHOTS") == "1",
 		Cmds: map[string]func(ts *testscript.TestScript, neg bool, args []string){
 			"http": httpServer,
+			"cert": tlsCert,
 		},
 		Setup: func(env *testscript.Env) error {
 			env.Values["mocks"] = &httpMocks{responses: map[string][]httpMock{}}
@@ -185,4 +193,103 @@ func (m *httpMocks) add(name string, mock httpMock) {
 		m.responses[name] = []httpMock{}
 	}
 	m.responses[name] = append(m.responses[name], mock)
+}
+
+func tlsCert(ts *testscript.TestScript, neg bool, args []string) {
+	if len(args) < 2 {
+		ts.Fatalf("! cert command requires '$DIRNAME $NAME' args, got [%s]", strings.Join(args, " "))
+	}
+	dirname := args[0]
+	name := args[1]
+
+	ca := &x509.Certificate{
+		SerialNumber: big.NewInt(2019),
+		Subject: pkix.Name{
+			Organization:  []string{"Company, INC."},
+			Country:       []string{"US"},
+			Province:      []string{""},
+			Locality:      []string{"San Francisco"},
+			StreetAddress: []string{""},
+			PostalCode:    []string{""},
+		},
+		NotBefore:             time.Now(),
+		NotAfter:              time.Now().AddDate(10, 0, 0),
+		IsCA:                  true,
+		ExtKeyUsage:           []x509.ExtKeyUsage{x509.ExtKeyUsageClientAuth, x509.ExtKeyUsageServerAuth},
+		KeyUsage:              x509.KeyUsageDigitalSignature | x509.KeyUsageCertSign,
+		BasicConstraintsValid: true,
+	}
+
+	caPrivKey, err := rsa.GenerateKey(rand.Reader, 4096)
+	if err != nil {
+		ts.Fatalf("failed to generate CA private key: %s", err)
+	}
+
+	caBytes, err := x509.CreateCertificate(rand.Reader, ca, ca, &caPrivKey.PublicKey, caPrivKey)
+	if err != nil {
+		ts.Fatalf("failed to generate CA cert: %s", err)
+	}
+
+	writeCert(ts, dirname, name+"-ca.pem", &pem.Block{
+		Type:  "CERTIFICATE",
+		Bytes: caBytes,
+	})
+	writeCert(ts, dirname, name+"-ca.key", &pem.Block{
+		Type:  "RSA PRIVATE KEY",
+		Bytes: x509.MarshalPKCS1PrivateKey(caPrivKey),
+	})
+
+	cert := &x509.Certificate{
+		SerialNumber: big.NewInt(1658),
+		Subject: pkix.Name{
+			Organization:  []string{""},
+			Country:       []string{""},
+			Province:      []string{""},
+			Locality:      []string{""},
+			StreetAddress: []string{""},
+			PostalCode:    []string{""},
+		},
+		IPAddresses:  []net.IP{net.IPv4(127, 0, 0, 1), net.IPv6loopback},
+		NotBefore:    time.Now(),
+		NotAfter:     time.Now().AddDate(0, 0, 1),
+		SubjectKeyId: []byte{1, 2, 3, 4, 6},
+		ExtKeyUsage:  []x509.ExtKeyUsage{x509.ExtKeyUsageClientAuth, x509.ExtKeyUsageServerAuth},
+		KeyUsage:     x509.KeyUsageDigitalSignature,
+	}
+
+	certPrivKey, err := rsa.GenerateKey(rand.Reader, 4096)
+	if err != nil {
+		ts.Fatalf("failed to generate cert private key: %s", err)
+	}
+
+	certBytes, err := x509.CreateCertificate(rand.Reader, cert, ca, &certPrivKey.PublicKey, caPrivKey)
+	if err != nil {
+		ts.Fatalf("failed to generate cert: %s", err)
+	}
+
+	writeCert(ts, dirname, name+".pem", &pem.Block{
+		Type:  "CERTIFICATE",
+		Bytes: certBytes,
+	})
+	writeCert(ts, dirname, name+".key", &pem.Block{
+		Type:  "RSA PRIVATE KEY",
+		Bytes: x509.MarshalPKCS1PrivateKey(certPrivKey),
+	})
+}
+
+func writeCert(ts *testscript.TestScript, dirname, filename string, block *pem.Block) {
+	fullpath := path.Join(dirname, filename)
+
+	f, err := os.Create(fullpath)
+	if err != nil {
+		ts.Fatalf("failed to write %s: %s", fullpath, err)
+	}
+
+	if err = pem.Encode(f, block); err != nil {
+		ts.Fatalf("failed to encode %s: %s", fullpath, err)
+	}
+
+	if err = f.Close(); err != nil {
+		ts.Fatalf("failed to close %s: %s", fullpath, err)
+	}
 }
