@@ -53,7 +53,7 @@ jobs:
 
       - name: Enable Pull Request Automerge
         if: steps.cpr.outputs.pull-request-operation == 'created'
-        uses: peter-evans/enable-pull-request-automerge@v2.1.0
+        uses: peter-evans/enable-pull-request-automerge@v2.2.0
         with:
           token: ${{ secrets.GH_REPO_TOKEN }}
           pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
