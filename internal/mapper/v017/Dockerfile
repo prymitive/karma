@@ -1,4 +1,4 @@
-FROM quay.io/goswagger/swagger:0.30.0
+FROM quay.io/goswagger/swagger:0.30.2
 
 RUN apk add curl
 
