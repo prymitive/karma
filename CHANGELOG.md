@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.108
+
+### Fixed
+
+- Fixed CSS glitches on Google Chrome 105.
+
 ## v0.107
 
 ### Changed
