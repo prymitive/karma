@@ -10,6 +10,7 @@ svg.alert-history {
   line-height: 4px;
   width: 100%;
   vertical-align: bottom;
+  overflow: auto;
 
   &:not(:first-child) {
     margin-left: 1px;
