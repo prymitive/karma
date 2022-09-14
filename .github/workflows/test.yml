@@ -19,9 +19,6 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3
 
-      - name: Set git slug envs
-        uses: rlespinasse/github-slug-action@4.2.5
-
       - name: Set up Go
         uses: actions/setup-go@v3
         with:
@@ -32,7 +29,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/go/pkg/mod
-          key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-go-modules-${{ hashFiles('**/go.sum') }}
+          key: ${{ runner.os }}-${{ github.ref_name }}-go-modules-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-main-go-modules-
 
@@ -59,9 +56,6 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3
 
-      - name: Set git slug envs
-        uses: rlespinasse/github-slug-action@4.2.5
-
       - name: Set up Go
         uses: actions/setup-go@v3
         with:
@@ -72,7 +66,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/go/pkg/mod
-          key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-go-modules-${{ hashFiles('**/go.sum') }}
+          key: ${{ runner.os }}-${{ github.ref_name }}-go-modules-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-main-go-modules-
 
@@ -280,9 +274,6 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3
 
-      - name: Set git slug envs
-        uses: rlespinasse/github-slug-action@4.2.5
-
       - name: Get modified files
         uses: dorny/paths-filter@v2.10.2
         id: filter
@@ -458,9 +449,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set git slug envs
-        uses: rlespinasse/github-slug-action@4.2.5
-
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
 
@@ -486,9 +474,9 @@ jobs:
         if: github.event_name == 'release'
         run: |
           echo 'DOCKER_TAGS<<EOF' >> $GITHUB_ENV
-          echo 'lmierzwa/karma:${{ env.GITHUB_REF_SLUG }}' >> $GITHUB_ENV
+          echo 'lmierzwa/karma:${{ github.ref_name }}' >> $GITHUB_ENV
           echo 'lmierzwa/karma:latest' >> $GITHUB_ENV
-          echo 'ghcr.io/prymitive/karma:${{ env.GITHUB_REF_SLUG }}' >> $GITHUB_ENV
+          echo 'ghcr.io/prymitive/karma:${{ github.ref_name }}' >> $GITHUB_ENV
           echo 'ghcr.io/prymitive/karma:latest' >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
 
