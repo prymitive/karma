@@ -157,6 +157,30 @@ func httpServer(ts *testscript.TestScript, neg bool, args []string) {
 		listener, err := net.Listen("tcp", listen)
 		ts.Check(err)
 		server := &http.Server{Addr: listen, Handler: mux}
+		sChan := make(chan struct{}, 1)
+		sCtx, sCancel := context.WithTimeout(context.Background(), time.Minute*5)
+
+		ts.Defer(func() {
+			defer sCancel()
+			sChan <- struct{}{}
+			ts.Logf("http server %s shutting down", name)
+			ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+			defer cancel()
+			_ = server.Shutdown(ctx)
+		})
+
+		go func() {
+			select {
+			case <-sCtx.Done():
+				ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+				defer cancel()
+				_ = server.Shutdown(ctx)
+				ts.Fatalf("http server %s running for too long, forcing a shutdown: %s", name, sCtx.Err())
+			case <-sChan:
+				return
+			}
+		}()
+
 		go func() {
 			if isTLS {
 				err = server.ServeTLS(listener, tlsCert, tlsKey)
@@ -167,13 +191,6 @@ func httpServer(ts *testscript.TestScript, neg bool, args []string) {
 				ts.Fatalf("http server failed to start: %s", err)
 			}
 		}()
-
-		ts.Defer(func() {
-			ts.Logf("http server %s shutting down", name)
-			ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-			defer cancel()
-			_ = server.Shutdown(ctx)
-		})
 	default:
 		ts.Fatalf("! unknown http command: %v", args)
 	}
