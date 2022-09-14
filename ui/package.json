@@ -53,10 +53,10 @@
   "devDependencies": {
     "@percy/cli": "1.10.2",
     "@percy/storybook": "4.3.3",
-    "@storybook/builder-webpack5": "6.5.11",
-    "@storybook/manager-webpack5": "6.5.11",
+    "@storybook/builder-webpack5": "6.5.12",
+    "@storybook/manager-webpack5": "6.5.12",
     "@storybook/preset-create-react-app": "4.1.2",
-    "@storybook/react": "6.5.11",
+    "@storybook/react": "6.5.12",
     "@testing-library/jest-dom": "5.16.5",
     "@testing-library/react": "12.1.5",
     "@testing-library/react-hooks": "8.0.1",
