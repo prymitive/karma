@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
@@ -176,4 +177,15 @@ func setupRouterProxyHandlers(router *chi.Mux, alertmanager *alertmanager.Alertm
 			h := http.StripPrefix(proxyPathPrefix(alertmanager.Name), proxy)
 			h.ServeHTTP(w, r)
 		}))
+}
+
+// this fixes a problem with go-chi usage of RawPath
+// see https://github.com/prymitive/karma/issues/4674
+// and https://github.com/go-chi/chi/issues/641
+func proxyPathFixMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		r.URL.RawPath = ""
+		ww := middleware.NewWrapResponseWriter(w, r.ProtoMajor)
+		next.ServeHTTP(ww, r)
+	})
 }

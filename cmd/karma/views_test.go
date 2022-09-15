@@ -62,6 +62,7 @@ func mockConfig(setenv setenvFunc) {
 
 func testRouter() *chi.Mux {
 	router := chi.NewRouter()
+	router.Use(proxyPathFixMiddleware)
 
 	err := loadTemplates()
 	if err != nil {

@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.109
+
+### Fixed
+
+- Managing silences for alertmanager instances with `/` in the name was failing.
+  This release adds a workaround for it - #4674.
+
 ## v0.108
 
 ### Fixed
