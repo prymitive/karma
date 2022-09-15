@@ -26,6 +26,7 @@ FROM alpine:3.16
 COPY --from=ghcr.io/prymitive/kthxbye:v0.15 /kthxbye /kthxbye
 COPY --from=prom/alertmanager:v0.24.0 /bin/alertmanager /alertmanager
 RUN apk add supervisor python3 && rm  -rf /tmp/* /var/cache/apk/*
+COPY demo/run.sh /run.sh
 COPY demo/supervisord.conf /etc/supervisord.conf
 COPY demo/alertmanager.yaml /etc/alertmanager.yaml
 COPY demo/generator.py /generator.py
