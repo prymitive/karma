@@ -80,6 +80,7 @@ func getViewURL(sub string) string {
 func setupRouter(router *chi.Mux, historyPoller *historyPoller) {
 	_ = mime.AddExtensionType(".ico", "image/x-icon")
 
+	router.Use(proxyPathFixMiddleware)
 	router.Use(promMiddleware)
 	router.Use(middleware.RealIP)
 
