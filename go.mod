@@ -17,7 +17,7 @@ require (
 	github.com/google/go-cmp v0.5.9
 	github.com/hashicorp/golang-lru v0.5.4
 	github.com/jarcoal/httpmock v1.2.0
-	github.com/klauspost/compress v1.15.9
+	github.com/klauspost/compress v1.15.10
 	github.com/knadh/koanf v1.4.3
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/pmezard/go-difflib v1.0.0
