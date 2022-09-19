@@ -12,10 +12,6 @@
     {
       "matchPackagePatterns": ["bootstrap", "bootswatch"],
       "groupName": "bootstrap"
-    },
-    {
-      "matchDatasources": ["npm"],
-      "stabilityDays": 2
     }
   ]
 }
