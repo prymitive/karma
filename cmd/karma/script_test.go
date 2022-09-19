@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/rand"
 	"crypto/rsa"
+	"crypto/tls"
 	"crypto/x509"
 	"crypto/x509/pkix"
 	"encoding/pem"
@@ -144,6 +145,10 @@ func httpServer(ts *testscript.TestScript, neg bool, args []string) {
 		}
 
 		mux := http.NewServeMux()
+		mux.HandleFunc("/__ping__", func(w http.ResponseWriter, r *http.Request) {
+			w.WriteHeader(http.StatusOK)
+			_, _ = w.Write([]byte("pong"))
+		})
 		for n, mockList := range mocks.responses {
 			if n == name {
 				for _, mock := range mockList {
@@ -191,6 +196,39 @@ func httpServer(ts *testscript.TestScript, neg bool, args []string) {
 				ts.Fatalf("http server failed to start: %s", err)
 			}
 		}()
+
+		tr := &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		}
+		client := &http.Client{Transport: tr}
+
+		try := 0
+		for {
+			try++
+			if try > 30 {
+				ts.Fatalf("HTTP server didn't pass healt checks after %d check(s)", try)
+			}
+
+			ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+
+			uri := fmt.Sprintf("http://%s/__ping__", listen)
+			if isTLS {
+				uri = fmt.Sprintf("https://%s/__ping__", listen)
+			}
+
+			req, err := http.NewRequestWithContext(ctx, http.MethodGet, uri, nil)
+			ts.Check(err)
+
+			resp, err := client.Do(req)
+			if err == nil && resp.StatusCode == http.StatusOK {
+				ts.Logf("http server ready after %d check(s)", try)
+				cancel()
+				return
+			}
+
+			cancel()
+			time.Sleep(time.Second)
+		}
 	default:
 		ts.Fatalf("! unknown http command: %v", args)
 	}
