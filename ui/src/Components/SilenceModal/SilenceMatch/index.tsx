@@ -20,7 +20,7 @@ const SilenceMatch: FC<{
   return (
     <div className="d-flex flex-fill flex-lg-row align-items-center flex-column mb-3">
       <div
-        className="flex-shrink-0 flex-grow-0 pe-lg-2 pb-2 pb-lg-0 w-100"
+        className="flex-shrink-0 flex-grow-0 pe-lg-2 pb-2 pb-lg-0 w-100 mw-md-25"
         style={{ flexBasis: "25%" }}
       >
         <LabelNameInput matcher={matcher} isValid={isValid} />

@@ -76,7 +76,7 @@ const ManagedSilence: FC<{
     }, [silence.startsAt, silence.endsAt]);
 
     return (
-      <div className="card my-1 components-managed-silence">
+      <div className="card my-1 components-managed-silence w-100">
         <div className="card-header rounded-0 border-bottom-0 px-2">
           <SilenceComment
             alertStore={alertStore}

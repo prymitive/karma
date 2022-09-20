@@ -6,6 +6,11 @@ module.exports = {
   fontFace: false,
   keyframes: false,
   safelist: {
-    greedy: [/^components-/, /^firing-[0-9]$/, /^alert-history-loading-/],
+    greedy: [
+      /^components-/,
+      /^firing-[0-9]$/,
+      /^alert-history-loading-/,
+      /^btn/,
+    ],
   },
 };

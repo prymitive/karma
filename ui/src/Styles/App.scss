@@ -18,3 +18,9 @@
 .components-duration h2 {
   font-size: 2.5rem;
 }
+
+@media (min-width: 768px) {
+.mw-md-25 {
+  max-width: 25%;
+}
+}
