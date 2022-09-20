@@ -2,7 +2,7 @@
 
 exports[`<RenderSilence /> renders ManagedSilence if silence is present in AlertStore 1`] = `
 "
-<div class=\\"card my-1 components-managed-silence\\">
+<div class=\\"card my-1 components-managed-silence w-100\\">
   <div class=\\"card-header rounded-0 border-bottom-0 px-2\\">
     <div class=\\"d-flex flex-row\\">
       <div class=\\"flex-shrink-0 flex-grow-0\\">

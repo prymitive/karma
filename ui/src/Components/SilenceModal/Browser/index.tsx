@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect, ReactNode } from "react";
+import React, { FC, useState, useEffect, ReactNode, useCallback } from "react";
 
 import { observer } from "mobx-react-lite";
 
@@ -17,9 +17,13 @@ import type { Settings } from "Stores/Settings";
 import { useFetchGet, FetchGetOptionsT } from "Hooks/useFetchGet";
 import { useDebounce } from "Hooks/useDebounce";
 import { IsMobile } from "Common/Device";
-import { ManagedSilence } from "Components/ManagedSilence";
 import { PageSelect } from "Components/Pagination";
 import { ThemeContext } from "Components/Theme";
+import {
+  ClusterSilenceT,
+  SelectableSilence,
+  SilenceDelete,
+} from "./MassDelete";
 
 const FetchError: FC<{
   message: ReactNode;
@@ -85,6 +89,41 @@ const Browser: FC<{
     return () => clearInterval(timer);
   }, [settingsStore.fetchConfig.config.interval]);
 
+  const [selected, setSelected] = useState<ClusterSilenceT[]>([]);
+  const [allSelected, setAllSelected] = useState(false);
+
+  useEffect(() => {
+    if (response && !isLoading && error === null) {
+      const sids: string[] = response
+        .filter((silence) => !silence.isExpired)
+        .map((silence) => silence.silence.id);
+      setSelected((selected) => selected.filter((s) => sids.includes(s.id)));
+    }
+  }, [error, isLoading, response]);
+
+  const [isDeleteMenuOpen, setIsDeleteMenuOpen] = useState<boolean>(false);
+  const hideDeleteMenu = useCallback(() => setIsDeleteMenuOpen(false), []);
+  const toggleDeleteMenu = useCallback(
+    () => setIsDeleteMenuOpen(!isDeleteMenuOpen),
+    [isDeleteMenuOpen]
+  );
+
+  const onSelect = useCallback(
+    (cluster: string, id: string, checked: boolean) => {
+      if (checked) {
+        setSelected((sv) =>
+          Array.from(new Set([{ id: id, cluster: cluster }, ...sv]))
+        );
+      } else {
+        setSelected((sv) =>
+          sv.filter((s) => !(s.id === id && s.cluster === cluster))
+        );
+      }
+      setAllSelected(false);
+    },
+    [setSelected, setAllSelected]
+  );
+
   return (
     <>
       <div
@@ -147,23 +186,60 @@ const Browser: FC<{
           {response
             .slice((activePage - 1) * maxPerPage, activePage * maxPerPage)
             .map((silence) => (
-              <ManagedSilence
+              <SelectableSilence
                 key={`${silence.cluster}/${silence.silence.id}`}
-                cluster={silence.cluster}
-                alertCount={silence.alertCount}
-                alertCountAlwaysVisible={true}
-                silence={silence.silence}
+                silence={silence}
                 alertStore={alertStore}
                 silenceFormStore={silenceFormStore}
-                isNested={true}
+                selected={selected
+                  .map((s) => s.id)
+                  .includes(silence.silence.id)}
+                onSelect={onSelect}
               />
             ))}
-          <PageSelect
-            totalPages={Math.ceil(response.length / maxPerPage)}
-            maxPerPage={maxPerPage}
-            totalItemsCount={response.length}
-            setPageCallback={setActivePage}
-          />
+          <div className="d-flex flex-wrap">
+            <div className="flex-grow-0 flex-shrink-0 my-auto mx-1">
+              <SilenceDelete
+                alertStore={alertStore}
+                silenceFormStore={silenceFormStore}
+                disabled={selected.length === 0}
+                silences={selected}
+                isOpen={isDeleteMenuOpen}
+                toggle={toggleDeleteMenu}
+              >
+                <button
+                  className="dropdown-item cursor-pointer px-3"
+                  onClick={() => {
+                    const v = !allSelected;
+                    if (v) {
+                      setSelected(
+                        response
+                          .filter((silence) => !silence.isExpired)
+                          .map((silence) => ({
+                            id: silence.silence.id,
+                            cluster: silence.cluster,
+                          }))
+                      );
+                    } else {
+                      setSelected([]);
+                    }
+                    hideDeleteMenu();
+                    setAllSelected(v);
+                  }}
+                >
+                  {allSelected ? "Select none" : "Select all"}
+                </button>
+              </SilenceDelete>
+            </div>
+            <div className="mx-auto">
+              <PageSelect
+                totalPages={Math.ceil(response.length / maxPerPage)}
+                maxPerPage={maxPerPage}
+                totalItemsCount={response.length}
+                setPageCallback={setActivePage}
+              />
+            </div>
+          </div>
         </>
       )}
     </>

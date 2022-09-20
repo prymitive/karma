@@ -53,8 +53,8 @@ const SuccessMessage: FC = () => (
 const DeleteResult: FC<{
   alertStore: AlertStore;
   cluster: string;
-  silence: APISilenceT;
-}> = ({ alertStore, cluster, silence }) => {
+  id: string;
+}> = ({ alertStore, cluster, id }) => {
   const [currentTime, setCurrentTime] = useState<number>(
     Math.floor(Date.now())
   );
@@ -69,7 +69,7 @@ const DeleteResult: FC<{
   });
 
   const { error, isDeleting } = useFetchDelete(
-    `${am.uri}/api/v2/silence/${silence.id}`,
+    `${am.uri}/api/v2/silence/${id}`,
     deleteFetchOptions,
     [currentTime]
   );
@@ -128,7 +128,7 @@ const DeleteSilenceModalContent: FC<{
           <DeleteResult
             alertStore={alertStore}
             cluster={cluster}
-            silence={silence}
+            id={silence.id}
           />
         ) : (
           <>

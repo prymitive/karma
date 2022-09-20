@@ -2,6 +2,10 @@
 
 ## v0.109
 
+### Added
+
+- Added ability to delete multiple silences from the silence browser modal - #4618.
+
 ### Fixed
 
 - Managing silences for alertmanager instances with `/` in the name was failing.
