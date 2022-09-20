@@ -2,7 +2,7 @@ module _
 
 go 1.19
 
-require golang.org/x/perf v0.0.0-20220916202130-a1b99499bab6
+require golang.org/x/perf v0.0.0-20220920022801-e8d778a60d07
 
 require (
 	github.com/google/safehtml v0.0.2 // indirect
