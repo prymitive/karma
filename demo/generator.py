@@ -482,7 +482,7 @@ class SilencedAlertWithJiraLink(AlertGenerator):
                 "{}Z".format(now.isoformat()),
                 "{}Z".format((now + datetime.timedelta(minutes=30)).isoformat()),
                 "me@example.com",
-                "DEVOPS-123 This text should be a link to the Jira ticket",
+                "This text - DEVOPS-123 - should be a link to the Jira ticket",
             )
         ]
 

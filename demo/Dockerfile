@@ -1,8 +1,8 @@
 FROM node:18.9.0-alpine as nodejs-builder
 RUN mkdir -p /src/ui
+RUN apk add make git
 COPY ui/package.json ui/package-lock.json /src/ui/
 RUN cd /src/ui && npm ci && touch node_modules/.install
-RUN apk add make git
 COPY ui /src/ui
 RUN make -C /src/ui build
 
@@ -13,10 +13,10 @@ COPY make /src/make
 COPY go.mod /src/go.mod
 COPY go.sum /src/go.sum
 RUN make -C /src download-deps-go
+COPY --from=nodejs-builder /src/ui/embed.go /src/ui/embed.go
+COPY --from=nodejs-builder /src/ui/mock /src/ui/mock
 COPY --from=nodejs-builder /src/ui/src /src/ui/src
 COPY --from=nodejs-builder /src/ui/build /src/ui/build
-COPY --from=nodejs-builder /src/ui/mock /src/ui/mock
-COPY --from=nodejs-builder /src/ui/embed.go /src/ui/embed.go
 COPY cmd /src/cmd
 COPY internal /src/internal
 ARG VERSION
@@ -31,10 +31,10 @@ COPY demo/supervisord.conf /etc/supervisord.conf
 COPY demo/alertmanager.yaml /etc/alertmanager.yaml
 COPY demo/generator.py /generator.py
 COPY demo/prometheus.py /prometheus.py
-COPY --from=go-builder /src/karma /karma
 COPY demo/karma.yaml /etc/karma.yaml
 COPY demo/acls.yaml /etc/acls.yaml
 RUN adduser -D karma
+COPY --from=go-builder /src/karma /karma
 USER karma
 ENV GOGC=50
 EXPOSE 8080
