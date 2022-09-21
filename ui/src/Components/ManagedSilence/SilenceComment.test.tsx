@@ -122,6 +122,26 @@ describe("<SilenceComment />", () => {
     expect(tree.find("a[href='http://localhost/1234']")).toHaveLength(1);
   });
 
+  it("Correctly renders comments with spaces", () => {
+    silence.ticketURL = "http://localhost/1234";
+    silence.ticketID = "1234";
+    silence.comment = "Ticket id 1234 should be linked here";
+    const tree = MountedSilenceComment(false);
+    expect(tree.html()).toContain(
+      '<div class="components-managed-silence-comment "> Ticket id <a href="http://localhost/1234" target="_blank" rel="noopener noreferrer">1234</a> should be linked here</div>'
+    );
+  });
+
+  it("Correctly renders comments starting with a link", () => {
+    silence.ticketURL = "http://localhost/1234";
+    silence.ticketID = "1234";
+    silence.comment = "1234 is the ticket id.";
+    const tree = MountedSilenceComment(false);
+    expect(tree.html()).toContain(
+      '<div class="components-managed-silence-comment "><a href="http://localhost/1234" target="_blank" rel="noopener noreferrer">1234</a> is the ticket id.</div>'
+    );
+  });
+
   it("collapseToggle is called when collapse icon is clicked", () => {
     const tree = MountedSilenceComment(true);
     const collapse = tree.find("svg.fa-chevron-down");
