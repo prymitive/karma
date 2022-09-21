@@ -1,4 +1,4 @@
-import type { FC } from "react";
+import { Fragment, FC } from "react";
 
 import { observer } from "mobx-react-lite";
 
@@ -57,14 +57,12 @@ const SilenceComment: FC<{
   }) => {
     const comment = silence.comment.split(" ").map((w, i) =>
       silence.ticketURL && w === silence.ticketID ? (
-        <a
-          key={i}
-          href={silence.ticketURL}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {silence.ticketID}
-        </a>
+        <Fragment key={i}>
+          {i ? " " : null}
+          <a href={silence.ticketURL} target="_blank" rel="noopener noreferrer">
+            {silence.ticketID}
+          </a>
+        </Fragment>
       ) : (
         " " + w
       )
@@ -82,7 +80,7 @@ const SilenceComment: FC<{
                 collapsed ? "text-truncate overflow-hidden" : ""
               }`}
             >
-              {comment.map((w) => w)}
+              {comment}
             </div>
             <div className="components-managed-silence-cite mt-1 d-flex flex-row">
               <span
