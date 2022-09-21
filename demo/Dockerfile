@@ -37,4 +37,5 @@ COPY demo/acls.yaml /etc/acls.yaml
 RUN adduser -D karma
 USER karma
 ENV GOGC=50
+EXPOSE 8080
 CMD supervisord --nodaemon --configuration /etc/supervisord.conf
