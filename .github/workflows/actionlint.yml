@@ -1,0 +1,22 @@
+name: Lint Actions
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-review:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: "Checkout Repository"
+        uses: actions/checkout@v3
+
+      - name: Run actionlint
+        uses: reviewdog/action-actionlint@v1.31.0
