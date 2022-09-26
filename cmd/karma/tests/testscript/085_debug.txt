@@ -27,6 +27,6 @@ level=info msg="Removing PID file" path=karma.pid
 -- test.sh --
 while [ ! -f karma.pid ]; do sleep 1 ; done
 sleep 1
-curl -s -o heap.gz http://localhost:8085/debug/pprof/heap
+curl -s -o heap.gz http://127.0.0.1:8085/debug/pprof/heap
 cat karma.pid | xargs kill
 gzip -d heap.gz || exit 1
