@@ -51,7 +51,7 @@ history:
   rewrite:
     - source: '(.*)'
       uri: '$1'
-      proxy_url: http://localhost:9108
+      proxy_url: http://127.0.0.1:9108
 -- test.sh --
 while [ ! -f karma.pid ]; do sleep 1 ; done
 sleep 5

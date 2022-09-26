@@ -134,5 +134,5 @@ level=info msg="Removing PID file" path=karma.pid
 -- test.sh --
 while [ ! -f karma.pid ]; do sleep 1 ; done
 sleep 5
-curl -s http://localhost:8083/metrics | grep -vE 'process_|go_info' | perl -pe "s/^([a-zA-Z].+)[ ]([0-9\.\-\+eE]+)$/\1/g" > curl.txt
+curl -s http://127.0.0.1:8083/metrics | grep -vE 'process_|go_info' | perl -pe "s/^([a-zA-Z].+)[ ]([0-9\.\-\+eE]+)$/\1/g" > curl.txt
 cat karma.pid | xargs kill
