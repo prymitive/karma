@@ -1,9 +1,6 @@
 name: Lint Actions
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
     branches:
       - main
@@ -12,7 +9,7 @@ permissions:
   contents: read
 
 jobs:
-  dependency-review:
+  actionlint:
     runs-on: ubuntu-20.04
     steps:
       - name: "Checkout Repository"
