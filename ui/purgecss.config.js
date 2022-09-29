@@ -11,6 +11,7 @@ module.exports = {
       /^firing-[0-9]$/,
       /^alert-history-loading-/,
       /^btn/,
+      /^--bs-/,
     ],
   },
 };
