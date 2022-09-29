@@ -73,6 +73,9 @@ $table-accent-bg: transparent;
 
 $card-cap-bg: inherit;
 
+$kbd-color: $white;
+$kbd-bg: $dark;
+
 @import "./RebootlessBootstrap";
 @import "bootswatch/dist/darkly/bootswatch";
 

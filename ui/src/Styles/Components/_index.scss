@@ -28,3 +28,8 @@
 @import "./WithClick";
 @import "./Flash";
 @import "./FadeAlertGroup";
+
+kbd {
+    color: $kbd-color;
+    background-color: $kbd-bg;
+}
