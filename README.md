@@ -151,9 +151,8 @@ media queries.
 
 ## Demo
 
-[Online demo](https://karma-demo.herokuapp.com/) is running latest main branch
-or PR branch version. It might include features that are experimental and not
-yet ready to be included.
+[Online demo](https://demo.karma-dashboard.io/) is running latest main branch.
+It might include features that are experimental and not yet ready to be included.
 
 ## Release notes
 

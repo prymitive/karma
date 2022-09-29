@@ -32,9 +32,6 @@ jobs:
       - name: Regenerate ui package-lock.json
         run: cd ui && npm i
 
-      - name: Regenerate e2e package-lock.json
-        run: cd ui/e2e && npm i
-
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v4.1.3
