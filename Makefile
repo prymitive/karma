@@ -15,7 +15,7 @@ test: lint
 
 .PHONY: clean
 clean:
-	rm -fr $(NAME) $(NAME)-* ui/build ui/build.pre ui/node_modules ui/coverage ui/e2e/node_modules coverage.txt
+	rm -fr $(NAME) $(NAME)-* ui/build ui/build.pre ui/node_modules ui/coverage coverage.txt
 
 .PHONY: show-version
 show-version:

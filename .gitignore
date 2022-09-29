@@ -6,6 +6,5 @@
 /ui/coverage
 /ui/node_modules
 /ui/.eslintcache
-/ui/e2e/node_modules
 /TODO.md
 /.vscode
