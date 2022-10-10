@@ -5,6 +5,7 @@
 ### Added
 
 - Added ability to delete multiple silences from the silence browser modal - #4618.
+- Added `build_info` metric - #4764.
 
 ### Fixed
 

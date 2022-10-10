@@ -7,6 +7,9 @@ cmp stderr stderr.txt
 cmp curl.txt metrics.txt
 
 -- metrics.txt --
+# HELP build_info Runtime version information
+# TYPE build_info gauge
+build_info{version="dev"}
 # HELP go_gc_duration_seconds A summary of the pause duration of garbage collection cycles.
 # TYPE go_gc_duration_seconds summary
 go_gc_duration_seconds{quantile="0"}
