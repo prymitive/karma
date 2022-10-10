@@ -9,6 +9,7 @@ import (
 )
 
 type karmaCollector struct {
+	buildInfo       *prometheus.Desc
 	collectedAlerts *prometheus.Desc
 	collectedGroups *prometheus.Desc
 	cyclesTotal     *prometheus.Desc
@@ -19,6 +20,12 @@ type karmaCollector struct {
 
 func newKarmaCollector() *karmaCollector {
 	return &karmaCollector{
+		buildInfo: prometheus.NewDesc(
+			"build_info",
+			"Runtime version information",
+			[]string{"version"},
+			prometheus.Labels{},
+		),
 		collectedAlerts: prometheus.NewDesc(
 			"karma_collected_alerts_count",
 			"Total number of alerts collected from Alertmanager API",
@@ -59,6 +66,7 @@ func newKarmaCollector() *karmaCollector {
 }
 
 func (c *karmaCollector) Describe(ch chan<- *prometheus.Desc) {
+	ch <- c.buildInfo
 	ch <- c.collectedAlerts
 	ch <- c.collectedGroups
 	ch <- c.cyclesTotal
@@ -68,6 +76,8 @@ func (c *karmaCollector) Describe(ch chan<- *prometheus.Desc) {
 }
 
 func (c *karmaCollector) Collect(ch chan<- prometheus.Metric) {
+	ch <- prometheus.MustNewConstMetric(c.buildInfo, prometheus.GaugeValue, 1, version)
+
 	upstreams := alertmanager.GetAlertmanagers()
 
 	for _, am := range upstreams {
