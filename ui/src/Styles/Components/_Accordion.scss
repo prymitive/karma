@@ -1,4 +1,6 @@
 .accordion-item {
+  border: 1px solid $accordion-border-color;
+
   .accordion-header {
     overflow: unset;
 
