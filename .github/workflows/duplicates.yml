@@ -6,6 +6,6 @@ jobs:
   run:
     runs-on: ubuntu-20.04
     steps:
-      - uses: wow-actions/potential-duplicates@v1.0.9
+      - uses: wow-actions/potential-duplicates@v1.1.0
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
