@@ -51,7 +51,7 @@
     "typeface-open-sans": "1.1.13"
   },
   "devDependencies": {
-    "@percy/cli": "1.11.0",
+    "@percy/cli": "1.10.4",
     "@percy/storybook": "4.3.4",
     "@storybook/builder-webpack5": "6.5.12",
     "@storybook/manager-webpack5": "6.5.12",
