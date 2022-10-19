@@ -271,7 +271,7 @@ describe("useFetchGet", () => {
 
     expect(result.current.response).toBe(null);
     expect(result.current.error).toBe(
-      "invalid json response body at http://localhost/json/invalid reason: Unexpected token h in JSON at position 1"
+      "invalid json response body at http://localhost/json/invalid reason: Unexpected token 'h', \"this is not\"... is not valid JSON"
     );
     expect(result.current.isLoading).toBe(false);
     expect(result.current.isRetrying).toBe(false);
