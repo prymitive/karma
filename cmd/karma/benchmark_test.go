@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"net/http/httptest"
 	"os"
-	"runtime"
 	"testing"
 
 	"github.com/rs/zerolog"
@@ -14,15 +13,6 @@ import (
 	"github.com/prymitive/karma/internal/mock"
 	"github.com/prymitive/karma/internal/models"
 )
-
-func reportMemoryMetrics(b *testing.B) {
-	var m runtime.MemStats
-
-	runtime.GC()
-	runtime.ReadMemStats(&m)
-
-	b.ReportMetric(float64(m.Alloc), "B/alloc")
-}
 
 func BenchmarkCompress(b *testing.B) {
 	zerolog.SetGlobalLevel(zerolog.FatalLevel)
@@ -40,8 +30,6 @@ func BenchmarkCompress(b *testing.B) {
 			}
 
 			b.StopTimer()
-			reportMemoryMetrics(b)
-
 			ratio := float64(len(compressed)) / float64(len(data))
 			b.ReportMetric(ratio, "%/compression")
 			b.StartTimer()
@@ -68,10 +56,6 @@ func BenchmarkDecompress(b *testing.B) {
 			if err != nil {
 				b.Errorf("Failed to decompress data: %s", err.Error())
 			}
-
-			b.StopTimer()
-			reportMemoryMetrics(b)
-			b.StartTimer()
 		}
 	})
 }
@@ -95,10 +79,6 @@ func BenchmarkCompressionAndDecompression(b *testing.B) {
 			if err != nil {
 				b.Errorf("Failed to decompress data: %s", err.Error())
 			}
-
-			b.StopTimer()
-			reportMemoryMetrics(b)
-			b.StartTimer()
 		}
 	})
 }
@@ -112,10 +92,6 @@ func BenchmarkPullAlerts(b *testing.B) {
 		b.Run(version, func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
 				mockAlerts(version)
-
-				b.StopTimer()
-				reportMemoryMetrics(b)
-				b.StartTimer()
 			}
 		})
 		break
@@ -150,7 +126,6 @@ func BenchmarkAlertsAPIMisses(b *testing.B) {
 				r.ServeHTTP(resp, req)
 
 				b.StopTimer()
-				reportMemoryMetrics(b)
 				apiCache.Purge()
 				b.StartTimer()
 			}
@@ -188,7 +163,6 @@ func BenchmarkAlertsAPIMissesAutoGrid(b *testing.B) {
 				r.ServeHTTP(resp, req)
 
 				b.StopTimer()
-				reportMemoryMetrics(b)
 				apiCache.Purge()
 				b.StartTimer()
 			}
@@ -227,10 +201,6 @@ func BenchmarkAlertsAPIHits(b *testing.B) {
 				resp := httptest.NewRecorder()
 				b.StartTimer()
 				r.ServeHTTP(resp, req)
-
-				b.StopTimer()
-				reportMemoryMetrics(b)
-				b.StartTimer()
 			}
 		})
 		break
