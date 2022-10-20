@@ -1,5 +1,5 @@
 {
-  "extends": ["config:base"],
+  "extends": ["config:base", "schedule:weekly"],
   "prHourlyLimit": 1,
   "dependencyDashboard": true,
   "postUpdateOptions": ["gomodTidy"],
