@@ -1,0 +1,34 @@
+version: 2
+updates:
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "gomod"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "gomod"
+    directory: "/tools/benchstat"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "gomod"
+    directory: "/tools/gofumpt"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "gomod"
+    directory: "/tools/goimports"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "gomod"
+    directory: "/tools/golangci-lint"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "gomod"
+    directory: "/tools/looppointer"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
