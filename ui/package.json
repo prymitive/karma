@@ -21,7 +21,7 @@
     "copy-to-clipboard": "3.3.2",
     "csshake": "1.7.0",
     "date-fns": "2.29.3",
-    "downshift": "6.1.12",
+    "downshift": "7.0.0",
     "favico.js": "0.3.10",
     "fontfaceobserver": "2.3.0",
     "intersection-observer": "0.12.2",
