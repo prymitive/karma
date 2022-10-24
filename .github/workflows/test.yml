@@ -428,7 +428,7 @@ jobs:
       - name: Get release
         if: github.event_name == 'release'
         id: get_release
-        uses: bruceadams/get-release@v1.2.3
+        uses: bruceadams/get-release@v1.3.0
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
