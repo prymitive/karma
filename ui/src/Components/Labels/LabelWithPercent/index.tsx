@@ -22,12 +22,17 @@ const LabelWithPercent: FC<{
     (event: MouseEvent) => {
       // left click       => apply foo=bar filter
       // left click + alt => apply foo!=bar filter
-      const operator =
-        event.altKey === true ? QueryOperators.NotEqual : QueryOperators.Equal;
+      let operators = [QueryOperators.Equal, QueryOperators.NotEqual];
+      if (event.altKey) {
+        operators = operators.reverse();
+      }
 
       event.preventDefault();
 
-      alertStore.filters.addFilter(FormatQuery(name, operator, value));
+      alertStore.filters.replaceFilter(
+        FormatQuery(name, operators[1], value),
+        FormatQuery(name, operators[0], value)
+      );
     },
     [alertStore.filters, name, value]
   );

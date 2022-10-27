@@ -225,10 +225,10 @@ describe("AlertStore.filters", () => {
     expect(store.filters.values[0]).toMatchObject(NewUnappliedFilter("bar"));
   });
 
-  it("replaceFilter('foo', 'bar') should not replace anything if filter list is empty", () => {
+  it("replaceFilter('foo', 'bar') should add 'bar' in empty list", () => {
     const store = new AlertStore([]);
     store.filters.replaceFilter("foo", "bar");
-    expect(store.filters.values).toHaveLength(0);
+    expect(store.filters.values).toHaveLength(1);
   });
 
   it("replaceFilter('foo', 'new') should replace correct filter", () => {

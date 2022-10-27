@@ -22,9 +22,10 @@ const FilterInputLabel: FC<{
     // if filter is empty string then remove it
     if (val === "") {
       alertStore.filters.removeFilter(filter.raw);
+    } else {
+      // if not empty replace it
+      alertStore.filters.replaceFilter(filter.raw, val);
     }
-    // if not empty replace it
-    alertStore.filters.replaceFilter(filter.raw, val);
   };
 
   const cs = GetClassAndStyle(

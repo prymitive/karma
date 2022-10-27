@@ -27,10 +27,15 @@ const FilteringLabel: FC<{
         return;
       }
 
-      const operator =
-        event.altKey === true ? QueryOperators.NotEqual : QueryOperators.Equal;
+      let operators = [QueryOperators.Equal, QueryOperators.NotEqual];
+      if (event.altKey) {
+        operators = operators.reverse();
+      }
 
-      alertStore.filters.addFilter(FormatQuery(name, operator, value));
+      alertStore.filters.replaceFilter(
+        FormatQuery(name, operators[1], value),
+        FormatQuery(name, operators[0], value)
+      );
     },
     [alertStore.filters, name, value]
   );

@@ -249,6 +249,8 @@ class AlertStore {
               this.values[index] = NewUnappliedFilter(newRaw);
               UpdateLocationSearch({ q: this.values.map((f) => f.raw) });
             }
+          } else {
+            this.addFilter(newRaw);
           }
         },
         setFilters(raws: string[]) {
