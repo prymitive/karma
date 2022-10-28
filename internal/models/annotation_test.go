@@ -66,7 +66,7 @@ var annotationMapsTestCases = []annotationMapsTestCase{
 		annotationMap: map[string]string{
 			"foo": "https://localhost/xxx",
 			"abc": "xyz",
-			"act": "https://localhost/act",
+			"act": "https://localhost/act ",
 		},
 		annotations: models.Annotations{
 			models.Annotation{
@@ -78,7 +78,7 @@ var annotationMapsTestCases = []annotationMapsTestCase{
 			},
 			models.Annotation{
 				Name:     "act",
-				Value:    "https://localhost/act",
+				Value:    "https://localhost/act ",
 				Visible:  true,
 				IsLink:   true,
 				IsAction: true,

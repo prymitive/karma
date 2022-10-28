@@ -81,6 +81,8 @@ var linkSchemes = []string{
 }
 
 func isLink(s string) bool {
+	s = strings.TrimSpace(s)
+
 	if strings.Contains(s, " ") {
 		return false
 	}
