@@ -8,13 +8,7 @@ exports[`<FilterInput /> matches snapshot with no filters 1`] = `
 >
   <div class=\\"input-group w-100 me-2 components-filterinput-outer bg-focused\\">
     <div class=\\"form-control components-filterinput border-0 rounded-0 bg-inherit\\">
-      <div
-        class=\\"autosuggest d-inline-block mw-100\\"
-        role=\\"combobox\\"
-        aria-haspopup=\\"listbox\\"
-        aria-owns=\\"downshift-0-menu\\"
-        aria-expanded=\\"false\\"
-      >
+      <div class=\\"autosuggest d-inline-block mw-100\\">
         <span class=\\"input-group-text text-muted d-inline-block me-2 border-0 bg-inherit px-1\\">
           <svg
             aria-hidden=\\"true\\"
@@ -36,11 +30,14 @@ exports[`<FilterInput /> matches snapshot with no filters 1`] = `
         <input
           class=\\"components-filterinput-wrapper text-white mw-100\\"
           size=\\"1\\"
-          id=\\"downshift-0-input\\"
+          aria-activedescendant
           aria-autocomplete=\\"list\\"
           aria-controls=\\"downshift-0-menu\\"
+          aria-expanded=\\"false\\"
           aria-labelledby=\\"downshift-0-label\\"
           autocomplete=\\"off\\"
+          id=\\"downshift-0-input\\"
+          role=\\"combobox\\"
           value
         >
       </div>
@@ -181,21 +178,18 @@ exports[`<FilterInput /> matches snapshot with some filters 1`] = `
           </path>
         </svg>
       </button>
-      <div
-        class=\\"autosuggest d-inline-block mw-100\\"
-        role=\\"combobox\\"
-        aria-haspopup=\\"listbox\\"
-        aria-owns=\\"downshift-2-menu\\"
-        aria-expanded=\\"false\\"
-      >
+      <div class=\\"autosuggest d-inline-block mw-100\\">
         <input
           class=\\"components-filterinput-wrapper text-white mw-100\\"
           size=\\"1\\"
-          id=\\"downshift-2-input\\"
+          aria-activedescendant
           aria-autocomplete=\\"list\\"
           aria-controls=\\"downshift-2-menu\\"
+          aria-expanded=\\"false\\"
           aria-labelledby=\\"downshift-2-label\\"
           autocomplete=\\"off\\"
+          id=\\"downshift-2-input\\"
+          role=\\"combobox\\"
           value
         >
       </div>
