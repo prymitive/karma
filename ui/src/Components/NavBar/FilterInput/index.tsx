@@ -66,7 +66,6 @@ const FilterInput: FC<{
     isOpen,
     getMenuProps,
     getInputProps,
-    getComboboxProps,
     highlightedIndex,
     getItemProps,
     setInputValue,
@@ -155,10 +154,7 @@ const FilterInput: FC<{
               filter={filter}
             />
           ))}
-          <div
-            className="autosuggest d-inline-block mw-100"
-            {...getComboboxProps()}
-          >
+          <div className="autosuggest d-inline-block mw-100">
             {alertStore.filters.values.length ? null : (
               <span className="input-group-text text-muted d-inline-block me-2 border-0 bg-inherit px-1">
                 <FontAwesomeIcon icon={faSearch} />
