@@ -60,12 +60,12 @@ describe("<AppToasts />", () => {
   it("doesn't render anything when alertStore.info.upgradeNeeded=true", () => {
     alertStore.info.setUpgradeNeeded(true);
     const tree = mount(<AppToasts alertStore={alertStore} />);
-    expect(tree.html()).toBe("");
+    expect(tree.html()).toBeNull();
   });
 
   it("doesn't render anything when there are no notifications to show", () => {
     const tree = mount(<AppToasts alertStore={alertStore} />);
-    expect(tree.html()).toBe("");
+    expect(tree.html()).toBeNull();
   });
 
   it("renders upstream error toasts for each unhealthy upstream", () => {

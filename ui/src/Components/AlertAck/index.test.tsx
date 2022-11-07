@@ -126,7 +126,7 @@ describe("<AlertAck />", () => {
       },
     });
     const tree = MountedAlertAck();
-    expect(tree.html()).toBe("");
+    expect(tree.html()).toBeNull();
   });
 
   it("uses faCheck icon when idle", () => {
