@@ -263,6 +263,38 @@ func rewriteSource(rules []config.HistoryRewrite, uri string) string {
 	return uri
 }
 
+type basicAuthRoundTripper struct {
+	username string
+	password string
+	rt       http.RoundTripper
+}
+
+func cloneRequest(r *http.Request) *http.Request {
+	// Shallow copy of the struct.
+	r2 := new(http.Request)
+	*r2 = *r
+	// Deep copy of the Header.
+	r2.Header = make(http.Header)
+	for k, s := range r.Header {
+		r2.Header[k] = s
+	}
+	return r2
+}
+
+func NewBasicAuthRoundTripper(username, password string, rt http.RoundTripper) http.RoundTripper {
+	return &basicAuthRoundTripper{username, password, rt}
+}
+
+func (rt *basicAuthRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
+	if len(req.Header.Get("Authorization")) != 0 {
+		return rt.rt.RoundTrip(req)
+	}
+	req = cloneRequest(req)
+	req.SetBasicAuth(rt.username, rt.password)
+
+	return rt.rt.RoundTrip(req)
+}
+
 func rewriteTransport(rules []config.HistoryRewrite, uri string) (http.RoundTripper, error) {
 	// trim trailing / to ensure all URIs are without a /
 	uri = strings.TrimSuffix(uri, "/")
@@ -286,6 +318,10 @@ func rewriteTransport(rules []config.HistoryRewrite, uri string) (http.RoundTrip
 				return http.DefaultTransport, fmt.Errorf("failed to parse provided proxy url %q: %w", rule.ProxyURL, err)
 			}
 			transport.(*http.Transport).Proxy = http.ProxyURL(proxyURL)
+		}
+
+		if rule.Username != "" && rule.Password != "" {
+			transport = NewBasicAuthRoundTripper(rule.Username, rule.Password, transport)
 		}
 
 		return transport, nil

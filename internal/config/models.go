@@ -63,6 +63,8 @@ type AuthorizationGroup struct {
 type HistoryRewrite struct {
 	Source      string          `yaml:"source"`
 	SourceRegex *regexp.Regexp  `yaml:"-"`
+	Username    string          `yaml:"username"`
+	Password    string          `yaml:"password"`
 	URI         string          `yaml:"uri"`
 	TLS         AlertmanagerTLS `yaml:"tls" koanf:"tls"`
 	ProxyURL    string          `yaml:"proxy_url" koanf:"proxy_url"`
