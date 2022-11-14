@@ -64,7 +64,7 @@ describe("<App />", () => {
     );
 
     // https://github.com/facebook/jest/issues/6798#issuecomment-412871616
-    const getItemSpy = jest.spyOn(Storage.prototype, "getItem");
+    const getItemSpy: any = jest.spyOn(Storage.prototype, "getItem");
 
     mount(<App defaultFilters={["ignore=defaults"]} uiDefaults={uiDefaults} />);
 
@@ -85,7 +85,7 @@ describe("<App />", () => {
     );
 
     // https://github.com/facebook/jest/issues/6798#issuecomment-412871616
-    const getItemSpy = jest.spyOn(Storage.prototype, "getItem");
+    const getItemSpy: any = jest.spyOn(Storage.prototype, "getItem");
 
     mount(<App defaultFilters={["use=defaults"]} uiDefaults={uiDefaults} />);
 
