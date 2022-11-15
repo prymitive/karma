@@ -33,7 +33,7 @@ func knownLabelNames(w http.ResponseWriter, r *http.Request) {
 	if found {
 		mimeJSON(w)
 		w.WriteHeader(http.StatusOK)
-		_, _ = w.Write(data.([]byte))
+		_, _ = w.Write(data)
 		return
 	}
 
@@ -61,7 +61,7 @@ func knownLabelNames(w http.ResponseWriter, r *http.Request) {
 
 	mimeJSON(w)
 	w.WriteHeader(http.StatusOK)
-	_, _ = w.Write(data.([]byte))
+	_, _ = w.Write(data)
 }
 
 func knownLabelValues(w http.ResponseWriter, r *http.Request) {
@@ -73,7 +73,7 @@ func knownLabelValues(w http.ResponseWriter, r *http.Request) {
 	if found {
 		mimeJSON(w)
 		w.WriteHeader(http.StatusOK)
-		_, _ = w.Write(data.([]byte))
+		_, _ = w.Write(data)
 		return
 	}
 
@@ -92,5 +92,5 @@ func knownLabelValues(w http.ResponseWriter, r *http.Request) {
 
 	mimeJSON(w)
 	w.WriteHeader(http.StatusOK)
-	_, _ = w.Write(data.([]byte))
+	_, _ = w.Write(data)
 }

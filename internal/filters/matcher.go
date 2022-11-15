@@ -6,10 +6,10 @@ import (
 	"regexp"
 	"strconv"
 
-	lru "github.com/hashicorp/golang-lru"
+	lru "github.com/hashicorp/golang-lru/v2"
 )
 
-var matchCache, _ = lru.New(1000)
+var matchCache, _ = lru.New[string, *regexp.Regexp](1000)
 
 type matcherT interface {
 	setOperator(operator string)
@@ -104,7 +104,7 @@ func (matcher *regexpMatcher) Compare(valA, valB any) bool {
 		}
 		matchCache.Add(valB.(string), r)
 	}
-	return r.(*regexp.Regexp).MatchString(valA.(string))
+	return r.MatchString(valA.(string))
 }
 
 type negativeRegexMatcher struct {
