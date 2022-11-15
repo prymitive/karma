@@ -270,6 +270,9 @@ jobs:
     if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.event.pull_request.base.repo.full_name
     needs: stage-test-and-lint
     runs-on: ubuntu-20.04
+    permissions:
+      issues: write
+      pull-requests: write
     steps:
       - name: Check out code
         uses: actions/checkout@v3
@@ -321,6 +324,9 @@ jobs:
     if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.event.pull_request.base.repo.full_name
     needs: stage-test-and-lint
     runs-on: ubuntu-20.04
+    permissions:
+      issues: write
+      pull-requests: write
     steps:
       - name: Check out code
         uses: actions/checkout@v3
