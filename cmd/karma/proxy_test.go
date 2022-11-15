@@ -12,7 +12,7 @@ import (
 	"testing"
 	"time"
 
-	lru "github.com/hashicorp/golang-lru"
+	lru "github.com/hashicorp/golang-lru/v2"
 	"github.com/jarcoal/httpmock"
 	"github.com/pmezard/go-difflib/difflib"
 	"github.com/rs/zerolog"
@@ -560,7 +560,7 @@ func TestProxyUserRewrite(t *testing.T) {
 				setupRouter(r, nil)
 				setupRouterProxyHandlers(r, am)
 
-				apiCache, _ = lru.New(100)
+				apiCache, _ = lru.New[string, []byte](100)
 				httpmock.Reset()
 				mock.RegisterURL("http://localhost/metrics", version, "metrics")
 				mock.RegisterURL("http://localhost/api/v2/status", version, "api/v2/status")
@@ -1334,7 +1334,7 @@ func TestProxySilenceACL(t *testing.T) {
 				}
 				setupRouterProxyHandlers(r, am)
 
-				apiCache, _ = lru.New(100)
+				apiCache, _ = lru.New[string, []byte](100)
 				httpmock.Reset()
 				mock.RegisterURL("http://localhost/metrics", version, "metrics")
 				mock.RegisterURL("http://localhost/api/v2/status", version, "api/v2/status")
@@ -1428,7 +1428,7 @@ func TestProxyRequestToUnsupportedAlertmanager(t *testing.T) {
 	}
 	setupRouterProxyHandlers(r, am)
 
-	apiCache, _ = lru.New(100)
+	apiCache, _ = lru.New[string, []byte](100)
 	httpmock.Reset()
 	httpmock.RegisterResponder("GET", "http://localhost/metrics", httpmock.NewStringResponder(200, `alertmanager_build_info{version="0.1.0"} 1
 	`))

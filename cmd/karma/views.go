@@ -225,7 +225,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 
 	data, found := apiCache.Get(cacheKey)
 	if found {
-		r := bytes.NewReader(data.([]byte))
+		r := bytes.NewReader(data)
 		rawData, _ := decompressCachedResponse(r)
 		// need to overwrite settings as they can have user specific data
 		newResp := models.AlertsResponse{}
@@ -505,12 +505,12 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 	resp.Receivers = receivers
 
 	data, _ = json.Marshal(resp)
-	compressedData, _ := compressResponse(data.([]byte), nil)
+	compressedData, _ := compressResponse(data, nil)
 	_ = apiCache.Add(cacheKey, compressedData)
 
 	mimeJSON(w)
 	w.WriteHeader(http.StatusOK)
-	_, _ = w.Write(data.([]byte))
+	_, _ = w.Write(data)
 }
 
 func labelsSettings(grids []models.APIGrid, store models.LabelsSettings) {
@@ -563,7 +563,7 @@ func autocomplete(w http.ResponseWriter, r *http.Request) {
 	if found {
 		mimeJSON(w)
 		w.WriteHeader(http.StatusOK)
-		_, _ = w.Write(data.([]byte))
+		_, _ = w.Write(data)
 		return
 	}
 
@@ -596,7 +596,7 @@ func autocomplete(w http.ResponseWriter, r *http.Request) {
 
 	mimeJSON(w)
 	w.WriteHeader(http.StatusOK)
-	_, _ = w.Write(data.([]byte))
+	_, _ = w.Write(data)
 }
 
 func silences(w http.ResponseWriter, r *http.Request) {
@@ -608,7 +608,7 @@ func silences(w http.ResponseWriter, r *http.Request) {
 	if found {
 		mimeJSON(w)
 		w.WriteHeader(http.StatusOK)
-		_, _ = w.Write(data.([]byte))
+		_, _ = w.Write(data)
 		return
 	}
 
@@ -721,7 +721,7 @@ func silences(w http.ResponseWriter, r *http.Request) {
 
 	mimeJSON(w)
 	w.WriteHeader(http.StatusOK)
-	_, _ = w.Write(data.([]byte))
+	_, _ = w.Write(data)
 }
 
 type AlertList struct {
@@ -736,7 +736,7 @@ func alertList(w http.ResponseWriter, r *http.Request) {
 
 	d, found := apiCache.Get(cacheKey)
 	if found {
-		r := bytes.NewReader(d.([]byte))
+		r := bytes.NewReader(d)
 		rawData, _ := decompressCachedResponse(r)
 		mimeJSON(w)
 		w.WriteHeader(http.StatusOK)
@@ -821,7 +821,7 @@ func counters(w http.ResponseWriter, r *http.Request) {
 
 	d, found := apiCache.Get(cacheKey)
 	if found {
-		r := bytes.NewReader(d.([]byte))
+		r := bytes.NewReader(d)
 		rawData, _ := decompressCachedResponse(r)
 		mimeJSON(w)
 		w.WriteHeader(http.StatusOK)

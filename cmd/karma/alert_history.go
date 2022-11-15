@@ -13,7 +13,7 @@ import (
 	"sync"
 	"time"
 
-	lru "github.com/hashicorp/golang-lru"
+	lru "github.com/hashicorp/golang-lru/v2"
 	"github.com/prometheus/client_golang/api"
 	v1 "github.com/prometheus/client_golang/api/prometheus/v1"
 	"github.com/prometheus/common/model"
@@ -124,14 +124,14 @@ type knownBadUpstream struct {
 type historyPoller struct {
 	queue        chan historyJob
 	queryTimeout time.Duration
-	knownBad     *lru.Cache
-	cache        *lru.Cache
+	knownBad     *lru.Cache[string, *knownBadUpstream]
+	cache        *lru.Cache[string, *cachedOffsets]
 }
 
 func newHistoryPoller(queueSize int, queryTimeout time.Duration) *historyPoller {
 	log.Debug().Int("queue", queueSize).Dur("timeout", queryTimeout).Msg("Starting history poller")
-	cache, _ := lru.New(1000)
-	knownBad, _ := lru.New(100)
+	cache, _ := lru.New[string, *cachedOffsets](1000)
+	knownBad, _ := lru.New[string, *knownBadUpstream](100)
 	return &historyPoller{
 		queue:        make(chan historyJob, queueSize),
 		queryTimeout: queryTimeout,
@@ -168,7 +168,7 @@ func (hp *historyPoller) cacheSave(key string, values []OffsetSample) {
 
 func (hp *historyPoller) cacheLookup(key string) *cachedOffsets {
 	if val, found := hp.cache.Get(key); found {
-		return val.(*cachedOffsets)
+		return val
 	}
 	return nil
 }
@@ -179,7 +179,7 @@ func (hp *historyPoller) knownBadSave(key string, kb knownBadUpstream) {
 
 func (hp *historyPoller) knownBadLookup(key string) (*knownBadUpstream, bool) {
 	if val, found := hp.knownBad.Get(key); found {
-		return val.(*knownBadUpstream), true
+		return val, true
 	}
 	return nil, false
 }

@@ -17,7 +17,7 @@ import (
 	"time"
 
 	"github.com/beme/abide"
-	lru "github.com/hashicorp/golang-lru"
+	lru "github.com/hashicorp/golang-lru/v2"
 
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
@@ -224,7 +224,7 @@ func TestIndex(t *testing.T) {
 
 func mockCache() {
 	if apiCache == nil {
-		apiCache, _ = lru.New(100)
+		apiCache, _ = lru.New[string, []byte](100)
 	} else {
 		apiCache.Purge()
 	}
@@ -2718,7 +2718,7 @@ func TestUpstreamStatus(t *testing.T) {
 			config.Config.Authentication.Header.Name = ""
 			config.Config.Authentication.BasicAuth.Users = []config.AuthenticationUser{}
 
-			apiCache, _ = lru.New(100)
+			apiCache, _ = lru.New[string, []byte](100)
 			alertmanager.UnregisterAll()
 			upstreamSetup = false
 			config.Config.Alertmanager.Servers = testCase.upstreams
