@@ -1,4 +1,3 @@
-import React from "react";
 import { act } from "react-dom/test-utils";
 
 import { shallow, mount } from "enzyme";
@@ -37,8 +36,6 @@ beforeEach(() => {
     cb(0);
     return 0;
   };
-
-  jest.spyOn(React, "useContext").mockImplementation(() => MockThemeContext);
 
   Object.defineProperty(document.body, "clientWidth", {
     writable: true,
@@ -213,9 +210,6 @@ describe("<Grid />", () => {
   });
 
   it("doesn't use animations when settingsStore.themeConfig.config.animations is false", () => {
-    jest
-      .spyOn(React, "useContext")
-      .mockImplementation(() => MockThemeContextWithoutAnimations);
     MockGroupList(1, 1);
     const tree = MountedGrid(MockThemeContextWithoutAnimations);
     expect(
