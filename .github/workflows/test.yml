@@ -421,7 +421,12 @@ jobs:
           cache-dependency-path: 'ui/package-lock.json'
 
       - name: Cross compile binaries
-        run: make crosscompile -j 2
+        if: github.event_name != 'pull_request'
+        run: make -j2 crosscompile
+
+      - name: Cross compile binaries (PR)
+        if: github.event_name == 'pull_request'
+        run: make -j2 cc-linux-386 cc-linux-amd64 cc-linux-arm64 cc-windows-amd64
 
       - name: Compress binaries
         shell: bash
