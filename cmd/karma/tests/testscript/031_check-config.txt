@@ -1,5 +1,5 @@
 # Validates config when --check-config is passed
-karma.bin-should-work --check-config --alertmanager.uri=http://127.0.0.1
+karma.bin-should-work --check-config --alertmanager.uri=http://127.0.0.1:7031
 ! stdout .
 stderr 'msg="Configuration is valid"'
 ! stderr 'level=error'

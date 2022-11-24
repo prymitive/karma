@@ -1,5 +1,5 @@
 # Raises an error if we pass alertmanager.timeout value that doesn't parse
-karma.bin-should-fail --alertmanager.timeout=abc123 --alertmanager.uri=http://127.0.0.1
+karma.bin-should-fail --alertmanager.timeout=abc123 --alertmanager.uri=http://127.0.0.1:7044
 ! stdout .
 cmp stderr stderr.txt
 
