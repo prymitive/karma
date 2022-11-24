@@ -3,23 +3,23 @@ http response prometheus /api/v1/query_range 200 {"status":"success","data":{"re
 http start prometheus 127.0.0.1:9110
 
 exec bash -x ./test.sh &
-karma.bin-should-work --pid-file=karma.pid --alertmanager.uri=http://127.0.0.1 --listen.address=127.0.0.1 --listen.port=8110 --history.enabled=true --history.timeout=10s
+karma.bin-should-work --pid-file=karma.pid --alertmanager.uri=http://127.0.0.1:7110 --listen.address=127.0.0.1 --listen.port=8110 --history.enabled=true --history.timeout=10s
 ! stdout .
 cmp stderr stderr.txt
 
 -- stderr.txt --
 level=info msg="Version: dev"
-level=info msg="Configured Alertmanager source" name=default proxy=false readonly=false uri=http://127.0.0.1
+level=info msg="Configured Alertmanager source" name=default proxy=false readonly=false uri=http://127.0.0.1:7110
 level=info msg="Writing PID file" path=karma.pid
 level=info msg="Initial Alertmanager collection"
 level=info msg="Pulling latest alerts and silences from Alertmanager"
 level=info msg="Collecting alerts and silences" alertmanager=default
-level=info msg="GET request" timeout=40 uri=http://127.0.0.1/metrics
-level=error msg="Request failed" error="Get \"http://127.0.0.1/metrics\": dial tcp 127.0.0.1:80: connect: connection refused" alertmanager=default uri=http://127.0.0.1
-level=error msg="Collection failed" error="Get \"http://127.0.0.1/api/v2/status\": dial tcp 127.0.0.1:80: connect: connection refused" alertmanager=default try=1/2
-level=info msg="GET request" timeout=40 uri=http://127.0.0.1/metrics
-level=error msg="Request failed" error="Get \"http://127.0.0.1/metrics\": dial tcp 127.0.0.1:80: connect: connection refused" alertmanager=default uri=http://127.0.0.1
-level=error msg="Collection failed" error="Get \"http://127.0.0.1/api/v2/status\": dial tcp 127.0.0.1:80: connect: connection refused" alertmanager=default try=2/2
+level=info msg="GET request" timeout=40 uri=http://127.0.0.1:7110/metrics
+level=error msg="Request failed" error="Get \"http://127.0.0.1:7110/metrics\": dial tcp 127.0.0.1:7110: connect: connection refused" alertmanager=default uri=http://127.0.0.1:7110
+level=error msg="Collection failed" error="Get \"http://127.0.0.1:7110/api/v2/status\": dial tcp 127.0.0.1:7110: connect: connection refused" alertmanager=default try=1/2
+level=info msg="GET request" timeout=40 uri=http://127.0.0.1:7110/metrics
+level=error msg="Request failed" error="Get \"http://127.0.0.1:7110/metrics\": dial tcp 127.0.0.1:7110: connect: connection refused" alertmanager=default uri=http://127.0.0.1:7110
+level=error msg="Collection failed" error="Get \"http://127.0.0.1:7110/api/v2/status\": dial tcp 127.0.0.1:7110: connect: connection refused" alertmanager=default try=2/2
 level=info msg="Collection completed"
 level=info msg="Done, starting HTTP server"
 level=info msg="Starting HTTP server" address=127.0.0.1:8110

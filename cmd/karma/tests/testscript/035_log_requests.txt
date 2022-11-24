@@ -1,7 +1,7 @@
 # Works in simple mode when single --alertmanager.uri flag is passed
 
 exec bash -x ./test.sh &
-karma.bin-should-work --pid-file=karma.pid --alertmanager.uri=http://127.0.0.1 --listen.address=127.0.0.1 --listen.port=8035 --log.requests
+karma.bin-should-work --pid-file=karma.pid --alertmanager.uri=http://127.0.0.1:7035 --listen.address=127.0.0.1 --listen.port=8035 --log.requests
 ! stdout .
 stderr 'msg="Request completed" address=127.0.0.1:[0-9]+ bytes=[0-9]+ code=200 duration=.+ method=POST path=/alerts.json'
 stderr 'msg="Request completed" address=127.0.0.1:[0-9]+ bytes=[0-9]+ code=200 duration=.+ method=POST path=/alerts.json'
