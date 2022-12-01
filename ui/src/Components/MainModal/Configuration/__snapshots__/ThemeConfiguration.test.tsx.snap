@@ -16,13 +16,13 @@ exports[`<ThemeConfiguration /> matches snapshot with default values 1`] = `
       class=\\"css-1f43avz-a11yText-A11yText\\"
     >
     </span>
-    <div class=\\"react-select__control css-n90zkc-control\\">
-      <div class=\\"react-select__value-container react-select__value-container--has-value css-1kabp7a-ValueContainer\\">
-        <div class=\\"react-select__single-value css-bgy71k-singleValue\\">
+    <div class=\\"react-select__control css-18hiu1u-control\\">
+      <div class=\\"react-select__value-container react-select__value-container--has-value css-1a3grgz-ValueContainer\\">
+        <div class=\\"react-select__single-value css-qav5hl-singleValue\\">
           Automatic theme, follow browser preference
         </div>
         <div
-          class=\\"react-select__input-container css-dmcbcz-Input\\"
+          class=\\"react-select__input-container css-3qym3m-Input\\"
           data-value
         >
           <input
@@ -44,10 +44,10 @@ exports[`<ThemeConfiguration /> matches snapshot with default values 1`] = `
         </div>
       </div>
       <div class=\\"react-select__indicators css-vcwr3k-IndicatorsContainer\\">
-        <span class=\\"react-select__indicator-separator css-1okebmr-indicatorSeparator\\">
+        <span class=\\"react-select__indicator-separator css-1u9des2-indicatorSeparator\\">
         </span>
         <div
-          class=\\"react-select__indicator react-select__dropdown-indicator css-tlfecz-indicatorContainer\\"
+          class=\\"react-select__indicator react-select__dropdown-indicator css-1xc3v61-indicatorContainer\\"
           aria-hidden=\\"true\\"
         >
           <svg

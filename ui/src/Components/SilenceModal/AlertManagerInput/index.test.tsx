@@ -101,8 +101,8 @@ describe("<AlertManagerInput />", () => {
 
   it("renders ValidationError after failed validation", () => {
     const tree = MountedAlertManagerInput();
-    tree.find(".react-select__multi-value__remove").at(0).simulate("click");
-    tree.find(".react-select__multi-value__remove").at(0).simulate("click");
+    tree.find("div.react-select__multi-value__remove").at(0).simulate("click");
+    tree.find("div.react-select__multi-value__remove").at(0).simulate("click");
     silenceFormStore.data.setAlertmanagers([]);
     silenceFormStore.data.setWasValidated(true);
     expect(toDiffableHtml(tree.html())).toMatch(/fa-circle-exclamation/);
@@ -186,10 +186,10 @@ describe("<AlertManagerInput />", () => {
     const tree = MountedAlertManagerInput();
     expect(silenceFormStore.data.alertmanagers).toHaveLength(2);
 
-    tree.find(".react-select__multi-value__remove").at(0).simulate("click");
+    tree.find("div.react-select__multi-value__remove").at(0).simulate("click");
     expect(silenceFormStore.data.alertmanagers).toHaveLength(1);
 
-    tree.find(".react-select__multi-value__remove").simulate("click");
+    tree.find("div.react-select__multi-value__remove").simulate("click");
     expect(silenceFormStore.data.alertmanagers).toHaveLength(0);
     expect(silenceFormStore.data.alertmanagers).toEqual([]);
   });

@@ -144,10 +144,10 @@ describe("<LabelValueInput />", () => {
     matcher.values = [StringToOption("dev"), StringToOption("staging")];
     const tree = MountedLabelValueInput(true);
 
-    tree.find(".react-select__multi-value__remove").at(0).simulate("click");
+    tree.find("div.react-select__multi-value__remove").at(0).simulate("click");
     expect(matcher.values).toHaveLength(1);
 
-    tree.find(".react-select__multi-value__remove").simulate("click");
+    tree.find("div.react-select__multi-value__remove").simulate("click");
     expect(matcher.values).toHaveLength(0);
     expect(matcher.values).toEqual([]);
   });
