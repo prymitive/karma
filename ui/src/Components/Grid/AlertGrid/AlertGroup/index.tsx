@@ -228,7 +228,7 @@ const AlertGroup: FC<{
             </ul>
           </div>
         )}
-        {isCollapsed === false && group.alerts.length > 1 ? (
+        {isCollapsed === false ? (
           <GroupFooter
             group={group}
             afterUpdate={afterUpdate}

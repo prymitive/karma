@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.110
+
+### Fixed
+
+- Alert group footer was always hidden when displaying only one alert,
+  even if there were shared labels or annotations to display - #4892.
+
 ## v0.109
 
 ### Added
