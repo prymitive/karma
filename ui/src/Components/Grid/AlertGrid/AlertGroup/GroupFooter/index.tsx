@@ -25,6 +25,23 @@ const GroupFooter: FC<{
   showAnnotations = true,
   showSilences = true,
 }) => {
+  const total =
+    (showAnnotations
+      ? group.shared.annotations.filter((a) => a.isLink === false).length +
+        group.shared.annotations
+          .filter((a) => a.isLink === true)
+          .filter((a) => a.isAction === false).length
+      : 0) +
+    group.shared.labels.length +
+    (Object.keys(alertStore.data.upstreams.clusters).length > 1
+      ? group.shared.clusters.length
+      : 0) +
+    (alertStore.data.receivers.length > 1 ? 1 : 0) +
+    (showSilences ? Object.keys(group.shared.silences).length : 0);
+  if (total === 0) {
+    return null;
+  }
+
   return (
     <div className="card-footer components-grid-alertgrid-alertgroup-footer px-2 py-1">
       <div className="mb-1">
