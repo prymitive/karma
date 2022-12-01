@@ -44,8 +44,8 @@
   }
   &.bg-secondary,
   &.btn-secondary {
-    border: 1px solid lighten($secondary, 2%);
-    background-color: lighten($secondary, 4%) !important;
+    border: 1px solid darken($secondary, 1%);
+    background-color: darken($secondary, 2%) !important;
   }
   &.bg-success,
   &.btn-success {
