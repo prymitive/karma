@@ -236,6 +236,12 @@ const AlertGroup: FC<{
             silenceFormStore={silenceFormStore}
             showAnnotations={!alertStore.ui.isIdle}
             showSilences={!alertStore.ui.isIdle}
+            showReceiver={
+              !(
+                alertStore.data.receivers.length > 1 &&
+                group.alerts.length === 1
+              )
+            }
           />
         ) : null}
       </div>

@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.111
+
+### Fixed
+
+- Fixed duplicated `@receiver` labels showing both on the alert and in the footer.
+
 ## v0.110
 
 ### Fixed
