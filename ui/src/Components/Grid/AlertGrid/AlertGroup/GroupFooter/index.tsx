@@ -17,6 +17,7 @@ const GroupFooter: FC<{
   silenceFormStore: SilenceFormStore;
   showAnnotations?: boolean;
   showSilences?: boolean;
+  showReceiver?: boolean;
 }> = ({
   group,
   afterUpdate,
@@ -24,6 +25,7 @@ const GroupFooter: FC<{
   silenceFormStore,
   showAnnotations = true,
   showSilences = true,
+  showReceiver = true,
 }) => {
   const total =
     (showAnnotations
@@ -36,7 +38,7 @@ const GroupFooter: FC<{
     (Object.keys(alertStore.data.upstreams.clusters).length > 1
       ? group.shared.clusters.length
       : 0) +
-    (alertStore.data.receivers.length > 1 ? 1 : 0) +
+    (alertStore.data.receivers.length > 1 ? (showReceiver ? 1 : 0) : 0) +
     (showSilences ? Object.keys(group.shared.silences).length : 0);
   if (total === 0) {
     return null;
