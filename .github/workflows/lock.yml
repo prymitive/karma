@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Lock closed issues and PRs
-        uses: dessant/lock-threads@v3
+        uses: dessant/lock-threads@v4
         with:
           github-token: ${{ github.token }}
           issue-inactive-days: "14"
