@@ -7,7 +7,7 @@ require (
 	github.com/beme/abide v0.0.0-20190723115211-635a09831760
 	github.com/cnf/structhash v0.0.0-20201127153200-e1b16c1ebc08
 	github.com/fvbommel/sortorder v1.0.2
-	github.com/go-chi/chi/v5 v5.0.7
+	github.com/go-chi/chi/v5 v5.0.8
 	github.com/go-chi/cors v1.2.1
 	github.com/go-openapi/errors v0.20.3
 	github.com/go-openapi/runtime v0.25.0
