@@ -95,7 +95,7 @@ jobs:
       - name: Set up Node JS
         uses: actions/setup-node@v3
         with:
-          node-version: 19.2.0
+          node-version: 19.3.0
           cache: 'npm'
           cache-dependency-path: 'ui/package-lock.json'
 
@@ -120,7 +120,7 @@ jobs:
       - name: Set up Node JS
         uses: actions/setup-node@v3
         with:
-          node-version: 19.2.0
+          node-version: 19.3.0
           cache: 'npm'
           cache-dependency-path: 'ui/package-lock.json'
 
@@ -155,7 +155,7 @@ jobs:
       - name: Set up Node JS
         uses: actions/setup-node@v3
         with:
-          node-version: 19.2.0
+          node-version: 19.3.0
           cache: 'npm'
           cache-dependency-path: 'ui/package-lock.json'
 
@@ -188,7 +188,7 @@ jobs:
       - name: Set up Node JS
         uses: actions/setup-node@v3
         with:
-          node-version: 19.2.0
+          node-version: 19.3.0
           cache: 'npm'
           cache-dependency-path: 'ui/package-lock.json'
 
@@ -343,7 +343,7 @@ jobs:
       - name: Set up Node JS
         uses: actions/setup-node@v3
         with:
-          node-version: 19.2.0
+          node-version: 19.3.0
           cache: 'npm'
           cache-dependency-path: 'ui/package-lock.json'
 
@@ -377,7 +377,7 @@ jobs:
       - name: Set up Node JS
         uses: actions/setup-node@v3
         with:
-          node-version: 19.2.0
+          node-version: 19.3.0
           cache: 'npm'
           cache-dependency-path: 'ui/package-lock.json'
 
@@ -416,7 +416,7 @@ jobs:
       - name: Set up Node JS
         uses: actions/setup-node@v3
         with:
-          node-version: 19.2.0
+          node-version: 19.3.0
           cache: 'npm'
           cache-dependency-path: 'ui/package-lock.json'
 
