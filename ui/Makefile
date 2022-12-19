@@ -3,8 +3,8 @@
 # based on http://blog.jgc.org/2011/07/gnu-make-recursive-wildcard-function.html
 rwildcard = $(foreach d, $(wildcard $1*), $(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
 
-NODE_PATH    := $(shell npm bin)
-NODE_MODULES := $(shell dirname `npm bin`)
+NODE_PATH    := $(shell npm root)/.bin
+NODE_MODULES := $(shell npm root)
 NODE_INSTALL := $(NODE_MODULES)/.install
 
 PATH         := $(PATH):$(NODE_PATH)
