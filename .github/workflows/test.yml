@@ -14,7 +14,7 @@ on:
 jobs:
   test-go:
     name: Test Go code
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v3
@@ -51,7 +51,7 @@ jobs:
 
   lint-go:
     name: Lint Go code
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v3
@@ -82,7 +82,7 @@ jobs:
 
   test-js:
     name: Test JS code
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         env:
@@ -112,7 +112,7 @@ jobs:
 
   lint-js:
     name: Lint JS code
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v3
@@ -129,7 +129,7 @@ jobs:
 
   format-go:
     name: Check Go code formatting
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v3
@@ -147,7 +147,7 @@ jobs:
 
   format-js:
     name: Check JS code formatting
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v3
@@ -167,7 +167,7 @@ jobs:
 
   deps-js:
     name: Check JS dependencies
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v3
@@ -180,7 +180,7 @@ jobs:
 
   package-lock:
     name: Check package-lock.json
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v3
@@ -200,7 +200,7 @@ jobs:
 
   lint-versions:
     name: Lint Versions
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v3
@@ -210,7 +210,7 @@ jobs:
 
   typescript:
     name: Check for non-typescript components
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v3
@@ -220,7 +220,7 @@ jobs:
 
   git-commit:
     name: Lint git commit
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v3
@@ -234,7 +234,7 @@ jobs:
 
   docs:
     name: Lint documentation
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v3
@@ -260,7 +260,7 @@ jobs:
       - typescript
       - git-commit
       - docs
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: All linters passed
         run: "true"
@@ -269,7 +269,7 @@ jobs:
     name: Benchmark Go code compare
     if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.event.pull_request.base.repo.full_name
     needs: stage-test-and-lint
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     permissions:
       issues: write
       pull-requests: write
@@ -323,7 +323,7 @@ jobs:
     name: Webpack bundle size compare
     if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.event.pull_request.base.repo.full_name
     needs: stage-test-and-lint
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     permissions:
       issues: write
       pull-requests: write
@@ -358,7 +358,7 @@ jobs:
     name: Percy UI snapshots
     if: github.event_name != 'release' && github.event.pull_request.head.repo.full_name == github.event.pull_request.base.repo.full_name
     needs: stage-test-and-lint
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v3
@@ -391,7 +391,7 @@ jobs:
   cross-compile:
     name: Cross compile binaries
     needs: stage-test-and-lint
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v3
@@ -453,7 +453,7 @@ jobs:
   docker:
     name: Build docker image
     needs: stage-test-and-lint
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v3

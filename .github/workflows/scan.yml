@@ -4,16 +4,11 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
-  schedule:
-    - cron: "0 6 * * 4"
 
 jobs:
   codeql:
     name: CodeQL
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     permissions:
       security-events: write
       actions: read
