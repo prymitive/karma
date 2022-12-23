@@ -13,7 +13,7 @@ on:
 jobs:
   version-sync:
     name: Run go mod tidy
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v3

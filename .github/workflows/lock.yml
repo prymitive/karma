@@ -6,7 +6,7 @@ on:
 
 jobs:
   lock:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Lock closed issues and PRs
         uses: dessant/lock-threads@v4
