@@ -1,4 +1,4 @@
-ALERTMANAGER_VERSION := v0.22.1
+ALERTMANAGER_VERSION := v0.25.0
 API_VERSION          := v2
 PACKAGE              := v017
 TARGET_DIR           := /go/src/github.com/prymitive/karma/internal/mapper/$(PACKAGE)
