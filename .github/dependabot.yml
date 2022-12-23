@@ -3,7 +3,11 @@ updates:
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "daily"
+  - package-ecosystem: "docker"
+    directory: "/demo"
+    schedule:
+      interval: "daily"
   - package-ecosystem: "gomod"
     directory: "/"
     schedule:
