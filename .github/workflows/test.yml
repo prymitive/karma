@@ -295,7 +295,7 @@ jobs:
           go-version: 1.19.4
 
       - name: Cache Go
-        uses: actions/cache@v3
+        uses: actions/cache/restore@v3
         with:
           path: |
             ~/.cache/go-build
@@ -404,7 +404,19 @@ jobs:
           go-version: 1.19.4
 
       - name: Cache Go
+        if: github.event_name != 'pull_request'
         uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+
+      - name: Restore cache
+        if: github.event_name == 'pull_request'
+        uses: actions/cache/restore@v3
         with:
           path: |
             ~/.cache/go-build
