@@ -4,7 +4,7 @@
   "license": "Apache-2.0",
   "private": true,
   "engines": {
-    "npm": ">=8.3 <9.0",
+    "npm": ">=9.0",
     "node": "19.3.0"
   },
   "dependencies": {
