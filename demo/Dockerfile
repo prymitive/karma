@@ -22,9 +22,13 @@ COPY internal /src/internal
 ARG VERSION
 RUN CGO_ENABLED=0 make -C /src VERSION="${VERSION:-dev}" karma
 
+FROM ghcr.io/prymitive/kthxbye:v0.15 as kthxbye
+
+FROM prom/alertmanager:v0.24.0 as alertmanager
+
 FROM alpine:3.17
-COPY --from=ghcr.io/prymitive/kthxbye:v0.15 /kthxbye /kthxbye
-COPY --from=prom/alertmanager:v0.24.0 /bin/alertmanager /alertmanager
+COPY --from=kthxbye /kthxbye /kthxbye
+COPY --from=alertmanager /bin/alertmanager /alertmanager
 RUN apk add supervisor python3 && rm  -rf /tmp/* /var/cache/apk/*
 COPY demo/run.sh /run.sh
 COPY demo/supervisord.conf /etc/supervisord.conf
