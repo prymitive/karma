@@ -280,14 +280,14 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
         <div class=\\"rdp-months\\">
           <div class=\\"rdp-month rdp-caption_start rdp-caption_end\\">
             <div class=\\"rdp-caption\\">
-              <h2
+              <div
                 class=\\"rdp-caption_label\\"
                 aria-live=\\"polite\\"
-                aria-atomic=\\"true\\"
+                role=\\"presentation\\"
                 id=\\"react-day-picker-6\\"
               >
                 February 2061
-              </h2>
+              </div>
               <div class=\\"rdp-nav\\">
                 <button
                   name=\\"previous-month\\"
@@ -340,138 +340,138 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                   <th
                     scope=\\"col\\"
                     class=\\"rdp-head_cell\\"
+                    aria-label=\\"Sunday\\"
                   >
-                    <span aria-hidden=\\"true\\">
-                      Su
-                    </span>
-                    <span class=\\"rdp-vhidden\\">
-                      Sunday
-                    </span>
+                    SU
                   </th>
                   <th
                     scope=\\"col\\"
                     class=\\"rdp-head_cell\\"
+                    aria-label=\\"Monday\\"
                   >
-                    <span aria-hidden=\\"true\\">
-                      Mo
-                    </span>
-                    <span class=\\"rdp-vhidden\\">
-                      Monday
-                    </span>
+                    MO
                   </th>
                   <th
                     scope=\\"col\\"
                     class=\\"rdp-head_cell\\"
+                    aria-label=\\"Tuesday\\"
                   >
-                    <span aria-hidden=\\"true\\">
-                      Tu
-                    </span>
-                    <span class=\\"rdp-vhidden\\">
-                      Tuesday
-                    </span>
+                    TU
                   </th>
                   <th
                     scope=\\"col\\"
                     class=\\"rdp-head_cell\\"
+                    aria-label=\\"Wednesday\\"
                   >
-                    <span aria-hidden=\\"true\\">
-                      We
-                    </span>
-                    <span class=\\"rdp-vhidden\\">
-                      Wednesday
-                    </span>
+                    WE
                   </th>
                   <th
                     scope=\\"col\\"
                     class=\\"rdp-head_cell\\"
+                    aria-label=\\"Thursday\\"
                   >
-                    <span aria-hidden=\\"true\\">
-                      Th
-                    </span>
-                    <span class=\\"rdp-vhidden\\">
-                      Thursday
-                    </span>
+                    TH
                   </th>
                   <th
                     scope=\\"col\\"
                     class=\\"rdp-head_cell\\"
+                    aria-label=\\"Friday\\"
                   >
-                    <span aria-hidden=\\"true\\">
-                      Fr
-                    </span>
-                    <span class=\\"rdp-vhidden\\">
-                      Friday
-                    </span>
+                    FR
                   </th>
                   <th
                     scope=\\"col\\"
                     class=\\"rdp-head_cell\\"
+                    aria-label=\\"Saturday\\"
                   >
-                    <span aria-hidden=\\"true\\">
-                      Sa
-                    </span>
-                    <span class=\\"rdp-vhidden\\">
-                      Saturday
-                    </span>
+                    SA
                   </th>
                 </tr>
               </thead>
-              <tbody class=\\"rdp-tbody\\">
+              <tbody
+                class=\\"rdp-tbody\\"
+                role=\\"rowgroup\\"
+              >
                 <tr class=\\"rdp-row\\">
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
+                    <div role=\\"gridcell\\">
+                    </div>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
+                    <div role=\\"gridcell\\">
+                    </div>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_end\\"
-                      aria-label=\\"1st February (Tuesday)\\"
-                      aria-pressed=\\"true\\"
+                      role=\\"gridcell\\"
+                      aria-selected=\\"true\\"
                       tabindex=\\"0\\"
                       type=\\"button\\"
                     >
                       1
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day\\"
-                      aria-label=\\"2nd February (Wednesday)\\"
+                      role=\\"gridcell\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       2
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day\\"
-                      aria-label=\\"3rd February (Thursday)\\"
+                      role=\\"gridcell\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       3
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day\\"
-                      aria-label=\\"4th February (Friday)\\"
+                      role=\\"gridcell\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       4
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day\\"
-                      aria-label=\\"5th February (Saturday)\\"
+                      role=\\"gridcell\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
@@ -480,77 +480,98 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                   </td>
                 </tr>
                 <tr class=\\"rdp-row\\">
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day\\"
-                      aria-label=\\"6th February (Sunday)\\"
+                      role=\\"gridcell\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       6
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day\\"
-                      aria-label=\\"7th February (Monday)\\"
+                      role=\\"gridcell\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       7
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day\\"
-                      aria-label=\\"8th February (Tuesday)\\"
+                      role=\\"gridcell\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       8
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day\\"
-                      aria-label=\\"9th February (Wednesday)\\"
+                      role=\\"gridcell\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       9
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day\\"
-                      aria-label=\\"10th February (Thursday)\\"
+                      role=\\"gridcell\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       10
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day\\"
-                      aria-label=\\"11th February (Friday)\\"
+                      role=\\"gridcell\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       11
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day\\"
-                      aria-label=\\"12th February (Saturday)\\"
+                      role=\\"gridcell\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
@@ -559,77 +580,98 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                   </td>
                 </tr>
                 <tr class=\\"rdp-row\\">
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day\\"
-                      aria-label=\\"13th February (Sunday)\\"
+                      role=\\"gridcell\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       13
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day\\"
-                      aria-label=\\"14th February (Monday)\\"
+                      role=\\"gridcell\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       14
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day\\"
-                      aria-label=\\"15th February (Tuesday)\\"
+                      role=\\"gridcell\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       15
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day\\"
-                      aria-label=\\"16th February (Wednesday)\\"
+                      role=\\"gridcell\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       16
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day\\"
-                      aria-label=\\"17th February (Thursday)\\"
+                      role=\\"gridcell\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       17
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day\\"
-                      aria-label=\\"18th February (Friday)\\"
+                      role=\\"gridcell\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       18
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day\\"
-                      aria-label=\\"19th February (Saturday)\\"
+                      role=\\"gridcell\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
@@ -638,77 +680,98 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                   </td>
                 </tr>
                 <tr class=\\"rdp-row\\">
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day\\"
-                      aria-label=\\"20th February (Sunday)\\"
+                      role=\\"gridcell\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       20
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day\\"
-                      aria-label=\\"21st February (Monday)\\"
+                      role=\\"gridcell\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       21
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day\\"
-                      aria-label=\\"22nd February (Tuesday)\\"
+                      role=\\"gridcell\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       22
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day\\"
-                      aria-label=\\"23rd February (Wednesday)\\"
+                      role=\\"gridcell\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       23
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day\\"
-                      aria-label=\\"24th February (Thursday)\\"
+                      role=\\"gridcell\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       24
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day\\"
-                      aria-label=\\"25th February (Friday)\\"
+                      role=\\"gridcell\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       25
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day\\"
-                      aria-label=\\"26th February (Saturday)\\"
+                      role=\\"gridcell\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
@@ -717,37 +780,68 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                   </td>
                 </tr>
                 <tr class=\\"rdp-row\\">
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day\\"
-                      aria-label=\\"27th February (Sunday)\\"
+                      role=\\"gridcell\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       27
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day\\"
-                      aria-label=\\"28th February (Monday)\\"
+                      role=\\"gridcell\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       28
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
+                    <div role=\\"gridcell\\">
+                    </div>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
+                    <div role=\\"gridcell\\">
+                    </div>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
+                    <div role=\\"gridcell\\">
+                    </div>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
+                    <div role=\\"gridcell\\">
+                    </div>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
+                    <div role=\\"gridcell\\">
+                    </div>
                   </td>
                 </tr>
               </tbody>
@@ -940,14 +1034,14 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
         <div class=\\"rdp-months\\">
           <div class=\\"rdp-month rdp-caption_start rdp-caption_end\\">
             <div class=\\"rdp-caption\\">
-              <h2
+              <div
                 class=\\"rdp-caption_label\\"
                 aria-live=\\"polite\\"
-                aria-atomic=\\"true\\"
+                role=\\"presentation\\"
                 id=\\"react-day-picker-3\\"
               >
                 February 2060
-              </h2>
+              </div>
               <div class=\\"rdp-nav\\">
                 <button
                   name=\\"previous-month\\"
@@ -1000,162 +1094,158 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                   <th
                     scope=\\"col\\"
                     class=\\"rdp-head_cell\\"
+                    aria-label=\\"Sunday\\"
                   >
-                    <span aria-hidden=\\"true\\">
-                      Su
-                    </span>
-                    <span class=\\"rdp-vhidden\\">
-                      Sunday
-                    </span>
+                    SU
                   </th>
                   <th
                     scope=\\"col\\"
                     class=\\"rdp-head_cell\\"
+                    aria-label=\\"Monday\\"
                   >
-                    <span aria-hidden=\\"true\\">
-                      Mo
-                    </span>
-                    <span class=\\"rdp-vhidden\\">
-                      Monday
-                    </span>
+                    MO
                   </th>
                   <th
                     scope=\\"col\\"
                     class=\\"rdp-head_cell\\"
+                    aria-label=\\"Tuesday\\"
                   >
-                    <span aria-hidden=\\"true\\">
-                      Tu
-                    </span>
-                    <span class=\\"rdp-vhidden\\">
-                      Tuesday
-                    </span>
+                    TU
                   </th>
                   <th
                     scope=\\"col\\"
                     class=\\"rdp-head_cell\\"
+                    aria-label=\\"Wednesday\\"
                   >
-                    <span aria-hidden=\\"true\\">
-                      We
-                    </span>
-                    <span class=\\"rdp-vhidden\\">
-                      Wednesday
-                    </span>
+                    WE
                   </th>
                   <th
                     scope=\\"col\\"
                     class=\\"rdp-head_cell\\"
+                    aria-label=\\"Thursday\\"
                   >
-                    <span aria-hidden=\\"true\\">
-                      Th
-                    </span>
-                    <span class=\\"rdp-vhidden\\">
-                      Thursday
-                    </span>
+                    TH
                   </th>
                   <th
                     scope=\\"col\\"
                     class=\\"rdp-head_cell\\"
+                    aria-label=\\"Friday\\"
                   >
-                    <span aria-hidden=\\"true\\">
-                      Fr
-                    </span>
-                    <span class=\\"rdp-vhidden\\">
-                      Friday
-                    </span>
+                    FR
                   </th>
                   <th
                     scope=\\"col\\"
                     class=\\"rdp-head_cell\\"
+                    aria-label=\\"Saturday\\"
                   >
-                    <span aria-hidden=\\"true\\">
-                      Sa
-                    </span>
-                    <span class=\\"rdp-vhidden\\">
-                      Saturday
-                    </span>
+                    SA
                   </th>
                 </tr>
               </thead>
-              <tbody class=\\"rdp-tbody\\">
+              <tbody
+                class=\\"rdp-tbody\\"
+                role=\\"rowgroup\\"
+              >
                 <tr class=\\"rdp-row\\">
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_today rdp-day_range_start\\"
-                      aria-label=\\"1st February (Sunday)\\"
-                      aria-pressed=\\"true\\"
+                      role=\\"gridcell\\"
+                      aria-selected=\\"true\\"
                       tabindex=\\"0\\"
                       type=\\"button\\"
                     >
                       1
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
-                      aria-label=\\"2nd February (Monday)\\"
-                      aria-pressed=\\"true\\"
+                      role=\\"gridcell\\"
+                      aria-selected=\\"true\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       2
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
-                      aria-label=\\"3rd February (Tuesday)\\"
-                      aria-pressed=\\"true\\"
+                      role=\\"gridcell\\"
+                      aria-selected=\\"true\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       3
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
-                      aria-label=\\"4th February (Wednesday)\\"
-                      aria-pressed=\\"true\\"
+                      role=\\"gridcell\\"
+                      aria-selected=\\"true\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       4
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
-                      aria-label=\\"5th February (Thursday)\\"
-                      aria-pressed=\\"true\\"
+                      role=\\"gridcell\\"
+                      aria-selected=\\"true\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       5
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
-                      aria-label=\\"6th February (Friday)\\"
-                      aria-pressed=\\"true\\"
+                      role=\\"gridcell\\"
+                      aria-selected=\\"true\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       6
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
-                      aria-label=\\"7th February (Saturday)\\"
-                      aria-pressed=\\"true\\"
+                      role=\\"gridcell\\"
+                      aria-selected=\\"true\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
@@ -1164,84 +1254,105 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                   </td>
                 </tr>
                 <tr class=\\"rdp-row\\">
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
-                      aria-label=\\"8th February (Sunday)\\"
-                      aria-pressed=\\"true\\"
+                      role=\\"gridcell\\"
+                      aria-selected=\\"true\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       8
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
-                      aria-label=\\"9th February (Monday)\\"
-                      aria-pressed=\\"true\\"
+                      role=\\"gridcell\\"
+                      aria-selected=\\"true\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       9
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
-                      aria-label=\\"10th February (Tuesday)\\"
-                      aria-pressed=\\"true\\"
+                      role=\\"gridcell\\"
+                      aria-selected=\\"true\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       10
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
-                      aria-label=\\"11th February (Wednesday)\\"
-                      aria-pressed=\\"true\\"
+                      role=\\"gridcell\\"
+                      aria-selected=\\"true\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       11
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
-                      aria-label=\\"12th February (Thursday)\\"
-                      aria-pressed=\\"true\\"
+                      role=\\"gridcell\\"
+                      aria-selected=\\"true\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       12
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
-                      aria-label=\\"13th February (Friday)\\"
-                      aria-pressed=\\"true\\"
+                      role=\\"gridcell\\"
+                      aria-selected=\\"true\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       13
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
-                      aria-label=\\"14th February (Saturday)\\"
-                      aria-pressed=\\"true\\"
+                      role=\\"gridcell\\"
+                      aria-selected=\\"true\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
@@ -1250,84 +1361,105 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                   </td>
                 </tr>
                 <tr class=\\"rdp-row\\">
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
-                      aria-label=\\"15th February (Sunday)\\"
-                      aria-pressed=\\"true\\"
+                      role=\\"gridcell\\"
+                      aria-selected=\\"true\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       15
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
-                      aria-label=\\"16th February (Monday)\\"
-                      aria-pressed=\\"true\\"
+                      role=\\"gridcell\\"
+                      aria-selected=\\"true\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       16
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
-                      aria-label=\\"17th February (Tuesday)\\"
-                      aria-pressed=\\"true\\"
+                      role=\\"gridcell\\"
+                      aria-selected=\\"true\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       17
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
-                      aria-label=\\"18th February (Wednesday)\\"
-                      aria-pressed=\\"true\\"
+                      role=\\"gridcell\\"
+                      aria-selected=\\"true\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       18
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
-                      aria-label=\\"19th February (Thursday)\\"
-                      aria-pressed=\\"true\\"
+                      role=\\"gridcell\\"
+                      aria-selected=\\"true\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       19
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
-                      aria-label=\\"20th February (Friday)\\"
-                      aria-pressed=\\"true\\"
+                      role=\\"gridcell\\"
+                      aria-selected=\\"true\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       20
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
-                      aria-label=\\"21st February (Saturday)\\"
-                      aria-pressed=\\"true\\"
+                      role=\\"gridcell\\"
+                      aria-selected=\\"true\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
@@ -1336,84 +1468,105 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                   </td>
                 </tr>
                 <tr class=\\"rdp-row\\">
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
-                      aria-label=\\"22nd February (Sunday)\\"
-                      aria-pressed=\\"true\\"
+                      role=\\"gridcell\\"
+                      aria-selected=\\"true\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       22
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
-                      aria-label=\\"23rd February (Monday)\\"
-                      aria-pressed=\\"true\\"
+                      role=\\"gridcell\\"
+                      aria-selected=\\"true\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       23
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
-                      aria-label=\\"24th February (Tuesday)\\"
-                      aria-pressed=\\"true\\"
+                      role=\\"gridcell\\"
+                      aria-selected=\\"true\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       24
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
-                      aria-label=\\"25th February (Wednesday)\\"
-                      aria-pressed=\\"true\\"
+                      role=\\"gridcell\\"
+                      aria-selected=\\"true\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       25
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
-                      aria-label=\\"26th February (Thursday)\\"
-                      aria-pressed=\\"true\\"
+                      role=\\"gridcell\\"
+                      aria-selected=\\"true\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       26
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
-                      aria-label=\\"27th February (Friday)\\"
-                      aria-pressed=\\"true\\"
+                      role=\\"gridcell\\"
+                      aria-selected=\\"true\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       27
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
-                      aria-label=\\"28th February (Saturday)\\"
-                      aria-pressed=\\"true\\"
+                      role=\\"gridcell\\"
+                      aria-selected=\\"true\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
@@ -1422,29 +1575,62 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                   </td>
                 </tr>
                 <tr class=\\"rdp-row\\">
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
                     <button
                       name=\\"day\\"
                       class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
-                      aria-label=\\"29th February (Sunday)\\"
-                      aria-pressed=\\"true\\"
+                      role=\\"gridcell\\"
+                      aria-selected=\\"true\\"
                       tabindex=\\"-1\\"
                       type=\\"button\\"
                     >
                       29
                     </button>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
+                    <div role=\\"gridcell\\">
+                    </div>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
+                    <div role=\\"gridcell\\">
+                    </div>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
+                    <div role=\\"gridcell\\">
+                    </div>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
+                    <div role=\\"gridcell\\">
+                    </div>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
+                    <div role=\\"gridcell\\">
+                    </div>
                   </td>
-                  <td class=\\"rdp-cell\\">
+                  <td
+                    class=\\"rdp-cell\\"
+                    role=\\"presentation\\"
+                  >
+                    <div role=\\"gridcell\\">
+                    </div>
                   </td>
                 </tr>
               </tbody>
