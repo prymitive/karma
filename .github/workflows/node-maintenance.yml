@@ -15,7 +15,7 @@ jobs:
       - name: Set up Node JS
         uses: actions/setup-node@v3
         with:
-          node-version: 19.4.0
+          node-version: 19.5.0
 
       - name: Regenerate package-lock.json
         run: make -C ui npm-upgrade
