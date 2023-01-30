@@ -25,7 +25,7 @@ require (
 	github.com/prometheus/common v0.39.0
 	github.com/prymitive/randomcolor v0.0.0-20210705210145-26c3401033a6
 	github.com/rogpeppe/go-internal v1.9.0
-	github.com/rs/zerolog v1.28.0
+	github.com/rs/zerolog v1.29.0
 	github.com/spf13/pflag v1.0.5
 	go.uber.org/automaxprocs v1.5.1
 	gopkg.in/go-playground/colors.v1 v1.2.0
