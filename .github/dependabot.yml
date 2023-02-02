@@ -28,10 +28,6 @@ updates:
     directory: "/tools/golangci-lint"
     schedule:
       interval: "weekly"
-  - package-ecosystem: "gomod"
-    directory: "/tools/looppointer"
-    schedule:
-      interval: "weekly"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:

@@ -29,16 +29,10 @@ $(GOBIN)/benchstat: tools/benchstat/go.mod tools/benchstat/go.sum
 benchmark-compare-go: $(GOBIN)/benchstat
 	@$(GOBIN)/benchstat main.txt new.txt
 
-$(GOBIN)/looppointer: tools/looppointer/go.mod tools/looppointer/go.sum
-	go install -modfile=tools/looppointer/go.mod github.com/kyoh86/looppointer/cmd/looppointer
-.PHONY: lint-go-looppointer
-lint-go-looppointer: $(GOBIN)/looppointer
-	$(ENV) looppointer -c 2 ./...
-
 $(GOBIN)/golangci-lint: tools/golangci-lint/go.mod tools/golangci-lint/go.sum
 	go install -modfile=tools/golangci-lint/go.mod github.com/golangci/golangci-lint/cmd/golangci-lint
 .PHONY: lint-go
-lint-go: $(GOBIN)/golangci-lint lint-go-looppointer
+lint-go: $(GOBIN)/golangci-lint
 	$(ENV) golangci-lint run -v
 
 $(GOBIN)/goimports: tools/goimports/go.mod tools/goimports/go.sum
