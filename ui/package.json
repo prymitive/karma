@@ -5,7 +5,7 @@
   "private": true,
   "engines": {
     "npm": ">=9.0",
-    "node": "19.5.0"
+    "node": "19.6.0"
   },
   "dependencies": {
     "@floating-ui/react-dom": "1.2.2",
