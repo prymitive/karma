@@ -22,7 +22,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v3
         with:
-          go-version: 1.19.5
+          go-version: 1.20.0
 
       - name: Restore cache
         id: cache-go-modules
@@ -60,7 +60,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v3
         with:
-          go-version: 1.19.5
+          go-version: 1.20.0
 
       - name: Restore cache
         id: cache-go-modules
@@ -139,7 +139,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v3
         with:
-          go-version: 1.19.5
+          go-version: 1.20.0
 
       - name: Format Go code
         run: make format-go
@@ -294,7 +294,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v3
         with:
-          go-version: 1.19.5
+          go-version: 1.20.0
 
       - name: Restore cache
         uses: actions/cache/restore@v3
@@ -403,7 +403,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v3
         with:
-          go-version: 1.19.5
+          go-version: 1.20.0
 
       - name: Cache Go
         if: github.event_name != 'pull_request'
