@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.112
+
+### Fixed
+
+- Upgraded project dependencies.
+
 ## v0.111
 
 ### Fixed
