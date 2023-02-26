@@ -13,7 +13,7 @@ cmp stderr stderr.txt
 {"level":"info","message":"Collection completed"}
 {"level":"info","message":"Done, starting HTTP server"}
 {"level":"info","address":"127.0.0.1:8058","message":"Starting HTTP server"}
-{"level":"info","message":"Shutting down HTTP server"}
+{"level":"info","signal":"terminated","message":"Shutting down HTTP server"}
 {"level":"info","message":"HTTP server shut down"}
 {"level":"info","path":"karma.pid","message":"Removing PID file"}
 -- test.sh --

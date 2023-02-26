@@ -25,7 +25,7 @@ level=info msg="Collection completed"
 level=info msg="Done, starting HTTP server"
 level=info msg="Starting HTTPS server" address=127.0.0.1:8088
 level=error msg="HTTPS server startup error" error="tls: failed to find any PEM data in key input"
-level=info msg="Shutting down HTTP server"
+level=info msg="Shutting down HTTP server" signal=terminated
 level=info msg="HTTP server shut down"
 level=info msg="Removing PID file" path=karma.pid
 -- karma.yaml --
