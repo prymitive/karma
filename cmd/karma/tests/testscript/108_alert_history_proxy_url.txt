@@ -24,7 +24,7 @@ level=error msg="Collection failed" error="Get \"http://127.0.0.1:7108/api/v2/st
 level=info msg="Collection completed"
 level=info msg="Done, starting HTTP server"
 level=info msg="Starting HTTP server" address=127.0.0.1:8108
-level=info msg="Shutting down HTTP server"
+level=info msg="Shutting down HTTP server" signal=terminated
 level=info msg="HTTP server shut down"
 level=info msg="Removing PID file" path=karma.pid
 -- query.json --

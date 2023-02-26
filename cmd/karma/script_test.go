@@ -83,6 +83,8 @@ func httpServer(ts *testscript.TestScript, neg bool, args []string) {
 	}
 	cmd := args[0]
 
+	ts.Logf("test-script http command: %s", strings.Join(args, " "))
+
 	switch cmd {
 	// http response name /200 200 OK
 	case "response":
@@ -166,6 +168,7 @@ func httpServer(ts *testscript.TestScript, neg bool, args []string) {
 		sCtx, sCancel := context.WithTimeout(context.Background(), time.Minute*5)
 
 		ts.Defer(func() {
+			ts.Logf("running deferred http server shutdown")
 			defer sCancel()
 			sChan <- struct{}{}
 			ts.Logf("http server %s shutting down", name)
@@ -256,6 +259,8 @@ func tlsCert(ts *testscript.TestScript, neg bool, args []string) {
 	}
 	dirname := args[0]
 	name := args[1]
+
+	ts.Logf("test-script cert command: %s", strings.Join(args, " "))
 
 	ca := &x509.Certificate{
 		SerialNumber: big.NewInt(2019),

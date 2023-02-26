@@ -25,7 +25,7 @@ level=info msg="Collection completed"
 level=info msg="Done, starting HTTP server"
 level=info msg="Starting HTTP server" address=127.0.0.1:8109
 level=warn msg="Error while configuring HTTP transport for history request" error="failed to parse provided proxy url \"%gh&%ij\": parse \"%gh&%ij\": invalid URL escape \"%gh\"" uri=http://127.0.0.1:9109 worker=1
-level=info msg="Shutting down HTTP server"
+level=info msg="Shutting down HTTP server" signal=terminated
 level=info msg="HTTP server shut down"
 level=info msg="Removing PID file" path=karma.pid
 -- query.json --

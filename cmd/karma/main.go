@@ -520,8 +520,8 @@ func serve(errorHandling pflag.ErrorHandling) error {
 	}
 
 	signal.Notify(quit, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
-	<-quit
-	log.Info().Msg("Shutting down HTTP server")
+	s := <-quit
+	log.Info().Stringer("signal", s).Msg("Shutting down HTTP server")
 
 	historyPoller.stop()
 
