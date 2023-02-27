@@ -13,6 +13,7 @@ stderr 'level=info msg="Deduplicating alert groups" alertmanager=client-auth gro
 stderr 'level=info msg="Processing deduplicated alert groups" alertmanager=client-auth groups=0'
 stderr 'level=info msg="Merging autocomplete hints" alertmanager=client-auth hints=0'
 stderr 'level=info msg="Collection completed"'
+wait
 
 -- alertmanager.conf --
 [req]

@@ -5,6 +5,7 @@ karma.bin-should-work --pid-file=karma.pid --alertmanager.uri=http://foo:bar@127
 exec sleep 5
 grep '"headers":{"Authorization":"Basic Zm9vOmJhcg=="}' out.txt
 grep '"publicURI":"http://foo:bar@127.0.0.1"' out.txt
+wait
 
 -- test.sh --
 while [ ! -f karma.pid ]; do sleep 1 ; done

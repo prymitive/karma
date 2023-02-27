@@ -5,6 +5,7 @@ karma.bin-should-work --pid-file=karma.pid --alertmanager.uri=http://127.0.0.1:7
 ! stdout .
 cmp stderr stderr.txt
 cmp curl.txt metrics.txt
+wait
 
 -- metrics.txt --
 # HELP build_info Runtime version information

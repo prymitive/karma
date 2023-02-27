@@ -7,6 +7,7 @@ karma.bin-should-work --pid-file=karma.pid --config.file=karma.yaml --listen.add
 exec sleep 5
 cmp http1.txt pong.txt
 cmp http2.txt pong.txt
+wait
 
 -- pong.txt --
 Pong

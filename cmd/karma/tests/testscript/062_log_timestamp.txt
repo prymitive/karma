@@ -5,6 +5,7 @@ karma.bin-should-work --log.timestamp=true --pid-file=karma.pid --listen.address
 ! stdout .
 stderr '[0-9][0-9]:[0-9][0-9]:[0-9][0-9] level=info msg="Version: dev"'
 stderr '[0-9][0-9]:[0-9][0-9]:[0-9][0-9] level=info msg="Pulling latest alerts and silences from Alertmanager"'
+wait
 
 -- test.sh --
 while [ ! -f karma.pid ]; do sleep 1 ; done
