@@ -11,6 +11,7 @@ import (
 	"sort"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	lru "github.com/hashicorp/golang-lru/v2"
@@ -126,6 +127,7 @@ type historyPoller struct {
 	queryTimeout time.Duration
 	knownBad     *lru.Cache[string, *knownBadUpstream]
 	cache        *lru.Cache[string, *cachedOffsets]
+	isRunning    atomic.Bool
 }
 
 func newHistoryPoller(queueSize int, queryTimeout time.Duration) *historyPoller {
@@ -141,6 +143,7 @@ func newHistoryPoller(queueSize int, queryTimeout time.Duration) *historyPoller 
 }
 
 func (hp *historyPoller) run(workers int) {
+	hp.isRunning.Store(true)
 	wg := sync.WaitGroup{}
 	for w := 1; w <= workers; w++ {
 		w := w
@@ -154,12 +157,15 @@ func (hp *historyPoller) run(workers int) {
 }
 
 func (hp *historyPoller) stop() {
+	hp.isRunning.Store(false)
 	log.Debug().Msg("Stopping history poller")
 	close(hp.queue)
 }
 
 func (hp *historyPoller) submit(uri string, labels map[string]string, result chan<- historyQueryResult) {
-	hp.queue <- historyJob{uri: uri, labels: labels, result: result}
+	if hp.isRunning.Load() {
+		hp.queue <- historyJob{uri: uri, labels: labels, result: result}
+	}
 }
 
 func (hp *historyPoller) cacheSave(key string, values []OffsetSample) {
