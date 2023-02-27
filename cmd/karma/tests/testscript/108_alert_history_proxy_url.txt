@@ -6,6 +6,7 @@ exec bash -x ./test.sh &
 karma.bin-should-work --pid-file=karma.pid --config.file=karma.yaml
 ! stdout .
 cmp stderr stderr.txt
+wait
 
 -- stderr.txt --
 level=info msg="Reading configuration file" path=karma.yaml

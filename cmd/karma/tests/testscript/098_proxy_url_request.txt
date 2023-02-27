@@ -13,6 +13,7 @@ stderr 'level=info msg="Deduplicating alert groups" alertmanager=proxy-url group
 stderr 'level=info msg="Processing deduplicated alert groups" alertmanager=proxy-url groups=0'
 stderr 'level=info msg="Merging autocomplete hints" alertmanager=proxy-url hints=0'
 stderr 'level=info msg="Collection completed"'
+wait
 
 -- test.sh --
 env GOCACHE=$TMPDIR go run alertmanager.go &

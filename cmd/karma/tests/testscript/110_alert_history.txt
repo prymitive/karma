@@ -6,6 +6,7 @@ exec bash -x ./test.sh &
 karma.bin-should-work --pid-file=karma.pid --alertmanager.uri=http://127.0.0.1:7110 --listen.address=127.0.0.1 --listen.port=8110 --history.enabled=true --history.timeout=10s
 ! stdout .
 cmp stderr stderr.txt
+wait
 
 -- stderr.txt --
 level=info msg="Version: dev"
