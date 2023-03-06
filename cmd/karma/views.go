@@ -193,6 +193,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 			Strip: models.SilenceFormStripSettings{
 				Labels: config.Config.SilenceForm.Strip.Labels,
 			},
+			DefaultAlertmanagers: config.Config.SilenceForm.DefaultAlertmanagers,
 		},
 		AlertAcknowledgement: models.AlertAcknowledgementSettings{
 			Enabled:         config.Config.AlertAcknowledgement.Enabled,

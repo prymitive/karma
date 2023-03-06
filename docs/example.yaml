@@ -60,6 +60,8 @@ silenceForm:
   strip:
     labels:
       - job
+  defaultAlertmanagers:
+    - local
 ui:
   refresh: 30s
   hideFiltersWhenIdle: true

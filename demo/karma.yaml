@@ -120,6 +120,8 @@ silenceForm:
       - job
       - severity
       - region
+  defaultAlertmanagers:
+    - single
 ui:
   refresh: 10s
   hideFiltersWhenIdle: true

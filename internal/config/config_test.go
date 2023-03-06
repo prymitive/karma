@@ -149,6 +149,7 @@ silences:
 silenceForm:
   strip:
     labels: []
+  defaultAlertmanagers: []
 ui:
   refresh: 30s
   hideFiltersWhenIdle: true
@@ -393,6 +394,7 @@ func TestDefaultConfig(t *testing.T) {
 	expectedConfig.Receivers.Keep = []string{}
 	expectedConfig.Receivers.Strip = []string{}
 	expectedConfig.SilenceForm.Strip.Labels = []string{}
+	expectedConfig.SilenceForm.DefaultAlertmanagers = []string{}
 
 	if diff := cmp.Diff(expectedConfig.Annotations, Config.Annotations); diff != "" {
 		t.Errorf("Wrong annotations config returned (-want +got):\n%s", diff)
@@ -405,6 +407,9 @@ func TestDefaultConfig(t *testing.T) {
 	}
 	if diff := cmp.Diff(expectedConfig.SilenceForm.Strip, Config.SilenceForm.Strip); diff != "" {
 		t.Errorf("Wrong silence form config returned (-want +got):\n%s", diff)
+	}
+	if diff := cmp.Diff(expectedConfig.SilenceForm.DefaultAlertmanagers, Config.SilenceForm.DefaultAlertmanagers); diff != "" {
+		t.Errorf("Wrong defaultAlertmanagers form config returned (-want +got):\n%s", diff)
 	}
 }
 

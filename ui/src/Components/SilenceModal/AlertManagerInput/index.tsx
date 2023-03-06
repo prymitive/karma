@@ -21,8 +21,19 @@ const AlertManagerInput: FC<{
 }> = observer(({ alertStore, silenceFormStore }) => {
   useEffect(() => {
     if (silenceFormStore.data.alertmanagers.length === 0) {
+      // get only the clusters that match the defaults, or all of them if there are no defaults
       silenceFormStore.data.setAlertmanagers(
-        AlertmanagerClustersToOption(alertStore.data.clustersWithoutReadOnly)
+        AlertmanagerClustersToOption(
+          alertStore.data.clustersWithoutReadOnly
+        ).filter((am) => {
+          return (
+            alertStore.settings.values.silenceForm.defaultAlertmanagers.some(
+              (amName) => am.value.includes(amName)
+            ) ||
+            alertStore.settings.values.silenceForm.defaultAlertmanagers
+              .length === 0
+          );
+        })
       );
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps

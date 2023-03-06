@@ -64,6 +64,7 @@ const EmptyAPIResponse = (): APIAlertsResponseT => ({
       strip: {
         labels: [],
       },
+      defaultAlertmanagers: [],
     },
     alertAcknowledgement: {
       enabled: false,

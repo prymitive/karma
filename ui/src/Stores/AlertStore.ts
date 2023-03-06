@@ -466,6 +466,7 @@ class AlertStore {
             strip: {
               labels: [] as string[],
             },
+            defaultAlertmanagers: [] as string[],
           },
           alertAcknowledgement: {
             enabled: false as boolean,

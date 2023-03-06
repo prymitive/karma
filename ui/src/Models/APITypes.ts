@@ -200,6 +200,7 @@ export interface APISettingsT {
     strip: {
       labels: string[];
     };
+    defaultAlertmanagers: string[];
   };
   alertAcknowledgement: {
     enabled: boolean;

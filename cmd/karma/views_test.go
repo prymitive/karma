@@ -1124,6 +1124,7 @@ func TestEmptySettings(t *testing.T) {
 			Strip: models.SilenceFormStripSettings{
 				Labels: []string{},
 			},
+			DefaultAlertmanagers: []string{},
 		},
 		AlertAcknowledgement: models.AlertAcknowledgementSettings{
 			Enabled:         false,
