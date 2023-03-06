@@ -402,7 +402,8 @@ type SilenceFormStripSettings struct {
 }
 
 type SilenceFormSettings struct {
-	Strip SilenceFormStripSettings `json:"strip"`
+	Strip                SilenceFormStripSettings `json:"strip"`
+	DefaultAlertmanagers []string                 `json:"defaultAlertmanagers"`
 }
 
 type AlertAcknowledgementSettings struct {

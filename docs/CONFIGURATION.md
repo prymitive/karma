@@ -1242,6 +1242,19 @@ silenceForm:
       - job
 ```
 
+- `defaultAlertmanagers` - list of Alertmanager names that will be used as
+  default when creating a new silence.
+
+Example where alertmanagers `prod1` and `prod2` will be the default ones when
+creating a new silence
+
+```YAML
+silenceForm:
+  defaultAlertmanagers:
+    - prod1
+    - prod2
+```
+
 ## UI defaults
 
 `ui` section allows configuring default values for UI settings controled via the

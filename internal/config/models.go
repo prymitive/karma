@@ -206,6 +206,7 @@ type configSchema struct {
 		Strip struct {
 			Labels []string
 		}
+		DefaultAlertmanagers []string `yaml:"defaultAlertmanagers" koanf:"defaultAlertmanagers"`
 	} `yaml:"silenceForm" koanf:"silenceForm"`
 	// nolint: maligned
 	UI struct {
