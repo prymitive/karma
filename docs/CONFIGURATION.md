@@ -1224,10 +1224,13 @@ Syntax:
 
 ```YAML
 silenceForm:
+  defaultAlertmanagers: list of strings
   strip:
     labels: list of strings
 ```
 
+- `defaultAlertmanagers` - list of Alertmanager names that will be used as
+  default when creating a new silence.
 - `strip:labels` - list of labels to ignore when populating silence form from
   individual alerts or group of alerts. This allows to create silences matching
   only unique labels, like `instance` or `host`, ignoring any common labels like
@@ -1241,9 +1244,6 @@ silenceForm:
     labels:
       - job
 ```
-
-- `defaultAlertmanagers` - list of Alertmanager names that will be used as
-  default when creating a new silence.
 
 Example where alertmanagers `prod1` and `prod2` will be the default ones when
 creating a new silence
