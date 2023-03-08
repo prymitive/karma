@@ -63,6 +63,7 @@ env RECEIVERS_STRIP='strip1 strip2'
 env SILENCES_EXPIRED=1s
 
 env SILENCEFORM_STRIP_LABELS='job severity region'
+env SILENCEFORM_DEFAULTALERTMANAGERS='am1'
 
 env UI_REFRESH=10s
 env UI_HIDEFILTERSWHENIDLE=false
@@ -232,7 +233,8 @@ level=info msg="    labels:"
 level=info msg="      - job"
 level=info msg="      - severity"
 level=info msg="      - region"
-level=info msg="  defaultAlertmanagers: []"
+level=info msg="  defaultAlertmanagers:"
+level=info msg="    - am1"
 level=info msg="ui:"
 level=info msg="  refresh: 10s"
 level=info msg="  hideFiltersWhenIdle: false"
