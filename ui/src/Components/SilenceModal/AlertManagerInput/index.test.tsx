@@ -206,4 +206,48 @@ describe("<AlertManagerInput />", () => {
       value: ["am2"],
     });
   });
+
+  it("uses default alertmanagers to select the cluster", () => {
+    const upstreams = generateUpstreams();
+    alertStore.settings.setValues({
+      ...alertStore.settings.values,
+      ...{
+        silenceForm: {
+          strip: {
+            labels: [],
+          },
+          defaultAlertmanagers: ["am2", "bob"],
+        },
+      },
+    });
+    MountedAlertManagerInput();
+    alertStore.data.setUpstreams(upstreams);
+    expect(silenceFormStore.data.alertmanagers).toHaveLength(1);
+    expect(silenceFormStore.data.alertmanagers).toContainEqual({
+      label: "Cluster: HA",
+      value: ["am1", "am2"],
+    });
+  });
+
+  it("uses default alertmanagers to select the instance", () => {
+    const upstreams = generateUpstreams();
+    alertStore.settings.setValues({
+      ...alertStore.settings.values,
+      ...{
+        silenceForm: {
+          strip: {
+            labels: [],
+          },
+          defaultAlertmanagers: ["am0", "am3", "bob"],
+        },
+      },
+    });
+    MountedAlertManagerInput();
+    alertStore.data.setUpstreams(upstreams);
+    expect(silenceFormStore.data.alertmanagers).toHaveLength(1);
+    expect(silenceFormStore.data.alertmanagers).toContainEqual({
+      label: "am3",
+      value: ["am3"],
+    });
+  });
 });
