@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.113
+
+### Added
+
+- Added `silenceForm:defaultAlertmanagers` config option - #5086 (@david-caro).
+
 ## v0.112
 
 ### Fixed
