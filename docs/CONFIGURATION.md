@@ -1231,6 +1231,8 @@ silenceForm:
 
 - `defaultAlertmanagers` - list of Alertmanager names that will be used as
   default when creating a new silence.
+  If selected alertmanager is part of a cluster then the whole cluster will
+  be used in the silence form.
 - `strip:labels` - list of labels to ignore when populating silence form from
   individual alerts or group of alerts. This allows to create silences matching
   only unique labels, like `instance` or `host`, ignoring any common labels like
