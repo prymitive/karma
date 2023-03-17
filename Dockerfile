@@ -1,4 +1,4 @@
-FROM node:19.7.0-alpine as nodejs-builder
+FROM node:19.8.1-alpine as nodejs-builder
 RUN mkdir -p /src/ui
 COPY ui/package.json ui/package-lock.json /src/ui/
 RUN cd /src/ui && npm ci && touch node_modules/.install
