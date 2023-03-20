@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.114
+
+### Fixed
+
+- Fixed silcen form crashes when `silenceForm:defaultAlertmanagers` config option
+  is not set.
+
 ## v0.113
 
 ### Added
