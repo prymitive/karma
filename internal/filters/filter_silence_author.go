@@ -11,7 +11,7 @@ type silenceAuthorFilter struct {
 	alertFilter
 }
 
-func (filter *silenceAuthorFilter) Match(alert *models.Alert, matches int) bool {
+func (filter *silenceAuthorFilter) Match(alert *models.Alert, _ int) bool {
 	if filter.IsValid {
 		var isMatch bool
 		for _, am := range alert.Alertmanager {

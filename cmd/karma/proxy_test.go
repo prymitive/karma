@@ -1362,7 +1362,7 @@ func TestProxySilenceACL(t *testing.T) {
 
 type errReader int
 
-func (errReader) Read(p []byte) (n int, err error) {
+func (errReader) Read(_ []byte) (n int, err error) {
 	return 0, errors.New("request read error")
 }
 

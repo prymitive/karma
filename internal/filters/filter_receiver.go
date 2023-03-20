@@ -11,7 +11,7 @@ type receiverFilter struct {
 	alertFilter
 }
 
-func (filter *receiverFilter) Match(alert *models.Alert, matches int) bool {
+func (filter *receiverFilter) Match(alert *models.Alert, _ int) bool {
 	if filter.IsValid {
 		isMatch := filter.Matcher.Compare(alert.Receiver, filter.Value)
 		if isMatch {

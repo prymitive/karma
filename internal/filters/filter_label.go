@@ -12,7 +12,7 @@ type labelFilter struct {
 	alertFilter
 }
 
-func (filter *labelFilter) Match(alert *models.Alert, matches int) bool {
+func (filter *labelFilter) Match(alert *models.Alert, _ int) bool {
 	if filter.IsValid {
 		isMatch := filter.Matcher.Compare(alert.Labels.GetValue(filter.Matched), filter.Value)
 		if isMatch {
@@ -29,7 +29,7 @@ func newLabelFilter() FilterT {
 	return &f
 }
 
-func labelAutocomplete(name string, operators []string, alerts []models.Alert) []models.Autocomplete {
+func labelAutocomplete(_ string, operators []string, alerts []models.Alert) []models.Autocomplete {
 	tokens := map[string]models.Autocomplete{}
 	for _, alert := range alerts {
 		for _, l := range alert.Labels {

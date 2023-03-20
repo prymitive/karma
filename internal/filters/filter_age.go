@@ -31,7 +31,7 @@ func (filter *ageFilter) init(name string, matcher *matcherT, rawText string, is
 	}
 }
 
-func (filter *ageFilter) Match(alert *models.Alert, matches int) bool {
+func (filter *ageFilter) Match(alert *models.Alert, _ int) bool {
 	if filter.IsValid {
 		ts := time.Now().Add(filter.Value.(time.Duration))
 		isMatch := filter.Matcher.Compare(int(ts.Unix()), int(alert.StartsAt.Unix()))
@@ -55,7 +55,7 @@ func newAgeFilter() FilterT {
 	return &f
 }
 
-func ageAutocomplete(name string, operators []string, alerts []models.Alert) []models.Autocomplete {
+func ageAutocomplete(name string, operators []string, _ []models.Alert) []models.Autocomplete {
 	tokens := make([]models.Autocomplete, 0, len(operators)*2)
 	for _, operator := range operators {
 		tokens = append(tokens, makeAC(

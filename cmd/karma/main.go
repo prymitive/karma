@@ -251,7 +251,7 @@ func lvlFormatter(level any) string {
 	return fmt.Sprintf("level=%s", level)
 }
 
-func discardFormatter(msg any) string {
+func discardFormatter(_ any) string {
 	return ""
 }
 

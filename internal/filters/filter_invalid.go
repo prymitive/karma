@@ -4,7 +4,7 @@ type alwaysInvalidFilter struct {
 	alertFilter
 }
 
-func (filter *alwaysInvalidFilter) init(name string, matcher *matcherT, rawText string, isValid bool, value string) {
+func (filter *alwaysInvalidFilter) init(name string, _ *matcherT, rawText string, _ bool, _ string) {
 	filter.Matched = name
 	filter.RawText = rawText
 }

@@ -17,7 +17,7 @@ func GetAbsoluteMockPath(filename, version string) string {
 }
 
 // GetMockResponder returns a httpmock.Responder for given file/version
-func GetMockResponder(url, version, filename string) httpmock.Responder {
+func GetMockResponder(_, version, filename string) httpmock.Responder {
 	fullPath := GetAbsoluteMockPath(filename, version)
 	mockJSON, _ := os.ReadFile(fullPath)
 	return httpmock.NewBytesResponder(200, mockJSON)
