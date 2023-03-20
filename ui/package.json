@@ -83,7 +83,7 @@
     "eslint-plugin-jest": "27.2.1",
     "eslint-plugin-prettier": "4.2.1",
     "fetch-mock": "9.11.0",
-    "prettier": "2.8.4",
+    "prettier": "2.8.5",
     "purgecss": "5.0.0",
     "react-scripts": "5.0.1",
     "sass": "1.59.3",
