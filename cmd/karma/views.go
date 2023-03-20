@@ -46,7 +46,7 @@ type KarmaVersion struct {
 	Golang  string `json:"golang"`
 }
 
-func versionHandler(w http.ResponseWriter, r *http.Request) {
+func versionHandler(w http.ResponseWriter, _ *http.Request) {
 	ver := KarmaVersion{
 		Version: version,
 		Golang:  runtime.Version(),
@@ -55,11 +55,11 @@ func versionHandler(w http.ResponseWriter, r *http.Request) {
 	_, _ = w.Write(data)
 }
 
-func pong(w http.ResponseWriter, r *http.Request) {
+func pong(w http.ResponseWriter, _ *http.Request) {
 	_, _ = w.Write([]byte("Pong\n"))
 }
 
-func robots(w http.ResponseWriter, r *http.Request) {
+func robots(w http.ResponseWriter, _ *http.Request) {
 	_, _ = w.Write([]byte("User-agent: *\nDisallow: /\n"))
 }
 
@@ -116,7 +116,7 @@ func redirectIndex(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, r.URL.Path+"/", http.StatusMovedPermanently)
 }
 
-func index(w http.ResponseWriter, r *http.Request) {
+func index(w http.ResponseWriter, _ *http.Request) {
 	noCache(w)
 	pushPath(w, getViewURL("/custom.css"))
 	pushPath(w, getViewURL("/custom.js"))

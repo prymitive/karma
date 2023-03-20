@@ -11,7 +11,7 @@ type alertmanagerInstanceFilter struct {
 	alertFilter
 }
 
-func (filter *alertmanagerInstanceFilter) Match(alert *models.Alert, matches int) bool {
+func (filter *alertmanagerInstanceFilter) Match(alert *models.Alert, _ int) bool {
 	if filter.IsValid {
 		var isMatch bool
 		for _, am := range alert.Alertmanager {

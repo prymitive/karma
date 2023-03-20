@@ -11,7 +11,7 @@ type silenceIDFilter struct {
 	alertFilter
 }
 
-func (filter *silenceIDFilter) Match(alert *models.Alert, matches int) bool {
+func (filter *silenceIDFilter) Match(alert *models.Alert, _ int) bool {
 	if filter.IsValid {
 		var isMatch bool
 		for _, am := range alert.Alertmanager {

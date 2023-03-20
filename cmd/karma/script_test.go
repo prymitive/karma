@@ -75,7 +75,7 @@ func TestScripts(t *testing.T) {
 	})
 }
 
-func httpServer(ts *testscript.TestScript, neg bool, args []string) {
+func httpServer(ts *testscript.TestScript, _ bool, args []string) {
 	mocks := ts.Value("mocks").(*httpMocks)
 
 	if len(args) == 0 {
@@ -253,7 +253,7 @@ func (m *httpMocks) add(name string, mock httpMock) {
 	m.responses[name] = append(m.responses[name], mock)
 }
 
-func tlsCert(ts *testscript.TestScript, neg bool, args []string) {
+func tlsCert(ts *testscript.TestScript, _ bool, args []string) {
 	if len(args) < 2 {
 		ts.Fatalf("! cert command requires '$DIRNAME $NAME' args, got [%s]", strings.Join(args, " "))
 	}

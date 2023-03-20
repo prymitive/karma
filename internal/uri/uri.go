@@ -15,7 +15,7 @@ type Reader interface {
 
 // NewReader creates an instance of URIReader that can handle URI schema
 // for the passed uri string
-func NewReader(uri string, timeout time.Duration, clientTransport http.RoundTripper, headers map[string]string) (Reader, error) {
+func NewReader(uri string, timeout time.Duration, clientTransport http.RoundTripper, _ map[string]string) (Reader, error) {
 	u, err := url.Parse(uri)
 	if err != nil {
 		return nil, err

@@ -33,7 +33,7 @@ func (filter *inhibitedFilter) init(name string, matcher *matcherT, rawText stri
 	}
 }
 
-func (filter *inhibitedFilter) Match(alert *models.Alert, matches int) (isMatch bool) {
+func (filter *inhibitedFilter) Match(alert *models.Alert, _ int) (isMatch bool) {
 	if filter.IsValid {
 		for _, am := range alert.Alertmanager {
 			m := filter.Matcher.Compare(len(am.InhibitedBy) > 0, filter.Value)
@@ -60,7 +60,7 @@ func newInhibitedFilter() FilterT {
 	return &f
 }
 
-func inhibitedAutocomplete(name string, operators []string, alerts []models.Alert) []models.Autocomplete {
+func inhibitedAutocomplete(name string, _ []string, _ []models.Alert) []models.Autocomplete {
 	tokens := map[string]models.Autocomplete{}
 
 	for _, val := range []string{trueValue, falseValue} {

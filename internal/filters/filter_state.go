@@ -25,7 +25,7 @@ func (filter *stateFilter) init(name string, matcher *matcherT, rawText string, 
 	}
 }
 
-func (filter *stateFilter) Match(alert *models.Alert, matches int) bool {
+func (filter *stateFilter) Match(alert *models.Alert, _ int) bool {
 	if filter.IsValid {
 		var isMatch bool
 		for _, am := range alert.Alertmanager {

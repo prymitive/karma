@@ -307,7 +307,7 @@ func TestUrlSecretTest(t *testing.T) {
 }
 
 // FIXME check logged values
-func TestLogValues(t *testing.T) {
+func TestLogValues(_ *testing.T) {
 	_, _ = mockConfigRead()
 	Config.LogValues()
 }
