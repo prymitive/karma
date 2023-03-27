@@ -23,6 +23,7 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version: 1.20.2
+          cache: false
 
       - name: Restore cache
         id: cache-go-modules
@@ -61,6 +62,7 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version: 1.20.2
+          cache: false
 
       - name: Restore cache
         id: cache-go-modules
@@ -98,8 +100,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 19.8.1
-          cache: 'npm'
-          cache-dependency-path: 'ui/package-lock.json'
+          cache: "npm"
+          cache-dependency-path: "ui/package-lock.json"
 
       - name: Test Node JS code
         run: ${{ matrix.env }} make -C ui test-js
@@ -123,8 +125,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 19.8.1
-          cache: 'npm'
-          cache-dependency-path: 'ui/package-lock.json'
+          cache: "npm"
+          cache-dependency-path: "ui/package-lock.json"
 
       - name: Lint Node JS code
         run: make -C ui lint-js
@@ -140,6 +142,7 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version: 1.20.2
+          cache: false
 
       - name: Format Go code
         run: make format-go
@@ -158,8 +161,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 19.8.1
-          cache: 'npm'
-          cache-dependency-path: 'ui/package-lock.json'
+          cache: "npm"
+          cache-dependency-path: "ui/package-lock.json"
 
       - name: Lint Node JS code
         run: make -C ui format
@@ -191,8 +194,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 19.8.1
-          cache: 'npm'
-          cache-dependency-path: 'ui/package-lock.json'
+          cache: "npm"
+          cache-dependency-path: "ui/package-lock.json"
 
       - name: Run npm install
         run: cd ui && npm i
@@ -295,6 +298,7 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version: 1.20.2
+          cache: false
 
       - name: Restore cache
         uses: actions/cache/restore@v3
@@ -346,8 +350,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 19.8.1
-          cache: 'npm'
-          cache-dependency-path: 'ui/package-lock.json'
+          cache: "npm"
+          cache-dependency-path: "ui/package-lock.json"
 
       - name: Diff bundle size
         if: steps.filter.outputs.ui == 'true'
@@ -380,8 +384,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 19.8.1
-          cache: 'npm'
-          cache-dependency-path: 'ui/package-lock.json'
+          cache: "npm"
+          cache-dependency-path: "ui/package-lock.json"
 
       - name: Run Percy
         if: steps.filter.outputs.percy == 'true'
@@ -404,6 +408,7 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version: 1.20.2
+          cache: false
 
       - name: Cache Go
         if: github.event_name != 'pull_request'
@@ -431,8 +436,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 19.8.1
-          cache: 'npm'
-          cache-dependency-path: 'ui/package-lock.json'
+          cache: "npm"
+          cache-dependency-path: "ui/package-lock.json"
 
       - name: Cross compile binaries
         if: github.event_name != 'pull_request'
