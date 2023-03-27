@@ -16,6 +16,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 19.8.1
+          cache: false
 
       - name: Regenerate package-lock.json
         run: make -C ui npm-upgrade
