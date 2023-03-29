@@ -43,7 +43,7 @@ exports[`<AppToasts /> renders UpgradeToastMessage when alertStore.info.upgradeR
         >
           <path
             fill=\\"currentColor\\"
-            d=\\"M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512z\\"
+            d=\\"M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z\\"
           >
           </path>
         </svg>
@@ -160,7 +160,7 @@ exports[`<AppToasts /> renders upstream error toasts for each unhealthy upstream
         >
           <path
             fill=\\"currentColor\\"
-            d=\\"M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512z\\"
+            d=\\"M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z\\"
           >
           </path>
         </svg>
@@ -172,11 +172,11 @@ exports[`<AppToasts /> renders upstream error toasts for each unhealthy upstream
           class=\\"svg-inline--fa fa-exclamation fa-stack-1x text-white\\"
           role=\\"img\\"
           xmlns=\\"http://www.w3.org/2000/svg\\"
-          viewbox=\\"0 0 128 512\\"
+          viewbox=\\"0 0 64 512\\"
         >
           <path
             fill=\\"currentColor\\"
-            d=\\"M72 64c0-17.7-14.3-32-32-32S8 46.3 8 64V320c0 17.7 14.3 32 32 32s32-14.3 32-32V64zM40 480a40 40 0 1 0 0-80 40 40 0 1 0 0 80z\\"
+            d=\\"M64 64c0-17.7-14.3-32-32-32S0 46.3 0 64V320c0 17.7 14.3 32 32 32s32-14.3 32-32V64zM32 480a40 40 0 1 0 0-80 40 40 0 1 0 0 80z\\"
           >
           </path>
         </svg>
@@ -203,11 +203,11 @@ exports[`<AppToasts /> renders upstream error toasts for each unhealthy upstream
             class=\\"svg-inline--fa fa-xmark \\"
             role=\\"img\\"
             xmlns=\\"http://www.w3.org/2000/svg\\"
-            viewbox=\\"0 0 320 512\\"
+            viewbox=\\"0 0 384 512\\"
           >
             <path
               fill=\\"currentColor\\"
-              d=\\"M310.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 210.7 54.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L114.7 256 9.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 301.3 265.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L205.3 256 310.6 150.6z\\"
+              d=\\"M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z\\"
             >
             </path>
           </svg>
@@ -230,7 +230,7 @@ exports[`<AppToasts /> renders upstream error toasts for each unhealthy upstream
         >
           <path
             fill=\\"currentColor\\"
-            d=\\"M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512z\\"
+            d=\\"M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z\\"
           >
           </path>
         </svg>
@@ -242,11 +242,11 @@ exports[`<AppToasts /> renders upstream error toasts for each unhealthy upstream
           class=\\"svg-inline--fa fa-exclamation fa-stack-1x text-white\\"
           role=\\"img\\"
           xmlns=\\"http://www.w3.org/2000/svg\\"
-          viewbox=\\"0 0 128 512\\"
+          viewbox=\\"0 0 64 512\\"
         >
           <path
             fill=\\"currentColor\\"
-            d=\\"M72 64c0-17.7-14.3-32-32-32S8 46.3 8 64V320c0 17.7 14.3 32 32 32s32-14.3 32-32V64zM40 480a40 40 0 1 0 0-80 40 40 0 1 0 0 80z\\"
+            d=\\"M64 64c0-17.7-14.3-32-32-32S0 46.3 0 64V320c0 17.7 14.3 32 32 32s32-14.3 32-32V64zM32 480a40 40 0 1 0 0-80 40 40 0 1 0 0 80z\\"
           >
           </path>
         </svg>
@@ -273,11 +273,11 @@ exports[`<AppToasts /> renders upstream error toasts for each unhealthy upstream
             class=\\"svg-inline--fa fa-xmark \\"
             role=\\"img\\"
             xmlns=\\"http://www.w3.org/2000/svg\\"
-            viewbox=\\"0 0 320 512\\"
+            viewbox=\\"0 0 384 512\\"
           >
             <path
               fill=\\"currentColor\\"
-              d=\\"M310.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 210.7 54.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L114.7 256 9.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 301.3 265.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L205.3 256 310.6 150.6z\\"
+              d=\\"M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z\\"
             >
             </path>
           </svg>
