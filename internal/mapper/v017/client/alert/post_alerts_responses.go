@@ -82,6 +82,11 @@ func (o *PostAlertsOK) IsCode(code int) bool {
 	return code == 200
 }
 
+// Code gets the status code for the post alerts o k response
+func (o *PostAlertsOK) Code() int {
+	return 200
+}
+
 func (o *PostAlertsOK) Error() string {
 	return fmt.Sprintf("[POST /alerts][%d] postAlertsOK ", 200)
 }
@@ -132,6 +137,11 @@ func (o *PostAlertsBadRequest) IsServerError() bool {
 // IsCode returns true when this post alerts bad request response a status code equal to that given
 func (o *PostAlertsBadRequest) IsCode(code int) bool {
 	return code == 400
+}
+
+// Code gets the status code for the post alerts bad request response
+func (o *PostAlertsBadRequest) Code() int {
+	return 400
 }
 
 func (o *PostAlertsBadRequest) Error() string {
@@ -193,6 +203,11 @@ func (o *PostAlertsInternalServerError) IsServerError() bool {
 // IsCode returns true when this post alerts internal server error response a status code equal to that given
 func (o *PostAlertsInternalServerError) IsCode(code int) bool {
 	return code == 500
+}
+
+// Code gets the status code for the post alerts internal server error response
+func (o *PostAlertsInternalServerError) Code() int {
+	return 500
 }
 
 func (o *PostAlertsInternalServerError) Error() string {

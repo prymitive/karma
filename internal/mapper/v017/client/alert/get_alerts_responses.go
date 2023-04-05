@@ -85,6 +85,11 @@ func (o *GetAlertsOK) IsCode(code int) bool {
 	return code == 200
 }
 
+// Code gets the status code for the get alerts o k response
+func (o *GetAlertsOK) Code() int {
+	return 200
+}
+
 func (o *GetAlertsOK) Error() string {
 	return fmt.Sprintf("[GET /alerts][%d] getAlertsOK  %+v", 200, o.Payload)
 }
@@ -146,6 +151,11 @@ func (o *GetAlertsBadRequest) IsCode(code int) bool {
 	return code == 400
 }
 
+// Code gets the status code for the get alerts bad request response
+func (o *GetAlertsBadRequest) Code() int {
+	return 400
+}
+
 func (o *GetAlertsBadRequest) Error() string {
 	return fmt.Sprintf("[GET /alerts][%d] getAlertsBadRequest  %+v", 400, o.Payload)
 }
@@ -205,6 +215,11 @@ func (o *GetAlertsInternalServerError) IsServerError() bool {
 // IsCode returns true when this get alerts internal server error response a status code equal to that given
 func (o *GetAlertsInternalServerError) IsCode(code int) bool {
 	return code == 500
+}
+
+// Code gets the status code for the get alerts internal server error response
+func (o *GetAlertsInternalServerError) Code() int {
+	return 500
 }
 
 func (o *GetAlertsInternalServerError) Error() string {
