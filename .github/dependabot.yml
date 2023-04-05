@@ -9,7 +9,7 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "docker"
-    directory: "/internal/mapper/v017/Dockerfile"
+    directory: "/internal/mapper/v017"
     schedule:
       interval: "daily"
   - package-ecosystem: "gomod"
