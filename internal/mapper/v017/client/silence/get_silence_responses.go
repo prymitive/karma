@@ -85,6 +85,11 @@ func (o *GetSilenceOK) IsCode(code int) bool {
 	return code == 200
 }
 
+// Code gets the status code for the get silence o k response
+func (o *GetSilenceOK) Code() int {
+	return 200
+}
+
 func (o *GetSilenceOK) Error() string {
 	return fmt.Sprintf("[GET /silence/{silenceID}][%d] getSilenceOK  %+v", 200, o.Payload)
 }
@@ -147,6 +152,11 @@ func (o *GetSilenceNotFound) IsCode(code int) bool {
 	return code == 404
 }
 
+// Code gets the status code for the get silence not found response
+func (o *GetSilenceNotFound) Code() int {
+	return 404
+}
+
 func (o *GetSilenceNotFound) Error() string {
 	return fmt.Sprintf("[GET /silence/{silenceID}][%d] getSilenceNotFound ", 404)
 }
@@ -197,6 +207,11 @@ func (o *GetSilenceInternalServerError) IsServerError() bool {
 // IsCode returns true when this get silence internal server error response a status code equal to that given
 func (o *GetSilenceInternalServerError) IsCode(code int) bool {
 	return code == 500
+}
+
+// Code gets the status code for the get silence internal server error response
+func (o *GetSilenceInternalServerError) Code() int {
+	return 500
 }
 
 func (o *GetSilenceInternalServerError) Error() string {

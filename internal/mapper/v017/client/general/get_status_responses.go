@@ -73,6 +73,11 @@ func (o *GetStatusOK) IsCode(code int) bool {
 	return code == 200
 }
 
+// Code gets the status code for the get status o k response
+func (o *GetStatusOK) Code() int {
+	return 200
+}
+
 func (o *GetStatusOK) Error() string {
 	return fmt.Sprintf("[GET /status][%d] getStatusOK  %+v", 200, o.Payload)
 }

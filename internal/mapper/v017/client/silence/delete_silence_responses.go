@@ -76,6 +76,11 @@ func (o *DeleteSilenceOK) IsCode(code int) bool {
 	return code == 200
 }
 
+// Code gets the status code for the delete silence o k response
+func (o *DeleteSilenceOK) Code() int {
+	return 200
+}
+
 func (o *DeleteSilenceOK) Error() string {
 	return fmt.Sprintf("[DELETE /silence/{silenceID}][%d] deleteSilenceOK ", 200)
 }
@@ -126,6 +131,11 @@ func (o *DeleteSilenceInternalServerError) IsServerError() bool {
 // IsCode returns true when this delete silence internal server error response a status code equal to that given
 func (o *DeleteSilenceInternalServerError) IsCode(code int) bool {
 	return code == 500
+}
+
+// Code gets the status code for the delete silence internal server error response
+func (o *DeleteSilenceInternalServerError) Code() int {
+	return 500
 }
 
 func (o *DeleteSilenceInternalServerError) Error() string {
