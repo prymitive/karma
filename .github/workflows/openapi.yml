@@ -36,6 +36,6 @@ jobs:
 
       - name: Enable Pull Request Automerge
         if: steps.cpr.outputs.pull-request-operation == 'created'
-        run: gh pr merge --merge --auto
+        run: gh pr merge --merge --auto openapi-sync
         env:
           GH_TOKEN: ${{ secrets.GH_REPO_TOKEN }}
