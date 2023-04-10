@@ -342,49 +342,49 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                     class=\\"rdp-head_cell\\"
                     aria-label=\\"Sunday\\"
                   >
-                    SU
+                    Su
                   </th>
                   <th
                     scope=\\"col\\"
                     class=\\"rdp-head_cell\\"
                     aria-label=\\"Monday\\"
                   >
-                    MO
+                    Mo
                   </th>
                   <th
                     scope=\\"col\\"
                     class=\\"rdp-head_cell\\"
                     aria-label=\\"Tuesday\\"
                   >
-                    TU
+                    Tu
                   </th>
                   <th
                     scope=\\"col\\"
                     class=\\"rdp-head_cell\\"
                     aria-label=\\"Wednesday\\"
                   >
-                    WE
+                    We
                   </th>
                   <th
                     scope=\\"col\\"
                     class=\\"rdp-head_cell\\"
                     aria-label=\\"Thursday\\"
                   >
-                    TH
+                    Th
                   </th>
                   <th
                     scope=\\"col\\"
                     class=\\"rdp-head_cell\\"
                     aria-label=\\"Friday\\"
                   >
-                    FR
+                    Fr
                   </th>
                   <th
                     scope=\\"col\\"
                     class=\\"rdp-head_cell\\"
                     aria-label=\\"Saturday\\"
                   >
-                    SA
+                    Sa
                   </th>
                 </tr>
               </thead>
@@ -1096,49 +1096,49 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                     class=\\"rdp-head_cell\\"
                     aria-label=\\"Sunday\\"
                   >
-                    SU
+                    Su
                   </th>
                   <th
                     scope=\\"col\\"
                     class=\\"rdp-head_cell\\"
                     aria-label=\\"Monday\\"
                   >
-                    MO
+                    Mo
                   </th>
                   <th
                     scope=\\"col\\"
                     class=\\"rdp-head_cell\\"
                     aria-label=\\"Tuesday\\"
                   >
-                    TU
+                    Tu
                   </th>
                   <th
                     scope=\\"col\\"
                     class=\\"rdp-head_cell\\"
                     aria-label=\\"Wednesday\\"
                   >
-                    WE
+                    We
                   </th>
                   <th
                     scope=\\"col\\"
                     class=\\"rdp-head_cell\\"
                     aria-label=\\"Thursday\\"
                   >
-                    TH
+                    Th
                   </th>
                   <th
                     scope=\\"col\\"
                     class=\\"rdp-head_cell\\"
                     aria-label=\\"Friday\\"
                   >
-                    FR
+                    Fr
                   </th>
                   <th
                     scope=\\"col\\"
                     class=\\"rdp-head_cell\\"
                     aria-label=\\"Saturday\\"
                   >
-                    SA
+                    Sa
                   </th>
                 </tr>
               </thead>
