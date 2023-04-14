@@ -89,16 +89,20 @@ func setupRouter(router *chi.Mux, historyPoller *historyPoller) {
 
 	router.Use(serverStaticFiles(getViewURL("/"), "build"))
 	router.Use(serverStaticFiles(getViewURL("/__test__/"), "mock"))
-	router.Use(cors.Handler(cors.Options{
-		AllowOriginFunc: func(r *http.Request, origin string) bool {
-			return true
-		},
+	corsOptions := cors.Options{
+		AllowedOrigins:   config.Config.Listen.Cors.AllowedOrigins,
 		AllowedMethods:   []string{"GET", "POST", "DELETE"},
 		AllowedHeaders:   []string{"Origin"},
 		ExposedHeaders:   []string{"Content-Length"},
 		AllowCredentials: true,
 		MaxAge:           300,
-	}))
+	}
+	if len(corsOptions.AllowedOrigins) == 0 {
+		corsOptions.AllowOriginFunc = func(r *http.Request, origin string) bool {
+			return true
+		}
+	}
+	router.Use(cors.Handler(corsOptions))
 
 	router.NotFound(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")

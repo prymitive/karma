@@ -132,6 +132,8 @@ listen:
     key: ""
   port: 80
   prefix: /
+  cors:
+    allowedOrigins: []
 log:
   level: info
   format: text

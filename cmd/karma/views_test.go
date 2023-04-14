@@ -1068,15 +1068,43 @@ func TestSilences(t *testing.T) {
 }
 
 func TestCORS(t *testing.T) {
-	mockConfig(t.Setenv)
-	r := testRouter()
-	setupRouter(r, nil)
-	req := httptest.NewRequest("OPTIONS", "/alerts.json", nil)
-	req.Header.Set("Origin", "foo.example.com")
-	resp := httptest.NewRecorder()
-	r.ServeHTTP(resp, req)
-	if resp.Header().Get("Access-Control-Allow-Origin") != "foo.example.com" {
-		t.Errorf("Invalid Access-Control-Allow-Origin value %q, expected 'foo.example.com'", resp.Header().Get("Access-Control-Allow-Origin"))
+	type corsTestCase struct {
+		allowedOrigins []string
+		requestOrigin  string
+		result         string
+	}
+	corsTestCases := []corsTestCase{
+		{
+			allowedOrigins: []string{},
+			requestOrigin:  "foo.example.com",
+			result:         "foo.example.com",
+		},
+		{
+			allowedOrigins: []string{"bar.example.com"},
+			requestOrigin:  "foo.example.com",
+			result:         "",
+		},
+		{
+			allowedOrigins: []string{"bar.example.com"},
+			requestOrigin:  "bar.example.com",
+			result:         "bar.example.com",
+		},
+	}
+	for _, testCase := range corsTestCases {
+		mockConfig(t.Setenv)
+		defer func() {
+			config.Config.Listen.Cors.AllowedOrigins = nil
+		}()
+		config.Config.Listen.Cors.AllowedOrigins = testCase.allowedOrigins
+		r := testRouter()
+		setupRouter(r, nil)
+		req := httptest.NewRequest("OPTIONS", "/alerts.json", nil)
+		req.Header.Set("Origin", testCase.requestOrigin)
+		resp := httptest.NewRecorder()
+		r.ServeHTTP(resp, req)
+		if resp.Header().Get("Access-Control-Allow-Origin") != testCase.result {
+			t.Errorf("Invalid Access-Control-Allow-Origin value %q, expected '%q'", resp.Header().Get("Access-Control-Allow-Origin"), testCase.result)
+		}
 	}
 }
 

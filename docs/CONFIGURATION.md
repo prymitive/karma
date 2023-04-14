@@ -1052,6 +1052,8 @@ listen:
   tls:
     cert: string
     key: string
+  cors:
+    allowedOrigins: list of strings
 ```
 
 - `address` - Hostname or IP to listen on.
@@ -1063,6 +1065,8 @@ listen:
   reverse proxy with other services on the same IP but different URL root.
 - `tls:cert` - path to a TLS certificate, enables listening on HTTPS instead of HTTP,
 - `tls:key` - path to a TLS key, required when `tls.cert` is set
+- `cors:allowedOrigins` - List of origins a cross-domain request can be executed
+  from. An empty list means all origins are allowed.
 
 Example where karma would listen for HTTP requests on `http://1.2.3.4:80/karma/`
 
@@ -1094,6 +1098,8 @@ listen:
   tls:
     cert: ""
     key: ""
+  cors:
+    allowedOrigins: []
 ```
 
 ### Log

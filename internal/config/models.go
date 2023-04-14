@@ -182,6 +182,9 @@ type configSchema struct {
 		}
 		Port   int
 		Prefix string
+		Cors   struct {
+			AllowedOrigins []string `yaml:"allowedOrigins" koanf:"allowedOrigins"`
+		}
 	}
 	Log struct {
 		Level     string
