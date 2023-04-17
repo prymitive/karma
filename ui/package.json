@@ -63,7 +63,7 @@
     "@testing-library/user-event": "14.4.3",
     "@types/body-scroll-lock": "3.1.0",
     "@types/bricks.js": "1.8.2",
-    "@types/enzyme": "3.10.12",
+    "@types/enzyme": "3.10.13",
     "@types/fontfaceobserver": "2.1.0",
     "@types/jest": "29.5.0",
     "@types/lodash.debounce": "4.0.7",
