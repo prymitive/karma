@@ -105,7 +105,7 @@ export const SilenceDelete: FC<{
 }) => {
   const [maxHeight, setMaxHeight] = useState<number | null>(null);
 
-  const { x, y, reference, floating, strategy } = useFloating({
+  const { x, y, refs, strategy } = useFloating({
     placement: "bottom-end",
     middleware: [
       shift(),
@@ -149,14 +149,14 @@ export const SilenceDelete: FC<{
         <button
           type="button"
           className="btn btn-danger dropdown-toggle border-0"
-          ref={reference}
+          ref={refs.setReference}
           onClick={toggle}
         ></button>
         <DropdownSlide in={isOpen} unmountOnExit>
           <SilenceDeleteMenu
             x={x}
             y={y}
-            floating={floating}
+            floating={refs.setFloating}
             strategy={strategy}
             maxHeight={maxHeight}
             children={children}

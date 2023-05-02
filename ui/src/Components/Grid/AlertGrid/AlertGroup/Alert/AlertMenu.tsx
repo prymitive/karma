@@ -180,7 +180,7 @@ const AlertMenu: FC<{
     const rootRef = useRef<HTMLSpanElement | null>(null);
     useOnClickOutside(rootRef, hide, !isHidden);
 
-    const { x, y, reference, floating, strategy } = useFloating({
+    const { x, y, refs, strategy } = useFloating({
       placement: "bottom-start",
       middleware: [shift(), offset(5)],
     });
@@ -189,7 +189,7 @@ const AlertMenu: FC<{
       <span ref={rootRef}>
         <span
           className="components-label components-label-with-hover px-1 me-1 badge bg-secondary cursor-pointer"
-          ref={reference}
+          ref={refs.setReference}
           onClick={toggle}
           data-toggle="dropdown"
         >
@@ -209,7 +209,7 @@ const AlertMenu: FC<{
             afterClick={hide}
             x={x}
             y={y}
-            floating={floating}
+            floating={refs.setFloating}
             strategy={strategy}
           />
         </DropdownSlide>

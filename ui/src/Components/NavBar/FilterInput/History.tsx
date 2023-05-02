@@ -196,7 +196,7 @@ const History: FC<{
   const hide = useCallback(() => setIsVisible(false), []);
   const toggle = useCallback(() => setIsVisible(!isVisible), [isVisible]);
 
-  const { x, y, reference, floating, strategy } = useFloating({
+  const { x, y, refs, strategy } = useFloating({
     placement: "bottom-end",
     middleware: [
       shift(),
@@ -259,7 +259,7 @@ const History: FC<{
       className="input-group-text border-0 rounded-0 bg-inherit px-0"
     >
       <button
-        ref={reference}
+        ref={refs.setReference}
         onClick={toggle}
         className="btn border-0 rounded-0 bg-inherit cursor-pointer components-navbar-history px-2 py-0 components-navbar-icon"
         type="button"
@@ -280,7 +280,7 @@ const History: FC<{
           afterClick={hide}
           x={x}
           y={y}
-          floating={floating}
+          floating={refs.setFloating}
           strategy={strategy}
           maxHeight={maxHeight}
         />
