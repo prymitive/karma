@@ -12,7 +12,7 @@ const TooltipWrapper: FC<{
   children: ReactNode;
   className?: string;
 }> = ({ title, children, className }) => {
-  const { x, y, reference, floating, strategy } = useFloating({
+  const { x, y, refs, strategy } = useFloating({
     placement: "top",
     middleware: [shift(), flip()],
   });
@@ -58,7 +58,7 @@ const TooltipWrapper: FC<{
         onTouchStart={supportsTouch ? showTooltip : undefined}
         onTouchCancel={supportsTouch ? hideTooltip : undefined}
         onTouchEnd={supportsTouch ? hideTooltip : undefined}
-        ref={reference}
+        ref={refs.setReference}
         className={`${className ? className : ""} tooltip-trigger`}
       >
         {children}
@@ -75,7 +75,7 @@ const TooltipWrapper: FC<{
             >
               <div
                 className="tooltip tooltip-inner"
-                ref={floating}
+                ref={refs.setFloating}
                 style={{
                   position: strategy,
                   top: y ?? "",
