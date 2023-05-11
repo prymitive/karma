@@ -22,7 +22,6 @@ jobs:
       - name: Synchronise Node version in actions
         run: |
           sed -i -E s/'([\ \t]+)node-version: .+'/'\1node-version: ${{ env.NODE_VERSION }}'/g .github/workflows/*
-          sed -i -E s/'([\ \t]+)"node": .+'/'\1"node": "${{ env.NODE_VERSION }}"'/g ui/package.json
 
       - name: Set up Node JS
         uses: actions/setup-node@v3
