@@ -51,8 +51,6 @@
     "typeface-open-sans": "1.1.13"
   },
   "devDependencies": {
-    "@percy/cli": "1.24.0",
-    "@percy/storybook": "4.3.6",
     "@storybook/builder-webpack5": "6.5.16",
     "@storybook/manager-webpack5": "6.5.16",
     "@storybook/preset-create-react-app": "4.1.2",
@@ -101,7 +99,6 @@
     "postbuild": "make backup-css && purgecss -c purgecss.config.js -o build/static/css",
     "test": "react-scripts test",
     "storybook": "start-storybook",
-    "snapshot": "build-storybook --quiet && percy storybook --verbose ./storybook-static",
     "analyze": "npx source-map-explorer 'build/static/js/*.js'"
   },
   "jest": {
@@ -123,16 +120,5 @@
     "iOS >= 9",
     "Safari >= 10",
     "Android >= 4.4"
-  ],
-  "percy": {
-    "version": 2,
-    "snapshot": {
-      "widths": [
-        700,
-        1280
-      ],
-      "min-height": 200,
-      "enable-javascript": true
-    }
-  }
+  ]
 }

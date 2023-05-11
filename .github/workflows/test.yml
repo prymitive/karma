@@ -360,40 +360,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PULL_REQUEST_NUMBER: ${{ github.event.number }}
 
-  percy:
-    name: Percy UI snapshots
-    if: github.event_name != 'release' && github.event.pull_request.head.repo.full_name == github.event.pull_request.base.repo.full_name
-    needs: stage-test-and-lint
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v3
-
-      - name: Get modified files
-        uses: dorny/paths-filter@v2.11.1
-        id: filter
-        with:
-          list-files: "shell"
-          filters: |
-            percy:
-              - 'ui/src/**/*'
-              - 'ui/.storybook/*'
-              - 'ui/package.json'
-
-      - name: Set up Node JS
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20.1.0
-          cache: "npm"
-          cache-dependency-path: "ui/package-lock.json"
-
-      - name: Run Percy
-        if: steps.filter.outputs.percy == 'true'
-        run: make -C ui test-percy
-        env:
-          NODE_ENV: test
-          PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
-
   cross-compile:
     name: Cross compile binaries
     needs: stage-test-and-lint
