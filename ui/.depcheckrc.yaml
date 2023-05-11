@@ -11,8 +11,5 @@ ignores:
   # devDeps
   - "@types/jest"
   - "@types/node"
-  - "@storybook/preset-create-react-app"
-  - "@storybook/builder-webpack5"
-  - "@storybook/manager-webpack5"
   - "purgecss"
   - "eslint-plugin-jest"

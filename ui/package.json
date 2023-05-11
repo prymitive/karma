@@ -3,10 +3,6 @@
   "version": "0.0.1",
   "license": "Apache-2.0",
   "private": true,
-  "engines": {
-    "npm": ">=9.0",
-    "node": "20.1.0"
-  },
   "dependencies": {
     "@floating-ui/react-dom": "2.0.0",
     "@fortawesome/fontawesome-svg-core": "6.4.0",
@@ -51,10 +47,6 @@
     "typeface-open-sans": "1.1.13"
   },
   "devDependencies": {
-    "@storybook/builder-webpack5": "6.5.16",
-    "@storybook/manager-webpack5": "6.5.16",
-    "@storybook/preset-create-react-app": "4.1.2",
-    "@storybook/react": "6.5.16",
     "@testing-library/jest-dom": "5.16.5",
     "@testing-library/react": "12.1.5",
     "@testing-library/react-hooks": "8.0.1",
@@ -85,7 +77,6 @@
     "purgecss": "5.0.0",
     "react-scripts": "5.0.1",
     "sass": "1.62.1",
-    "timemachine": "0.3.2",
     "typescript": "4.9.5"
   },
   "overrides": {
@@ -98,7 +89,6 @@
     "build": "react-scripts build",
     "postbuild": "make backup-css && purgecss -c purgecss.config.js -o build/static/css",
     "test": "react-scripts test",
-    "storybook": "start-storybook",
     "analyze": "npx source-map-explorer 'build/static/js/*.js'"
   },
   "jest": {
