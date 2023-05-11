@@ -34,12 +34,6 @@ build: build/index.html
 test-js: $(NODE_PATH)/react-scripts $(NODE_PATH)/jest
 	CI=true NODE_OPTIONS="--unhandled-rejections=strict" npm test -- --coverage
 
-.PHONY: test-percy
-test-percy: $(NODE_PATH)/react-scripts $(NODE_PATH)/build-storybook $(NODE_PATH)/percy-storybook
-	ln -s ui/package.json ../package.json
-	CI=true npm run snapshot
-	rm -f ../package.json
-
 .PHONY: lint-js
 lint-js: $(NODE_PATH)/eslint
 	@rm -fr node_modules/.cache/eslint-loader
