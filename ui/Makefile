@@ -70,3 +70,4 @@ build.pre/css.diff: build purgecss.config.js
 npm-upgrade:
 	rm -fr node_modules package-lock.json
 	npm install
+	npm install
