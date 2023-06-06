@@ -13,3 +13,4 @@ ignores:
   - "@types/node"
   - "purgecss"
   - "eslint-plugin-jest"
+  - "node-fetch"
