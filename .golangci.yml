@@ -28,10 +28,13 @@ issues:
 
 linters-settings:
   depguard:
-    list-type: blacklist
-    include-go-root: true
-    packages-with-error-message:
-      - io/ioutil: "Use corresponding 'os' or 'io' functions instead."
+    rules:
+      main:
+        files:
+          - '$all'
+        deny:
+          - pkg: "io/ioutil"
+            desc: "Use corresponding 'os' or 'io' functions instead."
   goimports:
     local-prefixes: github.com/prymitive/karma
   gofumpt:
