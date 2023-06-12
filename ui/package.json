@@ -4,7 +4,7 @@
   "license": "Apache-2.0",
   "private": true,
   "dependencies": {
-    "@floating-ui/react-dom": "2.0.0",
+    "@floating-ui/react-dom": "2.0.1",
     "@fortawesome/fontawesome-svg-core": "6.4.0",
     "@fortawesome/free-regular-svg-icons": "6.4.0",
     "@fortawesome/free-solid-svg-icons": "6.4.0",
