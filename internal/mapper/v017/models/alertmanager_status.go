@@ -161,6 +161,7 @@ func (m *AlertmanagerStatus) ContextValidate(ctx context.Context, formats strfmt
 func (m *AlertmanagerStatus) contextValidateCluster(ctx context.Context, formats strfmt.Registry) error {
 
 	if m.Cluster != nil {
+
 		if err := m.Cluster.ContextValidate(ctx, formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
 				return ve.ValidateName("cluster")
@@ -177,6 +178,7 @@ func (m *AlertmanagerStatus) contextValidateCluster(ctx context.Context, formats
 func (m *AlertmanagerStatus) contextValidateConfig(ctx context.Context, formats strfmt.Registry) error {
 
 	if m.Config != nil {
+
 		if err := m.Config.ContextValidate(ctx, formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
 				return ve.ValidateName("config")
@@ -193,6 +195,7 @@ func (m *AlertmanagerStatus) contextValidateConfig(ctx context.Context, formats 
 func (m *AlertmanagerStatus) contextValidateVersionInfo(ctx context.Context, formats strfmt.Registry) error {
 
 	if m.VersionInfo != nil {
+
 		if err := m.VersionInfo.ContextValidate(ctx, formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
 				return ve.ValidateName("versionInfo")
