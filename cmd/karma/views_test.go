@@ -1607,7 +1607,7 @@ func TestUpstreamStatus(t *testing.T) {
 							"X-Bar": "Foo",
 						},
 						CORSCredentials: "include",
-						Error:           `^response status code does not match any response statuses defined for this endpoint in the swagger spec \(status 404\): .+`,
+						Error:           `[GET /status] getStatus (status 404): {}`,
 						Version:         "",
 						Cluster:         "default",
 						ClusterMembers:  []string{"default"},
