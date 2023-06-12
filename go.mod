@@ -60,7 +60,7 @@ require (
 	github.com/prometheus/client_model v0.4.0 // indirect
 	github.com/prometheus/procfs v0.10.1 // indirect
 	github.com/sergi/go-diff v1.2.0 // indirect
-	go.mongodb.org/mongo-driver v1.11.6 // indirect
+	go.mongodb.org/mongo-driver v1.11.7 // indirect
 	go.opentelemetry.io/otel v1.16.0 // indirect
 	go.opentelemetry.io/otel/metric v1.16.0 // indirect
 	go.opentelemetry.io/otel/trace v1.16.0 // indirect
