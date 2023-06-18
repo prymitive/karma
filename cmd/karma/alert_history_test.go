@@ -168,7 +168,7 @@ func TestAlertHistory(t *testing.T) {
 		{
 			mocks: []mock{
 				{
-					method: "GET",
+					method: "POST",
 					uri:    regexp.MustCompile("^http://localhost:9092/api/v1/labels"),
 					responder: httpmock.NewJsonResponderOrPanic(200, prometheusAPIV1Labels{
 						Status: "success",
@@ -213,7 +213,7 @@ func TestAlertHistory(t *testing.T) {
 		{
 			mocks: []mock{
 				{
-					method: "GET",
+					method: "POST",
 					uri:    regexp.MustCompile("^http://localhost:9093/api/v1/labels"),
 					responder: httpmock.NewJsonResponderOrPanic(200, prometheusAPIV1Labels{
 						Status: "success",
@@ -248,7 +248,7 @@ func TestAlertHistory(t *testing.T) {
 		{
 			mocks: []mock{
 				{
-					method: "GET",
+					method: "POST",
 					uri:    regexp.MustCompile("^http://localhost:909[4-6]/api/v1/labels"),
 					responder: httpmock.NewJsonResponderOrPanic(200, prometheusAPIV1Labels{
 						Status: "error",
@@ -279,7 +279,7 @@ func TestAlertHistory(t *testing.T) {
 		{
 			mocks: []mock{
 				{
-					method: "GET",
+					method: "POST",
 					uri:    regexp.MustCompile("^http://localhost:909[7-9]/api/v1/labels"),
 					responder: httpmock.NewJsonResponderOrPanic(200, prometheusAPIV1Labels{
 						Status: "success",
@@ -350,7 +350,7 @@ func TestAlertHistory(t *testing.T) {
 		{
 			mocks: []mock{
 				{
-					method: "GET",
+					method: "POST",
 					uri:    regexp.MustCompile("^http://localhost:9100/api/v1/labels"),
 					responder: httpmock.NewJsonResponderOrPanic(200, prometheusAPIV1Labels{
 						Status: "success",
@@ -409,7 +409,7 @@ func TestAlertHistory(t *testing.T) {
 		{
 			mocks: []mock{
 				{
-					method: "GET",
+					method: "POST",
 					uri:    regexp.MustCompile("^http://localhost:9100/api/v1/labels"),
 					responder: httpmock.NewJsonResponderOrPanic(200, prometheusAPIV1Labels{
 						Status: "success",
@@ -468,7 +468,7 @@ func TestAlertHistory(t *testing.T) {
 		{
 			mocks: []mock{
 				{
-					method: "GET",
+					method: "POST",
 					uri:    regexp.MustCompile("^http://localhost:9100/api/v1/labels"),
 					responder: httpmock.NewJsonResponderOrPanic(200, prometheusAPIV1Labels{
 						Status: "success",
