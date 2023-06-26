@@ -15,7 +15,7 @@ require (
 	github.com/go-openapi/swag v0.22.4
 	github.com/go-openapi/validate v0.22.1
 	github.com/google/go-cmp v0.5.9
-	github.com/hashicorp/golang-lru/v2 v2.0.3
+	github.com/hashicorp/golang-lru/v2 v2.0.4
 	github.com/jarcoal/httpmock v1.3.0
 	github.com/klauspost/compress v1.16.6
 	github.com/knadh/koanf v1.5.0
