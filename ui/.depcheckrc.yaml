@@ -14,3 +14,4 @@ ignores:
   - "purgecss"
   - "eslint-plugin-jest"
   - "node-fetch"
+  - "@babel/plugin-proposal-private-property-in-object"
