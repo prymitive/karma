@@ -24,7 +24,7 @@ require (
 	github.com/prometheus/client_golang v1.16.0
 	github.com/prometheus/common v0.44.0
 	github.com/prymitive/randomcolor v0.0.0-20210705210145-26c3401033a6
-	github.com/rogpeppe/go-internal v1.10.0
+	github.com/rogpeppe/go-internal v1.11.0
 	github.com/rs/zerolog v1.29.1
 	github.com/spf13/pflag v1.0.5
 	go.uber.org/automaxprocs v1.5.2
@@ -65,6 +65,7 @@ require (
 	go.opentelemetry.io/otel/metric v1.16.0 // indirect
 	go.opentelemetry.io/otel/trace v1.16.0 // indirect
 	golang.org/x/sys v0.9.0 // indirect
+	golang.org/x/tools v0.1.12 // indirect
 	google.golang.org/protobuf v1.31.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
