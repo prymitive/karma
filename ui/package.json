@@ -56,7 +56,7 @@
     "@types/bricks.js": "1.8.2",
     "@types/enzyme": "3.10.13",
     "@types/fontfaceobserver": "2.1.0",
-    "@types/jest": "29.5.2",
+    "@types/jest": "29.5.3",
     "@types/lodash.debounce": "4.0.7",
     "@types/lodash.merge": "4.6.7",
     "@types/lodash.throttle": "4.1.7",
