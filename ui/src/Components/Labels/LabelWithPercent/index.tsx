@@ -31,15 +31,15 @@ const LabelWithPercent: FC<{
 
       alertStore.filters.replaceFilter(
         FormatQuery(name, operators[1], value),
-        FormatQuery(name, operators[0], value)
+        FormatQuery(name, operators[0], value),
       );
     },
-    [alertStore.filters, name, value]
+    [alertStore.filters, name, value],
   );
 
   const removeFromFilters = () => {
     alertStore.filters.removeFilter(
-      FormatQuery(name, QueryOperators.Equal, value)
+      FormatQuery(name, QueryOperators.Equal, value),
     );
   };
 
@@ -47,7 +47,7 @@ const LabelWithPercent: FC<{
     alertStore,
     name,
     value,
-    "components-label-with-hover mb-0 ps-0 text-start"
+    "components-label-with-hover mb-0 ps-0 text-start",
   );
 
   const progressBarBg =

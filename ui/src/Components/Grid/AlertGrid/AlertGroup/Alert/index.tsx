@@ -76,9 +76,9 @@ const Alert: FC<{
                 !(
                   group.shared.silences[am.cluster] &&
                   group.shared.silences[am.cluster].includes(silenceID)
-                )
-            )
-          )
+                ),
+            ),
+          ),
         ),
       };
     }
@@ -155,7 +155,7 @@ const Alert: FC<{
             cluster={cluster}
             silenceID={silenceID}
           />
-        ))
+        )),
       )}
     </li>
   );

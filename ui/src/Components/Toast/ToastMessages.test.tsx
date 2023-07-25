@@ -15,7 +15,7 @@ beforeEach(() => {
 describe("<ToastMessage />", () => {
   it("matches snapshot", () => {
     const tree = mount(
-      <ToastMessage title="title string" message={<div>Div Message</div>} />
+      <ToastMessage title="title string" message={<div>Div Message</div>} />,
     );
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });

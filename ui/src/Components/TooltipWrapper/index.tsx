@@ -85,7 +85,7 @@ const TooltipWrapper: FC<{
                 {title}
               </div>
             </CSSTransition>,
-            document.body
+            document.body,
           )
         : null}
     </>

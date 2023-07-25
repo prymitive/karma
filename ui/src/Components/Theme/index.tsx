@@ -36,7 +36,7 @@ const Placeholder = () => {
         }}
       />
     </div>,
-    document.body
+    document.body,
   );
 };
 

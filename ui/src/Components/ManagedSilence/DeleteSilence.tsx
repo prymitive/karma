@@ -56,7 +56,7 @@ const DeleteResult: FC<{
   id: string;
 }> = ({ alertStore, cluster, id }) => {
   const [currentTime, setCurrentTime] = useState<number>(
-    Math.floor(Date.now())
+    Math.floor(Date.now()),
   );
 
   const am = alertStore.data.readWriteAlertmanagers
@@ -71,7 +71,7 @@ const DeleteResult: FC<{
   const { error, isDeleting } = useFetchDelete(
     `${am.uri}/api/v2/silence/${id}`,
     deleteFetchOptions,
-    [currentTime]
+    [currentTime],
   );
 
   return (
@@ -138,7 +138,7 @@ const DeleteSilenceModalContent: FC<{
                 FormatQuery(
                   StaticLabels.SilencedBy,
                   QueryOperators.Equal,
-                  silence.id
+                  silence.id,
                 ),
               ]}
               title="Affected alerts"

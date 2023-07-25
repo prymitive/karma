@@ -35,7 +35,7 @@ const onSilenceClick = (
   alertStore: AlertStore,
   silenceFormStore: SilenceFormStore,
   group: APIAlertGroupT,
-  alert: APIAlertT
+  alert: APIAlertT,
 ) => {
   const clusters: { [cluster: string]: string[] } = {};
   Object.entries(alertStore.data.clustersWithoutReadOnly).forEach(
@@ -43,7 +43,7 @@ const onSilenceClick = (
       if (alert.alertmanager.map((am) => am.cluster).includes(cluster)) {
         clusters[cluster] = members;
       }
-    }
+    },
   );
 
   silenceFormStore.data.resetProgress();
@@ -51,7 +51,7 @@ const onSilenceClick = (
     group,
     alertStore.settings.values.silenceForm.strip.labels,
     AlertmanagerClustersToOption(clusters),
-    [alert]
+    [alert],
   );
   silenceFormStore.tab.setTab("editor");
   silenceFormStore.toggle.show();
@@ -215,7 +215,7 @@ const AlertMenu: FC<{
         </DropdownSlide>
       </span>
     );
-  }
+  },
 );
 
 export { AlertMenu, MenuContent };

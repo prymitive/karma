@@ -61,7 +61,7 @@ const MountedSilenceDetails = () => {
       silence={silence}
       cluster={cluster}
       onEditSilence={MockEditSilence}
-    />
+    />,
   );
 };
 
@@ -84,7 +84,7 @@ describe("<SilenceDetails />", () => {
     const tree = MountedSilenceDetails();
     const link = tree.find("a");
     expect(link.props().href).toBe(
-      "http://example.com/#/silences/04d37636-2350-4878-b382-e0b50353230f"
+      "http://example.com/#/silences/04d37636-2350-4878-b382-e0b50353230f",
     );
   });
 

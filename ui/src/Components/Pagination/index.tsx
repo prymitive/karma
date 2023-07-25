@@ -66,7 +66,7 @@ const PageSelect: FC<{
       setPageCallback(page);
     },
     {},
-    [activePage, setActivePage, setPageCallback]
+    [activePage, setActivePage, setPageCallback],
   );
 
   useHotkeys(
@@ -77,7 +77,7 @@ const PageSelect: FC<{
       setPageCallback(page);
     },
     {},
-    [activePage, totalPages, setActivePage, setPageCallback]
+    [activePage, totalPages, setActivePage, setPageCallback],
   );
 
   return (

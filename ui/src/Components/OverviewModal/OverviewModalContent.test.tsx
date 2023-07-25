@@ -25,7 +25,7 @@ const MountedOverviewModalContent = () =>
   mount(
     <span>
       <OverviewModalContent alertStore={alertStore} onHide={onHide} />
-    </span>
+    </span>,
   );
 
 describe("<OverviewModalContent />", () => {

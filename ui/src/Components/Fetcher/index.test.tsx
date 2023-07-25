@@ -70,7 +70,7 @@ describe("<Fetcher />", () => {
     expect(fetchSpy).toHaveBeenCalledTimes(1);
 
     jest.setSystemTime(
-      new Date(Date.UTC(2000, 1, 1, 0, 0, 0)).getTime() + 3 * 1000
+      new Date(Date.UTC(2000, 1, 1, 0, 0, 0)).getTime() + 3 * 1000,
     );
     act(() => {
       jest.runOnlyPendingTimers();
@@ -80,7 +80,7 @@ describe("<Fetcher />", () => {
     settingsStore.fetchConfig.setInterval(600);
 
     jest.setSystemTime(
-      new Date(Date.UTC(2000, 1, 1, 0, 0, 0)).getTime() + 6 * 1000
+      new Date(Date.UTC(2000, 1, 1, 0, 0, 0)).getTime() + 6 * 1000,
     );
     act(() => {
       jest.runOnlyPendingTimers();
@@ -88,7 +88,7 @@ describe("<Fetcher />", () => {
     expect(fetchSpy).toHaveBeenCalledTimes(2);
 
     jest.setSystemTime(
-      new Date(Date.UTC(2000, 1, 1, 0, 0, 0)).getTime() + 38 * 1000
+      new Date(Date.UTC(2000, 1, 1, 0, 0, 0)).getTime() + 38 * 1000,
     );
     act(() => {
       jest.runOnlyPendingTimers();
@@ -96,7 +96,7 @@ describe("<Fetcher />", () => {
     expect(fetchSpy).toHaveBeenCalledTimes(2);
 
     jest.setSystemTime(
-      new Date(Date.UTC(2000, 1, 1, 0, 0, 0)).getTime() + 100 * 1000
+      new Date(Date.UTC(2000, 1, 1, 0, 0, 0)).getTime() + 100 * 1000,
     );
     act(() => {
       jest.runOnlyPendingTimers();
@@ -104,7 +104,7 @@ describe("<Fetcher />", () => {
     expect(fetchSpy).toHaveBeenCalledTimes(2);
 
     jest.setSystemTime(
-      new Date(Date.UTC(2000, 1, 1, 0, 0, 0)).getTime() + 702 * 1000
+      new Date(Date.UTC(2000, 1, 1, 0, 0, 0)).getTime() + 702 * 1000,
     );
     act(() => {
       jest.runOnlyPendingTimers();
@@ -122,7 +122,7 @@ describe("<Fetcher />", () => {
     MockEmptyAPIResponseWithoutFilters();
     const fetchSpy = jest.spyOn(alertStore, "fetchWithThrottle");
     const tree = mount(
-      <Fetcher alertStore={alertStore} settingsStore={settingsStore} />
+      <Fetcher alertStore={alertStore} settingsStore={settingsStore} />,
     );
     alertStore.filters.setFilterValues([]);
     tree.setProps({});
@@ -134,7 +134,7 @@ describe("<Fetcher />", () => {
     expect(fetchSpy).toHaveBeenCalledTimes(1);
 
     jest.setSystemTime(
-      new Date(Date.UTC(2000, 1, 1, 0, 0, 0)).getTime() + 62 * 1000
+      new Date(Date.UTC(2000, 1, 1, 0, 0, 0)).getTime() + 62 * 1000,
     );
     act(() => {
       jest.runOnlyPendingTimers();
@@ -142,7 +142,7 @@ describe("<Fetcher />", () => {
     expect(fetchSpy).toHaveBeenCalledTimes(2);
 
     jest.setSystemTime(
-      new Date(Date.UTC(2000, 1, 1, 0, 0, 0)).getTime() + 124 * 1000
+      new Date(Date.UTC(2000, 1, 1, 0, 0, 0)).getTime() + 124 * 1000,
     );
     act(() => {
       jest.runOnlyPendingTimers();
@@ -150,7 +150,7 @@ describe("<Fetcher />", () => {
     expect(fetchSpy).toHaveBeenCalledTimes(3);
 
     jest.setSystemTime(
-      new Date(Date.UTC(2000, 1, 1, 0, 0, 0)).getTime() + 186 * 1000
+      new Date(Date.UTC(2000, 1, 1, 0, 0, 0)).getTime() + 186 * 1000,
     );
     act(() => {
       jest.runOnlyPendingTimers();
@@ -180,7 +180,7 @@ describe("<Fetcher />", () => {
       false,
       {},
       5,
-      {}
+      {},
     );
   });
 
@@ -198,7 +198,7 @@ describe("<Fetcher />", () => {
       false,
       {},
       5,
-      {}
+      {},
     );
   });
 
@@ -216,7 +216,7 @@ describe("<Fetcher />", () => {
       false,
       {},
       5,
-      {}
+      {},
     );
   });
 
@@ -234,7 +234,7 @@ describe("<Fetcher />", () => {
       true,
       {},
       5,
-      {}
+      {},
     );
   });
 
@@ -253,7 +253,7 @@ describe("<Fetcher />", () => {
       false,
       {},
       5,
-      {}
+      {},
     );
   });
 
@@ -272,7 +272,7 @@ describe("<Fetcher />", () => {
       true,
       {},
       5,
-      {}
+      {},
     );
   });
 
@@ -291,7 +291,7 @@ describe("<Fetcher />", () => {
       false,
       {},
       5,
-      {}
+      {},
     );
   });
 
@@ -310,7 +310,7 @@ describe("<Fetcher />", () => {
       false,
       {},
       5,
-      {}
+      {},
     );
   });
 
@@ -329,7 +329,7 @@ describe("<Fetcher />", () => {
       false,
       {},
       5,
-      {}
+      {},
     );
   });
 
@@ -360,13 +360,13 @@ describe("<Fetcher />", () => {
       false,
       { bar: 5 },
       5,
-      {}
+      {},
     );
   });
 
   it("internal timer is null after unmount", () => {
     const tree = mount(
-      <Fetcher alertStore={alertStore} settingsStore={settingsStore} />
+      <Fetcher alertStore={alertStore} settingsStore={settingsStore} />,
     );
     expect(fetchSpy).toHaveBeenCalledTimes(1);
 
@@ -377,7 +377,7 @@ describe("<Fetcher />", () => {
 
     act(() => {
       settingsStore.gridConfig.setSortReverse(
-        !settingsStore.gridConfig.config.reverseSort
+        !settingsStore.gridConfig.config.reverseSort,
       );
     });
     expect(fetchSpy).toHaveBeenCalledTimes(1);
@@ -397,7 +397,7 @@ describe("<Fetcher />", () => {
     alertStore.status.pause();
     mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     settingsStore.gridConfig.setSortReverse(
-      !settingsStore.gridConfig.config.reverseSort
+      !settingsStore.gridConfig.config.reverseSort,
     );
     expect(fetchSpy).toHaveBeenCalledTimes(0);
   });
@@ -407,7 +407,7 @@ describe("<Fetcher />", () => {
     mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     alertStore.status.resume();
     settingsStore.gridConfig.setSortReverse(
-      !settingsStore.gridConfig.config.reverseSort
+      !settingsStore.gridConfig.config.reverseSort,
     );
     act(() => {
       jest.runOnlyPendingTimers();
@@ -420,7 +420,7 @@ describe("<Fetcher />", () => {
     mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     alertStore.status.resume();
     jest.setSystemTime(
-      new Date(Date.UTC(2000, 1, 1, 0, 0, 0)).getTime() + 2 * 1000
+      new Date(Date.UTC(2000, 1, 1, 0, 0, 0)).getTime() + 2 * 1000,
     );
     act(() => {
       jest.runOnlyPendingTimers();
@@ -432,7 +432,7 @@ describe("<Fetcher />", () => {
 describe("<Fetcher /> children", () => {
   it("renders Dots when countdown is in progress", () => {
     const tree = mount(
-      <Fetcher alertStore={alertStore} settingsStore={settingsStore} />
+      <Fetcher alertStore={alertStore} settingsStore={settingsStore} />,
     );
     expect(tree.find("div.components-fetcher")).toHaveLength(1);
   });
@@ -442,14 +442,14 @@ describe("<Fetcher /> children", () => {
       alertStore.info.setUpgradeNeeded(true);
     });
     const tree = mount(
-      <Fetcher alertStore={alertStore} settingsStore={settingsStore} />
+      <Fetcher alertStore={alertStore} settingsStore={settingsStore} />,
     );
     expect(tree.find("div.navbar-brand").children()).toHaveLength(0);
   });
 
   it("renders PauseButton when paused", () => {
     const tree = mount(
-      <Fetcher alertStore={alertStore} settingsStore={settingsStore} />
+      <Fetcher alertStore={alertStore} settingsStore={settingsStore} />,
     );
     act(() => {
       alertStore.status.pause();
@@ -459,7 +459,7 @@ describe("<Fetcher /> children", () => {
 
   it("renders PauseButton when paused and hovered", () => {
     const tree = mount(
-      <Fetcher alertStore={alertStore} settingsStore={settingsStore} />
+      <Fetcher alertStore={alertStore} settingsStore={settingsStore} />,
     );
     act(() => {
       alertStore.status.pause();
@@ -475,7 +475,7 @@ describe("<Fetcher /> children", () => {
 
   it("renders PlayButton when hovered", () => {
     const tree = mount(
-      <Fetcher alertStore={alertStore} settingsStore={settingsStore} />
+      <Fetcher alertStore={alertStore} settingsStore={settingsStore} />,
     );
     tree.find(".navbar-brand").simulate("mouseenter");
     tree.update();
@@ -507,7 +507,7 @@ describe("<Dots />", () => {
     });
     const tree = mount(<Dots alertStore={alertStore} dots={8} />);
     expect(tree.find("div.components-fetcher").hasClass("processing")).toBe(
-      true
+      true,
     );
   });
 

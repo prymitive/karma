@@ -78,7 +78,7 @@ const MountedNavbar = (fixedTop?: boolean) => {
     {
       wrappingComponent: ThemeContext.Provider,
       wrappingComponentProps: { value: MockThemeContext },
-    }
+    },
   );
 };
 
@@ -118,7 +118,7 @@ describe("<NavBar />", () => {
     const tree = MountedNavbar(false);
     const nav = tree.find(".navbar");
     expect((nav.props().className as string).split(" ")).not.toContain(
-      "fixed-top"
+      "fixed-top",
     );
     expect((nav.props().className as string).split(" ")).toContain("w-100");
   });
@@ -132,7 +132,7 @@ describe("<NavBar />", () => {
     expect(
       window
         .getComputedStyle(document.body, null)
-        .getPropertyValue("padding-top")
+        .getPropertyValue("padding-top"),
     ).toBe("18px");
 
     act(() => {
@@ -142,7 +142,7 @@ describe("<NavBar />", () => {
     expect(
       window
         .getComputedStyle(document.body, null)
-        .getPropertyValue("padding-top")
+        .getPropertyValue("padding-top"),
     ).toBe("44px");
   });
 });
@@ -264,7 +264,7 @@ describe("<IdleTimer />", () => {
     expect(
       window
         .getComputedStyle(document.body, null)
-        .getPropertyValue("padding-top")
+        .getPropertyValue("padding-top"),
     ).toBe("0px");
   });
 

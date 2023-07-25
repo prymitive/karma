@@ -23,7 +23,7 @@ describe("<InlineEdit />", () => {
         value="foo"
         onChange={jest.fn()}
         onEnterEditing={onEnterEditing}
-      />
+      />,
     );
 
     expect(onEnterEditing).not.toHaveBeenCalled();
@@ -43,7 +43,7 @@ describe("<InlineEdit />", () => {
           onChange={jest.fn()}
           onExitEditing={onExitEditing}
         />
-      </div>
+      </div>,
     );
 
     expect(onExitEditing).not.toHaveBeenCalled();
@@ -55,7 +55,7 @@ describe("<InlineEdit />", () => {
       document.dispatchEvent(
         new Event("mousedown", {
           target: tree.find("button").getDOMNode(),
-        } as EventInit)
+        } as EventInit),
       );
     });
     expect(tree.html()).not.toMatch(/<input/);
@@ -67,7 +67,7 @@ describe("<InlineEdit />", () => {
       <div id="root">
         <button>click me</button>
         <InlineEdit value="foo" onChange={jest.fn()} />
-      </div>
+      </div>,
     );
 
     tree.find("span").simulate("click");
@@ -77,7 +77,7 @@ describe("<InlineEdit />", () => {
       document.dispatchEvent(
         new Event("mousedown", {
           target: tree.find("button").getDOMNode(),
-        } as EventInit)
+        } as EventInit),
       );
     });
     expect(tree.html()).not.toMatch(/<input/);

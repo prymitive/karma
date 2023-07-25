@@ -70,7 +70,7 @@ const MultiClusterStatus: FC<{
                   </div>
                 </td>
               </tr>
-            )
+            ),
           )}
         </tbody>
       </table>

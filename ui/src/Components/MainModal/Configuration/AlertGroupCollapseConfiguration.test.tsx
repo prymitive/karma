@@ -19,7 +19,7 @@ const FakeConfiguration = () => {
     {
       wrappingComponent: ThemeContext.Provider,
       wrappingComponentProps: { value: MockThemeContext },
-    }
+    },
   );
 };
 
@@ -34,11 +34,11 @@ describe("<AlertGroupCollapseConfiguration />", () => {
     const tree = FakeConfiguration();
     const select = tree.find("div.react-select__value-container");
     expect(select.text()).toBe(
-      settingsStore.alertGroupConfig.options.collapsedOnMobile.label
+      settingsStore.alertGroupConfig.options.collapsedOnMobile.label,
     );
     setTimeout(() => {
       expect(settingsStore.alertGroupConfig.config.defaultCollapseState).toBe(
-        settingsStore.alertGroupConfig.options.collapsedOnMobile.value
+        settingsStore.alertGroupConfig.options.collapsedOnMobile.value,
       );
       done();
     }, 200);
@@ -50,7 +50,7 @@ describe("<AlertGroupCollapseConfiguration />", () => {
     const select = tree.find("div.react-select__value-container");
     setTimeout(() => {
       expect(select.text()).toBe(
-        settingsStore.alertGroupConfig.options.expanded.label
+        settingsStore.alertGroupConfig.options.expanded.label,
       );
       done();
     }, 200);
@@ -65,7 +65,7 @@ describe("<AlertGroupCollapseConfiguration />", () => {
     options.at(1).simulate("click");
     setTimeout(() => {
       expect(settingsStore.alertGroupConfig.config.defaultCollapseState).toBe(
-        settingsStore.alertGroupConfig.options.collapsed.value
+        settingsStore.alertGroupConfig.options.collapsed.value,
       );
       done();
     }, 200);

@@ -25,10 +25,10 @@ const GetGridElementWidth = (
   innerWidth: number,
   outerWidth: number,
   outerPadding: number,
-  baseWidth: number
+  baseWidth: number,
 ): number =>
   Math.floor(
-    (innerWidth - outerPadding) / GetColumnsCount(outerWidth, baseWidth)
+    (innerWidth - outerPadding) / GetColumnsCount(outerWidth, baseWidth),
   );
 
 export { GridSizesConfig, GetColumnsCount, GetGridElementWidth };

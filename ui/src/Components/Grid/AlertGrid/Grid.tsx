@@ -57,7 +57,7 @@ const Grid: FC<{
   const debouncedRepack = useMemo(() => debounce(() => repack(), 10), [repack]);
 
   const [isExpanded, setIsExpanded] = useState<boolean>(
-    !DefaultDetailsCollapseValue(settingsStore)
+    !DefaultDetailsCollapseValue(settingsStore),
   );
   const toggleIsExpanded = useCallback(() => {
     setIsExpanded(!isExpanded);
@@ -83,7 +83,7 @@ const Grid: FC<{
       setIsExpanded(event.detail);
       debouncedRepack();
     },
-    [debouncedRepack]
+    [debouncedRepack],
   );
 
   useEffect(() => {
@@ -191,7 +191,7 @@ const Grid: FC<{
                       grid.labelName,
                       grid.labelValue,
                       grid.alertGroups.length +
-                        alertStore.settings.values.gridGroupLimit
+                        alertStore.settings.values.gridGroupLimit,
                     );
                   }}
                 >

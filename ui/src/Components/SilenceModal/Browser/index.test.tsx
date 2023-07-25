@@ -93,7 +93,7 @@ const MountedBrowser = () => {
     {
       wrappingComponent: ThemeContext.Provider,
       wrappingComponentProps: { value: MockThemeContext },
-    }
+    },
   );
 };
 
@@ -101,7 +101,7 @@ describe("<Browser />", () => {
   it("fetches /silences.json on mount", () => {
     MountedBrowser();
     expect(useFetchGetMock.fetch.calls[0]).toBe(
-      "./silences.json?sortReverse=0&showExpired=0&searchTerm="
+      "./silences.json?sortReverse=0&showExpired=0&searchTerm=",
     );
   });
 
@@ -130,7 +130,7 @@ describe("<Browser />", () => {
   it("enabling reverse sort passes sortReverse=1 to the API", () => {
     const tree = MountedBrowser();
     expect(useFetchGetMock.fetch.calls[0]).toBe(
-      "./silences.json?sortReverse=0&showExpired=0&searchTerm="
+      "./silences.json?sortReverse=0&showExpired=0&searchTerm=",
     );
 
     const sortOrder = tree.find("button.btn-secondary").at(0);
@@ -138,7 +138,7 @@ describe("<Browser />", () => {
     sortOrder.simulate("click");
 
     expect(useFetchGetMock.fetch.calls[1]).toBe(
-      "./silences.json?sortReverse=1&showExpired=0&searchTerm="
+      "./silences.json?sortReverse=1&showExpired=0&searchTerm=",
     );
   });
 
@@ -149,7 +149,7 @@ describe("<Browser />", () => {
     expiredCheckbox.simulate("change", { target: { checked: true } });
 
     expect(useFetchGetMock.fetch.calls[1]).toBe(
-      "./silences.json?sortReverse=0&showExpired=1&searchTerm="
+      "./silences.json?sortReverse=0&showExpired=1&searchTerm=",
     );
   });
 
@@ -164,10 +164,10 @@ describe("<Browser />", () => {
     });
     expect(useFetchGetMock.fetch.calls).toHaveLength(2);
     expect(useFetchGetMock.fetch.calls[0]).toBe(
-      "./silences.json?sortReverse=0&showExpired=0&searchTerm="
+      "./silences.json?sortReverse=0&showExpired=0&searchTerm=",
     );
     expect(useFetchGetMock.fetch.calls[1]).toBe(
-      "./silences.json?sortReverse=0&showExpired=0&searchTerm=foo"
+      "./silences.json?sortReverse=0&showExpired=0&searchTerm=foo",
     );
   });
 
@@ -473,7 +473,7 @@ describe("<SilenceDelete />", () => {
     expect(tree.find("input.form-check-input")).toHaveLength(5);
     for (const i of [1, 2, 3, 4]) {
       expect(tree.find("input.form-check-input").at(i).props().checked).toBe(
-        false
+        false,
       );
     }
 
@@ -482,11 +482,11 @@ describe("<SilenceDelete />", () => {
     expect(tree.find(".dropdown-item").last().text()).toBe("Select all");
     tree.find(".dropdown-item").last().simulate("click");
     expect(tree.find("input.form-check-input").at(3).props().checked).toBe(
-      false
+      false,
     );
     for (const i of [1, 2, 4]) {
       expect(tree.find("input.form-check-input").at(i).props().checked).toBe(
-        true
+        true,
       );
     }
     expect(tree.find(".dropdown-item").last().text()).toBe("Select none");
@@ -497,7 +497,7 @@ describe("<SilenceDelete />", () => {
     tree.find(".dropdown-item").last().simulate("click");
     for (const i of [1, 2, 3, 4]) {
       expect(tree.find("input.form-check-input").at(i).props().checked).toBe(
-        false
+        false,
       );
     }
 
@@ -507,7 +507,7 @@ describe("<SilenceDelete />", () => {
     tree.find(".dropdown-item").last().simulate("click");
     for (const i of [1, 2, 4]) {
       expect(tree.find("input.form-check-input").at(i).props().checked).toBe(
-        true
+        true,
       );
     }
 
@@ -518,12 +518,12 @@ describe("<SilenceDelete />", () => {
       .simulate("change", { target: { checked: false } });
     for (const i of [1, 4]) {
       expect(tree.find("input.form-check-input").at(i).props().checked).toBe(
-        true
+        true,
       );
     }
     for (const i of [2, 3]) {
       expect(tree.find("input.form-check-input").at(i).props().checked).toBe(
-        false
+        false,
       );
     }
     tree.find(".btn.dropdown-toggle").last().simulate("click");
@@ -536,12 +536,12 @@ describe("<SilenceDelete />", () => {
       .simulate("change", { target: { checked: false } });
     for (const i of [1, 4]) {
       expect(tree.find("input.form-check-input").at(i).props().checked).toBe(
-        true
+        true,
       );
     }
     for (const i of [2, 3]) {
       expect(tree.find("input.form-check-input").at(i).props().checked).toBe(
-        false
+        false,
       );
     }
 
@@ -552,10 +552,10 @@ describe("<SilenceDelete />", () => {
     expect(tree.find("SilenceDeleteModalContent")).toHaveLength(1);
     expect(tree.find("MassDeleteProgress")).toHaveLength(1);
     expect(tree.find("div.progress").at(4).html()).toMatch(
-      /progress-bar bg-success/
+      /progress-bar bg-success/,
     );
     expect(tree.find("div.progress").at(4).html()).toMatch(
-      /progress-bar bg-danger/
+      /progress-bar bg-danger/,
     );
 
     const mdp = tree.find("MassDeleteProgress");
@@ -572,10 +572,10 @@ describe("<SilenceDelete />", () => {
 
     expect(fetchMock.calls()).toHaveLength(2);
     expect(fetchMock.calls()[0][0]).toBe(
-      "http://localhost:9093/api/v2/silence/1"
+      "http://localhost:9093/api/v2/silence/1",
     );
     expect(fetchMock.calls()[1][0]).toBe(
-      "http://localhost:9093/api/v2/silence/4"
+      "http://localhost:9093/api/v2/silence/4",
     );
 
     tree.find(".btn-close").last().simulate("click");
@@ -642,7 +642,7 @@ describe("<SilenceDelete />", () => {
     tree.find(".dropdown-item").last().simulate("click");
     for (const i of [1, 2, 3, 4]) {
       expect(tree.find("input.form-check-input").at(i).props().checked).toBe(
-        true
+        true,
       );
     }
     tree.find(".btn.dropdown-toggle").last().simulate("click");
@@ -692,10 +692,10 @@ describe("<SilenceDelete />", () => {
 
     expect(fetchMock.calls()).toHaveLength(2);
     expect(fetchMock.calls()[0][0]).toBe(
-      "http://localhost:9093/api/v2/silence/2"
+      "http://localhost:9093/api/v2/silence/2",
     );
     expect(fetchMock.calls()[1][0]).toBe(
-      "http://localhost:9093/api/v2/silence/3"
+      "http://localhost:9093/api/v2/silence/3",
     );
 
     tree.find(".btn-close").last().simulate("click");
@@ -886,7 +886,7 @@ describe("<SilenceDelete />", () => {
         .at(i)
         .simulate("change", { target: { checked: true } });
       expect(tree.find("input.form-check-input").at(i).props().checked).toBe(
-        true
+        true,
       );
     }
 

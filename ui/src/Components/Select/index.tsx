@@ -10,7 +10,7 @@ export const AnimatedMenu = (props: MenuProps<OptionT, false>): JSX.Element => (
 );
 
 export const AnimatedMenuMultiple = (
-  props: MenuProps<OptionT, true>
+  props: MenuProps<OptionT, true>,
 ): JSX.Element => (
   <DropdownSlide in unmountOnExit>
     <components.Menu {...props}>{props.children}</components.Menu>
@@ -18,7 +18,7 @@ export const AnimatedMenuMultiple = (
 );
 
 export const AnimatedMultiMenu = (
-  props: MenuProps<MultiValueOptionT, true>
+  props: MenuProps<MultiValueOptionT, true>,
 ): JSX.Element => {
   return (
     <DropdownSlide in unmountOnExit>

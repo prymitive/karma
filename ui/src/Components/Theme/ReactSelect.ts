@@ -58,7 +58,7 @@ interface StateFnT {
 }
 
 const ReactSelectStyles = <OptionType, IsMulti extends boolean>(
-  theme: ReactSelectTheme
+  theme: ReactSelectTheme,
 ): StylesConfig<OptionType, IsMulti> => ({
   control: (base, props: ControlProps<OptionType, IsMulti>) =>
     props.isFocused
@@ -145,7 +145,7 @@ const ReactSelectStyles = <OptionType, IsMulti extends boolean>(
   }),
   indicatorsContainer: (
     base,
-    props: IndicatorsContainerProps<OptionType, IsMulti>
+    props: IndicatorsContainerProps<OptionType, IsMulti>,
   ) => ({
     ...base,
     backgroundColor: props.isDisabled

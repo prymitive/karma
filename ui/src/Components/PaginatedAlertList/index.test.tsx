@@ -51,7 +51,7 @@ describe("<PaginatedAlertList />", () => {
       cancelGet: jest.fn(),
     });
     const tree = mount(
-      <PaginatedAlertList alertStore={alertStore} filters={["foo=bar"]} />
+      <PaginatedAlertList alertStore={alertStore} filters={["foo=bar"]} />,
     );
     expect(tree.find("Placeholder")).toHaveLength(1);
   });
@@ -67,7 +67,7 @@ describe("<PaginatedAlertList />", () => {
       cancelGet: jest.fn(),
     });
     const tree = mount(
-      <PaginatedAlertList alertStore={alertStore} filters={["foo=bar"]} />
+      <PaginatedAlertList alertStore={alertStore} filters={["foo=bar"]} />,
     );
     expect(tree.find("Placeholder")).toHaveLength(1);
   });
@@ -91,7 +91,7 @@ describe("<PaginatedAlertList />", () => {
       cancelGet: jest.fn(),
     });
     const tree = mount(
-      <PaginatedAlertList alertStore={alertStore} filters={["foo=bar"]} />
+      <PaginatedAlertList alertStore={alertStore} filters={["foo=bar"]} />,
     );
     expect(tree.find("LabelSetList")).toHaveLength(1);
     expect(tree.find("Memo(StaticLabel)")).toHaveLength(3);
@@ -108,7 +108,7 @@ describe("<PaginatedAlertList />", () => {
       cancelGet: jest.fn(),
     });
     const tree = mount(
-      <PaginatedAlertList alertStore={alertStore} filters={["foo=bar"]} />
+      <PaginatedAlertList alertStore={alertStore} filters={["foo=bar"]} />,
     );
     expect(tree.find("LabelSetList")).toHaveLength(1);
     expect(tree.find("Memo(StaticLabel)")).toHaveLength(0);
@@ -142,7 +142,7 @@ describe("<PaginatedAlertList />", () => {
         alertStore={alertStore}
         filters={["foo=bar"]}
         title="Affected alerts"
-      />
+      />,
     );
     expect(tree.text()).toMatch(/Affected alerts/);
     expect(tree.find("Memo(StaticLabel)")).toHaveLength(3);
@@ -159,7 +159,7 @@ describe("<PaginatedAlertList />", () => {
       cancelGet: jest.fn(),
     });
     const tree = mount(
-      <PaginatedAlertList alertStore={alertStore} filters={["foo=bar"]} />
+      <PaginatedAlertList alertStore={alertStore} filters={["foo=bar"]} />,
     );
     expect(tree.text()).toMatch(/No alerts matched/);
   });
@@ -175,7 +175,7 @@ describe("<PaginatedAlertList />", () => {
       cancelGet: jest.fn(),
     });
     const tree = mount(
-      <PaginatedAlertList alertStore={alertStore} filters={["foo=bar"]} />
+      <PaginatedAlertList alertStore={alertStore} filters={["foo=bar"]} />,
     );
     expect(tree.find("FetchError")).toHaveLength(1);
   });

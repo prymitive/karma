@@ -66,7 +66,7 @@ const MountedManagedSilence = (onDidUpdate?: () => void) => {
     {
       wrappingComponent: ThemeContext.Provider,
       wrappingComponentProps: { value: MockThemeContext },
-    }
+    },
   );
 };
 

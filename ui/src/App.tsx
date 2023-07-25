@@ -69,7 +69,7 @@ const App: FC<AppProps> = observer(({ defaultFilters, uiDefaults }) => {
       const p = DecodeLocationSearch(window.location.search);
       alertStore.filters.setWithoutLocation(p.params.q);
     },
-    [alertStore]
+    [alertStore],
   );
 
   useEffect(() => {

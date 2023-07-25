@@ -33,7 +33,7 @@ const MockGroup = (groupName: string) => {
     [],
     [],
     [],
-    {}
+    {},
   );
   return group;
 };
@@ -77,7 +77,7 @@ const MockAlerts = (alertCount: number, totalAlerts: number) => {
     const alert = MockAlert(
       [],
       [{ name: "instance", value: `instance${i}` }],
-      "active"
+      "active",
     );
     const startsAt = new Date();
     alert.startsAt = startsAt.toISOString();
@@ -102,14 +102,14 @@ const MountedAlertGroup = (afterUpdate: () => void, theme?: ThemeCtx) => {
     {
       wrappingComponent: ThemeContext.Provider,
       wrappingComponentProps: { value: theme || MockThemeContext },
-    }
+    },
   );
 };
 
 const ValidateCollapse = (
   innerWidth: number,
   defaultCollapseState: CollapseStateT,
-  shouldBeCollapsed: boolean
+  shouldBeCollapsed: boolean,
 ) => {
   global.innerWidth = innerWidth;
 
@@ -131,7 +131,7 @@ describe("<AlertGroup />", () => {
     MockAlerts(5, 5);
     const tree = MountedAlertGroup(jest.fn(), MockThemeContext);
     expect(
-      tree.find("div.components-grid-alertgrid-alertgroup").hasClass("animate")
+      tree.find("div.components-grid-alertgrid-alertgroup").hasClass("animate"),
     ).toBe(true);
   });
 
@@ -139,10 +139,10 @@ describe("<AlertGroup />", () => {
     MockAlerts(5, 5);
     const tree = MountedAlertGroup(
       jest.fn(),
-      MockThemeContextWithoutAnimations
+      MockThemeContextWithoutAnimations,
     );
     expect(
-      tree.find("div.components-grid-alertgrid-alertgroup").hasClass("animate")
+      tree.find("div.components-grid-alertgrid-alertgroup").hasClass("animate"),
     ).toBe(false);
   });
 
@@ -383,7 +383,7 @@ describe("<AlertGroup />", () => {
 const ValidateLoadButtonPresent = (
   alertCount: number,
   totalAlerts: number,
-  isPresent: boolean
+  isPresent: boolean,
 ) => {
   MockAlerts(alertCount, totalAlerts);
   const tree = MountedAlertGroup(jest.fn());
@@ -396,7 +396,7 @@ const ValidateLoadButtonAction = (
   totalAlerts: number,
   buttonIndex: number,
   iconMatch: RegExp,
-  loadedAlerts: number
+  loadedAlerts: number,
 ) => {
   MockAlerts(alertCount, totalAlerts);
   const tree = MountedAlertGroup(jest.fn());
@@ -476,7 +476,7 @@ describe("<AlertGroup /> renderConfig", () => {
     await act(() => promise);
     tree.update();
     expect(
-      tree.find(".components-grid-alertgrid-alertgroup").at(0).prop("style")
+      tree.find(".components-grid-alertgrid-alertgroup").at(0).prop("style"),
     ).toMatchObject({ zIndex: 100 });
   });
 
@@ -489,7 +489,7 @@ describe("<AlertGroup /> renderConfig", () => {
     await act(() => promise);
     tree.update();
     expect(
-      tree.find(".components-grid-alertgrid-alertgroup").at(0).prop("style")
+      tree.find(".components-grid-alertgrid-alertgroup").at(0).prop("style"),
     ).toMatchObject({ zIndex: 100 });
   });
 });
@@ -556,7 +556,7 @@ describe("<AlertGroup /> card theme", () => {
       },
       {
         overwriteRoutes: true,
-      }
+      },
     );
 
     alertStore.settings.setValues({

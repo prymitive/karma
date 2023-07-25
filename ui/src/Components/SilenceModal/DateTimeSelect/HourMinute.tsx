@@ -117,7 +117,7 @@ const HourMinute: FC<{
         </table>
       </div>
     );
-  }
+  },
 );
 
 export { HourMinute };

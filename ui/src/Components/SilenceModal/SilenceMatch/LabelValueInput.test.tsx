@@ -37,7 +37,7 @@ const MountedLabelValueInput = (isValid: boolean) => {
     {
       wrappingComponent: ThemeContext.Provider,
       wrappingComponentProps: { value: MockThemeContext },
-    }
+    },
   );
 };
 
@@ -52,7 +52,7 @@ describe("<LabelValueInput />", () => {
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
     expect(useFetchGetMock.fetch.calls).toHaveLength(1);
     expect(useFetchGetMock.fetch.calls[0]).toBe(
-      "./labelValues.json?name=cluster"
+      "./labelValues.json?name=cluster",
     );
   });
 

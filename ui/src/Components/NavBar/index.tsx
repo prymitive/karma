@@ -46,7 +46,7 @@ const NavBar: FC<{
       });
       window.dispatchEvent(toggleEvent);
     },
-    [height]
+    [height],
   );
 
   const onActive = useCallback(() => {
@@ -69,7 +69,7 @@ const NavBar: FC<{
     if (alertStore.ui.isIdle) {
       timer = window.setTimeout(
         () => updateBodyPaddingTop(true),
-        context.animations.duration
+        context.animations.duration,
       );
     } else {
       updateBodyPaddingTop(false);
@@ -91,9 +91,9 @@ const NavBar: FC<{
           alertStore.filters.values.filter((f) => f.applied === false).length >
             0,
         (paused) => (paused ? pause() : reset()),
-        { fireImmediately: true }
+        { fireImmediately: true },
       ),
-    [] // eslint-disable-line react-hooks/exhaustive-deps
+    [], // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   return (

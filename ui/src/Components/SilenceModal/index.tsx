@@ -16,7 +16,7 @@ import { TooltipWrapper } from "Components/TooltipWrapper";
 const SilenceModalContent = React.lazy(() =>
   import("./SilenceModalContent").then((module) => ({
     default: module.SilenceModalContent,
-  }))
+  })),
 );
 
 const SilenceModal: FC<{

@@ -15,7 +15,7 @@ const MountedFetchPauser = () => {
   return mount(
     <FetchPauser alertStore={alertStore}>
       <div />
-    </FetchPauser>
+    </FetchPauser>,
   );
 };
 

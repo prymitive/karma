@@ -11,7 +11,7 @@ export interface UpstreamT {
 
 export type FetchFunctionT = (
   input: RequestInfo | URL,
-  init?: RequestInit | undefined
+  init?: RequestInit | undefined,
 ) => Promise<Response>;
 
 export interface FetchAnyOptionsT {
@@ -27,7 +27,7 @@ interface ResponseState<T> {
 
 const useFetchAny = <T>(
   upstreams: UpstreamT[],
-  { fetcher = null }: FetchAnyOptionsT = {}
+  { fetcher = null }: FetchAnyOptionsT = {},
 ): {
   response: T | null;
   error: string | null;
@@ -69,7 +69,7 @@ const useFetchAny = <T>(
       try {
         const res = await (fetcher || fetch)(
           uri,
-          merge({}, { method: "GET" }, CommonOptions, options) as RequestInit
+          merge({}, { method: "GET" }, CommonOptions, options) as RequestInit,
         );
 
         if (!isCancelled) {

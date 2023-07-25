@@ -44,7 +44,7 @@ export const AlertHistory: FC<{ group: APIAlertGroupT; grid: APIGridT }> = ({
   const [sources] = useState(group.shared.sources);
   const { response, error } = useFetchAny<HistoryResponseT>(upstreams);
   const [cachedResponse, setCachedResponse] = useState<HistoryResponseT | null>(
-    null
+    null,
   );
   const [minMaxValue, setMinMaxValue] = useState<minMaxT>({
     minValue: 0,
@@ -66,7 +66,7 @@ export const AlertHistory: FC<{ group: APIAlertGroupT; grid: APIGridT }> = ({
       setCachedResponse(response);
       const max = Math.max(...response.samples.map((s) => s.value));
       const min = Math.min(
-        ...response.samples.filter((s) => s.value > 0).map((s) => s.value)
+        ...response.samples.filter((s) => s.value > 0).map((s) => s.value),
       );
       setMinMaxValue({ minValue: min === Infinity ? 0 : min, maxValue: max });
     }
@@ -119,7 +119,7 @@ export const AlertHistory: FC<{ group: APIAlertGroupT; grid: APIGridT }> = ({
                         minMaxValue.minValue === minMaxValue.maxValue
                           ? Math.min(minMaxValue.maxValue, 5)
                           : Math.round(
-                              (sample.value / minMaxValue.maxValue) * 5
+                              (sample.value / minMaxValue.maxValue) * 5,
                             )
                       }`
                     : "inactive"

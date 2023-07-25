@@ -75,7 +75,7 @@ const SilenceDetails: FC<{
     }
 
     const alertmanagers = alertStore.data.upstreams.instances.filter(
-      (u) => u.cluster === cluster
+      (u) => u.cluster === cluster,
     );
 
     const isReadOnly =
@@ -197,7 +197,7 @@ const SilenceDetails: FC<{
         </div>
       </div>
     );
-  }
+  },
 );
 SilenceDetails.displayName = "SilenceDetails";
 

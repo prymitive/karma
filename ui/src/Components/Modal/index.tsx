@@ -91,7 +91,7 @@ const Modal: FC<{
         <div className="modal-backdrop d-block" />
       </CSSTransition>
     </>,
-    document.body
+    document.body,
   );
 };
 

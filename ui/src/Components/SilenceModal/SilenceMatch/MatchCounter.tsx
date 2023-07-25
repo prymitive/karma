@@ -24,7 +24,7 @@ const MatchCounter: FC<{
 
   const { response, error, isLoading, isRetrying } =
     useFetchGet<AlertListResponseT>(
-      FormatBackendURI("alertList.json?") + FormatAlertsQ(filters)
+      FormatBackendURI("alertList.json?") + FormatAlertsQ(filters),
     );
 
   return error ? (

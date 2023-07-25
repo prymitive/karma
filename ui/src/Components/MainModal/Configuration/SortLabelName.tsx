@@ -15,7 +15,7 @@ const SortLabelName: FC<{
   settingsStore: Settings;
 }> = ({ settingsStore }) => {
   const { response } = useFetchGet<string[]>(
-    FormatBackendURI(`labelNames.json`)
+    FormatBackendURI(`labelNames.json`),
   );
 
   if (!settingsStore.gridConfig.config.sortLabel) {
@@ -31,14 +31,14 @@ const SortLabelName: FC<{
       instanceId="configuration-sort-label"
       formatCreateLabel={NewLabelName}
       defaultValue={StringToOption(
-        settingsStore.gridConfig.config.sortLabel as string
+        settingsStore.gridConfig.config.sortLabel as string,
       )}
       options={
         response ? response.map((value: string) => StringToOption(value)) : []
       }
       onChange={(option) => {
         settingsStore.gridConfig.setSortLabel(
-          (option as OptionT).value as string
+          (option as OptionT).value as string,
         );
       }}
       components={{ Menu: AnimatedMenu }}

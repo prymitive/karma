@@ -16,7 +16,7 @@ const HistoryLabel: FC<{
     alertStore,
     matcher === QueryOperators.Equal ? name : "",
     matcher === QueryOperators.Equal ? value : "",
-    "components-label-history components-label-value"
+    "components-label-history components-label-value",
   );
 
   return (

@@ -60,7 +60,7 @@ const MountedSilenceModalContent = () => {
     {
       wrappingComponent: ThemeContext.Provider,
       wrappingComponentProps: { value: MockThemeContext },
-    }
+    },
   );
 };
 

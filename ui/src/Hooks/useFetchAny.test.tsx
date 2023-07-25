@@ -99,7 +99,7 @@ describe("useFetchAny", () => {
   it("plain response is updated after successful fetch", async () => {
     const upstreams = [{ uri: "http://localhost/ok", options: {} }];
     const { result, waitForNextUpdate } = renderHook(() =>
-      useFetchAny(upstreams)
+      useFetchAny(upstreams),
     );
 
     expect(result.current.response).toBe(null);
@@ -118,7 +118,7 @@ describe("useFetchAny", () => {
   it("JSON response is updated after successful fetch", async () => {
     const upstreams = [{ uri: "http://localhost/ok/json", options: {} }];
     const { result, waitForNextUpdate } = renderHook(() =>
-      useFetchAny(upstreams)
+      useFetchAny(upstreams),
     );
 
     expect(result.current.response).toBe(null);
@@ -137,7 +137,7 @@ describe("useFetchAny", () => {
   it("error is using status code if body is empty", async () => {
     const upstreams = [{ uri: "http://localhost/401", options: {} }];
     const { result, waitForNextUpdate } = renderHook(() =>
-      useFetchAny(upstreams)
+      useFetchAny(upstreams),
     );
 
     expect(result.current.response).toBe(null);
@@ -156,7 +156,7 @@ describe("useFetchAny", () => {
   it("error is updated after 500 error", async () => {
     const upstreams = [{ uri: "http://localhost/500", options: {} }];
     const { result, waitForNextUpdate } = renderHook(() =>
-      useFetchAny(upstreams)
+      useFetchAny(upstreams),
     );
 
     expect(result.current.response).toBe(null);
@@ -175,7 +175,7 @@ describe("useFetchAny", () => {
   it("error is updated after an exception", async () => {
     const upstreams = [{ uri: "http://localhost/error", options: {} }];
     const { result, waitForNextUpdate } = renderHook(() =>
-      useFetchAny(upstreams)
+      useFetchAny(upstreams),
     );
 
     expect(result.current.response).toBe(null);
@@ -194,7 +194,7 @@ describe("useFetchAny", () => {
   it("error is updated after unknown error", async () => {
     const upstreams = [{ uri: "http://localhost/unknown", options: {} }];
     const { result, waitForNextUpdate } = renderHook(() =>
-      useFetchAny(upstreams)
+      useFetchAny(upstreams),
     );
 
     expect(result.current.response).toBe(null);
@@ -213,7 +213,7 @@ describe("useFetchAny", () => {
   it("doesn't update response after cleanup", async () => {
     fetchMock.mock(
       "http://localhost/slow/ok",
-      new Promise((res) => setTimeout(() => res("ok"), 1000))
+      new Promise((res) => setTimeout(() => res("ok"), 1000)),
     );
 
     const upstreams = [{ uri: "http://localhost/slow/ok", options: {} }];
@@ -294,7 +294,7 @@ describe("useFetchAny", () => {
       { uri: "http://localhost/error", options: {} },
     ];
     const { result, waitForNextUpdate } = renderHook(() =>
-      useFetchAny(upstreams)
+      useFetchAny(upstreams),
     );
 
     await waitForNextUpdate();
@@ -315,7 +315,7 @@ describe("useFetchAny", () => {
       { uri: "http://localhost/ok", options: {} },
     ];
     const { result, waitForNextUpdate } = renderHook(() =>
-      useFetchAny(upstreams)
+      useFetchAny(upstreams),
     );
 
     await waitForNextUpdate();
@@ -338,7 +338,7 @@ describe("useFetchAny", () => {
       { uri: "http://localhost/error", options: {} },
     ];
     const { result, waitForNextUpdate } = renderHook(() =>
-      useFetchAny(upstreams)
+      useFetchAny(upstreams),
     );
 
     await waitForNextUpdate();
@@ -359,7 +359,7 @@ describe("useFetchAny", () => {
       { uri: "http://localhost/500", options: {} },
     ];
     const { result, waitForNextUpdate } = renderHook(() =>
-      useFetchAny(upstreams)
+      useFetchAny(upstreams),
     );
 
     await waitForNextUpdate();
@@ -384,7 +384,7 @@ describe("useFetchAny", () => {
     };
     const fetcher = jest.fn(
       (input: RequestInfo | URL, init?: RequestInit | undefined) =>
-        Promise.resolve(resp)
+        Promise.resolve(resp),
     );
 
     const upstreams = [{ uri: "http://localhost/slow/body", options: {} }];

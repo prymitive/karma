@@ -69,7 +69,7 @@ const MountedAlertGrid = () => {
     {
       wrappingComponent: ThemeContext.Provider,
       wrappingComponentProps: { value: MockThemeContext },
-    }
+    },
   );
 };
 
@@ -79,7 +79,7 @@ const ShallowAlertGrid = () => {
       alertStore={alertStore}
       settingsStore={settingsStore}
       silenceFormStore={silenceFormStore}
-    />
+    />,
   );
 };
 
@@ -111,7 +111,7 @@ const ShallowGrid = () => {
       outerPadding={0}
       paddingTop={0}
       zIndex={101}
-    />
+    />,
   );
 };
 
@@ -131,7 +131,7 @@ const MountedGrid = (theme?: ThemeCtx) => {
     {
       wrappingComponent: ThemeContext.Provider,
       wrappingComponentProps: { value: theme || MockThemeContext },
-    }
+    },
   );
 };
 
@@ -139,7 +139,7 @@ const MockGroup = (groupName: string, alertCount: number) => {
   const alerts = [];
   for (let i = 1; i <= alertCount; i++) {
     alerts.push(
-      MockAlert([], [{ name: "instance", value: `instance${i}` }], "active")
+      MockAlert([], [{ name: "instance", value: `instance${i}` }], "active"),
     );
   }
   const group = MockAlertGroup(
@@ -150,7 +150,7 @@ const MockGroup = (groupName: string, alertCount: number) => {
     alerts,
     [],
     [],
-    {}
+    {},
   );
   return group;
 };
@@ -158,7 +158,7 @@ const MockGroup = (groupName: string, alertCount: number) => {
 const MockGroupList = (
   count: number,
   alertPerGroup: number,
-  totalGroups?: number
+  totalGroups?: number,
 ) => {
   const groups = [];
   for (let i = 1; i <= count; i++) {
@@ -205,7 +205,7 @@ describe("<Grid />", () => {
     MockGroupList(1, 1);
     const tree = MountedGrid(MockThemeContext);
     expect(
-      tree.find("div.components-grid-alertgrid-alertgroup").html()
+      tree.find("div.components-grid-alertgrid-alertgroup").html(),
     ).toMatch(/animate components-animation-alergroup-appear/);
   });
 
@@ -213,7 +213,7 @@ describe("<Grid />", () => {
     MockGroupList(1, 1);
     const tree = MountedGrid(MockThemeContextWithoutAnimations);
     expect(
-      tree.find("div.components-grid-alertgrid-alertgroup").html()
+      tree.find("div.components-grid-alertgrid-alertgroup").html(),
     ).not.toMatch(/animate components-animation-alertgroup-appear/);
   });
 
@@ -241,7 +241,7 @@ describe("<Grid />", () => {
       {
         wrappingComponent: ThemeContext.Provider,
         wrappingComponentProps: { value: MockThemeContext },
-      }
+      },
     );
     tree.find("button").simulate("click");
     expect(alertStore.ui.gridGroupLimits).toStrictEqual({
@@ -278,7 +278,7 @@ describe("<Grid />", () => {
       {
         wrappingComponent: ThemeContext.Provider,
         wrappingComponentProps: { value: MockThemeContext },
-      }
+      },
     );
     tree.find("button").simulate("click");
     expect(alertStore.ui.gridGroupLimits).toStrictEqual({
@@ -322,7 +322,7 @@ describe("<Grid />", () => {
     });
     tree.update();
     expect(tree.find("div.components-grid-alertgrid-alertgroup")).toHaveLength(
-      0
+      0,
     );
 
     tree.find("span.cursor-pointer").at(1).simulate("click");
@@ -331,7 +331,7 @@ describe("<Grid />", () => {
     });
     tree.update();
     expect(tree.find("div.components-grid-alertgrid-alertgroup")).toHaveLength(
-      10
+      10,
     );
   });
 
@@ -350,7 +350,7 @@ describe("<Grid />", () => {
     tree.setProps({ grid: grid });
     expect(tree.find("h5").at(0).find("Memo(FilteringLabel)")).toHaveLength(1);
     expect(tree.find("h5").at(0).find("Memo(FilteringLabel)").text()).toBe(
-      "foo: bar"
+      "foo: bar",
     );
   });
 
@@ -376,7 +376,7 @@ describe("<Grid />", () => {
 
     for (let i = 0; i <= 9; i++) {
       expect(
-        tree.find("Memo(AlertGroup)").at(i).find("Memo(Alert)")
+        tree.find("Memo(AlertGroup)").at(i).find("Memo(Alert)"),
       ).toHaveLength(3);
     }
 
@@ -390,7 +390,7 @@ describe("<Grid />", () => {
 
     for (let i = 0; i <= 9; i++) {
       expect(
-        tree.find("Memo(AlertGroup)").at(i).find("Memo(Alert)")
+        tree.find("Memo(AlertGroup)").at(i).find("Memo(Alert)"),
       ).toHaveLength(i === 2 ? 0 : 3);
     }
   });
@@ -426,7 +426,7 @@ describe("<Grid />", () => {
 
     for (let i = 0; i <= 19; i++) {
       expect(
-        tree.find("Memo(AlertGroup)").at(i).find("Memo(Alert)")
+        tree.find("Memo(AlertGroup)").at(i).find("Memo(Alert)"),
       ).toHaveLength(3);
     }
 
@@ -440,12 +440,12 @@ describe("<Grid />", () => {
 
     for (let i = 0; i <= 9; i++) {
       expect(
-        tree.find("Memo(AlertGroup)").at(i).find("Memo(Alert)")
+        tree.find("Memo(AlertGroup)").at(i).find("Memo(Alert)"),
       ).toHaveLength(0);
     }
     for (let i = 10; i <= 19; i++) {
       expect(
-        tree.find("Memo(AlertGroup)").at(i).find("Memo(Alert)")
+        tree.find("Memo(AlertGroup)").at(i).find("Memo(Alert)"),
       ).toHaveLength(3);
     }
   });
@@ -474,7 +474,7 @@ describe("<AlertGrid />", () => {
   const VerifyColumnCount = (
     innerWidth: number,
     outerWidth: number,
-    columns: number
+    columns: number,
   ) => {
     MockGroupList(20, 1);
 
@@ -491,10 +491,10 @@ describe("<AlertGrid />", () => {
 
     tree.update();
     expect(wrapper.find("Memo(Grid)").prop("groupWidth")).toBe(
-      Math.floor(innerWidth / columns)
+      Math.floor(innerWidth / columns),
     );
     expect(tree.find("Memo(AlertGroup)").at(0).prop("groupWidth")).toBe(
-      Math.floor(innerWidth / columns)
+      Math.floor(innerWidth / columns),
     );
   };
 
@@ -516,7 +516,7 @@ describe("<AlertGrid />", () => {
       VerifyColumnCount(t.canvas - 1, t.canvas - 1, Math.max(1, t.columns - 1));
       VerifyColumnCount(t.canvas, t.canvas, t.columns);
       VerifyColumnCount(t.canvas + 1, t.canvas + 1, t.columns);
-    })
+    }),
   );
 
   // populare screen resolutions
@@ -536,7 +536,7 @@ describe("<AlertGrid />", () => {
     it(`renders ${t.columns} column(s) with ${t.canvas} resolution`, () => {
       settingsStore.gridConfig.setGroupWidth(400);
       VerifyColumnCount(t.canvas, t.canvas, t.columns);
-    })
+    }),
   );
 
   it("renders expected number of columns for every resolution", () => {
@@ -578,7 +578,7 @@ describe("<AlertGrid />", () => {
       groupWidth: wrapper.find("Memo(Grid)").prop("groupWidth"),
     });
     expect(tree.find("Memo(AlertGroup)").at(0).prop("groupWidth")).toBe(
-      1980 / 4
+      1980 / 4,
     );
 
     // then resize and verify if column count was changed
@@ -596,7 +596,7 @@ describe("<AlertGrid />", () => {
       groupWidth: wrapper.find("Memo(Grid)").prop("groupWidth"),
     });
     expect(tree.find("Memo(AlertGroup)").at(0).prop("groupWidth")).toBe(
-      1000 / 2
+      1000 / 2,
     );
   });
 

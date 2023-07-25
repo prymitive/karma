@@ -33,7 +33,7 @@ describe("<ThemeConfiguration />", () => {
     expect(select.text()).toBe(settingsStore.themeConfig.options.auto.label);
     setTimeout(() => {
       expect(settingsStore.themeConfig.config.theme).toBe(
-        settingsStore.themeConfig.options.auto.value
+        settingsStore.themeConfig.options.auto.value,
       );
       done();
     }, 200);
@@ -58,7 +58,7 @@ describe("<ThemeConfiguration />", () => {
     options.at(1).simulate("click");
     setTimeout(() => {
       expect(settingsStore.themeConfig.config.theme).toBe(
-        settingsStore.themeConfig.options.dark.value
+        settingsStore.themeConfig.options.dark.value,
       );
       done();
     }, 200);

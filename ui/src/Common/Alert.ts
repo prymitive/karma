@@ -16,7 +16,7 @@ export interface VanillaAlertT {
 
 export const alertToJSON = (
   group: APIAlertGroupT,
-  alert: APIAlertT
+  alert: APIAlertT,
 ): VanillaAlertT[] => {
   const alerts: VanillaAlertT[] = [];
 

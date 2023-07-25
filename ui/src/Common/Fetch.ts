@@ -19,7 +19,7 @@ type PreRetryCallback = (number: number) => void;
 const FetchGet = async (
   uri: string,
   options: RequestInit,
-  beforeRetry: PreRetryCallback
+  beforeRetry: PreRetryCallback,
 ): Promise<Response> =>
   await promiseRetry(
     (retry, number) =>
@@ -34,13 +34,13 @@ const FetchGet = async (
           {
             mode: number <= FetchRetryConfig.retries ? "cors" : "no-cors",
           },
-          options
-        )
+          options,
+        ),
       ).catch((err) => {
         beforeRetry && beforeRetry(number);
         return retry(err);
       }),
-    FetchRetryConfig
+    FetchRetryConfig,
   );
 
 export { CommonOptions, FetchGet, FetchRetryConfig };

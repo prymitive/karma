@@ -27,7 +27,7 @@ afterEach(() => {
 describe("<UpgradeNeeded />", () => {
   it("matches snapshot", () => {
     const tree = shallow(
-      <UpgradeNeeded newVersion="1.2.3" reloadAfter={100000000} />
+      <UpgradeNeeded newVersion="1.2.3" reloadAfter={100000000} />,
     );
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
@@ -51,7 +51,7 @@ describe("<UpgradeNeeded />", () => {
       .mockImplementation(() => {});
 
     const tree = mount(
-      <UpgradeNeeded newVersion="1.2.3" reloadAfter={100000000} />
+      <UpgradeNeeded newVersion="1.2.3" reloadAfter={100000000} />,
     );
     expect(reloadSpy).not.toBeCalled();
 

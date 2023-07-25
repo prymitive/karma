@@ -73,7 +73,7 @@ describe("<LabelNameInput />", () => {
     MountedLabelNameInput(true);
     expect(
       (useFetchGet as jest.MockedFunction<typeof useFetchGetMock>).mock
-        .calls[0][0]
+        .calls[0][0],
     ).toBe("./labelNames.json");
   });
 

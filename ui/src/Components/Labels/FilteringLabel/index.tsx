@@ -34,17 +34,17 @@ const FilteringLabel: FC<{
 
       alertStore.filters.replaceFilter(
         FormatQuery(name, operators[1], value),
-        FormatQuery(name, operators[0], value)
+        FormatQuery(name, operators[0], value),
       );
     },
-    [alertStore.filters, name, value]
+    [alertStore.filters, name, value],
   );
 
   const cs = GetClassAndStyle(
     alertStore,
     name,
     value,
-    "components-label-with-hover components-label-without-select"
+    "components-label-with-hover components-label-without-select",
   );
 
   return (

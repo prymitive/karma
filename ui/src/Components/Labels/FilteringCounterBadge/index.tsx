@@ -48,13 +48,13 @@ const FilteringCounterBadge: FC<{
       if (isAppend) {
         alertStore.filters.replaceFilter(
           FormatQuery(name, operators[1], value),
-          FormatQuery(name, operators[0], value)
+          FormatQuery(name, operators[0], value),
         );
       } else {
         alertStore.filters.setFilters([FormatQuery(name, operators[0], value)]);
       }
     },
-    [alertStore.filters, name, value, isAppend]
+    [alertStore.filters, name, value, isAppend],
   );
 
   if (!alwaysVisible && counter === 0) return null;
@@ -63,7 +63,7 @@ const FilteringCounterBadge: FC<{
     alertStore,
     name,
     value,
-    "rounded-pill components-label-with-hover"
+    "rounded-pill components-label-with-hover",
   );
 
   return (

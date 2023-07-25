@@ -16,7 +16,7 @@ import { Modal } from "Components/Modal";
 const OverviewModalContent = React.lazy(() =>
   import("./OverviewModalContent").then((module) => ({
     default: module.OverviewModalContent,
-  }))
+  })),
 );
 
 const OverviewModal: FC<{

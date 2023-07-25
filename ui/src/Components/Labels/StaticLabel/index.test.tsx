@@ -31,7 +31,7 @@ describe("<StaticLabel />", () => {
     };
     const tree = MountedStaticLabel();
     expect(
-      tree.find(".components-label").hasClass("components-label-dark")
+      tree.find(".components-label").hasClass("components-label-dark"),
     ).toBe(true);
   });
 
@@ -44,7 +44,7 @@ describe("<StaticLabel />", () => {
     };
     const tree = MountedStaticLabel();
     expect(
-      tree.find(".components-label").hasClass("components-label-bright")
+      tree.find(".components-label").hasClass("components-label-bright"),
     ).toBe(true);
   });
 });

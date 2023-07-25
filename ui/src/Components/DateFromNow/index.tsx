@@ -21,7 +21,7 @@ export const DateFromNow: FC<{ timestamp: string }> = ({ timestamp }) => {
   useEffect(() => {
     const timer = setInterval(
       () => setLabel(formatLabel(timestamp)),
-      30 * 1000
+      30 * 1000,
     );
     return () => clearInterval(timer);
   }, [timestamp]);

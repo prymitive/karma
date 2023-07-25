@@ -54,7 +54,7 @@ const AlertGroupSortConfiguration: FC<{
             classNamePrefix="react-select"
             instanceId="configuration-sort-order"
             defaultValue={valueToOption(
-              settingsStore.gridConfig.config.sortOrder
+              settingsStore.gridConfig.config.sortOrder,
             )}
             options={
               Object.values(settingsStore.gridConfig.options) as OptionT[]

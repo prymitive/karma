@@ -18,7 +18,7 @@ describe("<CenteredMessage />", () => {
     const tree = shallow(
       <CenteredMessage>
         <Message />
-      </CenteredMessage>
+      </CenteredMessage>,
     );
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
@@ -27,7 +27,7 @@ describe("<CenteredMessage />", () => {
     const tree = shallow(
       <CenteredMessage>
         <Message />
-      </CenteredMessage>
+      </CenteredMessage>,
     );
     expect(toDiffableHtml(tree.html())).toMatch(/display-1 text-placeholder/);
   });
@@ -36,11 +36,11 @@ describe("<CenteredMessage />", () => {
     const tree = shallow(
       <CenteredMessage className="bar-class">
         <Message />
-      </CenteredMessage>
+      </CenteredMessage>,
     );
     expect(toDiffableHtml(tree.html())).toMatch(/bar-class/);
     expect(toDiffableHtml(tree.html())).not.toMatch(
-      /display-1 text-placeholder/
+      /display-1 text-placeholder/,
     );
   });
 });

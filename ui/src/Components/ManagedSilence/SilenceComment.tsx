@@ -65,7 +65,7 @@ const SilenceComment: FC<{
         </Fragment>
       ) : (
         " " + w
-      )
+      ),
     );
 
     return (
@@ -127,7 +127,7 @@ const SilenceComment: FC<{
         </div>
       </>
     );
-  }
+  },
 );
 
 export { SilenceComment, SilenceProgress };

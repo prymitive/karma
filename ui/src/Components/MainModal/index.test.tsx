@@ -34,7 +34,7 @@ const MountedMainModal = () => {
   return mount(
     <ThemeContext.Provider value={MockThemeContext}>
       <MainModal alertStore={alertStore} settingsStore={settingsStore} />
-    </ThemeContext.Provider>
+    </ThemeContext.Provider>,
   );
 };
 

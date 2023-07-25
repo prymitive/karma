@@ -88,7 +88,7 @@ const Dots: FC<{ alertStore: AlertStore; dots: number }> = observer(
         ))}
       </div>
     );
-  }
+  },
 );
 
 const Fetcher: FC<{
@@ -142,7 +142,7 @@ const Fetcher: FC<{
 
     const nextTick = addSeconds(
       alertStore.status.lastUpdateAt,
-      settingsStore.fetchConfig.config.interval
+      settingsStore.fetchConfig.config.interval,
     );
 
     const secondsLeft = differenceInSeconds(nextTick, now);
@@ -150,8 +150,8 @@ const Fetcher: FC<{
     setPercentLeft(
       Math.max(
         0,
-        (secondsLeft / settingsStore.fetchConfig.config.interval) * 100
-      )
+        (secondsLeft / settingsStore.fetchConfig.config.interval) * 100,
+      ),
     );
 
     const pastDeadline = now >= nextTick;
@@ -180,7 +180,7 @@ const Fetcher: FC<{
         ? toJS(Object.values(alertStore.ui.gridGroupLimits)[0])
         : {},
       settingsStore.alertGroupConfig.config.defaultRenderCount,
-      alertStore.ui.groupAlertLimits
+      alertStore.ui.groupAlertLimits,
     );
   };
 
@@ -201,14 +201,14 @@ const Fetcher: FC<{
               sortLabel: toJS(settingsStore.gridConfig.config.sortLabel),
               gridGroupLimits: toJS(alertStore.ui.gridGroupLimits),
               defaultGroupLimit: toJS(
-                settingsStore.alertGroupConfig.config.defaultRenderCount
+                settingsStore.alertGroupConfig.config.defaultRenderCount,
               ),
               groupAlertLimits: toJS(alertStore.ui.groupAlertLimits),
             },
             multigrid: {
               gridLabel: toJS(settingsStore.multiGridConfig.config.gridLabel),
               gridSortReverse: toJS(
-                settingsStore.multiGridConfig.config.gridSortReverse
+                settingsStore.multiGridConfig.config.gridSortReverse,
               ),
               reverseSort: toJS(settingsStore.gridConfig.config.reverseSort),
             },
@@ -216,9 +216,9 @@ const Fetcher: FC<{
         () => {
           callFetch();
         },
-        { fireImmediately: true }
+        { fireImmediately: true },
       ),
-    [] // eslint-disable-line react-hooks/exhaustive-deps
+    [], // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   useEffect(
@@ -232,13 +232,13 @@ const Fetcher: FC<{
           } else {
             timer.current = window.setInterval(
               () => window.requestAnimationFrame(fetchIfIdle),
-              1000
+              1000,
             );
           }
         },
-        { fireImmediately: true }
+        { fireImmediately: true },
       ),
-    [] // eslint-disable-line react-hooks/exhaustive-deps
+    [], // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   const dots = Math.max(0, Math.min(9, percentLeft / 10));

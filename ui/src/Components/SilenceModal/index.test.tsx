@@ -41,7 +41,7 @@ const MountedSilenceModal = () => {
         silenceFormStore={silenceFormStore}
         settingsStore={settingsStore}
       />
-    </ThemeContext.Provider>
+    </ThemeContext.Provider>,
   );
 };
 

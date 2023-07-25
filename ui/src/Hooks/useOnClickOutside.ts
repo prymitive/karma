@@ -6,11 +6,11 @@ type Handler = (event: MouseEvent | TouchEvent) => void;
 function useOnClickOutside(
   ref: RefObject<HTMLElement>,
   handler: Handler,
-  enabled: boolean
+  enabled: boolean,
 ): void {
   useEffect(() => {
     const listener: { (event: MouseEvent | TouchEvent): void } = (
-      event: MouseEvent | TouchEvent
+      event: MouseEvent | TouchEvent,
     ) => {
       if (!ref.current || ref.current.contains(event.target as Node)) {
         return;

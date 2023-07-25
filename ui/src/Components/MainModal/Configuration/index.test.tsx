@@ -28,7 +28,7 @@ describe("<Configuration />", () => {
     const tree = mount(
       <ThemeContext.Provider value={MockThemeContext}>
         <Configuration settingsStore={settingsStore} defaultIsOpen={true} />
-      </ThemeContext.Provider>
+      </ThemeContext.Provider>,
     );
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });

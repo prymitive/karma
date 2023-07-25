@@ -43,7 +43,7 @@ const TableRows: FC<{
               offset={valueStats.offset}
               isActive={
                 alertStore.filters.values.filter(
-                  (f) => f.raw === valueStats.raw
+                  (f) => f.raw === valueStats.raw,
                 ).length > 0
               }
             />
@@ -74,11 +74,11 @@ const LabelsTable: FC<{
         <TableRows
           alertStore={alertStore}
           nameStats={counters.counters.filter(
-            (nameStats) => nameStats.hits >= counters.total
+            (nameStats) => nameStats.hits >= counters.total,
           )}
         ></TableRows>
         {counters.counters.filter(
-          (nameStats) => nameStats.hits < counters.total
+          (nameStats) => nameStats.hits < counters.total,
         ).length > 0 ? (
           <tr>
             <td colSpan={2} className="px-1 py-0">
@@ -97,7 +97,7 @@ const LabelsTable: FC<{
           <TableRows
             alertStore={alertStore}
             nameStats={counters.counters.filter(
-              (nameStats) => nameStats.hits < counters.total
+              (nameStats) => nameStats.hits < counters.total,
             )}
           ></TableRows>
         ) : null}
@@ -136,10 +136,10 @@ const OverviewModalContent: FC<{
   const { response, error } = useFetchGet<CountersResponseT>(
     FormatBackendURI(
       `counters.json?${FormatAPIFilterQuery(
-        alertStore.filters.values.map((f) => f.raw)
-      )}`
+        alertStore.filters.values.map((f) => f.raw),
+      )}`,
     ),
-    { deps: [alertStore.info.timestamp] }
+    { deps: [alertStore.info.timestamp] },
   );
 
   return (

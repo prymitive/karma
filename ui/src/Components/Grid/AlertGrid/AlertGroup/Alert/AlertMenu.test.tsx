@@ -83,7 +83,7 @@ beforeEach(() => {
     [alert],
     [],
     [],
-    {}
+    {},
   );
   grid = {
     labelName: "foo",
@@ -109,7 +109,7 @@ const MountedAlertMenu = (group: APIAlertGroupT) => {
       alertStore={alertStore}
       silenceFormStore={silenceFormStore}
       setIsMenuOpen={MockSetIsMenuOpen}
-    />
+    />,
   );
 };
 
@@ -184,7 +184,7 @@ const MountedMenuContent = (group: APIAlertGroupT) => {
       afterClick={MockAfterClick}
       alertStore={alertStore}
       silenceFormStore={silenceFormStore}
-    />
+    />,
   );
 };
 
@@ -244,7 +244,7 @@ describe("<MenuContent />", () => {
         },
       ],
       [{ name: "foo", value: "bar" }],
-      "active"
+      "active",
     );
     group = MockAlertGroup(
       [{ name: "alertname", value: "Fake Alert" }],
@@ -273,7 +273,7 @@ describe("<MenuContent />", () => {
         },
       ],
       [],
-      {}
+      {},
     );
 
     const tree = MountedMenuContent(group);
@@ -286,16 +286,16 @@ describe("<MenuContent />", () => {
     expect(link2.text()).toBe("linkActionShared");
 
     expect(tree.find("a.dropdown-item[href='nonLinkNonAction']")).toHaveLength(
-      0
+      0,
     );
     expect(tree.find("a.dropdown-item[href='nonLinkNonAction']")).toHaveLength(
-      0
+      0,
     );
     expect(
-      tree.find("a.dropdown-item[href='nonLinkNonActionShared']")
+      tree.find("a.dropdown-item[href='nonLinkNonActionShared']"),
     ).toHaveLength(0);
     expect(
-      tree.find("a.dropdown-item[href='nonLinkNonActionShared']")
+      tree.find("a.dropdown-item[href='nonLinkNonActionShared']"),
     ).toHaveLength(0);
   });
 

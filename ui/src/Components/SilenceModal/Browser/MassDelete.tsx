@@ -202,7 +202,7 @@ export const MassDeleteProgress: FC<{
     const deleteSilence = async (
       cluster: string,
       id: string,
-      ams: APIAlertmanagerUpstreamT[]
+      ams: APIAlertmanagerUpstreamT[],
     ) => {
       let err = "";
       for (const am of ams) {
@@ -236,11 +236,11 @@ export const MassDeleteProgress: FC<{
 
     silences.forEach((silence, index) => {
       const ams = alertStore.data.readWriteAlertmanagers.filter(
-        (u) => u.cluster === silence.cluster
+        (u) => u.cluster === silence.cluster,
       );
       setTimeout(
         () => deleteSilence(silence.cluster, silence.id, ams),
-        50 * index
+        50 * index,
       );
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

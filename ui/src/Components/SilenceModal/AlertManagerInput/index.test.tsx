@@ -70,7 +70,7 @@ const MountedAlertManagerInput = () => {
     {
       wrappingComponent: ThemeContext.Provider,
       wrappingComponentProps: { value: MockThemeContext },
-    }
+    },
   );
 };
 

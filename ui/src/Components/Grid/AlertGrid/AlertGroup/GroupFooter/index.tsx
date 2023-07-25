@@ -111,7 +111,7 @@ const GroupFooter: FC<{
                 cluster={cluster}
                 silenceID={silenceID}
               />
-            ))
+            )),
           )}
         </div>
       ) : null}

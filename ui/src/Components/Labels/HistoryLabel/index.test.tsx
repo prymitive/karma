@@ -17,7 +17,7 @@ const ShallowHistoryLabel = (name: string, matcher: string, value: string) => {
       name={name}
       matcher={matcher}
       value={value}
-    />
+    />,
   );
 };
 
@@ -29,7 +29,7 @@ describe("<HistoryLabel />", () => {
 
   it("renders only value if name is falsey", () => {
     const tree = shallow(
-      <HistoryLabel alertStore={alertStore} name="" matcher="" value="bar" />
+      <HistoryLabel alertStore={alertStore} name="" matcher="" value="bar" />,
     );
     expect(tree.text()).toBe("bar");
   });
@@ -42,7 +42,7 @@ describe("<HistoryLabel />", () => {
       },
     };
     const tree = ShallowHistoryLabel("foo", "=", "bar").find(
-      ".components-label"
+      ".components-label",
     );
     expect(tree.hasClass("components-label-dark")).toBe(true);
   });
@@ -55,7 +55,7 @@ describe("<HistoryLabel />", () => {
       },
     };
     const tree = ShallowHistoryLabel("foo", "=", "bar").find(
-      ".components-label"
+      ".components-label",
     );
     expect(tree.hasClass("components-label-bright")).toBe(true);
   });

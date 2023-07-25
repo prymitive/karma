@@ -29,7 +29,7 @@ const GridLabelName: FC<{
   settingsStore: Settings;
 }> = ({ settingsStore }) => {
   const { response } = useFetchGet<string[]>(
-    FormatBackendURI(`labelNames.json`)
+    FormatBackendURI(`labelNames.json`),
   );
 
   const context = React.useContext(ThemeContext);

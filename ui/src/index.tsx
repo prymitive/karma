@@ -16,5 +16,5 @@ export default ReactDOM.render(
     defaultFilters={ParseDefaultFilters(SettingsElement())}
     uiDefaults={ParseUIDefaults(document.getElementById("defaults"))}
   />,
-  document.getElementById("root")
+  document.getElementById("root"),
 );

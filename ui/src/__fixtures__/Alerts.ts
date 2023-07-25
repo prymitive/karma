@@ -13,7 +13,7 @@ const MockAnnotation = (
   value: string,
   visible: boolean,
   isLink: boolean,
-  isAction: boolean
+  isAction: boolean,
 ): APIAnnotationT => ({
   name: name,
   value: value,
@@ -25,7 +25,7 @@ const MockAnnotation = (
 const MockAlert = (
   annotations: APIAnnotationT[],
   labels: LabelsT,
-  state: AlertStateT
+  state: AlertStateT,
 ): APIAlertT => ({
   id: Math.random().toString(36),
   annotations: annotations,
@@ -52,7 +52,7 @@ const MockAlertGroup = (
   alerts: APIAlertT[],
   sharedAnnotations: APIAnnotationT[],
   sharedLabels: LabelsT,
-  sharedSilences: { [cluster: string]: string[] }
+  sharedSilences: { [cluster: string]: string[] },
 ): APIAlertGroupT => ({
   receiver: "by-name",
   labels: rootLabels,

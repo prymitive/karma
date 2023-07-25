@@ -60,7 +60,7 @@ const MockedAlert = () => {
       { name: "job", value: "node_exporter" },
       { name: "cluster", value: "dev" },
     ],
-    "active"
+    "active",
   );
 };
 
@@ -68,7 +68,7 @@ const MountedAlert = (
   alert: APIAlertT,
   group: APIAlertGroupT,
   showReceiver: boolean,
-  showOnlyExpandedAnnotations: boolean
+  showOnlyExpandedAnnotations: boolean,
 ) => {
   return mount(
     <Alert
@@ -85,7 +85,7 @@ const MountedAlert = (
     {
       wrappingComponent: ThemeContext.Provider,
       wrappingComponentProps: { value: MockThemeContext },
-    }
+    },
   );
 };
 
@@ -394,7 +394,7 @@ describe("<Alert />", () => {
     expect(
       tree
         .find(".components-grid-alertgrid-alertgroup-alert")
-        .hasClass(BorderClassMap.active)
+        .hasClass(BorderClassMap.active),
     ).toBe(true);
   });
 
@@ -406,7 +406,7 @@ describe("<Alert />", () => {
     expect(
       tree
         .find(".components-grid-alertgrid-alertgroup-alert")
-        .hasClass(BorderClassMap.suppressed)
+        .hasClass(BorderClassMap.suppressed),
     ).toBe(true);
   });
 
@@ -418,7 +418,7 @@ describe("<Alert />", () => {
     expect(
       tree
         .find(".components-grid-alertgrid-alertgroup-alert")
-        .hasClass(BorderClassMap.unprocessed)
+        .hasClass(BorderClassMap.unprocessed),
     ).toBe(true);
   });
 
@@ -432,7 +432,7 @@ describe("<Alert />", () => {
     expect(
       tree
         .find(".components-grid-alertgrid-alertgroup-alert")
-        .hasClass("border-default")
+        .hasClass("border-default"),
     ).toBe(true);
   });
 
@@ -448,7 +448,7 @@ describe("<Alert />", () => {
       tree
         .find("span.components-label.badge.bg-secondary.cursor-pointer")
         .at(0)
-        .text()
+        .text(),
     ).toBe("just now");
 
     jest.setSystemTime(new Date(Date.UTC(2018, 7, 14, 17, 36, 42)));
@@ -459,7 +459,7 @@ describe("<Alert />", () => {
       tree
         .find("span.components-label.badge.bg-secondary.cursor-pointer")
         .at(0)
-        .text()
+        .text(),
     ).toBe("a few seconds ago");
 
     jest.setSystemTime(new Date(Date.UTC(2018, 7, 14, 17, 37, 41)));
@@ -470,7 +470,7 @@ describe("<Alert />", () => {
       tree
         .find("span.components-label.badge.bg-secondary.cursor-pointer")
         .at(0)
-        .text()
+        .text(),
     ).toBe("1 minute ago");
 
     jest.setSystemTime(new Date(Date.UTC(2018, 7, 14, 18, 36, 41)));
@@ -481,7 +481,7 @@ describe("<Alert />", () => {
       tree
         .find("span.components-label.badge.bg-secondary.cursor-pointer")
         .at(0)
-        .text()
+        .text(),
     ).toBe("1 hour ago");
 
     jest.setSystemTime(new Date(Date.UTC(2018, 7, 14, 19, 36, 41)));
@@ -492,7 +492,7 @@ describe("<Alert />", () => {
       tree
         .find("span.components-label.badge.bg-secondary.cursor-pointer")
         .at(0)
-        .text()
+        .text(),
     ).toBe("2 hours ago");
 
     jest.setSystemTime(new Date(Date.UTC(2018, 7, 16, 19, 36, 41)));
@@ -503,7 +503,7 @@ describe("<Alert />", () => {
       tree
         .find("span.components-label.badge.bg-secondary.cursor-pointer")
         .at(0)
-        .text()
+        .text(),
     ).toBe("2 days ago");
   });
 });

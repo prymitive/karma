@@ -112,7 +112,7 @@ const SilenceForm: FC<{
               (f.matcher === QueryOperators.Equal ||
                 f.matcher === QueryOperators.NotEqual ||
                 f.matcher === QueryOperators.Regex ||
-                f.matcher === QueryOperators.NegativeRegex)
+                f.matcher === QueryOperators.NegativeRegex),
           )
           .forEach((f) => {
             const matcher = NewEmptyMatcher();
@@ -147,7 +147,7 @@ const SilenceForm: FC<{
     // populate author
     if (silenceFormStore.data.author === "") {
       silenceFormStore.data.setAuthor(
-        settingsStore.silenceFormConfig.config.author
+        settingsStore.silenceFormConfig.config.author,
       );
     }
 

@@ -75,7 +75,7 @@ const MockFetchStats: mockFetchStatsT = {
 
 const useFetchGetMock = (
   uri: string,
-  { autorun = true, deps = [] } = {}
+  { autorun = true, deps = [] } = {},
 ): FetchGetResultT<responseT> => {
   const [response, setResponse] = useState(null as responseT);
   const [error] = useState(null);
