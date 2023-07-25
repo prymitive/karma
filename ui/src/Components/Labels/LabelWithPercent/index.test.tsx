@@ -18,7 +18,7 @@ const MountedLabelWithPercent = (
   hits: number,
   percent: number,
   offset: number,
-  isActive: boolean
+  isActive: boolean,
 ) => {
   return mount(
     <LabelWithPercent
@@ -29,7 +29,7 @@ const MountedLabelWithPercent = (
       percent={percent}
       offset={offset}
       isActive={isActive}
-    />
+    />,
   );
 };
 
@@ -62,7 +62,7 @@ describe("<LabelWithPercent />", () => {
     RenderAndClick("foo", "bar");
     expect(alertStore.filters.values).toHaveLength(1);
     expect(alertStore.filters.values).toContainEqual(
-      NewUnappliedFilter("foo=bar")
+      NewUnappliedFilter("foo=bar"),
     );
   });
 
@@ -71,7 +71,7 @@ describe("<LabelWithPercent />", () => {
     tree.find(".components-label").find("svg").simulate("click");
     expect(alertStore.filters.values).toHaveLength(0);
     expect(alertStore.filters.values).not.toContainEqual(
-      NewUnappliedFilter("foo=bar")
+      NewUnappliedFilter("foo=bar"),
     );
   });
 
@@ -79,7 +79,7 @@ describe("<LabelWithPercent />", () => {
     RenderAndClick("foo", "bar", { altKey: true });
     expect(alertStore.filters.values).toHaveLength(1);
     expect(alertStore.filters.values).toContainEqual(
-      NewUnappliedFilter("foo!=bar")
+      NewUnappliedFilter("foo!=bar"),
     );
   });
 

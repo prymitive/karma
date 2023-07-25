@@ -26,7 +26,7 @@ const MountedLabelValueInput = () => {
       showDelete={false}
       onDelete={MockOnDelete}
       isValid={true}
-    />
+    />,
   );
 };
 

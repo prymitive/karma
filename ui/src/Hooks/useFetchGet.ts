@@ -8,7 +8,7 @@ import { CommonOptions, FetchRetryConfig } from "Common/Fetch";
 
 export type FetchFunctionT = (
   input: RequestInfo | URL,
-  init?: RequestInit | undefined
+  init?: RequestInit | undefined,
 ) => Promise<Response>;
 
 export interface FetchGetOptionsT {
@@ -37,7 +37,7 @@ export interface FetchGetResultT<T> {
 
 const useFetchGet = <T>(
   uri: string,
-  { autorun = true, deps = [], fetcher = null }: FetchGetOptionsT = {}
+  { autorun = true, deps = [], fetcher = null }: FetchGetOptionsT = {},
 ): FetchGetResultT<T> => {
   const [response, setResponse] = useState<ResponseState<T>>({
     response: null,
@@ -75,8 +75,8 @@ const useFetchGet = <T>(
               CommonOptions,
               {
                 mode: n <= FetchRetryConfig.retries ? "cors" : "no-cors",
-              }
-            ) as RequestInit
+              },
+            ) as RequestInit,
           ).catch((err: Error) => {
             if (!isCanceled.current) {
               setResponse((r) => ({
@@ -87,7 +87,7 @@ const useFetchGet = <T>(
               return retry(err);
             }
           }),
-        FetchRetryConfig
+        FetchRetryConfig,
       );
 
       if (res !== undefined && !isCanceled.current) {

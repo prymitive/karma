@@ -64,7 +64,7 @@ const AlertGroup: FC<{
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
   const [isCollapsed, setIsCollapsed] = useState<boolean>(
-    DefaultDetailsCollapseValue(settingsStore)
+    DefaultDetailsCollapseValue(settingsStore),
   );
 
   // Used to calculate step size when loading more alerts.
@@ -80,7 +80,7 @@ const AlertGroup: FC<{
   const getStepSize = (totalSize: number) => {
     const val = Math.min(
       Math.max(Math.round((totalSize - defaultRenderCount) / 5), 5),
-      totalSize - defaultRenderCount
+      totalSize - defaultRenderCount,
     );
     return val;
   };
@@ -89,7 +89,7 @@ const AlertGroup: FC<{
     const step = getStepSize(group.totalAlerts);
     alertStore.ui.setGroupAlertLimit(
       group.id,
-      Math.min(group.alerts.length + step, group.totalAlerts)
+      Math.min(group.alerts.length + step, group.totalAlerts),
     );
   };
 
@@ -97,7 +97,7 @@ const AlertGroup: FC<{
     const step = getStepSize(group.totalAlerts);
     alertStore.ui.setGroupAlertLimit(
       group.id,
-      Math.max(group.alerts.length - step, 1)
+      Math.max(group.alerts.length - step, 1),
     );
   };
 
@@ -107,7 +107,7 @@ const AlertGroup: FC<{
         setIsCollapsed(event.detail.value);
       }
     },
-    [gridLabelValue]
+    [gridLabelValue],
   );
 
   useEffect(() => {
@@ -115,7 +115,7 @@ const AlertGroup: FC<{
     return () => {
       window.removeEventListener(
         "alertGroupCollapse",
-        onAlertGroupCollapseEvent
+        onAlertGroupCollapseEvent,
       );
     };
   }, [onAlertGroupCollapseEvent]);

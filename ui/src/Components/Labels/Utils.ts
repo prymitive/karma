@@ -22,7 +22,7 @@ const GetClassAndStyle = (
   name: string,
   value: string,
   extraClass?: string,
-  baseClass?: "badge" | "btn"
+  baseClass?: "badge" | "btn",
 ): ClassAndStyleT => {
   const elementType = baseClass || "badge";
 
@@ -41,7 +41,7 @@ const GetClassAndStyle = (
     data.colorClassNames.push(
       StateLabelClassMap[value as AlertStateT]
         ? `bg-${StateLabelClassMap[value as AlertStateT]} text-white`
-        : DefaultLabelClassMap[elementType]
+        : DefaultLabelClassMap[elementType],
     );
   } else if (labelSettings?.isStatic) {
     data.colorClassNames.push(StaticColorLabelClassMap[elementType]);
@@ -52,11 +52,11 @@ const GetClassAndStyle = (
       data.colorClassNames.push(
         isBackgroundDark(c.brightness)
           ? "components-label-dark"
-          : "components-label-bright"
+          : "components-label-bright",
       );
 
       data.colorClassNames.push(
-        `components-label-brightness-${Math.round(c.brightness / 25)}`
+        `components-label-brightness-${Math.round(c.brightness / 25)}`,
       );
     } else {
       // if not fall back to class
@@ -64,7 +64,7 @@ const GetClassAndStyle = (
     }
   }
   data.className = `${[...data.baseClassNames, ...data.colorClassNames].join(
-    " "
+    " ",
   )} ${extraClass || ""}`;
 
   return data;

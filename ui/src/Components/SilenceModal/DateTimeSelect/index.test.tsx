@@ -148,7 +148,7 @@ const ValidateTimeButton = (
   storeKey: "startsAt" | "endsAt",
   elemIndex: number,
   iconMatch: RegExp,
-  expectedDiff: number
+  expectedDiff: number,
 ) => {
   const button = tab.find("td > span").at(elemIndex);
   expect(button.html()).toMatch(iconMatch);
@@ -156,11 +156,11 @@ const ValidateTimeButton = (
   const oldTimeValue = new Date(silenceFormStore.data[storeKey]);
   button.simulate("click");
   expect(silenceFormStore.data[storeKey].toISOString()).not.toBe(
-    oldTimeValue.toISOString()
+    oldTimeValue.toISOString(),
   );
   const diffMS = differenceInMilliseconds(
     silenceFormStore.data[storeKey],
-    oldTimeValue
+    oldTimeValue,
   );
   expect(diffMS).toBe(expectedDiff);
 };
@@ -170,7 +170,7 @@ const ValidateTimeWheel = (
   storeKey: "startsAt" | "endsAt",
   className: string,
   deltaY: number,
-  expectedDiff: number
+  expectedDiff: number,
 ) => {
   const elem = tab.find(className);
 
@@ -186,11 +186,11 @@ const ValidateTimeWheel = (
     .dispatchEvent(event);
 
   expect(silenceFormStore.data[storeKey].toISOString()).not.toBe(
-    oldTimeValue.toISOString()
+    oldTimeValue.toISOString(),
   );
   const diffMS = differenceInMilliseconds(
     silenceFormStore.data[storeKey],
-    oldTimeValue
+    oldTimeValue,
   );
   expect(diffMS).toBe(expectedDiff);
 };
@@ -203,11 +203,11 @@ describe("<TabContentStart />", () => {
   it("selecting date on DayPicker updates startsAt", () => {
     const tree = MountedTabContentStart();
     expect(silenceFormStore.data.startsAt.toISOString()).toBe(
-      new Date(2060, 1, 1, 0, 0, 0).toISOString()
+      new Date(2060, 1, 1, 0, 0, 0).toISOString(),
     );
     tree.find("button.rdp-button.rdp-day").at(17).simulate("click");
     expect(silenceFormStore.data.startsAt.toISOString()).toBe(
-      new Date(2060, 1, 18, 0, 0, 0).toISOString()
+      new Date(2060, 1, 18, 0, 0, 0).toISOString(),
     );
   });
 
@@ -219,14 +219,14 @@ describe("<TabContentStart />", () => {
   it("Today button takes you back to the current month", () => {
     const tree = MountedTabContentStart();
     expect(silenceFormStore.data.startsAt.toISOString()).toBe(
-      new Date(2060, 1, 1, 0, 0, 0).toISOString()
+      new Date(2060, 1, 1, 0, 0, 0).toISOString(),
     );
     expect(tree.find(".rdp-caption_label").text()).toBe("February 2060");
     tree.find("button.rdp-button.rdp-nav_button_next").simulate("click");
     expect(tree.find(".rdp-caption_label").text()).toBe("March 2060");
     tree.find("button.btn.btn-light.btn-sm").simulate("click");
     expect(tree.find(".rdp-caption_label").text()).toBe(
-      format(new Date(), "LLLL yyyy")
+      format(new Date(), "LLLL yyyy"),
     );
   });
 
@@ -237,7 +237,7 @@ describe("<TabContentStart />", () => {
       "startsAt",
       "td.components-hour-up",
       -1,
-      3600 * 1000
+      3600 * 1000,
     );
   });
 
@@ -253,7 +253,7 @@ describe("<TabContentStart />", () => {
       "startsAt",
       "td.components-minute-up",
       -2,
-      60 * 1000
+      60 * 1000,
     );
   });
 
@@ -269,7 +269,7 @@ describe("<TabContentStart />", () => {
       "startsAt",
       "td.components-hour-down",
       1,
-      -1 * 3600 * 1000
+      -1 * 3600 * 1000,
     );
   });
 
@@ -285,7 +285,7 @@ describe("<TabContentStart />", () => {
       "startsAt",
       "td.components-minute",
       1,
-      -1 * 60 * 1000
+      -1 * 60 * 1000,
     );
   });
 
@@ -301,7 +301,7 @@ describe("<TabContentStart />", () => {
       "startsAt",
       "td.components-minute-down",
       2,
-      -1 * 60 * 1000
+      -1 * 60 * 1000,
     );
   });
 
@@ -317,7 +317,7 @@ describe("<TabContentStart />", () => {
       "startsAt",
       "td.components-minute",
       1,
-      -1 * 60 * 1000
+      -1 * 60 * 1000,
     );
   });
 });
@@ -330,11 +330,11 @@ describe("<TabContentEnd />", () => {
   it("Selecting date on DayPicker updates endsAt", () => {
     const tree = MountedTabContentEnd();
     expect(silenceFormStore.data.endsAt.toISOString()).toBe(
-      new Date(2061, 1, 1, 0, 0, 0).toISOString()
+      new Date(2061, 1, 1, 0, 0, 0).toISOString(),
     );
     tree.find("button.rdp-button.rdp-day").at(23).simulate("click");
     expect(silenceFormStore.data.endsAt.toISOString()).toBe(
-      new Date(2061, 1, 24, 0, 0, 0).toISOString()
+      new Date(2061, 1, 24, 0, 0, 0).toISOString(),
     );
   });
 
@@ -346,14 +346,14 @@ describe("<TabContentEnd />", () => {
   it("Today button takes you back to the current month", () => {
     const tree = MountedTabContentEnd();
     expect(silenceFormStore.data.endsAt.toISOString()).toBe(
-      new Date(2061, 1, 1, 0, 0, 0).toISOString()
+      new Date(2061, 1, 1, 0, 0, 0).toISOString(),
     );
     expect(tree.find(".rdp-caption_label").text()).toBe("February 2061");
     tree.find("button.rdp-button.rdp-nav_button_next").simulate("click");
     expect(tree.find(".rdp-caption_label").text()).toBe("March 2061");
     tree.find("button.btn.btn-light.btn-sm").simulate("click");
     expect(tree.find(".rdp-caption_label").text()).toBe(
-      format(new Date(), "LLLL yyyy")
+      format(new Date(), "LLLL yyyy"),
     );
   });
 
@@ -374,7 +374,7 @@ describe("<TabContentEnd />", () => {
       "endsAt",
       "td.components-hour",
       1,
-      -1 * 3600 * 1000
+      -1 * 3600 * 1000,
     );
   });
 
@@ -390,7 +390,7 @@ describe("<TabContentEnd />", () => {
       "endsAt",
       "td.components-minute-up",
       -10,
-      60 * 1000
+      60 * 1000,
     );
   });
 
@@ -406,7 +406,7 @@ describe("<TabContentEnd />", () => {
       "endsAt",
       "td.components-hour-down",
       1,
-      -1 * 3600 * 1000
+      -1 * 3600 * 1000,
     );
   });
 
@@ -422,7 +422,7 @@ describe("<TabContentEnd />", () => {
       "endsAt",
       "td.components-minute-down",
       50,
-      -1 * 60 * 1000
+      -1 * 60 * 1000,
     );
   });
 
@@ -438,7 +438,7 @@ describe("<TabContentEnd />", () => {
       "endsAt",
       "td.components-minute",
       15,
-      -1 * 60 * 1000
+      -1 * 60 * 1000,
     );
   });
 });
@@ -446,10 +446,10 @@ describe("<TabContentEnd />", () => {
 const ValidateDurationButton = (
   elemIndex: number,
   iconMatch: RegExp,
-  expectedDiff: number
+  expectedDiff: number,
 ) => {
   const tree = mount(
-    <TabContentDuration silenceFormStore={silenceFormStore} />
+    <TabContentDuration silenceFormStore={silenceFormStore} />,
   );
   const button = tree.find("td > span").at(elemIndex);
   expect(button.html()).toMatch(iconMatch);
@@ -457,11 +457,11 @@ const ValidateDurationButton = (
   const oldEndsAt = new Date(silenceFormStore.data.endsAt);
   button.simulate("click");
   expect(silenceFormStore.data.endsAt.toISOString()).not.toBe(
-    oldEndsAt.toISOString()
+    oldEndsAt.toISOString(),
   );
   const diffMS = differenceInMilliseconds(
     silenceFormStore.data.endsAt,
-    oldEndsAt
+    oldEndsAt,
   );
   expect(diffMS).toBe(expectedDiff);
 };
@@ -469,10 +469,10 @@ const ValidateDurationButton = (
 const ValidateDurationWheel = (
   elemIndex: number,
   deltaY: number,
-  expectedDiff: number
+  expectedDiff: number,
 ) => {
   const tree = mount(
-    <TabContentDuration silenceFormStore={silenceFormStore} />
+    <TabContentDuration silenceFormStore={silenceFormStore} />,
   );
   const elem = tree.find(".components-duration").at(elemIndex);
 
@@ -484,11 +484,11 @@ const ValidateDurationWheel = (
   elem.getDOMNode().dispatchEvent(event);
 
   expect(silenceFormStore.data.endsAt.toISOString()).not.toBe(
-    oldEndsAt.toISOString()
+    oldEndsAt.toISOString(),
   );
   const diffMS = differenceInMilliseconds(
     silenceFormStore.data.endsAt,
-    oldEndsAt
+    oldEndsAt,
   );
   expect(diffMS).toBe(expectedDiff);
 };

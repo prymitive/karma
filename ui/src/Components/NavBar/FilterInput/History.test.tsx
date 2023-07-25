@@ -25,7 +25,7 @@ afterEach(() => {
 
 const MountedHistory = () => {
   return mount(
-    <History alertStore={alertStore} settingsStore={settingsStore} />
+    <History alertStore={alertStore} settingsStore={settingsStore} />,
   );
 };
 
@@ -130,7 +130,7 @@ describe("<HistoryMenu />", () => {
     const tree = MountedHistory();
     tree.find("button.cursor-pointer").simulate("click");
     expect(tree.text()).toBe(
-      "Last used filtersEmptySave filtersReset filtersClear history"
+      "Last used filtersEmptySave filtersReset filtersClear history",
     );
     await act(() => promise);
   });
@@ -144,7 +144,7 @@ describe("<HistoryMenu />", () => {
     tree.find("button.cursor-pointer").simulate("click");
 
     expect(tree.text()).toBe(
-      "Last used filtersfoo=bar1baz=~bar1Save filtersReset filtersClear history"
+      "Last used filtersfoo=bar1baz=~bar1Save filtersReset filtersClear history",
     );
 
     const labels = tree.find("Memo(HistoryLabel)");

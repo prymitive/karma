@@ -29,7 +29,7 @@ const ShallowGrid = () => {
       alertStore={alertStore}
       settingsStore={settingsStore}
       silenceFormStore={silenceFormStore}
-    />
+    />,
   );
 };
 

@@ -7,14 +7,14 @@ function PressKey(key: string, code: number): void {
         key: key,
         keyCode: code,
         which: code,
-      } as KeyboardEventInit)
+      } as KeyboardEventInit),
     );
     document.dispatchEvent(
       new KeyboardEvent("keyup", {
         key: key,
         keyCode: code,
         which: code,
-      } as KeyboardEventInit)
+      } as KeyboardEventInit),
     );
   });
 }

@@ -8,7 +8,7 @@ const MockGroup = (
   groupName: string,
   alertCount: number,
   active: number,
-  suppressed: number
+  suppressed: number,
 ): APIAlertGroupT => {
   const alerts = [];
   for (let i = 1; i <= alertCount; i++) {
@@ -70,7 +70,7 @@ const MockGroup = (
           value: `instance${i}`,
         },
       ],
-      state
+      state,
     );
     alert.startsAt = subMinutes(new Date(), alertCount).toISOString();
     alerts.push(alert);
@@ -86,7 +86,7 @@ const MockGroup = (
     alerts,
     [],
     [],
-    {}
+    {},
   );
   return group;
 };

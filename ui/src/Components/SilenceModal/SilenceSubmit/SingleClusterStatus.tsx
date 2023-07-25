@@ -15,7 +15,7 @@ const SingleClusterStatus: FC<{
   silenceFormStore: SilenceFormStore;
 }> = ({ silenceFormStore, alertStore }) => {
   const clusterRequest = Object.values(
-    silenceFormStore.data.requestsByCluster
+    silenceFormStore.data.requestsByCluster,
   )[0];
 
   return (

@@ -32,7 +32,7 @@ describe("Fetch", () => {
       await expect(request).resolves.toMatchObject({ status: 200 });
       expect(fetchMock.lastUrl()).toBe("http://example.com/");
       expect(fetchMock.lastOptions()).toEqual(
-        merge({}, CommonOptions, methodOptions[name])
+        merge({}, CommonOptions, methodOptions[name]),
       );
     });
 
@@ -42,7 +42,7 @@ describe("Fetch", () => {
         {
           keepalive: false,
         },
-        () => {}
+        () => {},
       );
       await expect(request).resolves.toMatchObject({ status: 200 });
       expect(fetchMock.lastUrl()).toBe("http://example.com/");
@@ -52,8 +52,8 @@ describe("Fetch", () => {
           CommonOptions,
           methodOptions[name],
           { keepalive: false },
-          () => {}
-        )
+          () => {},
+        ),
       );
     });
 
@@ -64,7 +64,7 @@ describe("Fetch", () => {
           credentials: "omit",
           redirect: "follow",
         },
-        () => {}
+        () => {},
       );
       await expect(request).resolves.toMatchObject({ status: 200 });
       expect(fetchMock.lastUrl()).toBe("http://example.com/");
@@ -72,7 +72,7 @@ describe("Fetch", () => {
         merge({}, CommonOptions, methodOptions[name], {
           credentials: "omit",
           redirect: "follow",
-        })
+        }),
       );
     });
   }
@@ -91,7 +91,7 @@ describe("Fetch", () => {
       Array.from(Array(FetchRetryConfig.retries + 1).keys(), (i) => ({
         mode: i < FetchRetryConfig.retries ? "cors" : "no-cors",
         credentials: "include",
-      }))
+      })),
     );
     // ensure that the the second to last call was with cors
     expect(fetchMock.calls()[fetchMock.calls().length - 2][1]).toMatchObject({

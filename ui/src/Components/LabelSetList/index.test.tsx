@@ -24,7 +24,7 @@ const MountedLabelSetList = (labelsList: LabelsT[]) => {
       alertStore={alertStore}
       labelsList={labelsList}
       title="Affected alerts"
-    />
+    />,
   );
 };
 
@@ -55,7 +55,7 @@ describe("<LabelSetList />", () => {
     const tree = MountedLabelSetList(
       Array.from(Array(10), (_, i) => [
         { name: "instance", value: `server${i}` },
-      ])
+      ]),
     );
     expect(tree.find(".pagination")).toHaveLength(0);
   });
@@ -65,7 +65,7 @@ describe("<LabelSetList />", () => {
     const tree = MountedLabelSetList(
       Array.from(Array(5), (_, i) => [
         { name: "instance", value: `server${i}` },
-      ])
+      ]),
     );
     expect(tree.find(".pagination")).toHaveLength(0);
   });
@@ -75,7 +75,7 @@ describe("<LabelSetList />", () => {
     const tree = MountedLabelSetList(
       Array.from(Array(11), (_, i) => [
         { name: "instance", value: `server${i}` },
-      ])
+      ]),
     );
     expect(tree.find(".pagination")).toHaveLength(1);
   });
@@ -85,7 +85,7 @@ describe("<LabelSetList />", () => {
     const tree = MountedLabelSetList(
       Array.from(Array(6), (_, i) => [
         { name: "instance", value: `server${i}` },
-      ])
+      ]),
     );
     expect(tree.find(".pagination")).toHaveLength(1);
   });
@@ -94,7 +94,7 @@ describe("<LabelSetList />", () => {
     const tree = MountedLabelSetList(
       Array.from(Array(21), (_, i) => [
         { name: "instance", value: `server${i + 1}` },
-      ])
+      ]),
     );
     const pageLink = tree.find(".page-link").at(3);
     pageLink.simulate("click");

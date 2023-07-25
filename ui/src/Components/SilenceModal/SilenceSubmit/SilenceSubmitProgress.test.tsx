@@ -52,7 +52,7 @@ beforeEach(() => {
     },
     {
       overwriteRoutes: true,
-    }
+    },
   );
 });
 
@@ -75,7 +75,7 @@ const MountedSilenceSubmitProgress = () => {
       }}
       alertStore={alertStore}
       silenceFormStore={silenceFormStore}
-    />
+    />,
   );
 };
 
@@ -187,17 +187,17 @@ describe("<SilenceSubmitProgress />", () => {
         }}
         alertStore={alertStore}
         silenceFormStore={silenceFormStore}
-      />
+      />,
     );
     await act(async () => {
       await fetchMock.flush(true);
     });
     expect(fetchMock.calls()[0][0]).toBe(
-      "http://am2.example.com/api/v2/silences"
+      "http://am2.example.com/api/v2/silences",
     );
     expect(fetchMock.calls()).toHaveLength(2);
     expect(fetchMock.calls()[1][0]).toBe(
-      "http://am1.example.com/api/v2/silences"
+      "http://am1.example.com/api/v2/silences",
     );
   });
 
@@ -256,7 +256,7 @@ describe("<SilenceSubmitProgress />", () => {
         }}
         alertStore={alertStore}
         silenceFormStore={silenceFormStore}
-      />
+      />,
     );
     await act(async () => {
       await fetchMock.flush(true);
@@ -308,13 +308,13 @@ describe("<SilenceSubmitProgress />", () => {
         }}
         alertStore={alertStore}
         silenceFormStore={silenceFormStore}
-      />
+      />,
     );
     await act(async () => {
       await fetchMock.flush(true);
     });
     expect(fetchMock.calls()[0][0]).toBe(
-      "http://am1.example.com/api/v2/silences"
+      "http://am1.example.com/api/v2/silences",
     );
     expect(consoleSpy).toHaveBeenCalledTimes(1);
   });
@@ -345,7 +345,7 @@ describe("<SilenceSubmitProgress />", () => {
         }}
         alertStore={alertStore}
         silenceFormStore={silenceFormStore}
-      />
+      />,
     );
     await act(async () => {
       await fetchMock.flush(true);
@@ -409,14 +409,14 @@ describe("<SilenceSubmitProgress />", () => {
         }}
         alertStore={alertStore}
         silenceFormStore={silenceFormStore}
-      />
+      />,
     );
     await act(async () => {
       await fetchMock.flush(true);
     });
     expect(fetchMock.calls()).toHaveLength(1);
     expect(fetchMock.calls()[0][0]).toBe(
-      "http://am1.example.com/api/v2/silences"
+      "http://am1.example.com/api/v2/silences",
     );
     expect(logs).toEqual(['Alertmanager instance "am2" is read-only']);
     expect(consoleSpy).toHaveBeenCalledTimes(1);
@@ -477,7 +477,7 @@ describe("<SilenceSubmitProgress />", () => {
         }}
         alertStore={alertStore}
         silenceFormStore={silenceFormStore}
-      />
+      />,
     );
     expect(fetchMock.calls()).toHaveLength(0);
     expect(logs).toEqual([
@@ -494,7 +494,7 @@ describe("<SilenceSubmitProgress />", () => {
     });
     tree.update();
     expect(
-      silenceFormStore.data.requestsByCluster.mockAlertmanager
+      silenceFormStore.data.requestsByCluster.mockAlertmanager,
     ).toMatchObject({
       isDone: true,
       error: null,
@@ -515,7 +515,7 @@ describe("<SilenceSubmitProgress />", () => {
     });
     tree.update();
     expect(
-      silenceFormStore.data.requestsByCluster.mockAlertmanager
+      silenceFormStore.data.requestsByCluster.mockAlertmanager,
     ).toMatchObject({
       isDone: true,
       error: "error message",

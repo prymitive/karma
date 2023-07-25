@@ -13,7 +13,7 @@ import { Modal } from "Components/Modal";
 const MainModalContent = React.lazy(() =>
   import("./MainModalContent").then((module) => ({
     default: module.MainModalContent,
-  }))
+  })),
 );
 
 const MainModal: FC<{

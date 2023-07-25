@@ -13,7 +13,7 @@ beforeEach(() => {
 const validateClassName = (
   value: string,
   className: string,
-  themed: boolean
+  themed: boolean,
 ) => {
   const tree = mount(
     <FilteringCounterBadge
@@ -22,7 +22,7 @@ const validateClassName = (
       value={value}
       counter={1}
       themed={themed}
-    />
+    />,
   );
   expect(tree.find("span").hasClass(className)).toBe(true);
 };
@@ -35,7 +35,7 @@ const validateStyle = (value: string, themed: boolean) => {
       value={value}
       counter={1}
       themed={themed}
-    />
+    />,
   );
   expect(tree.find("span").prop("style")).toEqual({});
 };
@@ -44,7 +44,7 @@ const validateOnClick = (
   value: string,
   themed: boolean,
   isNegative: boolean,
-  isAppend: boolean
+  isAppend: boolean,
 ) => {
   alertStore.filters.setFilterValues([NewUnappliedFilter("foo=bar")]);
   const tree = mount(
@@ -55,7 +55,7 @@ const validateOnClick = (
       counter={1}
       themed={themed}
       isAppend={isAppend}
-    />
+    />,
   );
   tree
     .find(".components-label")
@@ -63,15 +63,15 @@ const validateOnClick = (
   expect(alertStore.filters.values).toHaveLength(isAppend ? 2 : 1);
   if (isAppend) {
     expect(alertStore.filters.values).toContainEqual(
-      NewUnappliedFilter("foo=bar")
+      NewUnappliedFilter("foo=bar"),
     );
   }
   expect(alertStore.filters.values).toContainEqual(
     NewUnappliedFilter(
       `@state${
         isNegative ? QueryOperators.NotEqual : QueryOperators.Equal
-      }${value}`
-    )
+      }${value}`,
+    ),
   );
 };
 
@@ -107,7 +107,7 @@ describe("<FilteringCounterBadge />", () => {
         value="active"
         counter={123}
         themed={true}
-      />
+      />,
     );
     expect(tree.text()).toBe("123");
   });

@@ -34,7 +34,7 @@ const MockGroup = () => {
         "This is hidden annotation",
         false,
         false,
-        false
+        false,
       ),
       MockAnnotation("link", "http://link.example.com", true, true, false),
     ],
@@ -42,7 +42,7 @@ const MockGroup = () => {
       { name: "label1", value: "foo" },
       { name: "label2", value: "bar" },
     ],
-    {}
+    {},
   );
   return group;
 };
@@ -76,7 +76,7 @@ const MountedGroupFooter = () => {
     {
       wrappingComponent: ThemeContext.Provider,
       wrappingComponentProps: { value: MockThemeContext },
-    }
+    },
   );
 };
 
@@ -184,10 +184,10 @@ describe("<GroupFooter />", () => {
       {
         wrappingComponent: ThemeContext.Provider,
         wrappingComponentProps: { value: MockThemeContext },
-      }
+      },
     );
     expect(
-      tree.find("div.components-grid-alertgrid-alertgroup-shared-silence")
+      tree.find("div.components-grid-alertgrid-alertgroup-shared-silence"),
     ).toHaveLength(0);
   });
 
@@ -203,7 +203,7 @@ describe("<GroupFooter />", () => {
       {
         wrappingComponent: ThemeContext.Provider,
         wrappingComponentProps: { value: MockThemeContext },
-      }
+      },
     );
     expect(tree.find("RenderLinkAnnotation")).toHaveLength(0);
     expect(tree.find("RenderNonLinkAnnotation")).toHaveLength(0);
@@ -252,7 +252,7 @@ describe("<GroupFooter />", () => {
       {
         wrappingComponent: ThemeContext.Provider,
         wrappingComponentProps: { value: MockThemeContext },
-      }
+      },
     );
     expect(toDiffableHtml(tree.html())).toMatch(/@cluster:/);
   });
@@ -270,7 +270,7 @@ describe("<GroupFooter />", () => {
       {
         wrappingComponent: ThemeContext.Provider,
         wrappingComponentProps: { value: MockThemeContext },
-      }
+      },
     );
     expect(toDiffableHtml(tree.html())).not.toMatch(/@cluster:/);
   });

@@ -141,7 +141,7 @@ const HistoryMenu: FC<{
           title="Save filters"
           action={() => {
             settingsStore.savedFilters.save(
-              alertStore.filters.values.map((f) => f.raw)
+              alertStore.filters.values.map((f) => f.raw),
             );
           }}
           afterClick={afterClick}
@@ -177,7 +177,7 @@ class HistoryStorage {
     },
     {
       delay: 100,
-    }
+    },
   );
 
   setFilters = action((newFilters: ReduceFilterT[][]) => {
@@ -233,7 +233,7 @@ const History: FC<{
         const newHistory = [
           ...[validAppliedFilters],
           ...history.config.filters.filter(
-            (f) => JSON.stringify(f) !== filtersJSON
+            (f) => JSON.stringify(f) !== filtersJSON,
           ),
         ].slice(0, 8);
         if (
@@ -242,7 +242,7 @@ const History: FC<{
           history.setFilters(newHistory);
         }
       }),
-    [] // eslint-disable-line react-hooks/exhaustive-deps
+    [], // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   const ref = useRef<HTMLSpanElement | null>(null);

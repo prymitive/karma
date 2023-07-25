@@ -29,7 +29,7 @@ const MountedFailingComponent = () => {
   return mount(
     <ErrorBoundary>
       <FailingComponent></FailingComponent>
-    </ErrorBoundary>
+    </ErrorBoundary>,
   );
 };
 

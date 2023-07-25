@@ -65,7 +65,7 @@ beforeEach(() => {
     alerts,
     [],
     [],
-    {}
+    {},
   );
   group.allLabels.active = {
     alertname: ["Fake Alert"],
@@ -81,7 +81,7 @@ beforeEach(() => {
     },
     {
       overwriteRoutes: true,
-    }
+    },
   );
 });
 
@@ -99,7 +99,7 @@ const MountedAlertAck = () => {
       alertStore={alertStore}
       silenceFormStore={silenceFormStore}
       group={group}
-    />
+    />,
   );
 };
 
@@ -143,7 +143,7 @@ describe("<AlertAck />", () => {
       },
       {
         overwriteRoutes: true,
-      }
+      },
     );
     const tree = MountedAlertAck();
     const button = tree.find("span.badge");
@@ -163,7 +163,7 @@ describe("<AlertAck />", () => {
       },
       {
         overwriteRoutes: true,
-      }
+      },
     );
     const tree = MountedAlertAck();
     const button = tree.find("span.badge");
@@ -227,7 +227,7 @@ describe("<AlertAck />", () => {
     await MountAndClick();
     expect(fetchMock.calls()).toHaveLength(2);
     expect(fetchMock.calls()[0][0]).toBe(
-      "http://m1.example.com/api/v2/silences"
+      "http://m1.example.com/api/v2/silences",
     );
     expect(fetchMock.calls()[0][1]).toMatchObject({
       method: "POST",
@@ -235,7 +235,7 @@ describe("<AlertAck />", () => {
       headers: { "X-Cluster": "c1" },
     });
     expect(fetchMock.calls()[1][0]).toBe(
-      "http://m3.example.com/api/v2/silences"
+      "http://m3.example.com/api/v2/silences",
     );
     expect(fetchMock.calls()[1][1]).toMatchObject({
       method: "POST",
@@ -271,10 +271,10 @@ describe("<AlertAck />", () => {
     await MountAndClick();
     expect(fetchMock.calls()).toHaveLength(2);
     expect(fetchMock.calls()[0][0]).toBe(
-      "http://m2.example.com/api/v2/silences"
+      "http://m2.example.com/api/v2/silences",
     );
     expect(fetchMock.calls()[1][0]).toBe(
-      "http://m4.example.com/api/v2/silences"
+      "http://m4.example.com/api/v2/silences",
     );
   });
 
@@ -301,7 +301,7 @@ describe("<AlertAck />", () => {
       },
       {
         overwriteRoutes: true,
-      }
+      },
     );
 
     silenceFormStore.data.setAuthor("karma/ui");
@@ -399,10 +399,10 @@ describe("<AlertAck />", () => {
     await MountAndClick();
     const comment = JSON.parse((fetchMock.lastOptions() as any).body).comment;
     expect(comment).not.toEqual(
-      "ACK! This alert was acknowledged using karma on Tue Feb 01 2000 00:00:00 GMT"
+      "ACK! This alert was acknowledged using karma on Tue Feb 01 2000 00:00:00 GMT",
     );
     expect(comment).toMatch(
-      /ACK! This alert was acknowledged using karma on (Mon Jan 31 2000 19|Tue Feb 01 2000 00):00:00 GMT([+-]+)[0-9]+ \(.*\)/
+      /ACK! This alert was acknowledged using karma on (Mon Jan 31 2000 19|Tue Feb 01 2000 00):00:00 GMT([+-]+)[0-9]+ \(.*\)/,
     );
   });
 
@@ -555,16 +555,16 @@ describe("<AlertAck />", () => {
     });
     expect(fetchMock.calls()).toHaveLength(4);
     expect(fetchMock.calls()[0][0]).toBe(
-      "http://m1.example.com/api/v2/silences"
+      "http://m1.example.com/api/v2/silences",
     );
     expect(fetchMock.calls()[1][0]).toBe(
-      "http://m2.example.com/api/v2/silences"
+      "http://m2.example.com/api/v2/silences",
     );
     expect(fetchMock.calls()[2][0]).toBe(
-      "http://m3.example.com/api/v2/silences"
+      "http://m3.example.com/api/v2/silences",
     );
     expect(fetchMock.calls()[3][0]).toBe(
-      "http://m4.example.com/api/v2/silences"
+      "http://m4.example.com/api/v2/silences",
     );
   });
 
@@ -618,16 +618,16 @@ describe("<AlertAck />", () => {
     });
     expect(fetchMock.calls()).toHaveLength(4);
     expect(fetchMock.calls()[0][0]).toBe(
-      "http://m1.example.com/api/v2/silences"
+      "http://m1.example.com/api/v2/silences",
     );
     expect(fetchMock.calls()[1][0]).toBe(
-      "http://m2.example.com/api/v2/silences"
+      "http://m2.example.com/api/v2/silences",
     );
     expect(fetchMock.calls()[2][0]).toBe(
-      "http://m3.example.com/api/v2/silences"
+      "http://m3.example.com/api/v2/silences",
     );
     expect(fetchMock.calls()[3][0]).toBe(
-      "http://m4.example.com/api/v2/silences"
+      "http://m4.example.com/api/v2/silences",
     );
   });
 
@@ -662,7 +662,7 @@ describe("<AlertAck />", () => {
     });
     expect(fetchMock.calls()).toHaveLength(1);
     expect(fetchMock.calls()[0][0]).toBe(
-      "http://am1.example.com/api/v2/silences"
+      "http://am1.example.com/api/v2/silences",
     );
     expect(consoleSpy).toHaveBeenCalledTimes(1);
   });

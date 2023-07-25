@@ -39,7 +39,7 @@ describe("<WrappedCustomMultiSelect />", () => {
       <ThemedSelect
         defaultValue={Option("foo")}
         options={[Option("foo"), Option("bar")]}
-      />
+      />,
     );
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
@@ -50,7 +50,7 @@ describe("<WrappedCustomMultiSelect />", () => {
         isMulti
         defaultValue={Option("foo")}
         options={[Option("foo"), Option("bar")]}
-      />
+      />,
     );
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
@@ -61,7 +61,7 @@ describe("<WrappedCustomMultiSelect />", () => {
         isDisabled
         defaultValue={Option("foo")}
         options={[Option("foo"), Option("bar")]}
-      />
+      />,
     );
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });

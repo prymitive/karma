@@ -23,7 +23,7 @@ import { MatchCounter } from "./MatchCounter";
 
 const GenerateHashFromMatchers = (
   silenceFormStore: SilenceFormStore,
-  matcher: MatcherWithIDT
+  matcher: MatcherWithIDT,
 ): number =>
   hashObject({
     alertmanagers: silenceFormStore.data.alertmanagers,
@@ -48,7 +48,7 @@ const LabelValueInput: FC<{
 }> = observer(({ silenceFormStore, matcher, isValid }) => {
   const { response, get, cancelGet } = useFetchGet<string[]>(
     FormatBackendURI(`labelValues.json?name=${matcher.name}`),
-    { autorun: false }
+    { autorun: false },
   );
 
   useEffect(() => {
@@ -90,7 +90,7 @@ const LabelValueInput: FC<{
       placeholder={isValid ? "Label value" : <ValidationError />}
       onChange={(
         newValue: OnChangeValue<OptionT, true>,
-        meta: ActionMeta<OptionT>
+        meta: ActionMeta<OptionT>,
       ) => {
         matcher.values = newValue as OptionT[];
         // force regex if we have multiple values

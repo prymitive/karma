@@ -33,7 +33,7 @@ function FormatAPIFilterQuery(filters: string[]): string {
     Object.assign(DecodeLocationSearch(window.location.search).params, {
       q: filters,
     }),
-    QueryStringEncodeOptions
+    QueryStringEncodeOptions,
   );
 }
 
@@ -53,7 +53,7 @@ interface DecodeLocationSearchReturnT {
   defaultsUsed: boolean;
 }
 function DecodeLocationSearch(
-  searchString: string
+  searchString: string,
 ): DecodeLocationSearchReturnT {
   let defaultsUsed = true;
   let params: QueryParamsT = { q: [] };
@@ -89,7 +89,7 @@ function UpdateLocationSearch(newParams: QueryParamsT): void {
   window.history.pushState(
     null,
     "",
-    `${baseURLWithoutSearch}?${newSearch || "q="}`
+    `${baseURLWithoutSearch}?${newSearch || "q="}`,
   );
 }
 
@@ -266,10 +266,10 @@ class AlertStore {
               map[toJS(obj.raw)] = toJS(obj);
               return map;
             },
-            {}
+            {},
           );
           this.values = raws.map((raw) =>
-            filtersByRaw[raw] ? filtersByRaw[raw] : NewUnappliedFilter(raw)
+            filtersByRaw[raw] ? filtersByRaw[raw] : NewUnappliedFilter(raw),
           );
         },
         applyAllFilters() {
@@ -287,7 +287,7 @@ class AlertStore {
         setWithoutLocation: action.bound,
         applyAllFilters: action.bound,
       },
-      { name: "API Filters" }
+      { name: "API Filters" },
     );
 
     this.data = observable(
@@ -311,7 +311,7 @@ class AlertStore {
             : 0;
         },
         getAlertmanagerByName(
-          name: string
+          name: string,
         ): APIAlertmanagerUpstreamT | undefined {
           return this.upstreams.instances.find((am) => am.name === name);
         },
@@ -330,16 +330,16 @@ class AlertStore {
             .map((am) =>
               Object.assign({}, am, {
                 clusterMembers: am.clusterMembers.filter(
-                  (m) => this.isReadOnlyAlertmanager(m) === false
+                  (m) => this.isReadOnlyAlertmanager(m) === false,
                 ),
-              })
+              }),
             );
         },
         get clustersWithoutReadOnly(): APIAlertsResponseUpstreamsClusterMapT {
           const clusters: APIAlertsResponseUpstreamsClusterMapT = {};
           for (const clusterID of Object.keys(this.upstreams.clusters)) {
             const members = this.upstreams.clusters[clusterID].filter(
-              (member) => this.isReadOnlyAlertmanager(member) === false
+              (member) => this.isReadOnlyAlertmanager(member) === false,
             );
             if (members.length > 0) {
               clusters[clusterID] = members;
@@ -372,7 +372,7 @@ class AlertStore {
         },
         get upstreamsWithErrors(): APIAlertmanagerUpstreamT[] {
           return this.upstreams.instances.filter(
-            (upstream) => upstream.error !== ""
+            (upstream) => upstream.error !== "",
           );
         },
       },
@@ -389,7 +389,7 @@ class AlertStore {
         setColors: action.bound,
         setLabelNames: action.bound,
       },
-      { name: "API Response data" }
+      { name: "API Response data" },
     );
 
     this.info = observable(
@@ -444,7 +444,7 @@ class AlertStore {
         setVersion: action.bound,
         setTimestamp: action.bound,
       },
-      { name: "API response info" }
+      { name: "API response info" },
     );
 
     this.settings = observable(
@@ -487,7 +487,7 @@ class AlertStore {
       },
       {
         name: "Global settings",
-      }
+      },
     );
 
     this.status = observable(
@@ -542,7 +542,7 @@ class AlertStore {
         stop: action.bound,
         setError: action.bound,
       },
-      { name: "Store status" }
+      { name: "Store status" },
     );
 
     this.ui = observable(
@@ -575,7 +575,7 @@ class AlertStore {
         setIsIdle: action.bound,
         setGridGroupLimit: action.bound,
         setGroupAlertLimit: action.bound,
-      }
+      },
     );
 
     if (initialFilters !== null) this.filters.setFilters(initialFilters);
@@ -590,7 +590,7 @@ class AlertStore {
       sortReverse: boolean,
       gridGroupLimits: { [key: string]: number },
       defaultGroupLimit: number,
-      groupAlertLimits: { [key: string]: number }
+      groupAlertLimits: { [key: string]: number },
     ) => {
       this.status.setFetching();
 
@@ -611,7 +611,7 @@ class AlertStore {
       return await FetchGet(
         alertsURI,
         { method: "POST", body: JSON.stringify(payload) },
-        this.info.setIsRetrying
+        this.info.setIsRetrying,
       )
         .then((result) => {
           // we're sending requests with mode=cors so the response should also be type=cors
@@ -631,10 +631,10 @@ class AlertStore {
         .catch((err) => {
           console.trace(err);
           return this.handleFetchError(
-            `Can't connect to the API, last error was "${err.message}"`
+            `Can't connect to the API, last error was "${err.message}"`,
           );
         });
-    }
+    },
   );
 
   fetchWithThrottle = throttle(this.fetch, 300);
@@ -650,22 +650,22 @@ class AlertStore {
         this.filters.values
           .map((f) => f.raw)
           .slice()
-          .sort()
-      )
+          .sort(),
+      ),
     );
     const responseFilters = Array.from(
-      new Set(result.filters.map((m) => m.text).sort())
+      new Set(result.filters.map((m) => m.text).sort()),
     );
     if (JSON.stringify(queryFilters) !== JSON.stringify(responseFilters)) {
       console.info(
-        `Got response with filters '${responseFilters}' while expecting results for '${queryFilters}', ignoring`
+        `Got response with filters '${responseFilters}' while expecting results for '${queryFilters}', ignoring`,
       );
       return;
     }
 
     for (const filter of result.filters) {
       const storedIndex = this.filters.values.findIndex(
-        (f) => f.raw === filter.text
+        (f) => f.raw === filter.text,
       );
       this.filters.values[storedIndex] = Object.assign(
         this.filters.values[storedIndex],
@@ -676,7 +676,7 @@ class AlertStore {
           name: filter.name,
           matcher: filter.matcher,
           value: filter.value,
-        }
+        },
       );
     }
 
@@ -695,7 +695,7 @@ class AlertStore {
         .map((group) => group.id)
         .forEach((id) => {
           knowGroups.push(id);
-        })
+        }),
     );
     this.ui.purgeGroupAlertLimits(knowGroups);
 

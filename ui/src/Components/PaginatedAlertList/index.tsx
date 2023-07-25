@@ -32,7 +32,7 @@ const PaginatedAlertList: FC<{
   title?: string;
 }> = ({ alertStore, filters, title }) => {
   const { response, error, isLoading } = useFetchGet<AlertListResponseT>(
-    FormatBackendURI("alertList.json?") + FormatAlertsQ(filters)
+    FormatBackendURI("alertList.json?") + FormatAlertsQ(filters),
   );
 
   return error ? (

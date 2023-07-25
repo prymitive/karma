@@ -28,7 +28,7 @@ afterEach(() => {
 
 const MountedMatchCounter = () => {
   return mount(
-    <MatchCounter silenceFormStore={silenceFormStore} matcher={matcher} />
+    <MatchCounter silenceFormStore={silenceFormStore} matcher={matcher} />,
   );
 };
 
@@ -133,7 +133,7 @@ describe("<MatchCounter />", () => {
   it("sends correct query string for a 'foo=bar' matcher", () => {
     MountedMatchCounter();
     expect(
-      (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0]
+      (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0],
     ).toBe("./alertList.json?q=foo%3Dbar");
   });
 
@@ -141,7 +141,7 @@ describe("<MatchCounter />", () => {
     matcher.isRegex = true;
     MountedMatchCounter();
     expect(
-      (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0]
+      (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0],
     ).toBe("./alertList.json?q=foo%3D~%5Ebar%24");
   });
 
@@ -152,7 +152,7 @@ describe("<MatchCounter />", () => {
     matcher.isRegex = false;
     MountedMatchCounter();
     expect(
-      (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0]
+      (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0],
     ).toBe("./alertList.json?q=foo%3D%28x%29");
   });
 
@@ -163,7 +163,7 @@ describe("<MatchCounter />", () => {
     matcher.isRegex = true;
     MountedMatchCounter();
     expect(
-      (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0]
+      (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0],
     ).toBe("./alertList.json?q=foo%3D~%5E%28x%29%24");
   });
 
@@ -174,7 +174,7 @@ describe("<MatchCounter />", () => {
     matcher.isRegex = false;
     MountedMatchCounter();
     expect(
-      (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0]
+      (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0],
     ).toBe("./alertList.json?q=foo%3D%28x%29");
   });
 
@@ -185,7 +185,7 @@ describe("<MatchCounter />", () => {
     matcher.isRegex = true;
     MountedMatchCounter();
     expect(
-      (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0]
+      (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0],
     ).toBe("./alertList.json?q=foo%3D~%5E%5C%28x%5C%29%24");
   });
 
@@ -195,7 +195,7 @@ describe("<MatchCounter />", () => {
     silenceFormStore.data.setAlertmanagers([]);
     MountedMatchCounter();
     expect(
-      (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0]
+      (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0],
     ).toBe("./alertList.json?q=foo%3D~%5E%28bar%7Cbaz%29%24");
   });
 
@@ -208,7 +208,7 @@ describe("<MatchCounter />", () => {
     ]);
     MountedMatchCounter();
     expect(
-      (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0]
+      (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0],
     ).toBe("./alertList.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28am1%29%24");
   });
 
@@ -225,9 +225,9 @@ describe("<MatchCounter />", () => {
     ]);
     MountedMatchCounter();
     expect(
-      (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0]
+      (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0],
     ).toBe(
-      "./alertList.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28am1%7Cam2%29%24"
+      "./alertList.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28am1%7Cam2%29%24",
     );
   });
 });

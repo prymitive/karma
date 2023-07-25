@@ -68,7 +68,7 @@ describe("<SilenceSubmitController />", () => {
       <SilenceSubmitController
         alertStore={alertStore}
         silenceFormStore={silenceFormStore}
-      />
+      />,
     );
     expect(tree.find("Memo(MultiClusterStatus)")).toHaveLength(1);
     expect(tree.find("Memo(SingleClusterStatus)")).toHaveLength(0);
@@ -83,7 +83,7 @@ describe("<SilenceSubmitController />", () => {
       <SilenceSubmitController
         alertStore={alertStore}
         silenceFormStore={silenceFormStore}
-      />
+      />,
     );
     expect(tree.find("Memo(MultiClusterStatus)")).toHaveLength(0);
     expect(tree.find("Memo(SingleClusterStatus)")).toHaveLength(1);
@@ -95,7 +95,7 @@ describe("<SilenceSubmitController />", () => {
       <SilenceSubmitController
         alertStore={alertStore}
         silenceFormStore={silenceFormStore}
-      />
+      />,
     );
     const button = tree.find("button");
     button.simulate("click");
@@ -113,7 +113,7 @@ describe("<MultiClusterStatus />", () => {
       <MultiClusterStatus
         alertStore={alertStore}
         silenceFormStore={silenceFormStore}
-      />
+      />,
     );
     expect(tree.find("tr")).toHaveLength(2);
   });
@@ -125,7 +125,7 @@ describe("<MultiClusterStatus />", () => {
       <MultiClusterStatus
         alertStore={alertStore}
         silenceFormStore={silenceFormStore}
-      />
+      />,
     );
     expect(tree.find("tr")).toHaveLength(1);
     expect(tree.find("td").at(0).html()).toMatch(/fa-circle-notch/);
@@ -142,7 +142,7 @@ describe("<MultiClusterStatus />", () => {
       <MultiClusterStatus
         alertStore={alertStore}
         silenceFormStore={silenceFormStore}
-      />
+      />,
     );
     expect(tree.find("tr")).toHaveLength(1);
     expect(tree.find("td").at(0).html()).toMatch(/fa-circle-exclamation/);
@@ -160,14 +160,14 @@ describe("<MultiClusterStatus />", () => {
       <MultiClusterStatus
         alertStore={alertStore}
         silenceFormStore={silenceFormStore}
-      />
+      />,
     );
     expect(tree.find("tr")).toHaveLength(1);
     expect(tree.find("td").at(0).html()).toMatch(/fa-circle-check/);
     expect(tree.find("td").at(1).text()).toBe("single");
     expect(tree.find("td").at(2).text()).toBe("123456789");
     expect(
-      tree.find("td").at(2).find('a[href="http://localhost"]')
+      tree.find("td").at(2).find('a[href="http://localhost"]'),
     ).toHaveLength(1);
   });
 });
@@ -180,7 +180,7 @@ describe("<SingleClusterStatus />", () => {
       <SingleClusterStatus
         alertStore={alertStore}
         silenceFormStore={silenceFormStore}
-      />
+      />,
     );
     expect(tree.find("div.display-1").at(0).html()).toMatch(/fa-circle-notch/);
     expect(tree.find("div.badge.bg-primary").text()).toBe("single");
@@ -196,10 +196,10 @@ describe("<SingleClusterStatus />", () => {
       <SingleClusterStatus
         alertStore={alertStore}
         silenceFormStore={silenceFormStore}
-      />
+      />,
     );
     expect(tree.find("div.display-1").at(0).html()).toMatch(
-      /fa-circle-exclamation/
+      /fa-circle-exclamation/,
     );
     expect(tree.find("div.badge.bg-primary").text()).toBe("single");
     expect(tree.find("p").text()).toBe("fake error");
@@ -215,7 +215,7 @@ describe("<SingleClusterStatus />", () => {
       <SingleClusterStatus
         alertStore={alertStore}
         silenceFormStore={silenceFormStore}
-      />
+      />,
     );
 
     expect(tree.find("div.display-1").at(0).html()).toMatch(/fa-circle-check/);

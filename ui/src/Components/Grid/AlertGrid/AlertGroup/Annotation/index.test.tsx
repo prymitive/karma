@@ -6,7 +6,10 @@ import { RenderNonLinkAnnotation, RenderLinkAnnotation } from ".";
 
 const ShallowLinkAnnotation = () => {
   return shallow(
-    <RenderLinkAnnotation name="annotation name" value="http://localhost/foo" />
+    <RenderLinkAnnotation
+      name="annotation name"
+      value="http://localhost/foo"
+    />,
   );
 };
 
@@ -34,7 +37,7 @@ const ShallowNonLinkAnnotation = (visible: boolean) => {
       visible={visible}
       allowHTML={false}
       afterUpdate={MockAfterUpdate}
-    />
+    />,
   );
 };
 
@@ -46,7 +49,7 @@ const MountedNonLinkAnnotation = (visible: boolean) => {
       visible={visible}
       allowHTML={false}
       afterUpdate={MockAfterUpdate}
-    />
+    />,
   );
 };
 
@@ -58,7 +61,7 @@ const MountedNonLinkAnnotationContainingLink = (visible: boolean) => {
       visible={visible}
       allowHTML={false}
       afterUpdate={MockAfterUpdate}
-    />
+    />,
   );
 };
 
@@ -115,10 +118,10 @@ describe("<RenderNonLinkAnnotation />", () => {
         visible
         allowHTML={false}
         afterUpdate={MockAfterUpdate}
-      />
+      />,
     );
     expect(toDiffableHtml(tree.html())).toMatch(
-      /&lt;div&gt;inside div&lt;\/div&gt;/
+      /&lt;div&gt;inside div&lt;\/div&gt;/,
     );
   });
 
@@ -130,7 +133,7 @@ describe("<RenderNonLinkAnnotation />", () => {
         visible
         allowHTML={true}
         afterUpdate={MockAfterUpdate}
-      />
+      />,
     );
     expect(tree.html()).toMatch(/<div>inside div<\/div>/);
   });

@@ -66,7 +66,7 @@ const Browser: FC<{
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [activePage, setActivePage] = useState<number>(1);
   const [currentTime, setCurrentTime] = useState<number>(
-    Math.floor(Date.now() / 1000)
+    Math.floor(Date.now() / 1000),
   );
 
   const debouncedSearchTerm = useDebounce<string>(searchTerm, 500);
@@ -77,9 +77,9 @@ const Browser: FC<{
     FormatBackendURI(
       `silences.json?sortReverse=${sortReverse ? "1" : "0"}&showExpired=${
         showExpired ? "1" : "0"
-      }&searchTerm=${debouncedSearchTerm}`
+      }&searchTerm=${debouncedSearchTerm}`,
     ),
-    { deps: [currentTime] } as FetchGetOptionsT
+    { deps: [currentTime] } as FetchGetOptionsT,
   );
 
   useEffect(() => {
@@ -105,23 +105,23 @@ const Browser: FC<{
   const hideDeleteMenu = useCallback(() => setIsDeleteMenuOpen(false), []);
   const toggleDeleteMenu = useCallback(
     () => setIsDeleteMenuOpen(!isDeleteMenuOpen),
-    [isDeleteMenuOpen]
+    [isDeleteMenuOpen],
   );
 
   const onSelect = useCallback(
     (cluster: string, id: string, checked: boolean) => {
       if (checked) {
         setSelected((sv) =>
-          Array.from(new Set([{ id: id, cluster: cluster }, ...sv]))
+          Array.from(new Set([{ id: id, cluster: cluster }, ...sv])),
         );
       } else {
         setSelected((sv) =>
-          sv.filter((s) => !(s.id === id && s.cluster === cluster))
+          sv.filter((s) => !(s.id === id && s.cluster === cluster)),
         );
       }
       setAllSelected(false);
     },
-    [setSelected, setAllSelected]
+    [setSelected, setAllSelected],
   );
 
   return (
@@ -218,7 +218,7 @@ const Browser: FC<{
                           .map((silence) => ({
                             id: silence.silence.id,
                             cluster: silence.cluster,
-                          }))
+                          })),
                       );
                     } else {
                       setSelected([]);

@@ -13,7 +13,7 @@ import { SilenceDetails } from "./SilenceDetails";
 
 const GetAlertmanager = (
   alertStore: AlertStore,
-  cluster: string
+  cluster: string,
 ): APIAlertmanagerUpstreamT =>
   alertStore.data.readWriteAlertmanagers
     .filter((u) => u.cluster === cluster)
@@ -65,7 +65,7 @@ const ManagedSilence: FC<{
     };
 
     const [progress, setProgress] = useState<number>(
-      calculatePercent(silence.startsAt, silence.endsAt)
+      calculatePercent(silence.startsAt, silence.endsAt),
     );
 
     useEffect(() => {
@@ -118,7 +118,7 @@ const ManagedSilence: FC<{
         </div>
       </div>
     );
-  }
+  },
 );
 ManagedSilence.displayName = "ManagedSilence";
 

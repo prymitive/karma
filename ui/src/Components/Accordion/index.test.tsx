@@ -10,7 +10,7 @@ describe("<Accordion />", () => {
         <AccordionItem text="title 1" content="item 1" />
         <AccordionItem text="title 2" content="item 2" defaultIsOpen />
         <AccordionItem text="title 1" content="item 1" />
-      </Accordion>
+      </Accordion>,
     );
     expect(asFragment()).toMatchSnapshot();
   });
@@ -24,14 +24,14 @@ describe("<AccordionItem />", () => {
 
   it("doesn't render content when defaultIsOpen=false", () => {
     render(
-      <AccordionItem text="title" content="content" defaultIsOpen={false} />
+      <AccordionItem text="title" content="content" defaultIsOpen={false} />,
     );
     expect(screen.getByRole("button")).toHaveTextContent("title");
   });
 
   it("renders content when defaultIsOpen=true", () => {
     render(
-      <AccordionItem text="title" content="content" defaultIsOpen={true} />
+      <AccordionItem text="title" content="content" defaultIsOpen={true} />,
     );
     expect(screen.getByText("content")).toBeTruthy();
   });

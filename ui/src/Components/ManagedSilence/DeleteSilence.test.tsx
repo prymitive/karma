@@ -66,7 +66,7 @@ const MountedDeleteSilenceModalContent = () => {
       cluster={cluster}
       silence={silence}
       onHide={MockOnHide}
-    />
+    />,
   );
 };
 
@@ -78,7 +78,7 @@ describe("<DeleteSilence />", () => {
         silenceFormStore={silenceFormStore}
         cluster={cluster}
         silence={silence}
-      />
+      />,
     );
     expect(tree.text()).toBe("Delete");
   });
@@ -90,7 +90,7 @@ describe("<DeleteSilence />", () => {
         silenceFormStore={silenceFormStore}
         cluster={cluster}
         silence={silence}
-      />
+      />,
     );
     tree.find("button.btn-danger").simulate("click");
     expect(tree.find(".modal-body")).toHaveLength(1);
@@ -103,7 +103,7 @@ describe("<DeleteSilence />", () => {
         silenceFormStore={silenceFormStore}
         cluster={cluster}
         silence={silence}
-      />
+      />,
     );
     tree.find("button.btn-danger").simulate("click");
     expect(tree.find(".modal-body")).toHaveLength(1);
@@ -123,7 +123,7 @@ describe("<DeleteSilence />", () => {
         silenceFormStore={silenceFormStore}
         cluster={cluster}
         silence={silence}
-      />
+      />,
     );
     tree.find("button.btn-danger").simulate("click");
     expect(tree.find(".modal-body")).toHaveLength(1);
@@ -147,7 +147,7 @@ describe("<DeleteSilence />", () => {
         silenceFormStore={silenceFormStore}
         cluster={cluster}
         silence={silence}
-      />
+      />,
     );
     expect(tree.find("button").prop("disabled")).toBe(true);
 
@@ -182,13 +182,13 @@ describe("<DeleteSilenceModalContent />", () => {
 
     expect(
       (useFetchDelete as jest.MockedFunction<typeof useFetchDelete>).mock
-        .calls[0][0]
+        .calls[0][0],
     ).toBe(
-      "http://localhost:9093/api/v2/silence/04d37636-2350-4878-b382-e0b50353230f"
+      "http://localhost:9093/api/v2/silence/04d37636-2350-4878-b382-e0b50353230f",
     );
     expect(
       (useFetchDelete as jest.MockedFunction<typeof useFetchDelete>).mock
-        .calls[0][1]
+        .calls[0][1],
     ).toMatchObject({
       headers: {},
       credentials: "include",
@@ -211,13 +211,13 @@ describe("<DeleteSilenceModalContent />", () => {
 
     expect(
       (useFetchDelete as jest.MockedFunction<typeof useFetchDelete>).mock
-        .calls[0][0]
+        .calls[0][0],
     ).toBe(
-      "http://localhost:9093/api/v2/silence/04d37636-2350-4878-b382-e0b50353230f"
+      "http://localhost:9093/api/v2/silence/04d37636-2350-4878-b382-e0b50353230f",
     );
     expect(
       (useFetchDelete as jest.MockedFunction<typeof useFetchDelete>).mock
-        .calls[0][1]
+        .calls[0][1],
     ).toMatchObject({
       credentials: "include",
       headers: { Authorization: "Basic ***" },
@@ -238,13 +238,13 @@ describe("<DeleteSilenceModalContent />", () => {
 
     expect(
       (useFetchDelete as jest.MockedFunction<typeof useFetchDelete>).mock
-        .calls[0][0]
+        .calls[0][0],
     ).toBe(
-      "http://localhost:9093/api/v2/silence/04d37636-2350-4878-b382-e0b50353230f"
+      "http://localhost:9093/api/v2/silence/04d37636-2350-4878-b382-e0b50353230f",
     );
     expect(
       (useFetchDelete as jest.MockedFunction<typeof useFetchDelete>).mock
-        .calls[0][1]
+        .calls[0][1],
     ).toMatchObject({
       credentials: "omit",
       headers: {},

@@ -18,7 +18,7 @@ const FallbackSilenceDesciption: FC<{
 const GetSilenceFromStore = (
   alertStore: AlertStore,
   cluster: string,
-  silenceID: string
+  silenceID: string,
 ): APISilenceT | null => {
   const amSilences = alertStore.data.silences[cluster];
   if (!amSilences) return null;
@@ -71,12 +71,12 @@ const RenderSilence: FC<{
         GetSilenceFromStore(
           nextProps.alertStore,
           nextProps.cluster,
-          nextProps.silenceID
+          nextProps.silenceID,
         ) === null
       );
     }
     return false;
-  }
+  },
 );
 
 export { RenderSilence };

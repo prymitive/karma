@@ -3,7 +3,7 @@ import { useEffect, useRef, useState, Ref } from "react";
 import Bricks, { SizeDetail, Instance } from "bricks.js";
 
 const useGrid = (
-  sizes: SizeDetail[]
+  sizes: SizeDetail[],
 ): { ref: Ref<HTMLDivElement>; repack: () => void } => {
   const ref = useRef<HTMLDivElement | null>(null);
   const grid = useRef<Instance | null>(null);

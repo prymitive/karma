@@ -42,20 +42,20 @@ const GridLabelNameSelect: FC<{
 }> = ({ alertStore, settingsStore, grid, onClose }) => {
   const loadOptions = (
     inputValue: string,
-    callback: (options: OptionT[]) => void
+    callback: (options: OptionT[]) => void,
   ) => {
     const autoEnabled =
       settingsStore.multiGridConfig.config.gridLabel === "@auto";
     const options = [
       ...specialLabels.filter(
         (val) =>
-          val.value !== "@auto" || (val.value === "@auto" && !autoEnabled)
+          val.value !== "@auto" || (val.value === "@auto" && !autoEnabled),
       ),
       ...alertStore.data.labelNames
         .filter(
           (labelName) =>
             autoEnabled === true ||
-            (autoEnabled === false && labelName !== grid.labelName)
+            (autoEnabled === false && labelName !== grid.labelName),
         )
         .sort()
         .map((key) => StringToOption(key)),

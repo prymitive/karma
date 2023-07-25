@@ -41,7 +41,7 @@ const AlertGroupCollapseConfiguration: FC<{
         classNamePrefix="react-select"
         instanceId="configuration-collapse"
         defaultValue={valueToOption(
-          settingsStore.alertGroupConfig.config.defaultCollapseState
+          settingsStore.alertGroupConfig.config.defaultCollapseState,
         )}
         options={Object.values(settingsStore.alertGroupConfig.options)}
         onChange={(option) =>

@@ -36,7 +36,7 @@ describe("useFetchDelete", () => {
 
   it("sends a DELETE request", async () => {
     const { waitForNextUpdate } = renderHook(() =>
-      useFetchDelete("http://localhost/ok", EmptyOptions)
+      useFetchDelete("http://localhost/ok", EmptyOptions),
     );
 
     await waitForNextUpdate();
@@ -50,7 +50,7 @@ describe("useFetchDelete", () => {
 
   it("sends correct headers", async () => {
     const { waitForNextUpdate } = renderHook(() =>
-      useFetchDelete("http://localhost/ok", EmptyOptions)
+      useFetchDelete("http://localhost/ok", EmptyOptions),
     );
 
     await waitForNextUpdate();
@@ -66,7 +66,7 @@ describe("useFetchDelete", () => {
 
   it("response is updated after successful fetch", async () => {
     const { result, waitForNextUpdate } = renderHook(() =>
-      useFetchDelete("http://localhost/ok", EmptyOptions)
+      useFetchDelete("http://localhost/ok", EmptyOptions),
     );
 
     expect(result.current.response).toBe(null);
@@ -82,7 +82,7 @@ describe("useFetchDelete", () => {
 
   it("error is updated after 401 error", async () => {
     const { result, waitForNextUpdate } = renderHook(() =>
-      useFetchDelete("http://localhost/401", EmptyOptions)
+      useFetchDelete("http://localhost/401", EmptyOptions),
     );
 
     expect(result.current.response).toBe(null);
@@ -98,7 +98,7 @@ describe("useFetchDelete", () => {
 
   it("error is updated after 500 error", async () => {
     const { result, waitForNextUpdate } = renderHook(() =>
-      useFetchDelete("http://localhost/500", EmptyOptions)
+      useFetchDelete("http://localhost/500", EmptyOptions),
     );
 
     expect(result.current.response).toBe(null);
@@ -114,7 +114,7 @@ describe("useFetchDelete", () => {
 
   it("error is updated after an exception", async () => {
     const { result, waitForNextUpdate } = renderHook(() =>
-      useFetchDelete("http://localhost/error", EmptyOptions)
+      useFetchDelete("http://localhost/error", EmptyOptions),
     );
 
     expect(result.current.response).toBe(null);
@@ -130,7 +130,7 @@ describe("useFetchDelete", () => {
 
   it("error is updated after unknown error", async () => {
     const { result, waitForNextUpdate } = renderHook(() =>
-      useFetchDelete("http://localhost/unknown", EmptyOptions)
+      useFetchDelete("http://localhost/unknown", EmptyOptions),
     );
 
     expect(result.current.response).toBe(null);
@@ -147,13 +147,13 @@ describe("useFetchDelete", () => {
   it("doesn't update response after cleanup", async () => {
     fetchMock.mock(
       "http://localhost/slow/ok",
-      new Promise((res) => setTimeout(() => res("ok"), 1000))
+      new Promise((res) => setTimeout(() => res("ok"), 1000)),
     );
 
     const Component = () => {
       const { response, error, isDeleting } = useFetchDelete(
         "http://localhost/slow/ok",
-        EmptyOptions
+        EmptyOptions,
       );
       return (
         <span>
@@ -180,7 +180,7 @@ describe("useFetchDelete", () => {
     const Component = () => {
       const { response, error, isDeleting } = useFetchDelete(
         "http://localhost/slow/500",
-        EmptyOptions
+        EmptyOptions,
       );
       return (
         <span>
@@ -208,7 +208,7 @@ describe("useFetchDelete", () => {
     const Component = () => {
       const { response, error, isDeleting } = useFetchDelete(
         "http://localhost/slow/error",
-        EmptyOptions
+        EmptyOptions,
       );
       return (
         <span>

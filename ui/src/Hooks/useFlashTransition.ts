@@ -14,7 +14,7 @@ const defaultProps: TransitionProps = {
 };
 
 const useFlashTransition = (
-  flashOn: ReactNode
+  flashOn: ReactNode,
 ): { ref: (node?: Element | null) => void; props: TransitionProps } => {
   const mountRef = useRef<boolean>(false);
   const [ref, inView] = useInView();

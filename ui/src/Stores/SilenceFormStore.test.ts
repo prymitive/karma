@@ -31,7 +31,7 @@ const MockGroup = () => {
         { name: "instance", value: "prod1" },
         { name: "cluster", value: "prod" },
       ],
-      "active"
+      "active",
     ),
     MockAlert(
       [],
@@ -39,7 +39,7 @@ const MockGroup = () => {
         { name: "instance", value: "prod2" },
         { name: "cluster", value: "prod" },
       ],
-      "active"
+      "active",
     ),
     MockAlert(
       [],
@@ -47,7 +47,7 @@ const MockGroup = () => {
         { name: "instance", value: "dev1" },
         { name: "cluster", value: "dev" },
       ],
-      "active"
+      "active",
     ),
   ];
   const group = MockAlertGroup(
@@ -60,7 +60,7 @@ const MockGroup = () => {
         value: "mock",
       },
     ],
-    {}
+    {},
   );
   return group;
 };
@@ -139,7 +139,7 @@ describe("SilenceFormStore.data", () => {
     store.data.deleteMatcher(matcherID);
     expect(store.data.matchers).toHaveLength(2);
     expect(store.data.matchers).not.toContainEqual(
-      expect.objectContaining({ id: matcherID })
+      expect.objectContaining({ id: matcherID }),
     );
   });
 
@@ -165,7 +165,7 @@ describe("SilenceFormStore.data", () => {
     store.data.fillMatchersFromGroup(
       group,
       [],
-      AlertmanagerClustersToOption({ ha: ["am1", "am2"] })
+      AlertmanagerClustersToOption({ ha: ["am1", "am2"] }),
     );
     expect(store.data.alertmanagers).toMatchObject([
       { label: "Cluster: ha", value: ["am1", "am2"] },
@@ -176,14 +176,14 @@ describe("SilenceFormStore.data", () => {
         name: "alertname",
         values: [{ label: "FakeAlert", value: "FakeAlert", wasCreated: false }],
         isRegex: false,
-      })
+      }),
     );
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
         name: "job",
         values: [{ label: "mock", value: "mock", wasCreated: false }],
         isRegex: false,
-      })
+      }),
     );
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
@@ -197,7 +197,7 @@ describe("SilenceFormStore.data", () => {
           { label: "dev4", value: "dev4", wasCreated: false },
         ],
         isRegex: true,
-      })
+      }),
     );
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
@@ -207,7 +207,7 @@ describe("SilenceFormStore.data", () => {
           { label: "prod", value: "prod", wasCreated: false },
         ],
         isRegex: true,
-      })
+      }),
     );
   });
 
@@ -223,7 +223,7 @@ describe("SilenceFormStore.data", () => {
       group,
       ["job"],
       AlertmanagerClustersToOption({ ha: ["am1", "am2"] }),
-      group.alerts.slice(0, 2)
+      group.alerts.slice(0, 2),
     );
     expect(store.data.alertmanagers).toMatchObject([
       { label: "Cluster: ha", value: ["am1", "am2"] },
@@ -234,7 +234,7 @@ describe("SilenceFormStore.data", () => {
         name: "alertname",
         values: [{ label: "FakeAlert", value: "FakeAlert", wasCreated: false }],
         isRegex: false,
-      })
+      }),
     );
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
@@ -244,14 +244,14 @@ describe("SilenceFormStore.data", () => {
           { label: "prod2", value: "prod2", wasCreated: false },
         ],
         isRegex: true,
-      })
+      }),
     );
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
         name: "cluster",
         values: [{ label: "prod", value: "prod", wasCreated: false }],
         isRegex: false,
-      })
+      }),
     );
   });
 
@@ -268,7 +268,7 @@ describe("SilenceFormStore.data", () => {
       group,
       ["job"],
       AlertmanagerClustersToOption({ ha: ["am1", "am2"] }),
-      [group.alerts[0], group.alerts[2]]
+      [group.alerts[0], group.alerts[2]],
     );
     expect(store.data.alertmanagers).toMatchObject([
       { label: "Cluster: ha", value: ["am1", "am2"] },
@@ -279,7 +279,7 @@ describe("SilenceFormStore.data", () => {
         name: "alertname",
         values: [{ label: "FakeAlert", value: "FakeAlert", wasCreated: false }],
         isRegex: false,
-      })
+      }),
     );
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
@@ -289,7 +289,7 @@ describe("SilenceFormStore.data", () => {
           { label: "prod1", value: "prod1", wasCreated: false },
         ],
         isRegex: true,
-      })
+      }),
     );
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
@@ -299,7 +299,7 @@ describe("SilenceFormStore.data", () => {
           { label: "prod", value: "prod", wasCreated: false },
         ],
         isRegex: true,
-      })
+      }),
     );
   });
 
@@ -311,7 +311,7 @@ describe("SilenceFormStore.data", () => {
           { name: "instance", value: "1" },
           { name: "banana", value: "ignore" },
         ],
-        "active"
+        "active",
       ),
       MockAlert([], [{ name: "instance", value: "2" }], "suppressed"),
       MockAlert([], [{ name: "instance", value: "3" }], "active"),
@@ -326,7 +326,7 @@ describe("SilenceFormStore.data", () => {
           value: "mock",
         },
       ],
-      {}
+      {},
     );
     group.allLabels.active = {
       alertname: ["FakeAlert"],
@@ -339,7 +339,7 @@ describe("SilenceFormStore.data", () => {
       group,
       ["job"],
       AlertmanagerClustersToOption({ ha: ["am1", "am2"] }),
-      [group.alerts[0], group.alerts[2]]
+      [group.alerts[0], group.alerts[2]],
     );
     expect(store.data.alertmanagers).toMatchObject([
       { label: "Cluster: ha", value: ["am1", "am2"] },
@@ -350,7 +350,7 @@ describe("SilenceFormStore.data", () => {
         name: "alertname",
         values: [{ label: "FakeAlert", value: "FakeAlert", wasCreated: false }],
         isRegex: false,
-      })
+      }),
     );
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
@@ -360,7 +360,7 @@ describe("SilenceFormStore.data", () => {
           { label: "3", value: "3", wasCreated: false },
         ],
         isRegex: true,
-      })
+      }),
     );
   });
 
@@ -375,7 +375,7 @@ describe("SilenceFormStore.data", () => {
       alerts,
       [],
       [{ name: "job", value: "mock" }],
-      {}
+      {},
     );
     group.allLabels.active = {
       alertname: ["FakeAlert"],
@@ -385,7 +385,7 @@ describe("SilenceFormStore.data", () => {
       group,
       ["job"],
       AlertmanagerClustersToOption({ ha: ["am1", "am2"] }),
-      [group.alerts[0], group.alerts[2]]
+      [group.alerts[0], group.alerts[2]],
     );
     expect(store.data.alertmanagers).toMatchObject([
       { label: "Cluster: ha", value: ["am1", "am2"] },
@@ -396,7 +396,7 @@ describe("SilenceFormStore.data", () => {
         name: "alertname",
         values: [{ label: "FakeAlert", value: "FakeAlert", wasCreated: false }],
         isRegex: false,
-      })
+      }),
     );
   });
 
@@ -406,7 +406,7 @@ describe("SilenceFormStore.data", () => {
       group,
       [],
       AlertmanagerClustersToOption({ ha: ["am1", "am2"] }),
-      [group.alerts[0]]
+      [group.alerts[0]],
     );
     expect(store.data.alertmanagers).toMatchObject([
       { label: "Cluster: ha", value: ["am1", "am2"] },
@@ -417,28 +417,28 @@ describe("SilenceFormStore.data", () => {
         name: "alertname",
         values: [{ label: "FakeAlert", value: "FakeAlert", wasCreated: false }],
         isRegex: false,
-      })
+      }),
     );
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
         name: "job",
         values: [{ label: "mock", value: "mock", wasCreated: false }],
         isRegex: false,
-      })
+      }),
     );
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
         name: "instance",
         values: [{ label: "prod1", value: "prod1", wasCreated: false }],
         isRegex: false,
-      })
+      }),
     );
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
         name: "cluster",
         values: [{ label: "prod", value: "prod", wasCreated: false }],
         isRegex: false,
-      })
+      }),
     );
   });
 
@@ -448,7 +448,7 @@ describe("SilenceFormStore.data", () => {
       group,
       ["job", "instance", "cluster"],
       [],
-      [group.alerts[0]]
+      [group.alerts[0]],
     );
     expect(store.data.matchers).toHaveLength(1);
     expect(store.data.matchers).toContainEqual(
@@ -456,7 +456,7 @@ describe("SilenceFormStore.data", () => {
         name: "alertname",
         values: [{ label: "FakeAlert", value: "FakeAlert", wasCreated: false }],
         isRegex: false,
-      })
+      }),
     );
   });
 
@@ -471,7 +471,7 @@ describe("SilenceFormStore.data", () => {
             { name: "cluster", value: "prod" },
             { name: "foo", value: "bar" },
           ],
-          "active"
+          "active",
         ),
         MockAlert(
           [],
@@ -480,7 +480,7 @@ describe("SilenceFormStore.data", () => {
             { name: "cluster", value: "prod2" },
             { name: "foo", value: "prod" },
           ],
-          "active"
+          "active",
         ),
         MockAlert(
           [],
@@ -488,12 +488,12 @@ describe("SilenceFormStore.data", () => {
             { name: "alertname", value: "Alert3" },
             { name: "instance", value: "dev1" },
           ],
-          "active"
+          "active",
         ),
       ],
       [],
       [{ name: "job", value: "mock" }],
-      {}
+      {},
     );
     group.allLabels.active = {
       alertname: ["Alert1", "Alert2", "Alert3"],
@@ -507,7 +507,7 @@ describe("SilenceFormStore.data", () => {
         name: "region",
         values: [{ label: "AF", value: "AF", wasCreated: false }],
         isRegex: false,
-      })
+      }),
     );
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
@@ -518,14 +518,14 @@ describe("SilenceFormStore.data", () => {
           { label: "Alert3", value: "Alert3", wasCreated: false },
         ],
         isRegex: true,
-      })
+      }),
     );
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
         name: "job",
         values: [{ label: "mock", value: "mock", wasCreated: false }],
         isRegex: false,
-      })
+      }),
     );
   });
 
@@ -561,7 +561,7 @@ describe("SilenceFormStore.data", () => {
         values: [{ label: "equal", value: "equal", wasCreated: true }],
         isRegex: true,
         isEqual: true,
-      })
+      }),
     );
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
@@ -569,7 +569,7 @@ describe("SilenceFormStore.data", () => {
         values: [{ label: "notEqual", value: "notEqual", wasCreated: true }],
         isRegex: true,
         isEqual: false,
-      })
+      }),
     );
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
@@ -577,7 +577,7 @@ describe("SilenceFormStore.data", () => {
         values: [{ label: "equal", value: "equal", wasCreated: true }],
         isRegex: false,
         isEqual: true,
-      })
+      }),
     );
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
@@ -585,14 +585,14 @@ describe("SilenceFormStore.data", () => {
         values: [{ label: "notEqual", value: "notEqual", wasCreated: true }],
         isRegex: false,
         isEqual: false,
-      })
+      }),
     );
 
     expect(store.data.startsAt.toISOString()).toBe(
-      new Date(Date.UTC(2000, 0, 1, 0, 0, 0)).toISOString()
+      new Date(Date.UTC(2000, 0, 1, 0, 0, 0)).toISOString(),
     );
     expect(store.data.endsAt.toISOString()).toBe(
-      new Date(Date.UTC(2000, 0, 1, 1, 0, 0)).toISOString()
+      new Date(Date.UTC(2000, 0, 1, 1, 0, 0)).toISOString(),
     );
 
     expect(store.data.author).toBe("me@example.com");
@@ -804,7 +804,7 @@ describe("SilenceFormStore.data", () => {
     it(`fillFormFromSilence() unpacks ${t.matcher.name}=${
       t.matcher.value
     } isRegex=${t.matcher.isRegex} into ${t.result.name}=${JSON.stringify(
-      t.result.values.map((v) => v.value)
+      t.result.values.map((v) => v.value),
     )}`, () => {
       const silenceFormStorestore = new SilenceFormStore();
       const alertmanager = MockAlertmanager();
@@ -819,7 +819,7 @@ describe("SilenceFormStore.data", () => {
           values: t.result.values,
           isRegex: t.matcher.isRegex,
           isEqual: t.matcher.isEqual,
-        })
+        }),
       );
     });
   }
@@ -1000,7 +1000,7 @@ describe("SilenceFormStore.data", () => {
     ]);
     expect(store.data.comment).toBe("base64");
     expect(differenceInMinutes(store.data.endsAt, store.data.startsAt)).toBe(
-      7 * 60 + 45
+      7 * 60 + 45,
     );
   });
 
@@ -1154,7 +1154,7 @@ describe("SilenceFormStore.data startsAt & endsAt validation", () => {
     store.data.verifyStarEnd();
     expect(store.data.startsAt.toISOString()).toBe(startsAt.toISOString());
     expect(store.data.endsAt.toISOString()).toBe(
-      new Date(2063, 1, 1, 0, 1, 1).toISOString()
+      new Date(2063, 1, 1, 0, 1, 1).toISOString(),
     );
   });
 

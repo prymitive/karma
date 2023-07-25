@@ -33,14 +33,14 @@ afterEach(() => {
 
 const MountedInput = () => {
   return mount(
-    <FilterInput alertStore={alertStore} settingsStore={settingsStore} />
+    <FilterInput alertStore={alertStore} settingsStore={settingsStore} />,
   );
 };
 
 describe("<FilterInput />", () => {
   it("matches snapshot with no filters", () => {
     const tree = mount(
-      <FilterInput alertStore={alertStore} settingsStore={settingsStore} />
+      <FilterInput alertStore={alertStore} settingsStore={settingsStore} />,
     );
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
     expect(alertStore.filters.values).toHaveLength(0);
@@ -52,7 +52,7 @@ describe("<FilterInput />", () => {
       NewUnappliedFilter("baz!=bar"),
     ]);
     const tree = mount(
-      <FilterInput alertStore={alertStore} settingsStore={settingsStore} />
+      <FilterInput alertStore={alertStore} settingsStore={settingsStore} />,
     );
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
     expect(alertStore.filters.values).toHaveLength(2);
@@ -62,7 +62,7 @@ describe("<FilterInput />", () => {
     global.window.innerWidth = 768;
     const tree = MountedInput();
     expect(
-      tree.find("div.components-filterinput-outer").hasClass("bg-focused")
+      tree.find("div.components-filterinput-outer").hasClass("bg-focused"),
     ).toBe(true);
   });
 
@@ -70,7 +70,7 @@ describe("<FilterInput />", () => {
     global.window.innerWidth = 767;
     const tree = MountedInput();
     expect(
-      tree.find("div.components-filterinput-outer").hasClass("bg-focused")
+      tree.find("div.components-filterinput-outer").hasClass("bg-focused"),
     ).toBe(false);
   });
 
@@ -82,7 +82,7 @@ describe("<FilterInput />", () => {
     });
 
     expect(
-      tree.find("input.components-filterinput-wrapper").props().value
+      tree.find("input.components-filterinput-wrapper").props().value,
     ).toBe("foo=bar");
   });
 
@@ -98,7 +98,7 @@ describe("<FilterInput />", () => {
     tree.find("form").simulate("submit");
     expect(alertStore.filters.values).toHaveLength(1);
     expect(alertStore.filters.values[0]).toMatchObject(
-      NewUnappliedFilter("foo=bar")
+      NewUnappliedFilter("foo=bar"),
     );
   });
 
@@ -120,7 +120,7 @@ describe("<FilterInput />", () => {
     formControl.simulate("click");
     //expect(tree.find("input:focus")).toHaveLength(1);
     expect(
-      tree.find("div.components-filterinput-outer").hasClass("bg-focused")
+      tree.find("div.components-filterinput-outer").hasClass("bg-focused"),
     ).toBe(true);
   });
 
@@ -166,7 +166,7 @@ describe("<FilterInput autocomplete />", () => {
 
     expect(useFetchGetMock.fetch.calls).toHaveLength(1);
     expect(useFetchGetMock.fetch.calls[0]).toContain(
-      "./autocomplete.json?term=cluster"
+      "./autocomplete.json?term=cluster",
     );
     tree.unmount();
   });

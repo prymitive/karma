@@ -29,7 +29,7 @@ describe("<PageSelect />", () => {
         maxPerPage={5}
         totalItemsCount={17}
         setPageCallback={setPageCallback}
-      />
+      />,
     );
     tree.simulate("focus");
 
@@ -67,7 +67,7 @@ describe("<PageSelect />", () => {
         maxPerPage={5}
         totalItemsCount={15 * 5}
         setPageCallback={setPageCallback}
-      />
+      />,
     );
     tree.simulate("focus");
 
@@ -86,7 +86,7 @@ describe("<PageSelect />", () => {
       { index: 8, page: 15, label: "" }, //  <<23456>> -> <<end>>
     ]) {
       expect(tree.find("button.page-link").at(elem.index).text()).toBe(
-        elem.label
+        elem.label,
       );
       tree.find("button.page-link").at(elem.index).simulate("click");
       expect(setPageCallback).toHaveBeenLastCalledWith(elem.page);
@@ -101,7 +101,7 @@ describe("<PageSelect />", () => {
         maxPerPage={5}
         totalItemsCount={5}
         setPageCallback={jest.fn()}
-      />
+      />,
     );
     expect(tree.find(".page-link")).toHaveLength(0);
   });
@@ -114,7 +114,7 @@ describe("<PageSelect />", () => {
         maxPerPage={5}
         totalItemsCount={35}
         setPageCallback={jest.fn()}
-      />
+      />,
     );
     expect(tree.find(".page-link")).toHaveLength(7);
   });
@@ -127,7 +127,7 @@ describe("<PageSelect />", () => {
         maxPerPage={5}
         totalItemsCount={35}
         setPageCallback={jest.fn()}
-      />
+      />,
     );
     expect(tree.find(".page-link")).toHaveLength(5);
   });
@@ -141,7 +141,7 @@ describe("<PageSelect />", () => {
         maxPerPage={5}
         totalItemsCount={35}
         setPageCallback={setPageCallback}
-      />
+      />,
     );
     expect(tree.find(".page-item").at(3).hasClass("active")).toBe(true);
 

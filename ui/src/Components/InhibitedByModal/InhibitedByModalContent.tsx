@@ -9,13 +9,13 @@ const formatQuery = (fingerprints: string[]): string => {
     return FormatQuery(
       StaticLabels.Fingerprint,
       QueryOperators.Equal,
-      fingerprints[0]
+      fingerprints[0],
     );
   }
   return FormatQuery(
     StaticLabels.Fingerprint,
     QueryOperators.Regex,
-    `^(${fingerprints.join("|")})$`
+    `^(${fingerprints.join("|")})$`,
   );
 };
 

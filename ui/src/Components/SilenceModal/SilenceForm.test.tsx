@@ -16,7 +16,7 @@ let settingsStore: Settings;
 let silenceFormStore: SilenceFormStore;
 
 const generateUpstreams = (
-  version = "0.24.0"
+  version = "0.24.0",
 ): APIAlertsResponseUpstreamsT => ({
   counters: {
     healthy: 1,
@@ -60,7 +60,7 @@ const MountedSilenceForm = () => {
     {
       wrappingComponent: ThemeContext.Provider,
       wrappingComponentProps: { value: MockThemeContext },
-    }
+    },
   );
 };
 
@@ -83,7 +83,7 @@ describe("<SilenceForm /> matchers", () => {
 
     const filterCombos = (name: string) =>
       Object.entries(QueryOperators).map(([k, v]) =>
-        filter(name, v, `${name}${k}`)
+        filter(name, v, `${name}${k}`),
       );
 
     alertStore.filters.setFilterValues([
@@ -271,7 +271,7 @@ describe("<SilenceForm /> matchers", () => {
 
     const filterCombos = (name: string) =>
       Object.entries(QueryOperators).map(([k, v]) =>
-        filter(name, v, `${name}${k}`)
+        filter(name, v, `${name}${k}`),
       );
 
     alertStore.filters.setFilterValues([
@@ -476,7 +476,7 @@ describe("<SilenceForm />", () => {
     const tree = MountedSilenceForm();
     tree.simulate("submit", { preventDefault: jest.fn() });
     expect(settingsStore.silenceFormConfig.config.author).toBe(
-      "user@example.com"
+      "user@example.com",
     );
   });
 });

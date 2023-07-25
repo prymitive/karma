@@ -56,7 +56,7 @@ const NewEmptyMatcher = (): MatcherWithIDT => {
 };
 
 const MatcherToOperator = (
-  matcher: MatcherT | MatcherWithIDT | AlertmanagerSilenceMatcherT
+  matcher: MatcherT | MatcherWithIDT | AlertmanagerSilenceMatcherT,
 ): string => {
   if (matcher.isRegex) {
     return matcher.isEqual === false
@@ -88,7 +88,7 @@ export const UnescapeRegex = (v: string): string => {
 const MatchersFromGroup = (
   group: APIAlertGroupT,
   stripLabels: string[],
-  onlyActive?: boolean
+  onlyActive?: boolean,
 ): MatcherWithIDT[] => {
   const matchers: MatcherWithIDT[] = [];
 
@@ -98,10 +98,10 @@ const MatchersFromGroup = (
       continue;
     }
     for (const [key, values] of Object.entries(labels).filter(
-      ([key, _]) => !stripLabels.includes(key)
+      ([key, _]) => !stripLabels.includes(key),
     )) {
       allLabels[key] = Array.from(
-        new Set([...(allLabels[key] || []), ...values])
+        new Set([...(allLabels[key] || []), ...values]),
       );
     }
   }
@@ -121,7 +121,7 @@ const MatchersFromGroup = (
 const MatchersFromAlerts = (
   group: APIAlertGroupT,
   stripLabels: string[],
-  alerts: APIAlertT[]
+  alerts: APIAlertT[],
 ): MatcherWithIDT[] => {
   const matchers: MatcherWithIDT[] = [];
 
@@ -130,8 +130,8 @@ const MatchersFromAlerts = (
     Object.assign(
       {},
       Object.fromEntries(group.labels.map((l) => [l.name, l.value])),
-      Object.fromEntries(group.shared.labels.map((l) => [l.name, l.value]))
-    )
+      Object.fromEntries(group.shared.labels.map((l) => [l.name, l.value])),
+    ),
   )) {
     if (!stripLabels.includes(key)) {
       const matcher = NewEmptyMatcher();
@@ -203,7 +203,7 @@ export interface ClusterRequestT {
 
 const NewClusterRequest = (
   cluster: string,
-  members: string[]
+  members: string[],
 ): ClusterRequestT => ({
   cluster: cluster,
   members: members,
@@ -219,7 +219,7 @@ const GenerateAlertmanagerSilenceData = (
   matchers: MatcherT[],
   author: string,
   comment: string,
-  silenceID: string | null = null
+  silenceID: string | null = null,
 ): AlertmanagerSilencePayloadT => {
   const payload: AlertmanagerSilencePayloadT = {
     matchers: matchers.map((m) => ({
@@ -228,7 +228,7 @@ const GenerateAlertmanagerSilenceData = (
         m.values.length > 1
           ? `(${m.values
               .map((v) =>
-                v.wasCreated || !m.isRegex ? v.value : EscapeRegex(v.value)
+                v.wasCreated || !m.isRegex ? v.value : EscapeRegex(v.value),
               )
               .join("|")})`
           : m.values.length === 1
@@ -325,11 +325,11 @@ interface SilenceFormStoreDataT {
     group: APIAlertGroupT,
     stripLabels: string[],
     alertmanagers: MultiValueOptionT[],
-    alerts?: APIAlertT[]
+    alerts?: APIAlertT[],
   ) => void;
   fillFormFromSilence: (
     alertmanager: APIAlertmanagerUpstreamT,
-    silence: AlertmanagerSilencePayloadT
+    silence: AlertmanagerSilencePayloadT,
   ) => void;
   setAuthor: (a: string) => void;
   setComment: (c: string) => void;
@@ -344,7 +344,7 @@ interface SilenceFormStoreDataT {
   setRequestsByCluster: (val: { [key: string]: ClusterRequestT }) => void;
   setRequestsByClusterUpdate: (
     key: string,
-    v: Partial<ClusterRequestT>
+    v: Partial<ClusterRequestT>,
   ) => void;
   readonly toAlertmanagerPayload: AlertmanagerSilencePayloadT;
   readonly toDuration: DurationT;
@@ -378,7 +378,7 @@ class SilenceFormStore {
         hide: action.bound,
         show: action.bound,
         setBlur: action.bound,
-      }
+      },
     );
 
     this.tab = observable(
@@ -390,7 +390,7 @@ class SilenceFormStore {
       },
       {
         setTab: action.bound,
-      }
+      },
     );
 
     // form data is stored here, it's global (rather than attached to the form)
@@ -471,7 +471,7 @@ class SilenceFormStore {
               (m) =>
                 m.name === "" ||
                 m.values.length === 0 ||
-                m.values.filter((v) => v.value === "").length > 0
+                m.values.filter((v) => v.value === "").length > 0,
             ).length > 0
           )
             return false;
@@ -537,7 +537,7 @@ class SilenceFormStore {
           group: APIAlertGroupT,
           stripLabels: string[],
           alertmanagers: MultiValueOptionT[],
-          alerts?: APIAlertT[]
+          alerts?: APIAlertT[],
         ) {
           this.alertmanagers = alertmanagers;
 
@@ -555,7 +555,7 @@ class SilenceFormStore {
 
         fillFormFromSilence(
           alertmanager: APIAlertmanagerUpstreamT,
-          silence: AlertmanagerSilencePayloadT
+          silence: AlertmanagerSilencePayloadT,
         ) {
           this.silenceID = silence.id;
 
@@ -653,7 +653,7 @@ class SilenceFormStore {
             this.matchers,
             this.author,
             this.comment,
-            this.silenceID
+            this.silenceID,
           );
         },
 
@@ -699,7 +699,7 @@ class SilenceFormStore {
         toAlertmanagerPayload: computed,
         toDuration: computed,
       },
-      { name: "Silence form store" }
+      { name: "Silence form store" },
     );
   }
 }

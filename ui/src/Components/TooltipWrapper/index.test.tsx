@@ -13,7 +13,7 @@ describe("TooltipWrapper", () => {
     const tree = mount(
       <TooltipWrapper title="my title">
         <span>Hover me</span>
-      </TooltipWrapper>
+      </TooltipWrapper>,
     );
     expect(tree.text()).toBe("Hover me");
     expect(tree.find("div.tooltip")).toHaveLength(0);
@@ -23,7 +23,7 @@ describe("TooltipWrapper", () => {
     const tree = mount(
       <TooltipWrapper title="my title" className="foo">
         <span>Hover me</span>
-      </TooltipWrapper>
+      </TooltipWrapper>,
     );
     expect(tree.find("div.foo")).toHaveLength(1);
     expect(tree.find("div.foo").text()).toBe("Hover me");
@@ -33,7 +33,7 @@ describe("TooltipWrapper", () => {
     const tree = mount(
       <TooltipWrapper title="my title">
         <span>Hover me</span>
-      </TooltipWrapper>
+      </TooltipWrapper>,
     );
 
     tree.simulate("mouseOver");
@@ -59,7 +59,7 @@ describe("TooltipWrapper", () => {
     const tree = mount(
       <TooltipWrapper title="my title">
         <span>Hover me</span>
-      </TooltipWrapper>
+      </TooltipWrapper>,
     );
 
     act(() => {
@@ -91,7 +91,7 @@ describe("TooltipWrapper", () => {
     const tree = mount(
       <TooltipWrapper title="my title">
         <span>Hover me</span>
-      </TooltipWrapper>
+      </TooltipWrapper>,
     );
 
     tree.simulate("mouseOver");

@@ -43,13 +43,13 @@ const FilterInput: FC<{
 
   const { response, error, isLoading, get, cancelGet } = useFetchGet<string[]>(
     FormatBackendURI(`autocomplete.json?term=${debouncedSearchTerm}`),
-    { autorun: false }
+    { autorun: false },
   );
 
   // eslint-disable-next-line @typescript-eslint/ban-types
   const stateReducer = (
     state: UseComboboxState<string>,
-    actionAndChanges: UseComboboxStateChangeOptions<string>
+    actionAndChanges: UseComboboxStateChangeOptions<string>,
   ) => {
     const { type, changes } = actionAndChanges;
     switch (type) {
@@ -94,7 +94,7 @@ const FilterInput: FC<{
       setInputValue("");
       setSuggestions([]);
     },
-    [alertStore.filters, setInputValue]
+    [alertStore.filters, setInputValue],
   );
 
   const onInputClick = (className: string) => {

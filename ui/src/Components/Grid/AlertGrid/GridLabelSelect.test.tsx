@@ -64,7 +64,7 @@ const MountedGridLabelSelect = () => {
       alertStore={alertStore}
       settingsStore={settingsStore}
       grid={grid}
-    />
+    />,
   );
 };
 
@@ -171,7 +171,7 @@ describe("<GridLabelSelect />", () => {
       {
         wrappingComponent: ThemeContext.Provider,
         wrappingComponentProps: { value: MockThemeContextWithoutAnimations },
-      }
+      },
     );
 
     tree.find("span.components-grid-label-select-dropdown").simulate("click");

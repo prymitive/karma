@@ -12,7 +12,7 @@ import { Modal } from "Components/Modal";
 const InhibitedByModalContent = React.lazy(() =>
   import("./InhibitedByModalContent").then((module) => ({
     default: module.InhibitedByModalContent,
-  }))
+  })),
 );
 
 const InhibitedByModal: FC<{

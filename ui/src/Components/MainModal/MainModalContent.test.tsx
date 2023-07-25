@@ -43,8 +43,8 @@ const FakeModal = () => {
         settingsStore={settingsStore}
         onHide={onHide}
         expandAllOptions={true}
-      />
-    )
+      />,
+    ),
   );
 };
 
@@ -69,9 +69,9 @@ describe("<MainModalContent />", () => {
             settingsStore={settingsStore}
             onHide={onHide}
             expandAllOptions={true}
-          />
+          />,
         )}
-      </span>
+      </span>,
     );
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
@@ -102,9 +102,9 @@ describe("<MainModalContent />", () => {
             settingsStore={settingsStore}
             onHide={onHide}
             expandAllOptions={true}
-          />
+          />,
         )}
-      </span>
+      </span>,
     );
     expect(tree.text()).toMatch(/Username: me@example.com/);
   });

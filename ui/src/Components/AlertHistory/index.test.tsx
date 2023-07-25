@@ -34,7 +34,7 @@ const MockGroup = (groupName: string, sharedLabels: LabelsT = []) => {
     [],
     [],
     sharedLabels,
-    {}
+    {},
   );
   return group;
 };
@@ -44,7 +44,7 @@ const MockAlerts = (alertCount: number) => {
     const alert = MockAlert(
       [],
       [{ name: "instance", value: `instance${i}` }],
-      "active"
+      "active",
     );
     const startsAt = new Date();
     alert.startsAt = startsAt.toISOString();
@@ -91,7 +91,7 @@ describe("<AlertHistory />", () => {
       },
       {
         overwriteRoutes: true,
-      }
+      },
     );
 
     grid.labelName = "";
@@ -109,7 +109,7 @@ describe("<AlertHistory />", () => {
           "http://plain.example.com/",
         ],
         labels: { alertname: "Fake Alert", groupName: "fakeGroup" },
-      })
+      }),
     );
     tree.unmount();
   });
@@ -124,7 +124,7 @@ describe("<AlertHistory />", () => {
       },
       {
         overwriteRoutes: true,
-      }
+      },
     );
 
     MockAlerts(3);
@@ -140,7 +140,7 @@ describe("<AlertHistory />", () => {
           "http://plain.example.com/",
         ],
         labels: { alertname: "Fake Alert", groupName: "fakeGroup", foo: "bar" },
-      })
+      }),
     );
     tree.unmount();
   });
@@ -155,7 +155,7 @@ describe("<AlertHistory />", () => {
       },
       {
         overwriteRoutes: true,
-      }
+      },
     );
 
     grid.labelName = "@cluster";
@@ -173,7 +173,7 @@ describe("<AlertHistory />", () => {
           "http://plain.example.com/",
         ],
         labels: { alertname: "Fake Alert", groupName: "fakeGroup" },
-      })
+      }),
     );
     tree.unmount();
   });
@@ -188,7 +188,7 @@ describe("<AlertHistory />", () => {
       },
       {
         overwriteRoutes: true,
-      }
+      },
     );
 
     MockAlerts(3);
@@ -214,7 +214,7 @@ describe("<AlertHistory />", () => {
           shared2: "value2",
           foo: "bar",
         },
-      })
+      }),
     );
     tree.unmount();
   });
@@ -229,7 +229,7 @@ describe("<AlertHistory />", () => {
       },
       {
         overwriteRoutes: true,
-      }
+      },
     );
 
     MockAlerts(3);
@@ -252,7 +252,7 @@ describe("<AlertHistory />", () => {
       },
       {
         overwriteRoutes: true,
-      }
+      },
     );
 
     MockAlerts(3);
@@ -275,7 +275,7 @@ describe("<AlertHistory />", () => {
       },
       {
         overwriteRoutes: true,
-      }
+      },
     );
 
     (useInView as jest.MockedFunction<typeof useInView>).mockReturnValue([
@@ -303,7 +303,7 @@ describe("<AlertHistory />", () => {
       },
       {
         overwriteRoutes: true,
-      }
+      },
     );
 
     const inView = true;
@@ -344,7 +344,7 @@ describe("<AlertHistory />", () => {
       },
       {
         overwriteRoutes: true,
-      }
+      },
     );
 
     MockAlerts(3);
@@ -367,7 +367,7 @@ describe("<AlertHistory />", () => {
       },
       {
         overwriteRoutes: true,
-      }
+      },
     );
 
     MockAlerts(3);
@@ -482,7 +482,7 @@ describe("<AlertHistory />", () => {
       const alert = MockAlert(
         [],
         [{ name: "instance", value: `instance${i}` }],
-        "active"
+        "active",
       );
       const startsAt = new Date();
       alert.startsAt = startsAt.toISOString();
@@ -515,7 +515,7 @@ describe("<AlertHistory />", () => {
         },
         {
           overwriteRoutes: true,
-        }
+        },
       );
 
       const tree = mount(<AlertHistory group={g} grid={gr}></AlertHistory>);

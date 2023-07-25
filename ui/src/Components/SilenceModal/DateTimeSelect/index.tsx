@@ -175,7 +175,7 @@ const TabContentEnd: FC<{ silenceFormStore: SilenceFormStore }> = observer(
         />
       </div>
     );
-  }
+  },
 );
 
 // calculate value for duration increase button using a goal step
@@ -191,7 +191,7 @@ const CalculateChangeValueUp = (currentValue: number, step: number): number => {
 // calculate value for duration decrease button using a goal step
 const CalculateChangeValueDown = (
   currentValue: number,
-  step: number
+  step: number,
 ): number => {
   // if current value is less than step (but >0) then use 1
   if (currentValue > 0 && currentValue < step) {
@@ -223,15 +223,15 @@ const TabContentDuration: FC<{
         value={silenceFormStore.data.toDuration.minutes}
         onInc={() =>
           silenceFormStore.data.incEnd(
-            CalculateChangeValueUp(silenceFormStore.data.toDuration.minutes, 5)
+            CalculateChangeValueUp(silenceFormStore.data.toDuration.minutes, 5),
           )
         }
         onDec={() =>
           silenceFormStore.data.decEnd(
             CalculateChangeValueDown(
               silenceFormStore.data.toDuration.minutes,
-              5
-            )
+              5,
+            ),
           )
         }
       />

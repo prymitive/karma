@@ -31,7 +31,7 @@ describe("<RenderSilence />", () => {
         afterUpdate={jest.fn()}
         cluster="fakeCluster"
         silenceID="1234567890"
-      />
+      />,
     );
     expect(tree.text()).toBe("Silenced by 1234567890");
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
@@ -49,7 +49,7 @@ describe("<RenderSilence />", () => {
         afterUpdate={jest.fn()}
         cluster="fakeCluster"
         silenceID={silence.id}
-      />
+      />,
     );
     expect(tree.find("ManagedSilence")).toHaveLength(1);
     expect(tree.text()).toMatch(/Mocked Silence/);
@@ -68,7 +68,7 @@ describe("<RenderSilence />", () => {
         afterUpdate={jest.fn()}
         cluster="fakeCluster"
         silenceID={silence.id}
-      />
+      />,
     );
     expect(tree.find("ManagedSilence")).toHaveLength(1);
     const snapshot = toDiffableHtml(tree.html());
@@ -88,7 +88,7 @@ describe("<RenderSilence />", () => {
         afterUpdate={jest.fn()}
         cluster="fakeCluster"
         silenceID="silence1"
-      />
+      />,
     );
     expect(tree.text()).toBe("Silenced by silence1");
 
@@ -104,7 +104,7 @@ describe("<RenderSilence />", () => {
         afterUpdate={jest.fn()}
         cluster="cluster1"
         silenceID="1234567890"
-      />
+      />,
     );
     expect(tree.text()).toBe("Silenced by 1234567890");
 

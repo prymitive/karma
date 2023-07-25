@@ -25,7 +25,7 @@ const ParseDefaultFilters = (settingsElement: HTMLElement | null): string[] => {
 };
 
 const ParseUIDefaults = (
-  defaultsElement: HTMLElement | null
+  defaultsElement: HTMLElement | null,
 ): UIDefaults | null => {
   if (defaultsElement === null) {
     return null;

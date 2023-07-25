@@ -73,11 +73,11 @@ const ToastContainer: FC = ({ children }) => {
             >
               {toast}
             </CSSTransition>
-          ) : null
+          ) : null,
         )}
       </TransitionGroup>
     </div>,
-    document.body
+    document.body,
   );
 };
 

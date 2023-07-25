@@ -26,7 +26,7 @@ import { MenuLink } from "Components/Grid/AlertGrid/AlertGroup/MenuLink";
 const onSilenceClick = (
   alertStore: AlertStore,
   silenceFormStore: SilenceFormStore,
-  group: APIAlertGroupT
+  group: APIAlertGroupT,
 ) => {
   const clusters: { [cluster: string]: string[] } = {};
   Object.entries(alertStore.data.clustersWithoutReadOnly).forEach(
@@ -36,14 +36,14 @@ const onSilenceClick = (
           clusters[cluster] = members;
         }
       });
-    }
+    },
   );
 
   silenceFormStore.data.resetProgress();
   silenceFormStore.data.fillMatchersFromGroup(
     group,
     alertStore.settings.values.silenceForm.strip.labels,
-    AlertmanagerClustersToOption(clusters)
+    AlertmanagerClustersToOption(clusters),
   );
   silenceFormStore.tab.setTab("editor");
   silenceFormStore.toggle.show();
@@ -69,10 +69,10 @@ const MenuContent: FC<{
   silenceFormStore,
 }) => {
   const groupFilters = group.labels.map((label) =>
-    FormatQuery(label.name, QueryOperators.Equal, label.value)
+    FormatQuery(label.name, QueryOperators.Equal, label.value),
   );
   groupFilters.push(
-    FormatQuery(StaticLabels.Receiver, QueryOperators.Equal, group.receiver)
+    FormatQuery(StaticLabels.Receiver, QueryOperators.Equal, group.receiver),
   );
   const baseURL = [
     window.location.protocol,

@@ -16,7 +16,7 @@ describe("<Toast />", () => {
         iconClass="text-danger"
         message="fake error"
         hasClose
-      />
+      />,
     );
     expect(toDiffableHtml(tree.html())).toMatch(/fake error/);
   });
@@ -28,7 +28,7 @@ describe("<Toast />", () => {
         iconClass="text-danger"
         message="fake error"
         hasClose
-      />
+      />,
     );
     expect(toDiffableHtml(tree.html())).toMatch(/fake error/);
 
@@ -43,7 +43,7 @@ describe("<Toast />", () => {
         iconClass="text-danger"
         message="fake error"
         hasClose
-      />
+      />,
     );
     expect(toDiffableHtml(tree.html())).toMatch(/fake error/);
 
@@ -65,7 +65,7 @@ describe("<Toast />", () => {
         iconClass="text-danger"
         message="fake error"
         hasClose={true}
-      />
+      />,
     );
     expect(toDiffableHtml(tree.html())).toMatch(/fa-xmark/);
   });
@@ -77,7 +77,7 @@ describe("<Toast />", () => {
         iconClass="text-danger"
         message="fake error"
         hasClose={false}
-      />
+      />,
     );
     expect(toDiffableHtml(tree.html())).not.toMatch(/fa-xmark/);
   });
@@ -89,7 +89,7 @@ describe("<Toast />", () => {
         iconClass="text-danger"
         message="fake error"
         hasClose
-      />
+      />,
     );
     tree.unmount();
   });

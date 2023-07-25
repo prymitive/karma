@@ -16,7 +16,7 @@ describe("alertToJSON", () => {
         },
       ],
       [{ name: "job", value: "mock" }],
-      {}
+      {},
     );
     const alert = MockAlert(
       [
@@ -29,7 +29,7 @@ describe("alertToJSON", () => {
         },
       ],
       [{ name: "instance", value: "server1" }],
-      "active"
+      "active",
     );
     const expected: VanillaAlertT = {
       labels: { alertname: "foo", instance: "server1", job: "mock" },

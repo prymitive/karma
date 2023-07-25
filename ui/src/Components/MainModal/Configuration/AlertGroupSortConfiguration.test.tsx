@@ -46,7 +46,7 @@ describe("<AlertGroupSortConfiguration />", () => {
     settingsStore.gridConfig.setSortOrder("badValue" as any);
     FakeConfiguration();
     expect(settingsStore.gridConfig.config.sortOrder).toBe(
-      settingsStore.gridConfig.options.default.value
+      settingsStore.gridConfig.options.default.value,
     );
   });
 
@@ -63,7 +63,7 @@ describe("<AlertGroupSortConfiguration />", () => {
 
     settingsStore.gridConfig.setSortOrder("label");
     expect(settingsStore.gridConfig.config.sortOrder).toBe(
-      settingsStore.gridConfig.options.label.value
+      settingsStore.gridConfig.options.label.value,
     );
     const tree = FakeConfiguration();
 
@@ -73,7 +73,7 @@ describe("<AlertGroupSortConfiguration />", () => {
     tree.find("div.react-select__option").at(2).simulate("click");
 
     expect(settingsStore.gridConfig.config.sortOrder).toBe(
-      settingsStore.gridConfig.options.startsAt.value
+      settingsStore.gridConfig.options.startsAt.value,
     );
   });
 

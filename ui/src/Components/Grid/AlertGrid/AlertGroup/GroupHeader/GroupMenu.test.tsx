@@ -97,7 +97,7 @@ const MountedGroupMenu = (group: APIAlertGroupT, themed: boolean) => {
       silenceFormStore={silenceFormStore}
       themed={themed}
       setIsMenuOpen={MockSetIsMenuOpen}
-    />
+    />,
   );
 };
 
@@ -108,7 +108,7 @@ describe("<GroupMenu />", () => {
       [],
       [],
       [],
-      {}
+      {},
     );
     const tree = MountedGroupMenu(group, true);
     expect(tree.find("div.dropdown-menu")).toHaveLength(0);
@@ -122,7 +122,7 @@ describe("<GroupMenu />", () => {
       [],
       [],
       [],
-      {}
+      {},
     );
     const tree = MountedGroupMenu(group, true);
     const toggle = tree.find("span.cursor-pointer");
@@ -139,7 +139,7 @@ describe("<GroupMenu />", () => {
       [],
       [],
       [],
-      {}
+      {},
     );
     const tree = MountedGroupMenu(group, true);
     const toggle = tree.find("span.cursor-pointer");
@@ -168,7 +168,7 @@ describe("<GroupMenu />", () => {
       [],
       [],
       [],
-      {}
+      {},
     );
     const tree = MountedGroupMenu(group, true);
     const toggle = tree.find("span.cursor-pointer");
@@ -199,7 +199,7 @@ const MountedMenuContent = (group: APIAlertGroupT) => {
       afterClick={MockAfterClick}
       alertStore={alertStore}
       silenceFormStore={silenceFormStore}
-    />
+    />,
   );
 };
 
@@ -210,7 +210,7 @@ describe("<MenuContent />", () => {
       [],
       [],
       [],
-      {}
+      {},
     );
     const tree = MountedMenuContent(group);
     const button = tree.find(".dropdown-item").at(0);
@@ -224,7 +224,7 @@ describe("<MenuContent />", () => {
       [],
       [],
       [],
-      {}
+      {},
     );
     group.alertmanagerCount = { am1: 1, ro: 1 };
     const tree = MountedMenuContent(group);
@@ -247,7 +247,7 @@ describe("<MenuContent />", () => {
       [],
       [],
       [],
-      {}
+      {},
     );
     const tree = MountedMenuContent(group);
     const button = tree.find(".dropdown-item").at(1);
@@ -284,7 +284,7 @@ describe("<MenuContent />", () => {
         },
       ],
       [],
-      {}
+      {},
     );
 
     const tree = MountedMenuContent(group);
@@ -294,10 +294,10 @@ describe("<MenuContent />", () => {
     expect(link.text()).toBe("linkAction");
 
     expect(tree.find("a.dropdown-item[href='nonLinkNonAction']")).toHaveLength(
-      0
+      0,
     );
     expect(tree.find("a.dropdown-item[href='nonLinkNonAction']")).toHaveLength(
-      0
+      0,
     );
   });
 });

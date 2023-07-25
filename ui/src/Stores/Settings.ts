@@ -17,7 +17,7 @@ class SavedFilters {
     },
     {
       delay: 100,
-    }
+    },
   );
 
   save = action((newFilters: string[]) => {
@@ -42,7 +42,7 @@ class FetchConfig {
     this.config = localStored(
       "fetchConfig",
       { interval: refresh },
-      { delay: 100 }
+      { delay: 100 },
     );
 
     this.setInterval = action((newInterval) => {
@@ -84,7 +84,7 @@ class AlertGroupConfig {
   constructor(
     renderCount: number,
     collapseState: CollapseStateT,
-    colorTitleBar: boolean
+    colorTitleBar: boolean,
   ) {
     this.config = localStored(
       "alertGroupConfig",
@@ -93,7 +93,7 @@ class AlertGroupConfig {
         defaultCollapseState: collapseState,
         colorTitleBar: colorTitleBar,
       },
-      { delay: 100 }
+      { delay: 100 },
     );
 
     this.setDefaultRenderCount = action((val: number) => {
@@ -119,7 +119,7 @@ class SilenceFormConfig {
     this.config = localStored(
       "silenceFormConfig",
       { author: "" },
-      { delay: 100 }
+      { delay: 100 },
     );
 
     this.saveAuthor = action((newAuthor: string) => {
@@ -166,7 +166,7 @@ class GridConfig {
         reverseSort: null,
         groupWidth: groupWidth,
       },
-      { delay: 100 }
+      { delay: 100 },
     );
 
     this.setSortOrder = action((o: SortOrderT) => {
@@ -199,7 +199,7 @@ class FilterBarConfig {
       },
       {
         delay: 100,
-      }
+      },
     );
     this.setAutohide = action((v: boolean) => {
       this.config.autohide = v;
@@ -237,7 +237,7 @@ class ThemeConfig {
       },
       {
         delay: 0,
-      }
+      },
     );
     this.setTheme = action((v: ThemeT) => {
       this.config.theme = v;
@@ -266,7 +266,7 @@ class MultiGridConfig {
       },
       {
         delay: 100,
-      }
+      },
     );
 
     this.setGridLabel = action((l: string) => {
@@ -309,25 +309,25 @@ class Settings {
 
     this.savedFilters = new SavedFilters();
     this.fetchConfig = new FetchConfig(
-      defaultSettings.Refresh / 1000 / 1000 / 1000
+      defaultSettings.Refresh / 1000 / 1000 / 1000,
     );
     this.alertGroupConfig = new AlertGroupConfig(
       defaultSettings.AlertsPerGroup,
       defaultSettings.CollapseGroups,
-      defaultSettings.ColorTitlebar
+      defaultSettings.ColorTitlebar,
     );
     this.gridConfig = new GridConfig(defaultSettings.MinimalGroupWidth);
     this.silenceFormConfig = new SilenceFormConfig();
     this.filterBarConfig = new FilterBarConfig(
-      defaultSettings.HideFiltersWhenIdle
+      defaultSettings.HideFiltersWhenIdle,
     );
     this.themeConfig = new ThemeConfig(
       defaultSettings.Theme,
-      defaultSettings.Animations
+      defaultSettings.Animations,
     );
     this.multiGridConfig = new MultiGridConfig(
       defaultSettings.MultiGridLabel,
-      defaultSettings.MultiGridSortReverse
+      defaultSettings.MultiGridSortReverse,
     );
   }
 }

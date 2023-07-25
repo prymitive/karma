@@ -15,7 +15,7 @@ export interface ResponseStateT {
 const useFetchDelete = (
   uri: string,
   options: RequestInit,
-  deps: useFetchDeleteDepsT = []
+  deps: useFetchDeleteDepsT = [],
 ): ResponseStateT => {
   const [response, setResponse] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -30,7 +30,7 @@ const useFetchDelete = (
         setIsDeleting(true);
         const res = await fetch(
           uri,
-          merge({}, { method: "DELETE" }, CommonOptions, options)
+          merge({}, { method: "DELETE" }, CommonOptions, options),
         );
         const text = await res.text();
 
@@ -46,7 +46,7 @@ const useFetchDelete = (
       } catch (error) {
         if (!isCancelled) {
           setError(
-            error instanceof Error ? error.message : `unknown error: ${error}`
+            error instanceof Error ? error.message : `unknown error: ${error}`,
           );
           setIsDeleting(false);
         }
