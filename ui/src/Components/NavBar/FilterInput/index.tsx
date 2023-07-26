@@ -163,7 +163,6 @@ const FilterInput: FC<{
             <input
               className="components-filterinput-wrapper text-white mw-100"
               size={inputValue ? inputValue.length + 1 : 1}
-              onClick={() => setIsFocused(true)}
               {...getInputProps({ ref: inputRef })}
             />
           </div>
