@@ -1,6 +1,7 @@
 package filters_test
 
 import (
+	"fmt"
 	"sort"
 	"testing"
 
@@ -141,5 +142,28 @@ func TestBuildAutocomplete(t *testing.T) {
 		if diff := cmp.Diff(acTest.Expected, result); diff != "" {
 			t.Errorf("Wrong autocomplete data returned (-want +got):\n%s", diff)
 		}
+	}
+}
+
+func BenchmarkAutocomplete(b *testing.B) {
+	const n = 10000
+	alerts := make([]models.Alert, 0, n)
+	for i := 0; i < n; i++ {
+		alerts = append(alerts, models.Alert{
+			State: models.AlertStateActive,
+			Labels: models.Labels{
+				{Name: "foo", Value: fmt.Sprintf("xxx%d", i)},
+				{Name: "number", Value: fmt.Sprintf("%d", i)},
+			},
+			Receiver: fmt.Sprintf("receiver-%d", i%1000),
+			Alertmanager: []models.AlertmanagerInstance{
+				{Cluster: "cluster", Name: "am1"},
+				{Cluster: "cluster", Name: "am2"},
+			},
+		})
+	}
+	b.ReportAllocs()
+	for i := 0; i < b.N; i++ {
+		filters.BuildAutocomplete(alerts)
 	}
 }
