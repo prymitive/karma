@@ -30,14 +30,14 @@ func newLabelFilter() FilterT {
 }
 
 func labelAutocomplete(_ string, operators []string, alerts []models.Alert) []models.Autocomplete {
-	tokens := map[string]models.Autocomplete{}
+	tokens := map[string]*models.Autocomplete{}
 	for _, alert := range alerts {
 		for _, l := range alert.Labels {
 			for _, operator := range operators {
 				switch operator {
 				case equalOperator, notEqualOperator:
 					token := fmt.Sprintf("%s%s%s", l.Name, operator, l.Value)
-					tokens[token] = makeAC(
+					hint := makeAC(
 						token,
 						[]string{
 							l.Name,
@@ -45,12 +45,13 @@ func labelAutocomplete(_ string, operators []string, alerts []models.Alert) []mo
 							l.Value,
 						},
 					)
+					tokens[token] = &hint
 				case regexpOperator, negativeRegexOperator:
 					substrings := strings.Split(l.Value, " ")
 					if len(substrings) > 1 {
 						for _, substring := range substrings {
 							token := fmt.Sprintf("%s%s%s", l.Name, operator, substring)
-							tokens[token] = makeAC(
+							hint := makeAC(
 								token,
 								[]string{
 									l.Name,
@@ -59,12 +60,13 @@ func labelAutocomplete(_ string, operators []string, alerts []models.Alert) []mo
 									substring,
 								},
 							)
+							tokens[token] = &hint
 						}
 					}
 				case moreThanOperator, lessThanOperator:
 					if _, err := strconv.Atoi(l.Value); err == nil {
 						token := fmt.Sprintf("%s%s%s", l.Name, operator, l.Value)
-						tokens[token] = makeAC(
+						hint := makeAC(
 							token,
 							[]string{
 								l.Name,
@@ -72,6 +74,7 @@ func labelAutocomplete(_ string, operators []string, alerts []models.Alert) []mo
 								l.Value,
 							},
 						)
+						tokens[token] = &hint
 					}
 				}
 			}
@@ -79,7 +82,7 @@ func labelAutocomplete(_ string, operators []string, alerts []models.Alert) []mo
 	}
 	acData := make([]models.Autocomplete, 0, len(tokens))
 	for _, token := range tokens {
-		acData = append(acData, token)
+		acData = append(acData, *token)
 	}
 	return acData
 }
