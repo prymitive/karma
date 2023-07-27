@@ -18,17 +18,11 @@ func makeAC(value string, tokens []string) models.Autocomplete {
 // BuildAutocomplete takes an alert object and generates list of autocomplete
 // strings for it
 func BuildAutocomplete(alerts []models.Alert) []models.Autocomplete {
-	acHints := map[string]models.Autocomplete{}
+	acHints := []models.Autocomplete{}
 	for _, filterConfig := range AllFilters {
 		if filterConfig.Autocomplete != nil {
-			for _, hint := range filterConfig.Autocomplete(filterConfig.Label, filterConfig.SupportedOperators, alerts) {
-				acHints[hint.Value] = hint
-			}
+			acHints = append(acHints, filterConfig.Autocomplete(filterConfig.Label, filterConfig.SupportedOperators, alerts)...)
 		}
 	}
-	acHintsSlice := make([]models.Autocomplete, 0, len(acHints))
-	for _, hint := range acHints {
-		acHintsSlice = append(acHintsSlice, hint)
-	}
-	return acHintsSlice
+	return acHints
 }

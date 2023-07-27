@@ -29,14 +29,14 @@ func newreceiverFilter() FilterT {
 }
 
 func receiverAutocomplete(name string, operators []string, alerts []models.Alert) []models.Autocomplete {
-	tokens := map[string]models.Autocomplete{}
+	tokens := map[string]*models.Autocomplete{}
 	for _, alert := range alerts {
 		if alert.Receiver != "" {
 			for _, operator := range operators {
 				switch operator {
 				case equalOperator, notEqualOperator:
 					token := fmt.Sprintf("%s%s%s", name, operator, alert.Receiver)
-					tokens[token] = makeAC(
+					hint := makeAC(
 						token,
 						[]string{
 							name,
@@ -44,12 +44,13 @@ func receiverAutocomplete(name string, operators []string, alerts []models.Alert
 							name + operator,
 						},
 					)
+					tokens[token] = &hint
 				case regexpOperator, negativeRegexOperator:
 					substrings := strings.Split(alert.Receiver, " ")
 					if len(substrings) > 1 {
 						for _, substring := range substrings {
 							token := fmt.Sprintf("%s%s%s", name, operator, substring)
-							tokens[token] = makeAC(
+							hint := makeAC(
 								token,
 								[]string{
 									name,
@@ -58,6 +59,7 @@ func receiverAutocomplete(name string, operators []string, alerts []models.Alert
 									substring,
 								},
 							)
+							tokens[token] = &hint
 						}
 					}
 				}
@@ -66,7 +68,7 @@ func receiverAutocomplete(name string, operators []string, alerts []models.Alert
 	}
 	acData := make([]models.Autocomplete, 0, len(tokens))
 	for _, token := range tokens {
-		acData = append(acData, token)
+		acData = append(acData, *token)
 	}
 	return acData
 }

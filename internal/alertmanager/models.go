@@ -271,7 +271,7 @@ func (am *Alertmanager) pullAlerts(version string, si *intern.Interner) error {
 
 	dedupedGroups := make([]models.AlertGroup, 0, len(uniqueGroups))
 	colors := models.LabelsColorMap{}
-	autocompleteMap := map[string]models.Autocomplete{}
+	autocompleteMap := map[string]*models.Autocomplete{}
 
 	log.Info().
 		Str("alertmanager", am.Name).
@@ -336,7 +336,8 @@ func (am *Alertmanager) pullAlerts(version string, si *intern.Interner) error {
 		}
 
 		for _, hint := range filters.BuildAutocomplete(alerts) {
-			autocompleteMap[hint.Value] = hint
+			hint := hint
+			autocompleteMap[hint.Value] = &hint
 		}
 
 		sort.Sort(&alerts)
@@ -354,7 +355,7 @@ func (am *Alertmanager) pullAlerts(version string, si *intern.Interner) error {
 		Msg("Merging autocomplete hints")
 	autocomplete := make([]models.Autocomplete, 0, len(autocompleteMap))
 	for _, hint := range autocompleteMap {
-		autocomplete = append(autocomplete, hint)
+		autocomplete = append(autocomplete, *hint)
 	}
 
 	knownLabels := make([]string, 0, len(knownLabelsMap))

@@ -39,14 +39,14 @@ func newAlertmanagerClusterFilter() FilterT {
 }
 
 func alertmanagerClusterAutocomplete(name string, operators []string, alerts []models.Alert) []models.Autocomplete {
-	tokens := map[string]models.Autocomplete{}
+	tokens := map[string]*models.Autocomplete{}
 	for _, alert := range alerts {
 		for _, am := range alert.Alertmanager {
 			for _, operator := range operators {
 				switch operator {
 				case equalOperator, notEqualOperator:
 					token := fmt.Sprintf("%s%s%s", name, operator, am.Cluster)
-					tokens[token] = makeAC(
+					hint := makeAC(
 						token,
 						[]string{
 							name,
@@ -54,13 +54,14 @@ func alertmanagerClusterAutocomplete(name string, operators []string, alerts []m
 							name + operator,
 						},
 					)
+					tokens[token] = &hint
 				}
 			}
 		}
 	}
 	acData := make([]models.Autocomplete, 0, len(tokens))
 	for _, token := range tokens {
-		acData = append(acData, token)
+		acData = append(acData, *token)
 	}
 	return acData
 }

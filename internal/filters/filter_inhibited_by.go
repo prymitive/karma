@@ -49,25 +49,26 @@ func newInhibitedByFilter() FilterT {
 }
 
 func inhibitedByAutocomplete(name string, operators []string, alerts []models.Alert) []models.Autocomplete {
-	tokens := map[string]models.Autocomplete{}
+	tokens := map[string]*models.Autocomplete{}
 	for _, alert := range alerts {
 		for _, am := range alert.Alertmanager {
 			for _, silenceID := range am.InhibitedBy {
 				for _, operator := range operators {
 					token := fmt.Sprintf("%s%s%s", name, operator, silenceID)
-					tokens[token] = makeAC(token, []string{
+					hint := makeAC(token, []string{
 						name,
 						strings.TrimPrefix(name, "@"),
 						fmt.Sprintf("%s%s", name, operator),
 						silenceID,
 					})
+					tokens[token] = &hint
 				}
 			}
 		}
 	}
 	acData := make([]models.Autocomplete, 0, len(tokens))
 	for _, token := range tokens {
-		acData = append(acData, token)
+		acData = append(acData, *token)
 	}
 	return acData
 }

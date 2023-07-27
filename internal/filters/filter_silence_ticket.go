@@ -55,7 +55,7 @@ func newSilenceTicketFilter() FilterT {
 }
 
 func silenceTicketIDAutocomplete(name string, operators []string, alerts []models.Alert) []models.Autocomplete {
-	tokens := map[string]models.Autocomplete{}
+	tokens := map[string]*models.Autocomplete{}
 	for _, alert := range alerts {
 		for _, am := range alert.Alertmanager {
 			for _, silenceID := range am.SilencedBy {
@@ -64,12 +64,13 @@ func silenceTicketIDAutocomplete(name string, operators []string, alerts []model
 					if found && silence.TicketID != "" {
 						for _, operator := range operators {
 							token := fmt.Sprintf("%s%s%s", name, operator, silence.TicketID)
-							tokens[token] = makeAC(token, []string{
+							hint := makeAC(token, []string{
 								name,
 								strings.TrimPrefix(name, "@"),
 								fmt.Sprintf("%s%s", name, operator),
 								silence.TicketID,
 							})
+							tokens[token] = &hint
 						}
 					}
 				}
@@ -78,7 +79,7 @@ func silenceTicketIDAutocomplete(name string, operators []string, alerts []model
 	}
 	acData := make([]models.Autocomplete, 0, len(tokens))
 	for _, token := range tokens {
-		acData = append(acData, token)
+		acData = append(acData, *token)
 	}
 	return acData
 }
