@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.115
+
+### Fixed
+
+- Improved memory usage.
+
 ## v0.114
 
 ### Fixed

@@ -2,10 +2,11 @@ package models
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 	"time"
 
-	"github.com/cnf/structhash"
+	"github.com/cespare/xxhash/v2"
 	"github.com/fvbommel/sortorder"
 
 	"github.com/prymitive/karma/internal/config"
@@ -130,23 +131,77 @@ type Alert struct {
 	// those are not exposed in JSON, Alertmanager specific value will be in kept
 	// in the Alertmanager slice
 	// skip those when generating alert fingerprint too
-	Fingerprint  string   `json:"-" hash:"-"`
-	GeneratorURL string   `json:"-" hash:"-"`
-	SilencedBy   []string `json:"-" hash:"-"`
-	InhibitedBy  []string `json:"-" hash:"-"`
+	Fingerprint  string   `json:"-"`
+	GeneratorURL string   `json:"-"`
+	SilencedBy   []string `json:"-"`
+	InhibitedBy  []string `json:"-"`
 	// karma fields
 	Alertmanager []AlertmanagerInstance `json:"alertmanager"`
 	Receiver     string                 `json:"receiver"`
 	// fingerprints are precomputed for speed
-	LabelsFP  string `json:"id" hash:"-"`
-	contentFP string `hash:"-"`
+	LabelsFP  string `json:"id"`
+	contentFP string
 }
 
+var seps = []byte{'\xff'}
+
 // UpdateFingerprints will generate a new set of fingerprints for this alert
-// it should be called after modifying any field that isn't tagged with hash:"-"
 func (a *Alert) UpdateFingerprints() {
-	a.LabelsFP = fmt.Sprintf("%x", structhash.Sha1(a.Labels.Map(), 1))
-	a.contentFP = fmt.Sprintf("%x", structhash.Sha1(a, 1))
+	h := xxhash.New()
+	for _, l := range a.Labels {
+		_, _ = h.WriteString(l.Name)
+		_, _ = h.Write(seps)
+		_, _ = h.WriteString(l.Value)
+		_, _ = h.Write(seps)
+	}
+	a.LabelsFP = fmt.Sprintf("%x", h.Sum64())
+
+	h.Reset()
+	for _, a := range a.Annotations {
+		_, _ = h.WriteString(a.Name)
+		_, _ = h.Write(seps)
+		_, _ = h.WriteString(a.Value)
+		_, _ = h.Write(seps)
+		_, _ = h.WriteString(strconv.FormatBool(a.IsAction))
+		_, _ = h.Write(seps)
+		_, _ = h.WriteString(strconv.FormatBool(a.IsLink))
+		_, _ = h.Write(seps)
+		_, _ = h.WriteString(strconv.FormatBool(a.Visible))
+		_, _ = h.Write(seps)
+
+	}
+	for _, l := range a.Labels {
+		_, _ = h.WriteString(l.Name)
+		_, _ = h.Write(seps)
+		_, _ = h.WriteString(l.Value)
+		_, _ = h.Write(seps)
+	}
+	_, _ = h.WriteString(a.StartsAt.Format(time.RFC3339))
+	_, _ = h.WriteString(a.State)
+	for _, am := range a.Alertmanager {
+		_, _ = h.WriteString(am.Fingerprint)
+		_, _ = h.Write(seps)
+		_, _ = h.WriteString(am.Name)
+		_, _ = h.Write(seps)
+		_, _ = h.WriteString(am.Cluster)
+		_, _ = h.Write(seps)
+		_, _ = h.WriteString(am.State)
+		_, _ = h.Write(seps)
+		_, _ = h.WriteString(am.StartsAt.Format(time.RFC3339))
+		_, _ = h.Write(seps)
+		_, _ = h.WriteString(am.Source)
+		_, _ = h.Write(seps)
+		for _, s := range am.SilencedBy {
+			_, _ = h.WriteString(s)
+			_, _ = h.Write(seps)
+		}
+		for _, s := range am.InhibitedBy {
+			_, _ = h.WriteString(s)
+			_, _ = h.Write(seps)
+		}
+	}
+	_, _ = h.WriteString(a.Receiver)
+	a.contentFP = fmt.Sprintf("%x", h.Sum64())
 }
 
 // LabelsFingerprint is a checksum computed only from labels which should be
@@ -156,7 +211,6 @@ func (a *Alert) LabelsFingerprint() string {
 }
 
 // ContentFingerprint is a checksum computed from entire alert object
-// except some blacklisted fields tagged with hash:"-"
 func (a *Alert) ContentFingerprint() string {
 	return a.contentFP
 }
