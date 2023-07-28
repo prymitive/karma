@@ -1,12 +1,11 @@
 package models
 
 import (
-	"crypto/sha1"
 	"fmt"
 	"io"
 	"time"
 
-	"github.com/cnf/structhash"
+	"github.com/cespare/xxhash/v2"
 )
 
 // AlertList is flat list of karmaAlert objects
@@ -48,19 +47,25 @@ type AlertGroup struct {
 // LabelsFingerprint is a checksum of this AlertGroup labels and the receiver
 // it should be unique for each AlertGroup
 func (ag AlertGroup) LabelsFingerprint() string {
-	agIDHasher := sha1.New()
-	_, _ = io.WriteString(agIDHasher, ag.Receiver)
-	_, _ = io.WriteString(agIDHasher, fmt.Sprintf("%x", structhash.Sha1(ag.Labels.Map(), 1)))
-	return fmt.Sprintf("%x", agIDHasher.Sum(nil))
+	h := xxhash.New()
+	_, _ = h.WriteString(ag.Receiver)
+	_, _ = h.Write(seps)
+	for _, l := range ag.Labels {
+		_, _ = h.WriteString(l.Name)
+		_, _ = h.Write(seps)
+		_, _ = h.WriteString(l.Value)
+		_, _ = h.Write(seps)
+	}
+	return fmt.Sprintf("%x", h.Sum64())
 }
 
 // ContentFingerprint is a checksum of all alerts in the group
 func (ag AlertGroup) ContentFingerprint() string {
-	h := sha1.New()
+	h := xxhash.New()
 	for _, alert := range ag.Alerts {
 		_, _ = io.WriteString(h, alert.ContentFingerprint())
 	}
-	return fmt.Sprintf("%x", h.Sum(nil))
+	return fmt.Sprintf("%x", h.Sum64())
 }
 
 func (ag AlertGroup) FindLatestStartsAt() time.Time {

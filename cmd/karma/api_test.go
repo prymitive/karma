@@ -56,7 +56,7 @@ var groupTests = []groupTest{
 				Receiver: "by-name",
 			},
 		},
-		id: "099c5ca6d1c92f615b13056b935d0c8dee70f18c",
+		id: "990fb0cdc86aae89",
 		stateCount: map[string]int{
 			models.AlertStateActive:      1,
 			models.AlertStateSuppressed:  0,
@@ -92,7 +92,7 @@ var groupTests = []groupTest{
 				Receiver: "by-cluster-service",
 			},
 		},
-		id: "0b1963665aac588dc4b18e17c7a4f70466c622ea",
+		id: "6b15d34b0ed69d02",
 		stateCount: map[string]int{
 			models.AlertStateActive:      1,
 			models.AlertStateSuppressed:  0,
@@ -159,7 +159,7 @@ var groupTests = []groupTest{
 				Receiver: "by-cluster-service",
 			},
 		},
-		id: "2d3f39413b41c873cb72e0b8065aa7b8631e983e",
+		id: "f08998b6581752f4",
 		stateCount: map[string]int{
 			models.AlertStateActive:      3,
 			models.AlertStateSuppressed:  0,
@@ -228,7 +228,7 @@ var groupTests = []groupTest{
 				Receiver: "by-cluster-service",
 			},
 		},
-		id: "3c09c4156e6784dcf6d5b2e1629253798f82909b",
+		id: "97dba9e211f41cf6",
 		stateCount: map[string]int{
 			models.AlertStateActive:      0,
 			models.AlertStateSuppressed:  3,
@@ -396,7 +396,7 @@ var groupTests = []groupTest{
 				Receiver: "by-name",
 			},
 		},
-		id: "58c6a3467cebc53abe68ecbe8643ce478c5a1573",
+		id: "db6e3af075b36419",
 		stateCount: map[string]int{
 			models.AlertStateActive:      5,
 			models.AlertStateSuppressed:  3,
@@ -433,7 +433,7 @@ var groupTests = []groupTest{
 				Receiver: "by-cluster-service",
 			},
 		},
-		id: "8ca8151d9e30baba2334507dca53e16b7be93c5e",
+		id: "c8a1ec76d51e9d96",
 		stateCount: map[string]int{
 			models.AlertStateActive:      1,
 			models.AlertStateSuppressed:  0,
@@ -485,7 +485,7 @@ var groupTests = []groupTest{
 				Receiver: "by-cluster-service",
 			},
 		},
-		id: "98c1a53d0f71af9c734c9180697383f3b8aff80f",
+		id: "922d04650baba3fe",
 		stateCount: map[string]int{
 			models.AlertStateActive:      2,
 			models.AlertStateSuppressed:  0,
@@ -535,7 +535,7 @@ var groupTests = []groupTest{
 				Receiver: "by-name",
 			},
 		},
-		id: "bc4845fec77585cdfebe946234279d785ca93891",
+		id: "69b99170489a6c64",
 		stateCount: map[string]int{
 			models.AlertStateActive:      1,
 			models.AlertStateSuppressed:  1,
@@ -572,7 +572,7 @@ var groupTests = []groupTest{
 				Receiver: "by-name",
 			},
 		},
-		id: "bf78806d2a80b1c8150c1391669813722428e858",
+		id: "37f9b50559e97fd0",
 		stateCount: map[string]int{
 			models.AlertStateActive:      1,
 			models.AlertStateSuppressed:  0,
@@ -624,7 +624,7 @@ var groupTests = []groupTest{
 				Receiver: "by-cluster-service",
 			},
 		},
-		id: "ecefc3705b1ab4e4c3283c879540be348d2d9dce",
+		id: "ca10a29d2e729cff",
 		stateCount: map[string]int{
 			models.AlertStateActive:      1,
 			models.AlertStateSuppressed:  1,
@@ -905,7 +905,7 @@ var sortTests = []sortTest{
 		sortLabel:      "",
 		sortReverse:    false,
 		expectedLabel:  "cluster",
-		expectedValues: []string{"dev", "prod", "staging", "dev", "staging", "prod"},
+		expectedValues: []string{"staging", "dev", "staging", "dev", "prod", "prod"},
 	},
 	{
 		filter:         []string{"@receiver=by-cluster-service"},
@@ -913,7 +913,7 @@ var sortTests = []sortTest{
 		sortLabel:      "",
 		sortReverse:    true,
 		expectedLabel:  "cluster",
-		expectedValues: []string{"prod", "staging", "dev", "staging", "prod", "dev"},
+		expectedValues: []string{"prod", "prod", "dev", "staging", "dev", "staging"},
 	},
 	{
 		filter:         []string{"@receiver=by-cluster-service"},
