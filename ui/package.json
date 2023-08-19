@@ -75,7 +75,7 @@
     "eslint-plugin-prettier": "5.0.0",
     "fetch-mock": "9.11.0",
     "node-fetch": "2.6.11",
-    "prettier": "3.0.1",
+    "prettier": "3.0.2",
     "purgecss": "5.0.0",
     "react-scripts": "5.0.1",
     "sass": "1.66.1",
