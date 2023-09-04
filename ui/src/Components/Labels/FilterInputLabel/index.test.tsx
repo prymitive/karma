@@ -13,12 +13,15 @@ beforeEach(() => {
 const NonEqualMatchers = ["!=", "=~", "!~", ">", "<"];
 
 const MockColors = () => {
-  alertStore.data.colors["foo"] = {
-    bar: {
-      brightness: 200,
-      background: "rgba(4,5,6,200)",
+  alertStore.data.setColors({
+    foo: {
+      bar: {
+        brightness: 200,
+        background: "rgba(4,5,6,200)",
+      },
     },
-  };
+    ...alertStore.data.colors,
+  });
 };
 
 const ShallowLabel = (
