@@ -35,12 +35,15 @@ describe("<HistoryLabel />", () => {
   });
 
   it("label with dark background color should have 'components-label-dark' class", () => {
-    alertStore.data.colors["foo"] = {
-      bar: {
-        brightness: 125,
-        background: "rgba(4,5,6,200)",
+    alertStore.data.setColors({
+      foo: {
+        bar: {
+          brightness: 125,
+          background: "rgba(4,5,6,200)",
+        },
       },
-    };
+      ...alertStore.data.colors,
+    });
     const tree = ShallowHistoryLabel("foo", "=", "bar").find(
       ".components-label",
     );
@@ -48,12 +51,15 @@ describe("<HistoryLabel />", () => {
   });
 
   it("label with bright background color should have 'components-label-bright' class", () => {
-    alertStore.data.colors["foo"] = {
-      bar: {
-        brightness: 200,
-        background: "rgba(4,5,6,200)",
+    alertStore.data.setColors({
+      foo: {
+        bar: {
+          brightness: 200,
+          background: "rgba(4,5,6,200)",
+        },
       },
-    };
+      ...alertStore.data.colors,
+    });
     const tree = ShallowHistoryLabel("foo", "=", "bar").find(
       ".components-label",
     );
