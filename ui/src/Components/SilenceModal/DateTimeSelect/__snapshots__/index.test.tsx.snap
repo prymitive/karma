@@ -388,10 +388,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                   </th>
                 </tr>
               </thead>
-              <tbody
-                class=\\"rdp-tbody\\"
-                role=\\"rowgroup\\"
-              >
+              <tbody class=\\"rdp-tbody\\">
                 <tr class=\\"rdp-row\\">
                   <td
                     class=\\"rdp-cell\\"
@@ -1142,10 +1139,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                   </th>
                 </tr>
               </thead>
-              <tbody
-                class=\\"rdp-tbody\\"
-                role=\\"rowgroup\\"
-              >
+              <tbody class=\\"rdp-tbody\\">
                 <tr class=\\"rdp-row\\">
                   <td
                     class=\\"rdp-cell\\"
