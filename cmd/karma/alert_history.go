@@ -22,6 +22,7 @@ import (
 
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
+	"github.com/prymitive/karma/internal/mapper"
 	"github.com/prymitive/karma/internal/slices"
 	uriUtil "github.com/prymitive/karma/internal/uri"
 )
@@ -157,8 +158,8 @@ func (hp *historyPoller) run(workers int) {
 }
 
 func (hp *historyPoller) stop() {
-	hp.isRunning.Store(false)
 	log.Debug().Msg("Stopping history poller")
+	hp.isRunning.Store(false)
 	close(hp.queue)
 }
 
@@ -193,7 +194,7 @@ func (hp *historyPoller) knownBadLookup(key string) (*knownBadUpstream, bool) {
 func (hp *historyPoller) startWorker(wid int) {
 	log.Debug().Int("worker", wid).Int("queue", cap(hp.queue)).Dur("timeout", hp.queryTimeout).Msg("Starting history poller")
 	for j := range hp.queue {
-		sourceURI := rewriteSource(config.Config.History.Rewrite, j.uri)
+		sourceURI, headers := rewriteSource(config.Config.History.Rewrite, j.uri)
 		expiredAt := time.Now().Add(time.Minute * -5)
 		key := hashQuery(sourceURI, j.labels)
 		if kb, found := hp.knownBadLookup(key); found && kb.timestamp.After(expiredAt) {
@@ -224,6 +225,9 @@ func (hp *historyPoller) startWorker(wid int) {
 				Err(err).
 				Msg("Error while configuring HTTP transport for history request")
 		}
+		if len(headers) > 0 {
+			transport = mapper.SetHeaders(transport, headers)
+		}
 		values, err := countAlerts(sourceURI, hp.queryTimeout, transport, j.labels)
 		if err != nil {
 			log.Error().
@@ -252,7 +256,7 @@ func hashQuery(uri string, labels map[string]string) string {
 	return fmt.Sprintf("%x", hasher.Sum(nil))
 }
 
-func rewriteSource(rules []config.HistoryRewrite, uri string) string {
+func rewriteSource(rules []config.HistoryRewrite, uri string) (string, map[string]string) {
 	// trim trailing / to ensure all URIs are without a /
 	uri = strings.TrimSuffix(uri, "/")
 	for _, rule := range rules {
@@ -264,9 +268,9 @@ func rewriteSource(rules []config.HistoryRewrite, uri string) string {
 			result = rule.SourceRegex.ExpandString(result, rule.URI, uri, submatches)
 		}
 		log.Debug().Str("source", uri).Str("uri", string(result)).Msg("Alert history source rewrite")
-		return string(result)
+		return string(result), rule.Headers
 	}
-	return uri
+	return uri, nil
 }
 
 func rewriteTransport(rules []config.HistoryRewrite, uri string) (http.RoundTripper, error) {

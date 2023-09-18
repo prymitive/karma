@@ -268,6 +268,10 @@ alertmanager:
 - `headers` - a map with a list of key: values which are header: value.
   These custom headers will be sent with every request to the alert manager
   instance.
+  **NOTE**: these headers are only sent for alertmanager requests, they are NOT set
+  on requests send to Prometheus server when querying alert history.
+  Please see `history:rewrite` section below if you want to set headers
+  for Prometheus requests.
 - `cors:credentials` - sets the
   [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) credentials
   settings for browser requests,
@@ -760,6 +764,8 @@ history:
     - source: regex
       uri: string
       proxy_url: string
+      headers:
+        any: string
       tls:
         ca: string
         cert: string
@@ -840,6 +846,18 @@ history:
     - source: '(.*)'
       uri: '$1'
       proxy_url: socks5://proxy.local:5000
+```
+
+Example with rewrite rule that will set an extra header for all history request
+send to Prometheus server `http://prometheus.example.com`:
+
+```YAML
+history:
+  rewrite:
+    - source: 'http://prometheus.example.com'
+      headers:
+        X-Auth: secret
+        X-Foo: bar
 ```
 
 ### Karma

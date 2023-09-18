@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.116
+
+### Added
+
+- Added `headers` option to `history:rewrite` config block. This allows to set
+  custom headers passed to Prometheus when sending history query requests.
+
 ## v0.115
 
 ### Fixed

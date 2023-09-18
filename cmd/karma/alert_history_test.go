@@ -90,6 +90,7 @@ func TestAlertHistory(t *testing.T) {
 	type mock struct {
 		method    string
 		uri       *regexp.Regexp
+		matcher   httpmock.Matcher
 		responder httpmock.Responder
 	}
 
@@ -531,6 +532,60 @@ func TestAlertHistory(t *testing.T) {
 				},
 			},
 		},
+		{
+			mocks: []mock{
+				{
+					method:  "POST",
+					uri:     regexp.MustCompile("^http://localhost:9101/api/v1/labels"),
+					matcher: httpmock.HeaderIs("X-Auth", "secret").WithName("X-Auth"),
+					responder: httpmock.NewJsonResponderOrPanic(200, prometheusAPIV1Labels{
+						Status: "success",
+						Data:   []string{"alertname", "instance", "job"},
+					}),
+				},
+				{
+					method:  "POST",
+					uri:     regexp.MustCompile("^http://localhost:9101/api/v1/query_range"),
+					matcher: httpmock.HeaderIs("X-Auth", "secret").WithName("X-Auth"),
+					responder: httpmock.NewJsonResponderOrPanic(200, prometheusAPIV1QueryRange{
+						Status: "success",
+						Data: generateV1Matrix(
+							[]seriesValues{
+								{
+									metric: model.Metric{
+										"alertname": "Fake Alert",
+									},
+									values: generateIntSlice(0, 1, 24),
+								},
+							}, time.Hour),
+					}),
+				},
+			},
+			config: cfg{
+				enabled: true,
+				timeout: time.Second * 5,
+				workers: 5,
+				rewrite: []config.HistoryRewrite{
+					{
+						SourceRegex: regex.MustCompileAnchored("(.+)"),
+						URI:         "$1",
+						Headers:     map[string]string{"X-Auth": "secret"},
+					},
+				},
+			},
+			queries: []historyQuery{
+				{
+					payload: generateHistoryPayload(AlertHistoryPayload{
+						Sources: []string{"http://localhost:9101"},
+						Labels:  map[string]string{"alertname": "Fake Alert", "cluster": "prod"},
+					}),
+					code: 200,
+					response: AlertHistoryResponse{
+						Samples: generateHistorySamples(generateIntSlice(0, 1, 24), time.Hour),
+					},
+				},
+			},
+		},
 	}
 
 	defer func() {
@@ -539,9 +594,6 @@ func TestAlertHistory(t *testing.T) {
 		config.Config.History.Workers = 30
 		config.Config.History.Rewrite = []config.HistoryRewrite{}
 	}()
-
-	httpmock.Activate()
-	defer httpmock.DeactivateAndReset()
 
 	mockConfig(t.Setenv)
 
@@ -558,10 +610,11 @@ func TestAlertHistory(t *testing.T) {
 	zerolog.SetGlobalLevel(zerolog.FatalLevel)
 	for i, tc := range testCases {
 		t.Run(fmt.Sprintf("%d/enabled=%v", i, tc.config.enabled), func(t *testing.T) {
-			httpmock.Reset()
+			httpmock.Activate()
+			defer httpmock.DeactivateAndReset()
 
 			for _, mock := range tc.mocks {
-				httpmock.RegisterRegexpResponder(mock.method, mock.uri, mock.responder)
+				httpmock.RegisterRegexpMatcherResponder(mock.method, mock.uri, mock.matcher, mock.responder)
 				t.Logf("Registered responder %s %s", mock.method, mock.uri)
 			}
 			config.Config.History.Enabled = tc.config.enabled
@@ -684,7 +737,7 @@ func TestRewriteSource(t *testing.T) {
 
 	for i, tc := range testCases {
 		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
-			uri := rewriteSource(tc.rules, tc.uri)
+			uri, _ := rewriteSource(tc.rules, tc.uri)
 			if diff := cmp.Diff(tc.out, uri); diff != "" {
 				t.Errorf("Incorrect rewriteSource result (-want +got):\n%s", diff)
 			}
