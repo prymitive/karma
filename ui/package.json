@@ -78,7 +78,7 @@
     "prettier": "3.0.3",
     "purgecss": "5.0.0",
     "react-scripts": "5.0.1",
-    "sass": "1.67.0",
+    "sass": "1.68.0",
     "typescript": "4.9.5"
   },
   "overrides": {
