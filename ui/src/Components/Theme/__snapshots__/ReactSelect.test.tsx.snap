@@ -98,7 +98,10 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot when focused and disabled
     class=\\"css-1f43avz-a11yText-A11yText\\"
   >
   </span>
-  <div class=\\" css-zximad-control\\">
+  <div
+    class=\\" css-zximad-control\\"
+    aria-disabled=\\"true\\"
+  >
     <div class=\\" css-1a3grgz-ValueContainer\\">
       <div
         class=\\" css-1jqq78o-placeholder\\"
@@ -237,7 +240,10 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isDisabled=true 1`] 
     class=\\"css-1f43avz-a11yText-A11yText\\"
   >
   </span>
-  <div class=\\" css-1bxufhm-control\\">
+  <div
+    class=\\" css-1bxufhm-control\\"
+    aria-disabled=\\"true\\"
+  >
     <div class=\\" css-1a3grgz-ValueContainer\\">
       <div class=\\" css-qav5hl-singleValue\\">
         foo
