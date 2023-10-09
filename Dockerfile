@@ -22,7 +22,7 @@ COPY internal /src/internal
 ARG VERSION
 RUN CGO_ENABLED=0 make -C /src VERSION="${VERSION:-dev}" karma
 
-FROM gcr.io/distroless/base
+FROM gcr.io/distroless/static
 ARG VERSION
 LABEL org.opencontainers.image.source https://github.com/prymitive/karma
 LABEL org.opencontainers.image.version ${VERSION}
