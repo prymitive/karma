@@ -72,7 +72,7 @@
     "eslint-config-prettier": "9.0.0",
     "eslint-config-react-app": "7.0.1",
     "eslint-plugin-jest": "27.4.2",
-    "eslint-plugin-prettier": "5.0.0",
+    "eslint-plugin-prettier": "5.0.1",
     "fetch-mock": "9.11.0",
     "node-fetch": "2.6.11",
     "prettier": "3.0.3",
