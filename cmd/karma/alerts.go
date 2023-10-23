@@ -408,9 +408,9 @@ func newStateCount() map[string]int {
 func stateFromStateCount(stateCount map[string]int) string {
 	if stateCount[models.AlertStateActive] > 0 {
 		return models.AlertStateActive
-	} else if stateCount[models.AlertStateSuppressed] > 0 {
-		return models.AlertStateSuppressed
-	} else {
-		return models.AlertStateUnprocessed
 	}
+	if stateCount[models.AlertStateSuppressed] > 0 {
+		return models.AlertStateSuppressed
+	}
+	return models.AlertStateUnprocessed
 }
