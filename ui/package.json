@@ -62,7 +62,7 @@
     "@types/lodash.throttle": "4.1.8",
     "@types/lodash.uniqueid": "4.0.8",
     "@types/node": "20.8.6",
-    "@types/promise-retry": "1.1.4",
+    "@types/promise-retry": "1.1.5",
     "@types/qs": "6.9.8",
     "@types/react": "17.0.50",
     "@types/react-dom": "17.0.17",
