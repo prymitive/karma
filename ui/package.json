@@ -61,7 +61,7 @@
     "@types/lodash.merge": "4.6.8",
     "@types/lodash.throttle": "4.1.8",
     "@types/lodash.uniqueid": "4.0.8",
-    "@types/node": "20.8.6",
+    "@types/node": "20.8.9",
     "@types/promise-retry": "1.1.5",
     "@types/qs": "6.9.9",
     "@types/react": "17.0.50",
