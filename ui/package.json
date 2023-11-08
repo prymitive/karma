@@ -59,7 +59,7 @@
     "@types/jest": "29.5.7",
     "@types/lodash.debounce": "4.0.8",
     "@types/lodash.merge": "4.6.9",
-    "@types/lodash.throttle": "4.1.8",
+    "@types/lodash.throttle": "4.1.9",
     "@types/lodash.uniqueid": "4.0.9",
     "@types/node": "20.8.10",
     "@types/promise-retry": "1.1.5",
