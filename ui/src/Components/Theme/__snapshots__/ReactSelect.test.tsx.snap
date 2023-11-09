@@ -10,7 +10,11 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot when focused 1`] = `
     <span id=\\"aria-selection\\">
       option , selected.
     </span>
-    <span id=\\"aria-context\\">
+    <span id=\\"aria-focused\\">
+    </span>
+    <span id=\\"aria-results\\">
+    </span>
+    <span id=\\"aria-guidance\\">
       Select is focused ,type to refine list, press Down to open the menu,
     </span>
   </span>
@@ -18,6 +22,7 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot when focused 1`] = `
     aria-live=\\"polite\\"
     aria-atomic=\\"false\\"
     aria-relevant=\\"additions text\\"
+    role=\\"log\\"
     class=\\"css-1f43avz-a11yText-A11yText\\"
   >
   </span>
@@ -47,6 +52,7 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot when focused 1`] = `
           aria-expanded=\\"false\\"
           aria-haspopup=\\"true\\"
           role=\\"combobox\\"
+          aria-activedescendant
           aria-describedby=\\"react-select-3-placeholder\\"
           value
         >
@@ -87,7 +93,11 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot when focused and disabled
     <span id=\\"aria-selection\\">
       option , selected.
     </span>
-    <span id=\\"aria-context\\">
+    <span id=\\"aria-focused\\">
+    </span>
+    <span id=\\"aria-results\\">
+    </span>
+    <span id=\\"aria-guidance\\">
       Select is focused ,type to refine list, press Down to open the menu,
     </span>
   </span>
@@ -95,6 +105,7 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot when focused and disabled
     aria-live=\\"polite\\"
     aria-atomic=\\"false\\"
     aria-relevant=\\"additions text\\"
+    role=\\"log\\"
     class=\\"css-1f43avz-a11yText-A11yText\\"
   >
   </span>
@@ -128,6 +139,7 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot when focused and disabled
           aria-expanded=\\"false\\"
           aria-haspopup=\\"true\\"
           role=\\"combobox\\"
+          aria-activedescendant
           aria-describedby=\\"react-select-4-placeholder\\"
           value
         >
@@ -170,6 +182,7 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with a value 1`] = `
     aria-live=\\"polite\\"
     aria-atomic=\\"false\\"
     aria-relevant=\\"additions text\\"
+    role=\\"log\\"
     class=\\"css-1f43avz-a11yText-A11yText\\"
   >
   </span>
@@ -196,6 +209,7 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with a value 1`] = `
           aria-expanded=\\"false\\"
           aria-haspopup=\\"true\\"
           role=\\"combobox\\"
+          aria-activedescendant
           value
         >
       </div>
@@ -237,6 +251,7 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isDisabled=true 1`] 
     aria-live=\\"polite\\"
     aria-atomic=\\"false\\"
     aria-relevant=\\"additions text\\"
+    role=\\"log\\"
     class=\\"css-1f43avz-a11yText-A11yText\\"
   >
   </span>
@@ -267,6 +282,7 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isDisabled=true 1`] 
           aria-expanded=\\"false\\"
           aria-haspopup=\\"true\\"
           role=\\"combobox\\"
+          aria-activedescendant
           value
         >
       </div>
@@ -308,6 +324,7 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true 1`] = `
     aria-live=\\"polite\\"
     aria-atomic=\\"false\\"
     aria-relevant=\\"additions text\\"
+    role=\\"log\\"
     class=\\"css-1f43avz-a11yText-A11yText\\"
   >
   </span>
@@ -337,6 +354,7 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true 1`] = `
           aria-expanded=\\"false\\"
           aria-haspopup=\\"true\\"
           role=\\"combobox\\"
+          aria-activedescendant
           aria-describedby=\\"react-select-2-placeholder\\"
           value
         >
@@ -379,6 +397,7 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true and a v
     aria-live=\\"polite\\"
     aria-atomic=\\"false\\"
     aria-relevant=\\"additions text\\"
+    role=\\"log\\"
     class=\\"css-1f43avz-a11yText-A11yText\\"
   >
   </span>
@@ -424,6 +443,7 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true and a v
           aria-expanded=\\"false\\"
           aria-haspopup=\\"true\\"
           role=\\"combobox\\"
+          aria-activedescendant
           value
         >
       </div>

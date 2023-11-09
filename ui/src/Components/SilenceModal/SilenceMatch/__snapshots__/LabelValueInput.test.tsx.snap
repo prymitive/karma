@@ -12,6 +12,7 @@ exports[`<LabelValueInput /> fetches suggestions on mount 1`] = `
     aria-live=\\"polite\\"
     aria-atomic=\\"false\\"
     aria-relevant=\\"additions text\\"
+    role=\\"log\\"
     class=\\"css-1f43avz-a11yText-A11yText\\"
   >
   </span>
@@ -43,6 +44,7 @@ exports[`<LabelValueInput /> fetches suggestions on mount 1`] = `
           aria-expanded=\\"false\\"
           aria-haspopup=\\"true\\"
           role=\\"combobox\\"
+          aria-activedescendant
           aria-describedby=\\"react-select-silence-input-label-value-2-placeholder\\"
           value
         >
@@ -85,6 +87,7 @@ exports[`<LabelValueInput /> matches snapshot 1`] = `
     aria-live=\\"polite\\"
     aria-atomic=\\"false\\"
     aria-relevant=\\"additions text\\"
+    role=\\"log\\"
     class=\\"css-1f43avz-a11yText-A11yText\\"
   >
   </span>
@@ -116,6 +119,7 @@ exports[`<LabelValueInput /> matches snapshot 1`] = `
           aria-expanded=\\"false\\"
           aria-haspopup=\\"true\\"
           role=\\"combobox\\"
+          aria-activedescendant
           aria-describedby=\\"react-select-silence-input-label-value-1-placeholder\\"
           value
         >
