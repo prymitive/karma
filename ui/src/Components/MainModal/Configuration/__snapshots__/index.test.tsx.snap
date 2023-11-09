@@ -88,6 +88,7 @@ exports[`<Configuration /> matches snapshot 1`] = `
               aria-live=\\"polite\\"
               aria-atomic=\\"false\\"
               aria-relevant=\\"additions text\\"
+              role=\\"log\\"
               class=\\"css-1f43avz-a11yText-A11yText\\"
             >
             </span>
@@ -114,6 +115,7 @@ exports[`<Configuration /> matches snapshot 1`] = `
                     aria-expanded=\\"false\\"
                     aria-haspopup=\\"true\\"
                     role=\\"combobox\\"
+                    aria-activedescendant
                     value
                   >
                 </div>
@@ -267,6 +269,7 @@ exports[`<Configuration /> matches snapshot 1`] = `
               aria-live=\\"polite\\"
               aria-atomic=\\"false\\"
               aria-relevant=\\"additions text\\"
+              role=\\"log\\"
               class=\\"css-1f43avz-a11yText-A11yText\\"
             >
             </span>
@@ -293,6 +296,7 @@ exports[`<Configuration /> matches snapshot 1`] = `
                     aria-expanded=\\"false\\"
                     aria-haspopup=\\"true\\"
                     role=\\"combobox\\"
+                    aria-activedescendant
                     value
                   >
                 </div>
@@ -347,6 +351,7 @@ exports[`<Configuration /> matches snapshot 1`] = `
                   aria-live=\\"polite\\"
                   aria-atomic=\\"false\\"
                   aria-relevant=\\"additions text\\"
+                  role=\\"log\\"
                   class=\\"css-1f43avz-a11yText-A11yText\\"
                 >
                 </span>
@@ -373,6 +378,7 @@ exports[`<Configuration /> matches snapshot 1`] = `
                         aria-expanded=\\"false\\"
                         aria-haspopup=\\"true\\"
                         role=\\"combobox\\"
+                        aria-activedescendant
                         value
                       >
                     </div>
@@ -429,6 +435,7 @@ exports[`<Configuration /> matches snapshot 1`] = `
                   aria-live=\\"polite\\"
                   aria-atomic=\\"false\\"
                   aria-relevant=\\"additions text\\"
+                  role=\\"log\\"
                   class=\\"css-1f43avz-a11yText-A11yText\\"
                 >
                 </span>
@@ -455,6 +462,7 @@ exports[`<Configuration /> matches snapshot 1`] = `
                         aria-expanded=\\"false\\"
                         aria-haspopup=\\"true\\"
                         role=\\"combobox\\"
+                        aria-activedescendant
                         value
                       >
                     </div>
