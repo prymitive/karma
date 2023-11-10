@@ -82,9 +82,6 @@
     "typescript": "4.9.5"
   },
   "overrides": {
-    "react-scripts@5.0.1": {
-      "autoprefixer": "10.4.12"
-    },
     "@types/enzyme@3.10.16": {
       "@types/react": "16.14.46"
     }
