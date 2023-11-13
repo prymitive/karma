@@ -161,8 +161,8 @@ const AlertAck: FC<{
           !isAcking && error
             ? "bg-warning"
             : !isAcking && response
-            ? "bg-success"
-            : "bg-secondary"
+              ? "bg-success"
+              : "bg-secondary"
         }`}
         onClick={() => {
           if (!isAcking && !(response || error)) {

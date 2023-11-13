@@ -50,8 +50,8 @@ const SilenceModalContent: FC<{
                       ? "New silence"
                       : "Editing silence"
                     : silenceFormStore.data.currentStage === "preview"
-                    ? "Preview silenced alerts"
-                    : "Silence submitted"
+                      ? "Preview silenced alerts"
+                      : "Silence submitted"
                 }
                 active={silenceFormStore.tab.current === "editor"}
                 onClick={() => silenceFormStore.tab.setTab("editor")}

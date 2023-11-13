@@ -106,8 +106,8 @@ const ManagedSilence: FC<{
               progress > 90
                 ? "progress-bar bg-danger"
                 : progress > 75
-                ? "progress-bar bg-warning"
-                : "progress-bar bg-success"
+                  ? "progress-bar bg-warning"
+                  : "progress-bar bg-success"
             }
             role="progressbar"
             style={{ width: progress + "%" }}
