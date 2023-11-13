@@ -232,10 +232,10 @@ const GenerateAlertmanagerSilenceData = (
               )
               .join("|")})`
           : m.values.length === 1
-          ? m.values[0].wasCreated || !m.isRegex
-            ? m.values[0].value
-            : EscapeRegex(m.values[0].value)
-          : "",
+            ? m.values[0].wasCreated || !m.isRegex
+              ? m.values[0].value
+              : EscapeRegex(m.values[0].value)
+            : "",
       isRegex: m.isRegex,
       isEqual: m.isEqual,
     })),

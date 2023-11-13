@@ -26,10 +26,10 @@ it("renders without crashing with missing defaults div", () => {
       return name === "settings"
         ? (settingsElement as any)
         : name === "defaults"
-        ? null
-        : name === "root"
-        ? root
-        : null;
+          ? null
+          : name === "root"
+            ? root
+            : null;
     });
   const response = EmptyAPIResponse();
   response.filters = [];
@@ -52,12 +52,12 @@ it("renders without crashing with defaults present", () => {
       return name === "settings"
         ? (settingsElement as any)
         : name === "defaults"
-        ? {
-            innerHTML: DefaultsBase64,
-          }
-        : name === "root"
-        ? root
-        : null;
+          ? {
+              innerHTML: DefaultsBase64,
+            }
+          : name === "root"
+            ? root
+            : null;
     });
   const response = EmptyAPIResponse();
   response.filters = [];

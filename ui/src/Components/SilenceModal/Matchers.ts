@@ -11,8 +11,8 @@ const MatcherToFilter = (matcher: MatcherT): string => {
     v.wasCreated
       ? v
       : matcher.isRegex
-      ? { ...v, value: EscapeRegex(v.value) }
-      : v,
+        ? { ...v, value: EscapeRegex(v.value) }
+        : v,
   );
   const value =
     values.length > 1

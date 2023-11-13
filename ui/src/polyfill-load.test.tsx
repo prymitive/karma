@@ -29,10 +29,10 @@ it("loads ResizeObserver polyfill if needed", () => {
     return name === "settings"
       ? settingsElement
       : name === "defaults"
-      ? null
-      : name === "root"
-      ? root
-      : null;
+        ? null
+        : name === "root"
+          ? root
+          : null;
   });
   const response = EmptyAPIResponse();
   response.filters = [];

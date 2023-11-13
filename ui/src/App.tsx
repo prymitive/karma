@@ -100,9 +100,9 @@ const App: FC<AppProps> = observer(({ defaultFilters, uiDefaults }) => {
                 ? ReactSelectStyles(ReactSelectColors.Dark)
                 : ReactSelectStyles(ReactSelectColors.Light)
               : settingsStore.themeConfig.config.theme ===
-                settingsStore.themeConfig.options.dark.value
-              ? ReactSelectStyles(ReactSelectColors.Dark)
-              : ReactSelectStyles(ReactSelectColors.Light),
+                  settingsStore.themeConfig.options.dark.value
+                ? ReactSelectStyles(ReactSelectColors.Dark)
+                : ReactSelectStyles(ReactSelectColors.Light),
           animations: {
             duration: settingsStore.themeConfig.config.animations ? 500 : 0,
           },

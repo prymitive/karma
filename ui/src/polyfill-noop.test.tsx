@@ -38,10 +38,10 @@ it("doesn't load ResizeObserver polyfill if not needed", () => {
     return name === "settings"
       ? settingsElement
       : name === "defaults"
-      ? null
-      : name === "root"
-      ? root
-      : null;
+        ? null
+        : name === "root"
+          ? root
+          : null;
   });
   const response = EmptyAPIResponse();
   response.filters = [];

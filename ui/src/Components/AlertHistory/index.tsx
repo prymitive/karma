@@ -115,14 +115,14 @@ export const AlertHistory: FC<{ group: APIAlertGroupT; grid: APIGridT }> = ({
                   cachedResponse === null
                     ? "fetching"
                     : sample.value > 0
-                    ? `firing firing-${
-                        minMaxValue.minValue === minMaxValue.maxValue
-                          ? Math.min(minMaxValue.maxValue, 5)
-                          : Math.round(
-                              (sample.value / minMaxValue.maxValue) * 5,
-                            )
-                      }`
-                    : "inactive"
+                      ? `firing firing-${
+                          minMaxValue.minValue === minMaxValue.maxValue
+                            ? Math.min(minMaxValue.maxValue, 5)
+                            : Math.round(
+                                (sample.value / minMaxValue.maxValue) * 5,
+                              )
+                        }`
+                      : "inactive"
                 }
               ></rect>
             </svg>
