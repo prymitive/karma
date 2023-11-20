@@ -60,9 +60,9 @@ require (
 	github.com/prometheus/procfs v0.12.0 // indirect
 	github.com/sergi/go-diff v1.2.0 // indirect
 	go.mongodb.org/mongo-driver v1.13.0 // indirect
-	go.opentelemetry.io/otel v1.20.0 // indirect
-	go.opentelemetry.io/otel/metric v1.20.0 // indirect
-	go.opentelemetry.io/otel/trace v1.20.0 // indirect
+	go.opentelemetry.io/otel v1.21.0 // indirect
+	go.opentelemetry.io/otel/metric v1.21.0 // indirect
+	go.opentelemetry.io/otel/trace v1.21.0 // indirect
 	golang.org/x/sys v0.14.0 // indirect
 	golang.org/x/tools v0.1.12 // indirect
 	google.golang.org/protobuf v1.31.0 // indirect
