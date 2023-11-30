@@ -1,6 +1,9 @@
 import { mount } from "enzyme";
 
+import fetchMock from "fetch-mock";
+
 import { mockMatchMedia } from "__fixtures__/matchMedia";
+import { EmptyAPIResponse } from "__fixtures__/Fetch";
 import type { UIDefaults, ThemeT } from "Models/UI";
 import { SilenceFormStore, NewEmptyMatcher } from "Stores/SilenceFormStore";
 import { StringToOption } from "Common/Select";
@@ -35,6 +38,11 @@ beforeEach(() => {
     disconnect: jest.fn(),
   }));
   global.ResizeObserverEntry = jest.fn();
+
+  fetchMock.reset();
+  fetchMock.mock("*", {
+    body: JSON.stringify(EmptyAPIResponse()),
+  });
 });
 
 afterEach(() => {

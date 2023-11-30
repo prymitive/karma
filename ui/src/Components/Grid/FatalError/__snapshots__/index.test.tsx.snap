@@ -2,25 +2,25 @@
 
 exports[`<FatalError /> matches snapshot 1`] = `
 "
-<h1 class=\\"display-1 text-placeholder screen-center\\">
-  <div class=\\"container-fluid text-center\\">
+<h1 class="display-1 text-placeholder screen-center">
+  <div class="container-fluid text-center">
     <svg
-      aria-hidden=\\"true\\"
-      focusable=\\"false\\"
-      data-prefix=\\"fas\\"
-      data-icon=\\"circle-exclamation\\"
-      class=\\"svg-inline--fa fa-circle-exclamation screen-center-icon-big text-danger mb-4\\"
-      role=\\"img\\"
-      xmlns=\\"http://www.w3.org/2000/svg\\"
-      viewbox=\\"0 0 512 512\\"
+      aria-hidden="true"
+      focusable="false"
+      data-prefix="fas"
+      data-icon="circle-exclamation"
+      class="svg-inline--fa fa-circle-exclamation screen-center-icon-big text-danger mb-4"
+      role="img"
+      xmlns="http://www.w3.org/2000/svg"
+      viewbox="0 0 512 512"
     >
       <path
-        fill=\\"currentColor\\"
-        d=\\"M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z\\"
+        fill="currentColor"
+        d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"
       >
       </path>
     </svg>
-    <p class=\\"lead text-white bg-secondary p-3 rounded text-wrap text-break\\">
+    <p class="lead text-white bg-secondary p-3 rounded text-wrap text-break">
       foo bar
     </p>
   </div>

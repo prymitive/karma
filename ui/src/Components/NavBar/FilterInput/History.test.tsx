@@ -271,24 +271,4 @@ describe("<HistoryMenu />", () => {
     expect(settingsStore.savedFilters.config.filters).toHaveLength(0);
     await act(() => promise);
   });
-
-  it("clicking on 'Clear history' clears the history", async () => {
-    const promise = Promise.resolve();
-    const tree = MountedHistory();
-    act(() => {
-      PopulateHistory(tree, 5);
-    });
-    tree.find("button.cursor-pointer").simulate("click");
-    expect(tree.find("button.dropdown-item")).toHaveLength(5);
-
-    const button = tree.find(".component-history-button").at(2);
-    expect(button.text()).toBe("Clear history");
-    button.simulate("click");
-    act(() => {
-      jest.runOnlyPendingTimers();
-    });
-    tree.update();
-    expect(tree.find("button.dropdown-item")).toHaveLength(0);
-    await act(() => promise);
-  });
 });

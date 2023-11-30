@@ -2,17 +2,17 @@
 
 exports[`<FilterBarConfiguration /> matches snapshot with default values 1`] = `
 "
-<div class=\\"form-check form-check-inline px-0 mx-0\\">
-  <span class=\\"form-check form-switch\\">
+<div class="form-check form-check-inline px-0 mx-0">
+  <span class="form-check form-switch">
     <input
-      id=\\"configuration-autohide\\"
-      class=\\"form-check-input\\"
-      type=\\"checkbox\\"
+      id="configuration-autohide"
+      class="form-check-input"
+      type="checkbox"
       checked
     >
     <label
-      class=\\"form-check-label cursor-pointer me-3\\"
-      for=\\"configuration-autohide\\"
+      class="form-check-label cursor-pointer me-3"
+      for="configuration-autohide"
     >
       Hide filter bar and alert details when idle
     </label>

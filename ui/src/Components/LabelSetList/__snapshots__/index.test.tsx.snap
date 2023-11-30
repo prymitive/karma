@@ -3,54 +3,54 @@
 exports[`<LabelSetList /> matches snapshot with populated list 1`] = `
 "
 <div>
-  <p class=\\"lead text-center\\">
+  <p class="lead text-center">
     Affected alerts
   </p>
   <div>
-    <ul class=\\"list-group list-group-flush mb-3\\">
-      <li class=\\"list-group-item px-0 pt-2 pb-1\\">
-        <span class=\\"components-label badge bg-default components-label-dark \\">
-          <span class=\\"components-label-name\\">
+    <ul class="list-group list-group-flush mb-3">
+      <li class="list-group-item px-0 pt-2 pb-1">
+        <span class="components-label badge bg-default components-label-dark ">
+          <span class="components-label-name">
             foo:
           </span>
-          <span class=\\"components-label-value\\">
+          <span class="components-label-value">
             bar
           </span>
         </span>
       </li>
-      <li class=\\"list-group-item px-0 pt-2 pb-1\\">
-        <span class=\\"components-label badge bg-default components-label-dark \\">
-          <span class=\\"components-label-name\\">
+      <li class="list-group-item px-0 pt-2 pb-1">
+        <span class="components-label badge bg-default components-label-dark ">
+          <span class="components-label-name">
             job:
           </span>
-          <span class=\\"components-label-value\\">
+          <span class="components-label-value">
             node_exporter
           </span>
         </span>
       </li>
-      <li class=\\"list-group-item px-0 pt-2 pb-1\\">
-        <span class=\\"components-label badge bg-default components-label-dark \\">
-          <span class=\\"components-label-name\\">
+      <li class="list-group-item px-0 pt-2 pb-1">
+        <span class="components-label badge bg-default components-label-dark ">
+          <span class="components-label-name">
             instance:
           </span>
-          <span class=\\"components-label-value\\">
+          <span class="components-label-value">
             server1
           </span>
         </span>
       </li>
-      <li class=\\"list-group-item px-0 pt-2 pb-1\\">
-        <span class=\\"components-label badge bg-default components-label-dark \\">
-          <span class=\\"components-label-name\\">
+      <li class="list-group-item px-0 pt-2 pb-1">
+        <span class="components-label badge bg-default components-label-dark ">
+          <span class="components-label-name">
             cluster:
           </span>
-          <span class=\\"components-label-value\\">
+          <span class="components-label-value">
             prod
           </span>
         </span>
       </li>
     </ul>
   </div>
-  <div class=\\"components-pagination\\">
+  <div class="components-pagination">
   </div>
 </div>
 "

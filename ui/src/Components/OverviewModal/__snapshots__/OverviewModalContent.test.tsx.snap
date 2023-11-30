@@ -3,121 +3,121 @@
 exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
 "
 <span>
-  <div class=\\"modal-header\\">
-    <h5 class=\\"modal-title\\">
+  <div class="modal-header">
+    <h5 class="modal-title">
       Overview
     </h5>
     <button
-      type=\\"button\\"
-      class=\\"btn-close\\"
+      type="button"
+      class="btn-close"
     >
     </button>
   </div>
-  <div class=\\"modal-body\\">
+  <div class="modal-body">
     <table
-      class=\\"table table-borderless top-labels\\"
-      style=\\"table-layout: fixed;\\"
+      class="table table-borderless top-labels"
+      style="table-layout: fixed;"
     >
-      <tbody class=\\"mw-100\\">
+      <tbody class="mw-100">
         <tr>
           <td
-            width=\\"25%\\"
-            class=\\"text-nowrap mw-100 p-1\\"
+            width="25%"
+            class="text-nowrap mw-100 p-1"
           >
-            <span class=\\"badge bg-light components-label mx-0 mt-0 mb-auto ps-0 text-start\\">
-              <span class=\\"bg-primary text-white me-1 px-1 components-labelWithPercent-percent\\">
+            <span class="badge bg-light components-label mx-0 mt-0 mb-auto ps-0 text-start">
+              <span class="bg-primary text-white me-1 px-1 components-labelWithPercent-percent">
                 16
               </span>
               foo
             </span>
           </td>
           <td
-            width=\\"75%\\"
-            class=\\"mw-100 p-1\\"
+            width="75%"
+            class="mw-100 p-1"
           >
-            <div class=\\"d-inline-block mw-100\\">
-              <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start\\">
-                <span class=\\"me-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
+            <div class="d-inline-block mw-100">
+              <span class="components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start">
+                <span class="me-1 px-1 bg-primary text-white components-labelWithPercent-percent">
                   8
                 </span>
                 <span>
-                  <span class=\\"components-label-value\\">
+                  <span class="components-label-value">
                     bar1
                   </span>
                 </span>
               </span>
-              <div class=\\"progress components-labelWithPercent-progress me-1\\">
+              <div class="progress components-labelWithPercent-progress me-1">
                 <div
-                  class=\\"progress-bar bg-warning\\"
-                  role=\\"progressbar\\"
-                  style=\\"width: 50%;\\"
-                  aria-valuenow=\\"50\\"
-                  aria-valuemin=\\"0\\"
-                  aria-valuemax=\\"100\\"
+                  class="progress-bar bg-warning"
+                  role="progressbar"
+                  style="width: 50%;"
+                  aria-valuenow="50"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
                 >
                 </div>
               </div>
             </div>
-            <div class=\\"d-inline-block mw-100\\">
-              <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start\\">
-                <span class=\\"me-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
+            <div class="d-inline-block mw-100">
+              <span class="components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start">
+                <span class="me-1 px-1 bg-primary text-white components-labelWithPercent-percent">
                   4
                 </span>
                 <span>
-                  <span class=\\"components-label-value\\">
+                  <span class="components-label-value">
                     bar2
                   </span>
                 </span>
               </span>
-              <div class=\\"progress components-labelWithPercent-progress me-1\\">
+              <div class="progress components-labelWithPercent-progress me-1">
                 <div
-                  class=\\"progress-bar bg-transparent\\"
-                  role=\\"progressbar\\"
-                  style=\\"width: 50%;\\"
-                  aria-valuenow=\\"50\\"
-                  aria-valuemin=\\"0\\"
-                  aria-valuemax=\\"100\\"
+                  class="progress-bar bg-transparent"
+                  role="progressbar"
+                  style="width: 50%;"
+                  aria-valuenow="50"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
                 >
                 </div>
                 <div
-                  class=\\"progress-bar bg-success\\"
-                  role=\\"progressbar\\"
-                  style=\\"width: 25%;\\"
-                  aria-valuenow=\\"25\\"
-                  aria-valuemin=\\"0\\"
-                  aria-valuemax=\\"100\\"
+                  class="progress-bar bg-success"
+                  role="progressbar"
+                  style="width: 25%;"
+                  aria-valuenow="25"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
                 >
                 </div>
               </div>
             </div>
-            <div class=\\"d-inline-block mw-100\\">
-              <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start\\">
-                <span class=\\"me-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
+            <div class="d-inline-block mw-100">
+              <span class="components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start">
+                <span class="me-1 px-1 bg-primary text-white components-labelWithPercent-percent">
                   4
                 </span>
                 <span>
-                  <span class=\\"components-label-value\\">
+                  <span class="components-label-value">
                     bar3
                   </span>
                 </span>
               </span>
-              <div class=\\"progress components-labelWithPercent-progress me-1\\">
+              <div class="progress components-labelWithPercent-progress me-1">
                 <div
-                  class=\\"progress-bar bg-transparent\\"
-                  role=\\"progressbar\\"
-                  style=\\"width: 75%;\\"
-                  aria-valuenow=\\"75\\"
-                  aria-valuemin=\\"0\\"
-                  aria-valuemax=\\"100\\"
+                  class="progress-bar bg-transparent"
+                  role="progressbar"
+                  style="width: 75%;"
+                  aria-valuenow="75"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
                 >
                 </div>
                 <div
-                  class=\\"progress-bar bg-success\\"
-                  role=\\"progressbar\\"
-                  style=\\"width: 25%;\\"
-                  aria-valuenow=\\"25\\"
-                  aria-valuemin=\\"0\\"
-                  aria-valuemax=\\"100\\"
+                  class="progress-bar bg-success"
+                  role="progressbar"
+                  style="width: 25%;"
+                  aria-valuenow="25"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
                 >
                 </div>
               </div>
@@ -126,339 +126,339 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
         </tr>
         <tr>
           <td
-            width=\\"25%\\"
-            class=\\"text-nowrap mw-100 p-1\\"
+            width="25%"
+            class="text-nowrap mw-100 p-1"
           >
-            <span class=\\"badge bg-light components-label mx-0 mt-0 mb-auto ps-0 text-start\\">
-              <span class=\\"bg-primary text-white me-1 px-1 components-labelWithPercent-percent\\">
+            <span class="badge bg-light components-label mx-0 mt-0 mb-auto ps-0 text-start">
+              <span class="bg-primary text-white me-1 px-1 components-labelWithPercent-percent">
                 20
               </span>
               bar
             </span>
           </td>
           <td
-            width=\\"75%\\"
-            class=\\"mw-100 p-1\\"
+            width="75%"
+            class="mw-100 p-1"
           >
-            <div class=\\"d-inline-block mw-100\\">
-              <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start\\">
-                <span class=\\"me-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
+            <div class="d-inline-block mw-100">
+              <span class="components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start">
+                <span class="me-1 px-1 bg-primary text-white components-labelWithPercent-percent">
                   1
                 </span>
                 <span>
-                  <span class=\\"components-label-value\\">
+                  <span class="components-label-value">
                     baz1
                   </span>
                 </span>
               </span>
-              <div class=\\"progress components-labelWithPercent-progress me-1\\">
+              <div class="progress components-labelWithPercent-progress me-1">
                 <div
-                  class=\\"progress-bar bg-success\\"
-                  role=\\"progressbar\\"
-                  style=\\"width: 5%;\\"
-                  aria-valuenow=\\"5\\"
-                  aria-valuemin=\\"0\\"
-                  aria-valuemax=\\"100\\"
+                  class="progress-bar bg-success"
+                  role="progressbar"
+                  style="width: 5%;"
+                  aria-valuenow="5"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
                 >
                 </div>
               </div>
             </div>
-            <div class=\\"d-inline-block mw-100\\">
-              <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start\\">
-                <span class=\\"me-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
+            <div class="d-inline-block mw-100">
+              <span class="components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start">
+                <span class="me-1 px-1 bg-primary text-white components-labelWithPercent-percent">
                   1
                 </span>
                 <span>
-                  <span class=\\"components-label-value\\">
+                  <span class="components-label-value">
                     baz2
                   </span>
                 </span>
               </span>
-              <div class=\\"progress components-labelWithPercent-progress me-1\\">
+              <div class="progress components-labelWithPercent-progress me-1">
                 <div
-                  class=\\"progress-bar bg-transparent\\"
-                  role=\\"progressbar\\"
-                  style=\\"width: 5%;\\"
-                  aria-valuenow=\\"5\\"
-                  aria-valuemin=\\"0\\"
-                  aria-valuemax=\\"100\\"
+                  class="progress-bar bg-transparent"
+                  role="progressbar"
+                  style="width: 5%;"
+                  aria-valuenow="5"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
                 >
                 </div>
                 <div
-                  class=\\"progress-bar bg-success\\"
-                  role=\\"progressbar\\"
-                  style=\\"width: 5%;\\"
-                  aria-valuenow=\\"5\\"
-                  aria-valuemin=\\"0\\"
-                  aria-valuemax=\\"100\\"
+                  class="progress-bar bg-success"
+                  role="progressbar"
+                  style="width: 5%;"
+                  aria-valuenow="5"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
                 >
                 </div>
               </div>
             </div>
-            <div class=\\"d-inline-block mw-100\\">
-              <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start\\">
-                <span class=\\"me-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
+            <div class="d-inline-block mw-100">
+              <span class="components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start">
+                <span class="me-1 px-1 bg-primary text-white components-labelWithPercent-percent">
                   1
                 </span>
                 <span>
-                  <span class=\\"components-label-value\\">
+                  <span class="components-label-value">
                     baz3
                   </span>
                 </span>
               </span>
-              <div class=\\"progress components-labelWithPercent-progress me-1\\">
+              <div class="progress components-labelWithPercent-progress me-1">
                 <div
-                  class=\\"progress-bar bg-transparent\\"
-                  role=\\"progressbar\\"
-                  style=\\"width: 10%;\\"
-                  aria-valuenow=\\"10\\"
-                  aria-valuemin=\\"0\\"
-                  aria-valuemax=\\"100\\"
+                  class="progress-bar bg-transparent"
+                  role="progressbar"
+                  style="width: 10%;"
+                  aria-valuenow="10"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
                 >
                 </div>
                 <div
-                  class=\\"progress-bar bg-success\\"
-                  role=\\"progressbar\\"
-                  style=\\"width: 5%;\\"
-                  aria-valuenow=\\"5\\"
-                  aria-valuemin=\\"0\\"
-                  aria-valuemax=\\"100\\"
+                  class="progress-bar bg-success"
+                  role="progressbar"
+                  style="width: 5%;"
+                  aria-valuenow="5"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
                 >
                 </div>
               </div>
             </div>
-            <div class=\\"d-inline-block mw-100\\">
-              <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start\\">
-                <span class=\\"me-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
+            <div class="d-inline-block mw-100">
+              <span class="components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start">
+                <span class="me-1 px-1 bg-primary text-white components-labelWithPercent-percent">
                   1
                 </span>
                 <span>
-                  <span class=\\"components-label-value\\">
+                  <span class="components-label-value">
                     baz4
                   </span>
                 </span>
               </span>
-              <div class=\\"progress components-labelWithPercent-progress me-1\\">
+              <div class="progress components-labelWithPercent-progress me-1">
                 <div
-                  class=\\"progress-bar bg-transparent\\"
-                  role=\\"progressbar\\"
-                  style=\\"width: 15%;\\"
-                  aria-valuenow=\\"15\\"
-                  aria-valuemin=\\"0\\"
-                  aria-valuemax=\\"100\\"
+                  class="progress-bar bg-transparent"
+                  role="progressbar"
+                  style="width: 15%;"
+                  aria-valuenow="15"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
                 >
                 </div>
                 <div
-                  class=\\"progress-bar bg-success\\"
-                  role=\\"progressbar\\"
-                  style=\\"width: 5%;\\"
-                  aria-valuenow=\\"5\\"
-                  aria-valuemin=\\"0\\"
-                  aria-valuemax=\\"100\\"
+                  class="progress-bar bg-success"
+                  role="progressbar"
+                  style="width: 5%;"
+                  aria-valuenow="5"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
                 >
                 </div>
               </div>
             </div>
-            <div class=\\"d-inline-block mw-100\\">
-              <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start\\">
-                <span class=\\"me-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
+            <div class="d-inline-block mw-100">
+              <span class="components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start">
+                <span class="me-1 px-1 bg-primary text-white components-labelWithPercent-percent">
                   1
                 </span>
                 <span>
-                  <span class=\\"components-label-value\\">
+                  <span class="components-label-value">
                     baz5
                   </span>
                 </span>
               </span>
-              <div class=\\"progress components-labelWithPercent-progress me-1\\">
+              <div class="progress components-labelWithPercent-progress me-1">
                 <div
-                  class=\\"progress-bar bg-transparent\\"
-                  role=\\"progressbar\\"
-                  style=\\"width: 20%;\\"
-                  aria-valuenow=\\"20\\"
-                  aria-valuemin=\\"0\\"
-                  aria-valuemax=\\"100\\"
+                  class="progress-bar bg-transparent"
+                  role="progressbar"
+                  style="width: 20%;"
+                  aria-valuenow="20"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
                 >
                 </div>
                 <div
-                  class=\\"progress-bar bg-success\\"
-                  role=\\"progressbar\\"
-                  style=\\"width: 5%;\\"
-                  aria-valuenow=\\"5\\"
-                  aria-valuemin=\\"0\\"
-                  aria-valuemax=\\"100\\"
+                  class="progress-bar bg-success"
+                  role="progressbar"
+                  style="width: 5%;"
+                  aria-valuenow="5"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
                 >
                 </div>
               </div>
             </div>
-            <div class=\\"d-inline-block mw-100\\">
-              <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start\\">
-                <span class=\\"me-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
+            <div class="d-inline-block mw-100">
+              <span class="components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start">
+                <span class="me-1 px-1 bg-primary text-white components-labelWithPercent-percent">
                   1
                 </span>
                 <span>
-                  <span class=\\"components-label-value\\">
+                  <span class="components-label-value">
                     baz6
                   </span>
                 </span>
               </span>
-              <div class=\\"progress components-labelWithPercent-progress me-1\\">
+              <div class="progress components-labelWithPercent-progress me-1">
                 <div
-                  class=\\"progress-bar bg-transparent\\"
-                  role=\\"progressbar\\"
-                  style=\\"width: 25%;\\"
-                  aria-valuenow=\\"25\\"
-                  aria-valuemin=\\"0\\"
-                  aria-valuemax=\\"100\\"
+                  class="progress-bar bg-transparent"
+                  role="progressbar"
+                  style="width: 25%;"
+                  aria-valuenow="25"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
                 >
                 </div>
                 <div
-                  class=\\"progress-bar bg-success\\"
-                  role=\\"progressbar\\"
-                  style=\\"width: 5%;\\"
-                  aria-valuenow=\\"5\\"
-                  aria-valuemin=\\"0\\"
-                  aria-valuemax=\\"100\\"
+                  class="progress-bar bg-success"
+                  role="progressbar"
+                  style="width: 5%;"
+                  aria-valuenow="5"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
                 >
                 </div>
               </div>
             </div>
-            <div class=\\"d-inline-block mw-100\\">
-              <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start\\">
-                <span class=\\"me-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
+            <div class="d-inline-block mw-100">
+              <span class="components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start">
+                <span class="me-1 px-1 bg-primary text-white components-labelWithPercent-percent">
                   1
                 </span>
                 <span>
-                  <span class=\\"components-label-value\\">
+                  <span class="components-label-value">
                     baz7
                   </span>
                 </span>
               </span>
-              <div class=\\"progress components-labelWithPercent-progress me-1\\">
+              <div class="progress components-labelWithPercent-progress me-1">
                 <div
-                  class=\\"progress-bar bg-transparent\\"
-                  role=\\"progressbar\\"
-                  style=\\"width: 30%;\\"
-                  aria-valuenow=\\"30\\"
-                  aria-valuemin=\\"0\\"
-                  aria-valuemax=\\"100\\"
+                  class="progress-bar bg-transparent"
+                  role="progressbar"
+                  style="width: 30%;"
+                  aria-valuenow="30"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
                 >
                 </div>
                 <div
-                  class=\\"progress-bar bg-success\\"
-                  role=\\"progressbar\\"
-                  style=\\"width: 5%;\\"
-                  aria-valuenow=\\"5\\"
-                  aria-valuemin=\\"0\\"
-                  aria-valuemax=\\"100\\"
+                  class="progress-bar bg-success"
+                  role="progressbar"
+                  style="width: 5%;"
+                  aria-valuenow="5"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
                 >
                 </div>
               </div>
             </div>
-            <div class=\\"d-inline-block mw-100\\">
-              <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start\\">
-                <span class=\\"me-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
+            <div class="d-inline-block mw-100">
+              <span class="components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start">
+                <span class="me-1 px-1 bg-primary text-white components-labelWithPercent-percent">
                   1
                 </span>
                 <span>
-                  <span class=\\"components-label-value\\">
+                  <span class="components-label-value">
                     baz8
                   </span>
                 </span>
               </span>
-              <div class=\\"progress components-labelWithPercent-progress me-1\\">
+              <div class="progress components-labelWithPercent-progress me-1">
                 <div
-                  class=\\"progress-bar bg-transparent\\"
-                  role=\\"progressbar\\"
-                  style=\\"width: 35%;\\"
-                  aria-valuenow=\\"35\\"
-                  aria-valuemin=\\"0\\"
-                  aria-valuemax=\\"100\\"
+                  class="progress-bar bg-transparent"
+                  role="progressbar"
+                  style="width: 35%;"
+                  aria-valuenow="35"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
                 >
                 </div>
                 <div
-                  class=\\"progress-bar bg-success\\"
-                  role=\\"progressbar\\"
-                  style=\\"width: 5%;\\"
-                  aria-valuenow=\\"5\\"
-                  aria-valuemin=\\"0\\"
-                  aria-valuemax=\\"100\\"
+                  class="progress-bar bg-success"
+                  role="progressbar"
+                  style="width: 5%;"
+                  aria-valuenow="5"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
                 >
                 </div>
               </div>
             </div>
-            <div class=\\"d-inline-block mw-100\\">
-              <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start\\">
-                <span class=\\"me-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
+            <div class="d-inline-block mw-100">
+              <span class="components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start">
+                <span class="me-1 px-1 bg-primary text-white components-labelWithPercent-percent">
                   1
                 </span>
                 <span>
-                  <span class=\\"components-label-value\\">
+                  <span class="components-label-value">
                     baz9
                   </span>
                 </span>
               </span>
-              <div class=\\"progress components-labelWithPercent-progress me-1\\">
+              <div class="progress components-labelWithPercent-progress me-1">
                 <div
-                  class=\\"progress-bar bg-transparent\\"
-                  role=\\"progressbar\\"
-                  style=\\"width: 40%;\\"
-                  aria-valuenow=\\"40\\"
-                  aria-valuemin=\\"0\\"
-                  aria-valuemax=\\"100\\"
+                  class="progress-bar bg-transparent"
+                  role="progressbar"
+                  style="width: 40%;"
+                  aria-valuenow="40"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
                 >
                 </div>
                 <div
-                  class=\\"progress-bar bg-success\\"
-                  role=\\"progressbar\\"
-                  style=\\"width: 5%;\\"
-                  aria-valuenow=\\"5\\"
-                  aria-valuemin=\\"0\\"
-                  aria-valuemax=\\"100\\"
+                  class="progress-bar bg-success"
+                  role="progressbar"
+                  style="width: 5%;"
+                  aria-valuenow="5"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
                 >
                 </div>
               </div>
             </div>
-            <div class=\\"components-label badge my-2 text-muted mw-100\\">
+            <div class="components-label badge my-2 text-muted mw-100">
               +11 more
             </div>
           </td>
         </tr>
         <tr>
           <td
-            width=\\"25%\\"
-            class=\\"text-nowrap mw-100 p-1\\"
+            width="25%"
+            class="text-nowrap mw-100 p-1"
           >
-            <span class=\\"badge bg-light components-label mx-0 mt-0 mb-auto ps-0 text-start\\">
-              <span class=\\"bg-primary text-white me-1 px-1 components-labelWithPercent-percent\\">
+            <span class="badge bg-light components-label mx-0 mt-0 mb-auto ps-0 text-start">
+              <span class="bg-primary text-white me-1 px-1 components-labelWithPercent-percent">
                 5
               </span>
               alertname
             </span>
           </td>
           <td
-            width=\\"75%\\"
-            class=\\"mw-100 p-1\\"
+            width="75%"
+            class="mw-100 p-1"
           >
-            <div class=\\"d-inline-block mw-100\\">
-              <span class=\\"components-label badge bg-dark components-label-dark components-label-with-hover mb-0 ps-0 text-start\\">
-                <span class=\\"me-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
+            <div class="d-inline-block mw-100">
+              <span class="components-label badge bg-dark components-label-dark components-label-with-hover mb-0 ps-0 text-start">
+                <span class="me-1 px-1 bg-primary text-white components-labelWithPercent-percent">
                   5
                 </span>
                 <span>
-                  <span class=\\"components-label-value\\">
+                  <span class="components-label-value">
                     Host_Down
                   </span>
                 </span>
               </span>
-              <div class=\\"progress components-labelWithPercent-progress me-1\\">
+              <div class="progress components-labelWithPercent-progress me-1">
                 <div
-                  class=\\"progress-bar bg-danger\\"
-                  role=\\"progressbar\\"
-                  style=\\"width: 100%;\\"
-                  aria-valuenow=\\"100\\"
-                  aria-valuemin=\\"0\\"
-                  aria-valuemax=\\"100\\"
+                  class="progress-bar bg-danger"
+                  role="progressbar"
+                  style="width: 100%;"
+                  aria-valuenow="100"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
                 >
                 </div>
               </div>
@@ -475,19 +475,19 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
 exports[`<OverviewModalContent /> matches snapshot with no labels to show 1`] = `
 "
 <span>
-  <div class=\\"modal-header\\">
-    <h5 class=\\"modal-title\\">
+  <div class="modal-header">
+    <h5 class="modal-title">
       Overview
     </h5>
     <button
-      type=\\"button\\"
-      class=\\"btn-close\\"
+      type="button"
+      class="btn-close"
     >
     </button>
   </div>
-  <div class=\\"modal-body\\">
-    <div class=\\"px-2 py-5 bg-transparent\\">
-      <h1 class=\\"display-5 text-placeholder text-center\\">
+  <div class="modal-body">
+    <div class="px-2 py-5 bg-transparent">
+      <h1 class="display-5 text-placeholder text-center">
         No labels to display
       </h1>
     </div>

@@ -2,11 +2,11 @@
 
 exports[`<StaticLabel /> matches snapshot 1`] = `
 "
-<span class=\\"components-label badge bg-default components-label-dark \\">
-  <span class=\\"components-label-name\\">
+<span class="components-label badge bg-default components-label-dark ">
+  <span class="components-label-name">
     foo:
   </span>
-  <span class=\\"components-label-value\\">
+  <span class="components-label-value">
     bar
   </span>
 </span>

@@ -2,18 +2,18 @@
 
 exports[`<Help /> matches snapshot 1`] = `
 "
-<div class=\\"accordion\\">
-  <div class=\\"accordion-item\\">
-    <h2 class=\\"accordion-header\\">
+<div class="accordion">
+  <div class="accordion-item">
+    <h2 class="accordion-header">
       <button
-        class=\\"accordion-button \\"
-        type=\\"button\\"
+        class="accordion-button "
+        type="button"
       >
         Fiter operators
       </button>
     </h2>
-    <div class=\\"accordion-collapse show\\">
-      <div class=\\"accordion-body\\">
+    <div class="accordion-collapse show">
+      <div class="accordion-body">
         <dl>
           <dt>
             <kbd>
@@ -21,7 +21,7 @@ exports[`<Help /> matches snapshot 1`] = `
             </kbd>
             Exact match
           </dt>
-          <dd class=\\"mb-3\\">
+          <dd class="mb-3">
             <div>
               Example:
               <code>
@@ -42,7 +42,7 @@ exports[`<Help /> matches snapshot 1`] = `
             </kbd>
             Negative match
           </dt>
-          <dd class=\\"mb-3\\">
+          <dd class="mb-3">
             <div>
               Example:
               <code>
@@ -63,7 +63,7 @@ exports[`<Help /> matches snapshot 1`] = `
             </kbd>
             Regular expression match
           </dt>
-          <dd class=\\"mb-3\\">
+          <dd class="mb-3">
             <div>
               Example:
               <code>
@@ -84,7 +84,7 @@ exports[`<Help /> matches snapshot 1`] = `
             </kbd>
             Negative regular expression match
           </dt>
-          <dd class=\\"mb-3\\">
+          <dd class="mb-3">
             <div>
               Example:
               <code>
@@ -105,7 +105,7 @@ exports[`<Help /> matches snapshot 1`] = `
             </kbd>
             Greater than match
           </dt>
-          <dd class=\\"mb-3\\">
+          <dd class="mb-3">
             <div>
               Example:
               <code>
@@ -126,7 +126,7 @@ exports[`<Help /> matches snapshot 1`] = `
             </kbd>
             Less than match
           </dt>
-          <dd class=\\"mb-3\\">
+          <dd class="mb-3">
             <div>
               Example:
               <code>
@@ -145,17 +145,17 @@ exports[`<Help /> matches snapshot 1`] = `
       </div>
     </div>
   </div>
-  <div class=\\"accordion-item\\">
-    <h2 class=\\"accordion-header\\">
+  <div class="accordion-item">
+    <h2 class="accordion-header">
       <button
-        class=\\"accordion-button \\"
-        type=\\"button\\"
+        class="accordion-button "
+        type="button"
       >
         Filtering using alert labels
       </button>
     </h2>
-    <div class=\\"accordion-collapse show\\">
-      <div class=\\"accordion-body\\">
+    <div class="accordion-collapse show">
+      <div class="accordion-body">
         <dl>
           <dt>
             Match alerts based on any label
@@ -163,22 +163,22 @@ exports[`<Help /> matches snapshot 1`] = `
           <dd>
             <div>
               Supported operators:
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 =
               </kbd>
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 !=
               </kbd>
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 =~
               </kbd>
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 !~
               </kbd>
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 &gt;
               </kbd>
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 &lt;
               </kbd>
             </div>
@@ -188,7 +188,7 @@ exports[`<Help /> matches snapshot 1`] = `
             <ul>
               <li>
                 <div>
-                  <span class=\\"badge bg-info\\">
+                  <span class="badge bg-info">
                     alertname=UnableToPing
                   </span>
                 </div>
@@ -206,7 +206,7 @@ exports[`<Help /> matches snapshot 1`] = `
               </li>
               <li>
                 <div>
-                  <span class=\\"badge bg-info\\">
+                  <span class="badge bg-info">
                     hostname=localhost
                   </span>
                 </div>
@@ -224,7 +224,7 @@ exports[`<Help /> matches snapshot 1`] = `
               </li>
               <li>
                 <div>
-                  <span class=\\"badge bg-info\\">
+                  <span class="badge bg-info">
                     service!=apache3
                   </span>
                 </div>
@@ -242,7 +242,7 @@ exports[`<Help /> matches snapshot 1`] = `
               </li>
               <li>
                 <div>
-                  <span class=\\"badge bg-info\\">
+                  <span class="badge bg-info">
                     service=~apache
                   </span>
                 </div>
@@ -260,7 +260,7 @@ exports[`<Help /> matches snapshot 1`] = `
               </li>
               <li>
                 <div>
-                  <span class=\\"badge bg-info\\">
+                  <span class="badge bg-info">
                     service!~.+
                   </span>
                 </div>
@@ -274,7 +274,7 @@ exports[`<Help /> matches snapshot 1`] = `
               </li>
               <li>
                 <div>
-                  <span class=\\"badge bg-info\\">
+                  <span class="badge bg-info">
                     service=~apache[1-3]
                   </span>
                 </div>
@@ -292,7 +292,7 @@ exports[`<Help /> matches snapshot 1`] = `
               </li>
               <li>
                 <div>
-                  <span class=\\"badge bg-info\\">
+                  <span class="badge bg-info">
                     priority&gt;4
                   </span>
                 </div>
@@ -318,34 +318,35 @@ exports[`<Help /> matches snapshot 1`] = `
       </div>
     </div>
   </div>
-  <div class=\\"accordion-item\\">
-    <h2 class=\\"accordion-header\\">
+  <div class="accordion-item">
+    <h2 class="accordion-header">
       <button
-        class=\\"accordion-button \\"
-        type=\\"button\\"
+        class="accordion-button "
+        type="button"
       >
         Filtering alerts using special filters
       </button>
     </h2>
-    <div class=\\"accordion-collapse show\\">
-      <div class=\\"accordion-body\\">
+    <div class="accordion-collapse show">
+      <div class="accordion-body">
         <dl>
           <dt>
-            Match alerts based on the Alertmanager instance name they were collected from
+            Match alerts based on the Alertmanager instance name they were
+          collected from
           </dt>
           <dd>
             <div>
               Supported operators:
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 =
               </kbd>
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 !=
               </kbd>
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 =~
               </kbd>
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 !~
               </kbd>
             </div>
@@ -355,7 +356,7 @@ exports[`<Help /> matches snapshot 1`] = `
             <ul>
               <li>
                 <div>
-                  <span class=\\"badge bg-info\\">
+                  <span class="badge bg-info">
                     @alertmanager=prod
                   </span>
                 </div>
@@ -369,7 +370,7 @@ exports[`<Help /> matches snapshot 1`] = `
               </li>
               <li>
                 <div>
-                  <span class=\\"badge bg-info\\">
+                  <span class="badge bg-info">
                     @alertmanager!=dev
                   </span>
                 </div>
@@ -383,7 +384,7 @@ exports[`<Help /> matches snapshot 1`] = `
               </li>
               <li>
                 <div>
-                  <span class=\\"badge bg-info\\">
+                  <span class="badge bg-info">
                     @alertmanager=~prod
                   </span>
                 </div>
@@ -403,16 +404,16 @@ exports[`<Help /> matches snapshot 1`] = `
           <dd>
             <div>
               Supported operators:
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 =
               </kbd>
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 !=
               </kbd>
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 =~
               </kbd>
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 !~
               </kbd>
             </div>
@@ -422,7 +423,7 @@ exports[`<Help /> matches snapshot 1`] = `
             <ul>
               <li>
                 <div>
-                  <span class=\\"badge bg-info\\">
+                  <span class="badge bg-info">
                     @cluster=production
                   </span>
                 </div>
@@ -436,7 +437,7 @@ exports[`<Help /> matches snapshot 1`] = `
               </li>
               <li>
                 <div>
-                  <span class=\\"badge bg-info\\">
+                  <span class="badge bg-info">
                     @cluster!=staging
                   </span>
                 </div>
@@ -450,7 +451,7 @@ exports[`<Help /> matches snapshot 1`] = `
               </li>
               <li>
                 <div>
-                  <span class=\\"badge bg-info\\">
+                  <span class="badge bg-info">
                     @cluster=~prod
                   </span>
                 </div>
@@ -470,16 +471,16 @@ exports[`<Help /> matches snapshot 1`] = `
           <dd>
             <div>
               Supported operators:
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 =
               </kbd>
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 !=
               </kbd>
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 =~
               </kbd>
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 !~
               </kbd>
             </div>
@@ -489,7 +490,7 @@ exports[`<Help /> matches snapshot 1`] = `
             <ul>
               <li>
                 <div>
-                  <span class=\\"badge bg-info\\">
+                  <span class="badge bg-info">
                     @receiver=default
                   </span>
                 </div>
@@ -499,7 +500,7 @@ exports[`<Help /> matches snapshot 1`] = `
               </li>
               <li>
                 <div>
-                  <span class=\\"badge bg-info\\">
+                  <span class="badge bg-info">
                     @receiver!=hipchat
                   </span>
                 </div>
@@ -509,7 +510,7 @@ exports[`<Help /> matches snapshot 1`] = `
               </li>
               <li>
                 <div>
-                  <span class=\\"badge bg-info\\">
+                  <span class="badge bg-info">
                     @receiver=~email
                   </span>
                 </div>
@@ -529,10 +530,10 @@ exports[`<Help /> matches snapshot 1`] = `
           <dd>
             <div>
               Supported operators:
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 =
               </kbd>
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 !=
               </kbd>
             </div>
@@ -542,7 +543,7 @@ exports[`<Help /> matches snapshot 1`] = `
             <ul>
               <li>
                 <div>
-                  <span class=\\"badge bg-info\\">
+                  <span class="badge bg-info">
                     @state=active
                   </span>
                 </div>
@@ -552,7 +553,7 @@ exports[`<Help /> matches snapshot 1`] = `
               </li>
               <li>
                 <div>
-                  <span class=\\"badge bg-info\\">
+                  <span class="badge bg-info">
                     @state!=active
                   </span>
                 </div>
@@ -562,7 +563,7 @@ exports[`<Help /> matches snapshot 1`] = `
               </li>
               <li>
                 <div>
-                  <span class=\\"badge bg-info\\">
+                  <span class="badge bg-info">
                     @state=suppressed
                   </span>
                 </div>
@@ -572,7 +573,7 @@ exports[`<Help /> matches snapshot 1`] = `
               </li>
               <li>
                 <div>
-                  <span class=\\"badge bg-info\\">
+                  <span class="badge bg-info">
                     @state=unprocessed
                   </span>
                 </div>
@@ -588,10 +589,10 @@ exports[`<Help /> matches snapshot 1`] = `
           <dd>
             <div>
               Supported operators:
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 =
               </kbd>
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 !=
               </kbd>
             </div>
@@ -601,7 +602,7 @@ exports[`<Help /> matches snapshot 1`] = `
             <ul>
               <li>
                 <div>
-                  <span class=\\"badge bg-info\\">
+                  <span class="badge bg-info">
                     @fingerprint=123456789
                   </span>
                 </div>
@@ -615,7 +616,7 @@ exports[`<Help /> matches snapshot 1`] = `
               </li>
               <li>
                 <div>
-                  <span class=\\"badge bg-info\\">
+                  <span class="badge bg-info">
                     @fingerprint!=123456789
                   </span>
                 </div>
@@ -635,10 +636,10 @@ exports[`<Help /> matches snapshot 1`] = `
           <dd>
             <div>
               Supported operators:
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 =
               </kbd>
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 !=
               </kbd>
             </div>
@@ -648,7 +649,7 @@ exports[`<Help /> matches snapshot 1`] = `
             <ul>
               <li>
                 <div>
-                  <span class=\\"badge bg-info\\">
+                  <span class="badge bg-info">
                     @silenced_by=abc123456789
                   </span>
                 </div>
@@ -662,7 +663,7 @@ exports[`<Help /> matches snapshot 1`] = `
               </li>
               <li>
                 <div>
-                  <span class=\\"badge bg-info\\">
+                  <span class="badge bg-info">
                     @silenced_by!=abc123456789
                   </span>
                 </div>
@@ -682,7 +683,7 @@ exports[`<Help /> matches snapshot 1`] = `
           <dd>
             <div>
               Supported operators:
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 =
               </kbd>
             </div>
@@ -692,7 +693,7 @@ exports[`<Help /> matches snapshot 1`] = `
             <ul>
               <li>
                 <div>
-                  <span class=\\"badge bg-info\\">
+                  <span class="badge bg-info">
                     @inhibited=true
                   </span>
                 </div>
@@ -702,7 +703,7 @@ exports[`<Help /> matches snapshot 1`] = `
               </li>
               <li>
                 <div>
-                  <span class=\\"badge bg-info\\">
+                  <span class="badge bg-info">
                     @inhibited=false
                   </span>
                 </div>
@@ -718,10 +719,10 @@ exports[`<Help /> matches snapshot 1`] = `
           <dd>
             <div>
               Supported operators:
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 =
               </kbd>
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 !=
               </kbd>
             </div>
@@ -731,7 +732,7 @@ exports[`<Help /> matches snapshot 1`] = `
             <ul>
               <li>
                 <div>
-                  <span class=\\"badge bg-info\\">
+                  <span class="badge bg-info">
                     @inhibited_by=abc123456789
                   </span>
                 </div>
@@ -745,7 +746,7 @@ exports[`<Help /> matches snapshot 1`] = `
               </li>
               <li>
                 <div>
-                  <span class=\\"badge bg-info\\">
+                  <span class="badge bg-info">
                     @inhibited_by!=abc123456789
                   </span>
                 </div>
@@ -765,16 +766,16 @@ exports[`<Help /> matches snapshot 1`] = `
           <dd>
             <div>
               Supported operators:
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 =
               </kbd>
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 !=
               </kbd>
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 =~
               </kbd>
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 !~
               </kbd>
             </div>
@@ -784,7 +785,7 @@ exports[`<Help /> matches snapshot 1`] = `
             <ul>
               <li>
                 <div>
-                  <span class=\\"badge bg-info\\">
+                  <span class="badge bg-info">
                     @silence_author=me@example.com
                   </span>
                 </div>
@@ -798,7 +799,7 @@ exports[`<Help /> matches snapshot 1`] = `
               </li>
               <li>
                 <div>
-                  <span class=\\"badge bg-info\\">
+                  <span class="badge bg-info">
                     @silence_author!=me@example.com
                   </span>
                 </div>
@@ -812,7 +813,7 @@ exports[`<Help /> matches snapshot 1`] = `
               </li>
               <li>
                 <div>
-                  <span class=\\"badge bg-info\\">
+                  <span class="badge bg-info">
                     @silence_author=~@example.com
                   </span>
                 </div>
@@ -832,37 +833,38 @@ exports[`<Help /> matches snapshot 1`] = `
           <dd>
             <div>
               Supported operators:
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 =
               </kbd>
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 !=
               </kbd>
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 =~
               </kbd>
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 !~
               </kbd>
             </div>
-            <div class=\\"my-1 alert alert-secondary p-2\\">
+            <div class="my-1 alert alert-secondary p-2">
               <svg
-                aria-hidden=\\"true\\"
-                focusable=\\"false\\"
-                data-prefix=\\"fas\\"
-                data-icon=\\"circle-info\\"
-                class=\\"svg-inline--fa fa-circle-info me-1\\"
-                role=\\"img\\"
-                xmlns=\\"http://www.w3.org/2000/svg\\"
-                viewbox=\\"0 0 512 512\\"
+                aria-hidden="true"
+                focusable="false"
+                data-prefix="fas"
+                data-icon="circle-info"
+                class="svg-inline--fa fa-circle-info me-1"
+                role="img"
+                xmlns="http://www.w3.org/2000/svg"
+                viewbox="0 0 512 512"
               >
                 <path
-                  fill=\\"currentColor\\"
-                  d=\\"M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z\\"
+                  fill="currentColor"
+                  d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"
                 >
                 </path>
               </svg>
-              This is supported only if ticket regexp rules are enabled and able to match ticket IDs in the silence comment.
+              This is supported only if ticket regexp rules are enabled and able to
+            match ticket IDs in the silence comment.
             </div>
             <div>
               Examples:
@@ -870,7 +872,7 @@ exports[`<Help /> matches snapshot 1`] = `
             <ul>
               <li>
                 <div>
-                  <span class=\\"badge bg-info\\">
+                  <span class="badge bg-info">
                     @silence_ticket=PROJECT-123
                   </span>
                 </div>
@@ -884,7 +886,7 @@ exports[`<Help /> matches snapshot 1`] = `
               </li>
               <li>
                 <div>
-                  <span class=\\"badge bg-info\\">
+                  <span class="badge bg-info">
                     @silence_ticket!=PROJECT-123
                   </span>
                 </div>
@@ -898,7 +900,7 @@ exports[`<Help /> matches snapshot 1`] = `
               </li>
               <li>
                 <div>
-                  <span class=\\"badge bg-info\\">
+                  <span class="badge bg-info">
                     @silence_ticket=~PROJECT
                   </span>
                 </div>
@@ -918,16 +920,16 @@ exports[`<Help /> matches snapshot 1`] = `
           <dd>
             <div>
               Supported operators:
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 =
               </kbd>
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 !=
               </kbd>
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 =~
               </kbd>
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 !~
               </kbd>
             </div>
@@ -937,7 +939,7 @@ exports[`<Help /> matches snapshot 1`] = `
             <ul>
               <li>
                 <div>
-                  <span class=\\"badge bg-info\\">
+                  <span class="badge bg-info">
                     @inhibited_by=abc123456789
                   </span>
                 </div>
@@ -951,7 +953,7 @@ exports[`<Help /> matches snapshot 1`] = `
               </li>
               <li>
                 <div>
-                  <span class=\\"badge bg-info\\">
+                  <span class="badge bg-info">
                     @inhibited_by=~.+
                   </span>
                 </div>
@@ -967,24 +969,24 @@ exports[`<Help /> matches snapshot 1`] = `
           <dd>
             <div>
               Supported operators:
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 =
               </kbd>
             </div>
-            <div class=\\"my-1 alert alert-secondary p-2\\">
+            <div class="my-1 alert alert-secondary p-2">
               <svg
-                aria-hidden=\\"true\\"
-                focusable=\\"false\\"
-                data-prefix=\\"fas\\"
-                data-icon=\\"circle-info\\"
-                class=\\"svg-inline--fa fa-circle-info me-1\\"
-                role=\\"img\\"
-                xmlns=\\"http://www.w3.org/2000/svg\\"
-                viewbox=\\"0 0 512 512\\"
+                aria-hidden="true"
+                focusable="false"
+                data-prefix="fas"
+                data-icon="circle-info"
+                class="svg-inline--fa fa-circle-info me-1"
+                role="img"
+                xmlns="http://www.w3.org/2000/svg"
+                viewbox="0 0 512 512"
               >
                 <path
-                  fill=\\"currentColor\\"
-                  d=\\"M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z\\"
+                  fill="currentColor"
+                  d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"
                 >
                 </path>
               </svg>
@@ -996,7 +998,7 @@ exports[`<Help /> matches snapshot 1`] = `
             <ul>
               <li>
                 <div>
-                  <span class=\\"badge bg-info\\">
+                  <span class="badge bg-info">
                     @limit=10
                   </span>
                 </div>
@@ -1012,10 +1014,10 @@ exports[`<Help /> matches snapshot 1`] = `
           <dd>
             <div>
               Supported operators:
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 &gt;
               </kbd>
-              <kbd class=\\"me-1\\">
+              <kbd class="me-1">
                 &lt;
               </kbd>
             </div>
@@ -1025,7 +1027,7 @@ exports[`<Help /> matches snapshot 1`] = `
             <ul>
               <li>
                 <div>
-                  <span class=\\"badge bg-info\\">
+                  <span class="badge bg-info">
                     @age&gt;15m
                   </span>
                 </div>
@@ -1035,7 +1037,7 @@ exports[`<Help /> matches snapshot 1`] = `
               </li>
               <li>
                 <div>
-                  <span class=\\"badge bg-info\\">
+                  <span class="badge bg-info">
                     @age&gt;1h
                   </span>
                 </div>
@@ -1045,7 +1047,7 @@ exports[`<Help /> matches snapshot 1`] = `
               </li>
               <li>
                 <div>
-                  <span class=\\"badge bg-info\\">
+                  <span class="badge bg-info">
                     @age&lt;10h30m
                   </span>
                 </div>

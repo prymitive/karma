@@ -28,24 +28,24 @@ exports[`<UpgradeToastMessage /> matches snapshot 1`] = `
       1.2.3
     </code>
   </div>
-  <div class=\\"d-flex flex-row-reverse\\">
+  <div class="d-flex flex-row-reverse">
     <button
-      type=\\"button\\"
-      class=\\"btn btn-sm btn-light\\"
+      type="button"
+      class="btn btn-sm btn-light"
     >
       <svg
-        aria-hidden=\\"true\\"
-        focusable=\\"false\\"
-        data-prefix=\\"fas\\"
-        data-icon=\\"stop\\"
-        class=\\"svg-inline--fa fa-stop me-2\\"
-        role=\\"img\\"
-        xmlns=\\"http://www.w3.org/2000/svg\\"
-        viewbox=\\"0 0 384 512\\"
+        aria-hidden="true"
+        focusable="false"
+        data-prefix="fas"
+        data-icon="stop"
+        class="svg-inline--fa fa-stop me-2"
+        role="img"
+        xmlns="http://www.w3.org/2000/svg"
+        viewbox="0 0 384 512"
       >
         <path
-          fill=\\"currentColor\\"
-          d=\\"M0 128C0 92.7 28.7 64 64 64H320c35.3 0 64 28.7 64 64V384c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128z\\"
+          fill="currentColor"
+          d="M0 128C0 92.7 28.7 64 64 64H320c35.3 0 64 28.7 64 64V384c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128z"
         >
         </path>
       </svg>
@@ -53,13 +53,13 @@ exports[`<UpgradeToastMessage /> matches snapshot 1`] = `
     </button>
   </div>
   <div
-    class=\\"mt-2 progress bg-dark\\"
-    style=\\"height: 2px;\\"
+    class="mt-2 progress bg-dark"
+    style="height: 2px;"
   >
     <div
-      class=\\"progress-bar bg-white toast-upgrade-progressbar\\"
-      role=\\"progressbar\\"
-      style=\\"width: 100px;\\"
+      class="progress-bar bg-white toast-upgrade-progressbar"
+      role="progressbar"
+      style="width: 100px;"
     >
     </div>
   </div>

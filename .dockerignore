@@ -1,5 +1,5 @@
 karma
-ui/build
+ui/dist
 ui/coverage
 ui/node_modules
 Dockerfile

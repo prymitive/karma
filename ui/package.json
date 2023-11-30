@@ -10,6 +10,7 @@
     "@fortawesome/free-solid-svg-icons": "6.4.2",
     "@fortawesome/react-fontawesome": "0.2.0",
     "@juggle/resize-observer": "3.4.0",
+    "@vitejs/plugin-react": "4.2.0",
     "body-scroll-lock": "3.1.5",
     "bootstrap": "5.2.3",
     "bootswatch": "5.2.3",
@@ -44,7 +45,9 @@
     "react-range": "1.8.14",
     "react-select": "5.8.0",
     "react-transition-group": "4.4.5",
-    "typeface-open-sans": "1.1.13"
+    "typeface-open-sans": "1.1.13",
+    "vite": "5.0.3",
+    "vite-tsconfig-paths": "4.2.1"
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "7.21.11",
@@ -66,6 +69,7 @@
     "@types/qs": "6.9.10",
     "@types/react": "17.0.50",
     "@types/react-dom": "17.0.17",
+    "@vitejs/plugin-legacy": "5.2.0",
     "@wojtekmaj/enzyme-adapter-react-17": "0.8.0",
     "diffable-html": "5.0.0",
     "enzyme": "3.11.0",
@@ -74,11 +78,15 @@
     "eslint-plugin-jest": "27.6.0",
     "eslint-plugin-prettier": "5.0.1",
     "fetch-mock": "9.11.0",
+    "identity-obj-proxy": "3.0.0",
+    "jest": "29.7.0",
+    "jest-environment-jsdom": "29.7.0",
+    "jest-fetch-mock": "3.0.3",
     "node-fetch": "2.6.11",
     "prettier": "3.1.0",
-    "purgecss": "5.0.0",
-    "react-scripts": "5.0.1",
     "sass": "1.69.5",
+    "terser": "5.24.0",
+    "ts-jest": "29.1.1",
     "typescript": "4.9.5"
   },
   "overrides": {
@@ -87,11 +95,10 @@
     }
   },
   "scripts": {
-    "start": "REACT_APP_BACKEND_URI=http://localhost:8080 react-scripts start",
-    "build": "react-scripts build",
-    "postbuild": "make backup-css && purgecss -c purgecss.config.js -o build/static/css",
-    "test": "react-scripts test",
-    "analyze": "npx source-map-explorer 'build/static/js/*.js'"
+    "start": "VITE_APP_BACKEND_URI=http://localhost:8080 vite",
+    "build": "tsc && vite build",
+    "test": "jest",
+    "analyze": "npx source-map-explorer 'dist/assets/*.js'"
   },
   "jest": {
     "collectCoverageFrom": [
@@ -100,17 +107,17 @@
       "!src/__fixtures__/Stories.{js,ts,tsx}",
       "!src/react-app-env.d.ts",
       "!src/Models/*.ts"
+    ],
+    "preset": "ts-jest/presets/js-with-ts",
+    "testEnvironment": "jest-environment-jsdom",
+    "moduleNameMapper": {
+      "\\.(css|less|scss)$": "identity-obj-proxy"
+    },
+    "modulePaths": [
+      "<rootDir>/src"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/setupTests.ts"
     ]
-  },
-  "browserslist": [
-    ">= 1%",
-    "last 1 major version",
-    "not dead",
-    "Chrome >= 49",
-    "Firefox >= 52",
-    "Edge >= 12",
-    "iOS >= 9",
-    "Safari >= 10",
-    "Android >= 4.4"
-  ]
+  }
 }

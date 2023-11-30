@@ -2,20 +2,20 @@
 
 exports[`<AlertGroupWidthConfiguration /> matches snapshot with default values 1`] = `
 "
-<div class=\\"p-3 text-center\\">
+<div class="p-3 text-center">
   <div
-    class=\\"input-range-track\\"
-    style=\\"transform: scale(1); cursor: pointer;\\"
+    class="input-range-track"
+    style="transform: scale(1); cursor: pointer;"
   >
     <div
-      class=\\"input-range-thumb\\"
-      style=\\"position: absolute; z-index: 0; cursor: grab; user-select: none; transform: translate(NaNpx, NaNpx);\\"
-      tabindex=\\"0\\"
-      aria-valuemax=\\"800\\"
-      aria-valuemin=\\"300\\"
-      aria-valuenow=\\"420\\"
-      draggable=\\"false\\"
-      role=\\"slider\\"
+      class="input-range-thumb"
+      style="position: absolute; z-index: 0; cursor: grab; user-select: none; transform: translate(NaNpx, NaNpx);"
+      tabindex="0"
+      aria-valuemax="800"
+      aria-valuemin="300"
+      aria-valuenow="420"
+      draggable="false"
+      role="slider"
     >
       420
     </div>

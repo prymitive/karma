@@ -5,11 +5,11 @@ ifeq ($(GOBIN),)
 GOBIN = $(shell go env GOPATH)/bin
 endif
 
-ui/build/index.html: $(call rwildcard, ui/src ui/package.json ui/package-lock.json, *)
+ui/dist/index.html: $(call rwildcard, ui/src ui/package.json ui/package-lock.json, *)
 	@$(MAKE) -C ui build
 
 .DEFAULT_GOAL := $(NAME)
-$(NAME): go.mod go.sum $(SOURCES_GO) ui/build/index.html
+$(NAME): go.mod go.sum $(SOURCES_GO) ui/dist/index.html
 	go build -trimpath -modcacherw -ldflags "-X main.version=$(VERSION) -s -w" ./cmd/karma
 
 .PHONY: test-go
@@ -55,11 +55,12 @@ openapi-client:
 
 .PHONY: mock-assets
 mock-assets:
-	rm -fr ui/build
-	mkdir ui/build
-	cp ui/public/* ui/build/
-	mkdir ui/build/static
-	touch ui/build/static/main.js
+	rm -fr ui/dist
+	mkdir ui/dist
+	cp ui/public/* ui/dist/
+	cp ui/index.html ui/dist/
+	mkdir ui/dist/assets
+	touch ui/dist/assets/main.js
 
 .PHONY: tools-go-mod-tidy
 tools-go-mod-tidy:

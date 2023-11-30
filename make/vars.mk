@@ -7,4 +7,4 @@ VERSION ?= $(shell git describe --tags --always --dirty='-dev')
 rwildcard = $(foreach d, $(wildcard $1*), $(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
 
 SOURCES_GO = $(call rwildcard, cmd internal, *)
-SOURCES_JS = $(call rwildcard, ui/build/index.html ui/src, *)
+SOURCES_JS = $(call rwildcard, ui/dist/index.html ui/src, *)

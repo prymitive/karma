@@ -39,8 +39,7 @@ function FormatAPIFilterQuery(filters: string[]): string {
 
 // format URI for react UI -> Go backend requests
 function FormatBackendURI(path: string): string {
-  const uri = process.env.REACT_APP_BACKEND_URI || ".";
-  return `${uri}/${path}`;
+  return `./${path}`;
 }
 
 // takes the '?foo=bar&foo=baz' part of http://example.com?foo=bar&foo=baz

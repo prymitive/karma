@@ -1,8 +1,8 @@
 /coverage.txt
 /karma
 /karma-*
-/ui/build
-/ui/build.pre
+/ui/dist
+/ui/dist.pre
 /ui/coverage
 /ui/node_modules
 /ui/.eslintcache
