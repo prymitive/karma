@@ -2,11 +2,11 @@
 
 exports[`<MatchCounter /> matches snapshot 1`] = `
 "
-<div class=\\" tooltip-trigger\\">
+<div class=" tooltip-trigger">
   <span
-    class=\\"badge bg-light rounded-pill d-block\\"
-    style=\\"font-size: 85%; line-height: 1rem;\\"
-    data-am=\\"0\\"
+    class="badge bg-light rounded-pill d-block"
+    style="font-size: 85%; line-height: 1rem;"
+    data-am="0"
   >
     25
   </span>

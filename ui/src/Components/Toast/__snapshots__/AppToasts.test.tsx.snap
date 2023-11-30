@@ -2,69 +2,69 @@
 
 exports[`<AppToasts /> renders UpgradeToastMessage when alertStore.info.upgradeReady=true 1`] = `
 "
-<li class=\\"nav-item components-navbar-button ml-auto\\">
-  <div class=\\" tooltip-trigger\\">
+<li class="nav-item components-navbar-button ml-auto">
+  <div class=" tooltip-trigger">
     <span
-      id=\\"components-notifications\\"
-      class=\\"nav-link cursor-pointer\\"
+      id="components-notifications"
+      class="nav-link cursor-pointer"
     >
       <svg
-        aria-hidden=\\"true\\"
-        focusable=\\"false\\"
-        data-prefix=\\"fas\\"
-        data-icon=\\"circle-info\\"
-        class=\\"svg-inline--fa fa-circle-info fa-fw \\"
-        role=\\"img\\"
-        xmlns=\\"http://www.w3.org/2000/svg\\"
-        viewbox=\\"0 0 512 512\\"
+        aria-hidden="true"
+        focusable="false"
+        data-prefix="fas"
+        data-icon="circle-info"
+        class="svg-inline--fa fa-circle-info fa-fw "
+        role="img"
+        xmlns="http://www.w3.org/2000/svg"
+        viewbox="0 0 512 512"
       >
         <path
-          fill=\\"currentColor\\"
-          d=\\"M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z\\"
+          fill="currentColor"
+          d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"
         >
         </path>
       </svg>
     </span>
   </div>
 </li>
-<div class=\\"components-toast-container d-flex flex-column\\">
-  <div class=\\"m-1 bg-toast text-white rounded shadow components-animation-fade-appear components-animation-fade-appear-active\\">
-    <div class=\\"d-flex flex-row p-1\\">
-      <div class=\\"flex-shrink-0 flex-grow-0 align-self-center fa-stack fa-2x\\">
+<div class="components-toast-container d-flex flex-column">
+  <div class="m-1 bg-toast text-white rounded shadow components-animation-fade-appear components-animation-fade-appear-active">
+    <div class="d-flex flex-row p-1">
+      <div class="flex-shrink-0 flex-grow-0 align-self-center fa-stack fa-2x">
         <svg
-          aria-hidden=\\"true\\"
-          focusable=\\"false\\"
-          data-prefix=\\"fas\\"
-          data-icon=\\"circle\\"
-          class=\\"svg-inline--fa fa-circle fa-stack-2x text-success\\"
-          role=\\"img\\"
-          xmlns=\\"http://www.w3.org/2000/svg\\"
-          viewbox=\\"0 0 512 512\\"
+          aria-hidden="true"
+          focusable="false"
+          data-prefix="fas"
+          data-icon="circle"
+          class="svg-inline--fa fa-circle fa-stack-2x text-success"
+          role="img"
+          xmlns="http://www.w3.org/2000/svg"
+          viewbox="0 0 512 512"
         >
           <path
-            fill=\\"currentColor\\"
-            d=\\"M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z\\"
+            fill="currentColor"
+            d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"
           >
           </path>
         </svg>
         <svg
-          aria-hidden=\\"true\\"
-          focusable=\\"false\\"
-          data-prefix=\\"fas\\"
-          data-icon=\\"arrow-up\\"
-          class=\\"svg-inline--fa fa-arrow-up fa-stack-1x text-white\\"
-          role=\\"img\\"
-          xmlns=\\"http://www.w3.org/2000/svg\\"
-          viewbox=\\"0 0 384 512\\"
+          aria-hidden="true"
+          focusable="false"
+          data-prefix="fas"
+          data-icon="arrow-up"
+          class="svg-inline--fa fa-arrow-up fa-stack-1x text-white"
+          role="img"
+          xmlns="http://www.w3.org/2000/svg"
+          viewbox="0 0 384 512"
         >
           <path
-            fill=\\"currentColor\\"
-            d=\\"M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z\\"
+            fill="currentColor"
+            d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"
           >
           </path>
         </svg>
       </div>
-      <div class=\\"flex-shrink-1 flex-grow-1 align-self-center ms-1 me-3 text-break text-wrap\\">
+      <div class="flex-shrink-1 flex-grow-1 align-self-center ms-1 me-3 text-break text-wrap">
         <div>
           <div>
             New version available, updates are paused until this page auto reloads
@@ -74,24 +74,24 @@ exports[`<AppToasts /> renders UpgradeToastMessage when alertStore.info.upgradeR
               unknown
             </code>
           </div>
-          <div class=\\"d-flex flex-row-reverse\\">
+          <div class="d-flex flex-row-reverse">
             <button
-              type=\\"button\\"
-              class=\\"btn btn-sm btn-light\\"
+              type="button"
+              class="btn btn-sm btn-light"
             >
               <svg
-                aria-hidden=\\"true\\"
-                focusable=\\"false\\"
-                data-prefix=\\"fas\\"
-                data-icon=\\"stop\\"
-                class=\\"svg-inline--fa fa-stop me-2\\"
-                role=\\"img\\"
-                xmlns=\\"http://www.w3.org/2000/svg\\"
-                viewbox=\\"0 0 384 512\\"
+                aria-hidden="true"
+                focusable="false"
+                data-prefix="fas"
+                data-icon="stop"
+                class="svg-inline--fa fa-stop me-2"
+                role="img"
+                xmlns="http://www.w3.org/2000/svg"
+                viewbox="0 0 384 512"
               >
                 <path
-                  fill=\\"currentColor\\"
-                  d=\\"M0 128C0 92.7 28.7 64 64 64H320c35.3 0 64 28.7 64 64V384c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128z\\"
+                  fill="currentColor"
+                  d="M0 128C0 92.7 28.7 64 64 64H320c35.3 0 64 28.7 64 64V384c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128z"
                 >
                 </path>
               </svg>
@@ -99,13 +99,13 @@ exports[`<AppToasts /> renders UpgradeToastMessage when alertStore.info.upgradeR
             </button>
           </div>
           <div
-            class=\\"mt-2 progress bg-dark\\"
-            style=\\"height: 2px;\\"
+            class="mt-2 progress bg-dark"
+            style="height: 2px;"
           >
             <div
-              class=\\"progress-bar bg-white toast-upgrade-progressbar\\"
-              role=\\"progressbar\\"
-              style=\\"width: 100px;\\"
+              class="progress-bar bg-white toast-upgrade-progressbar"
+              role="progressbar"
+              style="width: 100px;"
             >
             </div>
           </div>
@@ -119,69 +119,69 @@ exports[`<AppToasts /> renders UpgradeToastMessage when alertStore.info.upgradeR
 
 exports[`<AppToasts /> renders upstream error toasts for each unhealthy upstream 1`] = `
 "
-<li class=\\"nav-item components-navbar-button ml-auto\\">
-  <div class=\\" tooltip-trigger\\">
+<li class="nav-item components-navbar-button ml-auto">
+  <div class=" tooltip-trigger">
     <span
-      id=\\"components-notifications\\"
-      class=\\"nav-link cursor-pointer\\"
+      id="components-notifications"
+      class="nav-link cursor-pointer"
     >
       <svg
-        aria-hidden=\\"true\\"
-        focusable=\\"false\\"
-        data-prefix=\\"fas\\"
-        data-icon=\\"circle-info\\"
-        class=\\"svg-inline--fa fa-circle-info fa-fw \\"
-        role=\\"img\\"
-        xmlns=\\"http://www.w3.org/2000/svg\\"
-        viewbox=\\"0 0 512 512\\"
+        aria-hidden="true"
+        focusable="false"
+        data-prefix="fas"
+        data-icon="circle-info"
+        class="svg-inline--fa fa-circle-info fa-fw "
+        role="img"
+        xmlns="http://www.w3.org/2000/svg"
+        viewbox="0 0 512 512"
       >
         <path
-          fill=\\"currentColor\\"
-          d=\\"M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z\\"
+          fill="currentColor"
+          d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"
         >
         </path>
       </svg>
     </span>
   </div>
 </li>
-<div class=\\"components-toast-container d-flex flex-column\\">
-  <div class=\\"m-1 bg-toast text-white rounded shadow components-animation-fade-appear components-animation-fade-appear-active\\">
-    <div class=\\"d-flex flex-row p-1\\">
-      <div class=\\"flex-shrink-0 flex-grow-0 align-self-center fa-stack fa-2x\\">
+<div class="components-toast-container d-flex flex-column">
+  <div class="m-1 bg-toast text-white rounded shadow components-animation-fade-appear components-animation-fade-appear-active">
+    <div class="d-flex flex-row p-1">
+      <div class="flex-shrink-0 flex-grow-0 align-self-center fa-stack fa-2x">
         <svg
-          aria-hidden=\\"true\\"
-          focusable=\\"false\\"
-          data-prefix=\\"fas\\"
-          data-icon=\\"circle\\"
-          class=\\"svg-inline--fa fa-circle fa-stack-2x text-danger\\"
-          role=\\"img\\"
-          xmlns=\\"http://www.w3.org/2000/svg\\"
-          viewbox=\\"0 0 512 512\\"
+          aria-hidden="true"
+          focusable="false"
+          data-prefix="fas"
+          data-icon="circle"
+          class="svg-inline--fa fa-circle fa-stack-2x text-danger"
+          role="img"
+          xmlns="http://www.w3.org/2000/svg"
+          viewbox="0 0 512 512"
         >
           <path
-            fill=\\"currentColor\\"
-            d=\\"M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z\\"
+            fill="currentColor"
+            d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"
           >
           </path>
         </svg>
         <svg
-          aria-hidden=\\"true\\"
-          focusable=\\"false\\"
-          data-prefix=\\"fas\\"
-          data-icon=\\"exclamation\\"
-          class=\\"svg-inline--fa fa-exclamation fa-stack-1x text-white\\"
-          role=\\"img\\"
-          xmlns=\\"http://www.w3.org/2000/svg\\"
-          viewbox=\\"0 0 64 512\\"
+          aria-hidden="true"
+          focusable="false"
+          data-prefix="fas"
+          data-icon="exclamation"
+          class="svg-inline--fa fa-exclamation fa-stack-1x text-white"
+          role="img"
+          xmlns="http://www.w3.org/2000/svg"
+          viewbox="0 0 64 512"
         >
           <path
-            fill=\\"currentColor\\"
-            d=\\"M64 64c0-17.7-14.3-32-32-32S0 46.3 0 64V320c0 17.7 14.3 32 32 32s32-14.3 32-32V64zM32 480a40 40 0 1 0 0-80 40 40 0 1 0 0 80z\\"
+            fill="currentColor"
+            d="M64 64c0-17.7-14.3-32-32-32S0 46.3 0 64V320c0 17.7 14.3 32 32 32s32-14.3 32-32V64zM32 480a40 40 0 1 0 0-80 40 40 0 1 0 0 80z"
           >
           </path>
         </svg>
       </div>
-      <div class=\\"flex-shrink-1 flex-grow-1 align-self-center ms-1 me-3 text-break text-wrap\\">
+      <div class="flex-shrink-1 flex-grow-1 align-self-center ms-1 me-3 text-break text-wrap">
         <div>
           <div>
             Alertmanager am1 raised an error
@@ -193,21 +193,21 @@ exports[`<AppToasts /> renders upstream error toasts for each unhealthy upstream
           </div>
         </div>
       </div>
-      <div class=\\"flex-shrink-0 flex-grow-0 align-self-top\\">
-        <span class=\\"badge components-label cursor-pointer with-click with-click-dark\\">
+      <div class="flex-shrink-0 flex-grow-0 align-self-top">
+        <span class="badge components-label cursor-pointer with-click with-click-dark">
           <svg
-            aria-hidden=\\"true\\"
-            focusable=\\"false\\"
-            data-prefix=\\"fas\\"
-            data-icon=\\"xmark\\"
-            class=\\"svg-inline--fa fa-xmark \\"
-            role=\\"img\\"
-            xmlns=\\"http://www.w3.org/2000/svg\\"
-            viewbox=\\"0 0 384 512\\"
+            aria-hidden="true"
+            focusable="false"
+            data-prefix="fas"
+            data-icon="xmark"
+            class="svg-inline--fa fa-xmark "
+            role="img"
+            xmlns="http://www.w3.org/2000/svg"
+            viewbox="0 0 384 512"
           >
             <path
-              fill=\\"currentColor\\"
-              d=\\"M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z\\"
+              fill="currentColor"
+              d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"
             >
             </path>
           </svg>
@@ -215,43 +215,43 @@ exports[`<AppToasts /> renders upstream error toasts for each unhealthy upstream
       </div>
     </div>
   </div>
-  <div class=\\"m-1 bg-toast text-white rounded shadow components-animation-fade-appear components-animation-fade-appear-active\\">
-    <div class=\\"d-flex flex-row p-1\\">
-      <div class=\\"flex-shrink-0 flex-grow-0 align-self-center fa-stack fa-2x\\">
+  <div class="m-1 bg-toast text-white rounded shadow components-animation-fade-appear components-animation-fade-appear-active">
+    <div class="d-flex flex-row p-1">
+      <div class="flex-shrink-0 flex-grow-0 align-self-center fa-stack fa-2x">
         <svg
-          aria-hidden=\\"true\\"
-          focusable=\\"false\\"
-          data-prefix=\\"fas\\"
-          data-icon=\\"circle\\"
-          class=\\"svg-inline--fa fa-circle fa-stack-2x text-danger\\"
-          role=\\"img\\"
-          xmlns=\\"http://www.w3.org/2000/svg\\"
-          viewbox=\\"0 0 512 512\\"
+          aria-hidden="true"
+          focusable="false"
+          data-prefix="fas"
+          data-icon="circle"
+          class="svg-inline--fa fa-circle fa-stack-2x text-danger"
+          role="img"
+          xmlns="http://www.w3.org/2000/svg"
+          viewbox="0 0 512 512"
         >
           <path
-            fill=\\"currentColor\\"
-            d=\\"M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z\\"
+            fill="currentColor"
+            d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"
           >
           </path>
         </svg>
         <svg
-          aria-hidden=\\"true\\"
-          focusable=\\"false\\"
-          data-prefix=\\"fas\\"
-          data-icon=\\"exclamation\\"
-          class=\\"svg-inline--fa fa-exclamation fa-stack-1x text-white\\"
-          role=\\"img\\"
-          xmlns=\\"http://www.w3.org/2000/svg\\"
-          viewbox=\\"0 0 64 512\\"
+          aria-hidden="true"
+          focusable="false"
+          data-prefix="fas"
+          data-icon="exclamation"
+          class="svg-inline--fa fa-exclamation fa-stack-1x text-white"
+          role="img"
+          xmlns="http://www.w3.org/2000/svg"
+          viewbox="0 0 64 512"
         >
           <path
-            fill=\\"currentColor\\"
-            d=\\"M64 64c0-17.7-14.3-32-32-32S0 46.3 0 64V320c0 17.7 14.3 32 32 32s32-14.3 32-32V64zM32 480a40 40 0 1 0 0-80 40 40 0 1 0 0 80z\\"
+            fill="currentColor"
+            d="M64 64c0-17.7-14.3-32-32-32S0 46.3 0 64V320c0 17.7 14.3 32 32 32s32-14.3 32-32V64zM32 480a40 40 0 1 0 0-80 40 40 0 1 0 0 80z"
           >
           </path>
         </svg>
       </div>
-      <div class=\\"flex-shrink-1 flex-grow-1 align-self-center ms-1 me-3 text-break text-wrap\\">
+      <div class="flex-shrink-1 flex-grow-1 align-self-center ms-1 me-3 text-break text-wrap">
         <div>
           <div>
             Alertmanager am3 raised an error
@@ -263,21 +263,21 @@ exports[`<AppToasts /> renders upstream error toasts for each unhealthy upstream
           </div>
         </div>
       </div>
-      <div class=\\"flex-shrink-0 flex-grow-0 align-self-top\\">
-        <span class=\\"badge components-label cursor-pointer with-click with-click-dark\\">
+      <div class="flex-shrink-0 flex-grow-0 align-self-top">
+        <span class="badge components-label cursor-pointer with-click with-click-dark">
           <svg
-            aria-hidden=\\"true\\"
-            focusable=\\"false\\"
-            data-prefix=\\"fas\\"
-            data-icon=\\"xmark\\"
-            class=\\"svg-inline--fa fa-xmark \\"
-            role=\\"img\\"
-            xmlns=\\"http://www.w3.org/2000/svg\\"
-            viewbox=\\"0 0 384 512\\"
+            aria-hidden="true"
+            focusable="false"
+            data-prefix="fas"
+            data-icon="xmark"
+            class="svg-inline--fa fa-xmark "
+            role="img"
+            xmlns="http://www.w3.org/2000/svg"
+            viewbox="0 0 384 512"
           >
             <path
-              fill=\\"currentColor\\"
-              d=\\"M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z\\"
+              fill="currentColor"
+              d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"
             >
             </path>
           </svg>

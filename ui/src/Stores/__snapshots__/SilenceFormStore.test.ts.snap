@@ -1,36 +1,36 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SilenceFormStore.data toAlertmanagerPayload creates payload that matches snapshot 1`] = `
-Object {
+{
   "comment": "toAlertmanagerPayload test",
   "createdBy": "me@example.com",
   "endsAt": "2000-02-01T01:00:00.000Z",
-  "matchers": Array [
-    Object {
+  "matchers": [
+    {
       "isEqual": true,
       "isRegex": false,
       "name": "alertname",
       "value": "FakeAlert",
     },
-    Object {
+    {
       "isEqual": true,
       "isRegex": false,
       "name": "job",
       "value": "mock",
     },
-    Object {
+    {
       "isEqual": true,
       "isRegex": true,
       "name": "instance",
       "value": "(dev1|prod1|prod2)",
     },
-    Object {
+    {
       "isEqual": true,
       "isRegex": true,
       "name": "cluster",
       "value": "(dev|prod)",
     },
-    Object {
+    {
       "isEqual": true,
       "isRegex": false,
       "name": "",
@@ -42,82 +42,82 @@ Object {
 `;
 
 exports[`SilenceFormStore.data toAlertmanagerPayload creates payload that matches snapshot with regex values 1`] = `
-Object {
+{
   "comment": "toAlertmanagerPayload test",
   "createdBy": "me@example.com",
   "endsAt": "2000-02-01T01:00:00.000Z",
-  "matchers": Array [
-    Object {
+  "matchers": [
+    {
       "isEqual": false,
       "isRegex": true,
       "name": "notEqualRegexAuto",
-      "value": "\\\\^\\\\(\\\\.\\\\+\\\\)\\\\$",
+      "value": "\\^\\(\\.\\+\\)\\$",
     },
-    Object {
+    {
       "isEqual": true,
       "isRegex": true,
       "name": "equalRegexAuto",
-      "value": "\\\\^\\\\(\\\\.\\\\+\\\\)\\\\$",
+      "value": "\\^\\(\\.\\+\\)\\$",
     },
-    Object {
+    {
       "isEqual": true,
       "isRegex": false,
       "name": "equalNotRegexAuto",
       "value": "^(.+)$",
     },
-    Object {
+    {
       "isEqual": false,
       "isRegex": false,
       "name": "notEqualnotRegexAuto",
       "value": "^(.+)$",
     },
-    Object {
+    {
       "isEqual": false,
       "isRegex": true,
       "name": "notEqualRegexCreated",
       "value": "^(.+)$",
     },
-    Object {
+    {
       "isEqual": true,
       "isRegex": true,
       "name": "equalRegexCreated",
       "value": "^(.+)$",
     },
-    Object {
+    {
       "isEqual": true,
       "isRegex": false,
       "name": "equalNotRegexCreated",
       "value": "^(.+)$",
     },
-    Object {
+    {
       "isEqual": false,
       "isRegex": false,
       "name": "notEqualnotRegexAuto",
       "value": "^(.+)$",
     },
-    Object {
+    {
       "isEqual": false,
       "isRegex": true,
       "name": "notEqualRegexCreatedMulti",
-      "value": "(^(.+)$|\\\\)",
+      "value": "(^(.+)$|\\)",
     },
-    Object {
+    {
       "isEqual": true,
       "isRegex": true,
       "name": "equalRegexCreatedMulti",
-      "value": "(^(.+)$|\\\\)",
+      "value": "(^(.+)$|\\)",
     },
-    Object {
+    {
       "isEqual": false,
       "isRegex": true,
       "name": "notEqualRegexAuto",
-      "value": "(\\\\^\\\\(\\\\.\\\\+\\\\)\\\\$|\\\\)",
+      "value": "(\\^\\(\\.\\+\\)\\$|\\)",
     },
-    Object {
+    {
       "isEqual": true,
       "isRegex": true,
       "name": "equalRegexAuto",
-      "value": "(\\\\^\\\\(\\\\.\\\\+\\\\)\\\\$|\\\\)",
+      "value": "(\\^\\(\\.\\+\\)\\$|\\)",
     },
   ],
   "startsAt": "2000-02-01T00:00:00.000Z",

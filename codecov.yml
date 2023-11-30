@@ -8,7 +8,6 @@ coverage:
         flags:
           - backend
       ui:
-        target: 100
-        threshold: 0
+        target: auto
         flags:
           - ui

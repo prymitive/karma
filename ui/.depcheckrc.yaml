@@ -6,12 +6,15 @@ ignores:
   - sass
   - typeface-open-sans
   - prettier
-  - react-scripts
+  - vite
   - typescript
   # devDeps
   - "@types/jest"
   - "@types/node"
-  - "purgecss"
   - "eslint-plugin-jest"
   - "node-fetch"
   - "@babel/plugin-proposal-private-property-in-object"
+  - identity-obj-proxy
+  - jest
+  - jest-fetch-mock
+  - terser

@@ -2,20 +2,20 @@
 
 exports[`<AlertGroupConfiguration /> matches snapshot with default values 1`] = `
 "
-<div class=\\"p-3 text-center\\">
+<div class="p-3 text-center">
   <div
-    class=\\"input-range-track\\"
-    style=\\"transform: scale(1); cursor: pointer;\\"
+    class="input-range-track"
+    style="transform: scale(1); cursor: pointer;"
   >
     <div
-      class=\\"input-range-thumb\\"
-      style=\\"position: absolute; z-index: 0; cursor: grab; user-select: none; transform: translate(NaNpx, NaNpx);\\"
-      tabindex=\\"0\\"
-      aria-valuemax=\\"25\\"
-      aria-valuemin=\\"1\\"
-      aria-valuenow=\\"5\\"
-      draggable=\\"false\\"
-      role=\\"slider\\"
+      class="input-range-thumb"
+      style="position: absolute; z-index: 0; cursor: grab; user-select: none; transform: translate(NaNpx, NaNpx);"
+      tabindex="0"
+      aria-valuemax="25"
+      aria-valuemin="1"
+      aria-valuenow="5"
+      draggable="false"
+      role="slider"
     >
       5
     </div>

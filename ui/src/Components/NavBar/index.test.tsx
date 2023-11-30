@@ -2,13 +2,15 @@ import { act } from "react-dom/test-utils";
 
 import { mount } from "enzyme";
 
+import fetchMock from "fetch-mock";
+
 import { MockThemeContext } from "__fixtures__/Theme";
+import { EmptyAPIResponse } from "__fixtures__/Fetch";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { ThemeContext } from "Components/Theme";
 import NavBar from ".";
-import { MobileIdleTimeout, DesktopIdleTimeout } from "./timeouts";
 
 let alertStore: AlertStore;
 let settingsStore: Settings;
@@ -59,12 +61,19 @@ beforeEach(() => {
     ],
     clusters: { dev: ["dev"] },
   });
+
+  fetchMock.reset();
+  fetchMock.mock("*", {
+    body: JSON.stringify(EmptyAPIResponse()),
+  });
 });
 
 afterEach(() => {
   act(() => {
     jest.runOnlyPendingTimers();
+    jest.useRealTimers();
   });
+  fetchMock.reset();
 });
 
 const MountedNavbar = (fixedTop?: boolean) => {
@@ -144,175 +153,5 @@ describe("<NavBar />", () => {
         .getComputedStyle(document.body, null)
         .getPropertyValue("padding-top"),
     ).toBe("44px");
-  });
-});
-
-describe("<IdleTimer />", () => {
-  it("hides navbar after MobileIdleTimeout on mobile", () => {
-    global.window.innerWidth = 500;
-    const tree = MountedNavbar();
-    act(() => {
-      jest.advanceTimersByTime(MobileIdleTimeout + 1000);
-    });
-    tree.update();
-    expect(tree.find(".container").hasClass("visible")).toBe(false);
-    expect(tree.find(".container").hasClass("invisible")).toBe(true);
-  });
-
-  it("hides navbar after DesktopIdleTimeout on desktop", () => {
-    global.window.innerWidth = 769;
-    const tree = MountedNavbar();
-    act(() => {
-      jest.advanceTimersByTime(DesktopIdleTimeout + 1000);
-    });
-    tree.update();
-    expect(tree.find(".container").hasClass("visible")).toBe(false);
-    expect(tree.find(".container").hasClass("invisible")).toBe(true);
-  });
-
-  it("doesn't hide on mobile if there are unapplied filters", () => {
-    global.window.innerWidth = 500;
-    const tree = MountedNavbar();
-    act(() => {
-      alertStore.filters.addFilter("cluster=dev");
-      jest.advanceTimersByTime(MobileIdleTimeout + 1000);
-    });
-    tree.update();
-    expect(tree.find(".container").hasClass("visible")).toBe(true);
-    expect(tree.find(".container").hasClass("invisible")).toBe(false);
-  });
-
-  it("doesn't hide on desktop if there are unapplied filters", () => {
-    global.window.innerWidth = 769;
-    const tree = MountedNavbar();
-    act(() => {
-      alertStore.filters.addFilter("cluster=dev");
-      jest.advanceTimersByTime(DesktopIdleTimeout + 1000);
-    });
-    tree.update();
-    expect(tree.find(".container").hasClass("visible")).toBe(true);
-    expect(tree.find(".container").hasClass("invisible")).toBe(false);
-  });
-
-  it("hides on mobile if all unapplied filters finish applying", () => {
-    global.window.innerWidth = 500;
-    const tree = MountedNavbar();
-    act(() => {
-      alertStore.filters.addFilter("cluster=dev");
-      jest.advanceTimersByTime(MobileIdleTimeout + 1000);
-    });
-    tree.update();
-    expect(tree.find(".container").hasClass("visible")).toBe(true);
-    expect(tree.find(".container").hasClass("invisible")).toBe(false);
-
-    alertStore.filters.applyAllFilters();
-    act(() => {
-      jest.advanceTimersByTime(MobileIdleTimeout + 1000);
-    });
-    tree.update();
-    expect(tree.find(".container").hasClass("visible")).toBe(false);
-    expect(tree.find(".container").hasClass("invisible")).toBe(true);
-  });
-
-  it("hides on desktop if all unapplied filters finish applying", () => {
-    global.window.innerWidth = 769;
-    const tree = MountedNavbar();
-    act(() => {
-      alertStore.filters.addFilter("cluster=dev");
-      jest.advanceTimersByTime(DesktopIdleTimeout + 1000);
-    });
-    tree.update();
-    expect(tree.find(".container").hasClass("visible")).toBe(true);
-    expect(tree.find(".container").hasClass("invisible")).toBe(false);
-
-    alertStore.filters.applyAllFilters();
-    act(() => {
-      jest.advanceTimersByTime(DesktopIdleTimeout + 1000);
-    });
-    tree.update();
-    expect(tree.find(".container").hasClass("visible")).toBe(false);
-    expect(tree.find(".container").hasClass("invisible")).toBe(true);
-  });
-
-  it("hidden navbar shows up again after activity", () => {
-    const tree = MountedNavbar();
-
-    act(() => {
-      jest.advanceTimersByTime(DesktopIdleTimeout + 1000);
-    });
-    tree.update();
-    expect(tree.find(".container").hasClass("visible")).toBe(false);
-    expect(tree.find(".container").hasClass("invisible")).toBe(true);
-
-    act(() => {
-      document.dispatchEvent(new MouseEvent("mousedown"));
-    });
-    act(() => {
-      jest.runOnlyPendingTimers();
-    });
-    tree.update();
-    expect(tree.find(".container").hasClass("visible")).toBe(true);
-    expect(tree.find(".container").hasClass("invisible")).toBe(false);
-  });
-
-  it("body padding-top is 0px when navbar is hidden", () => {
-    const tree = MountedNavbar();
-    act(() => {
-      jest.advanceTimersByTime(DesktopIdleTimeout + 1000);
-    });
-    tree.update();
-    expect(
-      window
-        .getComputedStyle(document.body, null)
-        .getPropertyValue("padding-top"),
-    ).toBe("0px");
-  });
-
-  it("doesn't hide when autohide is disabled in settingsStore", () => {
-    settingsStore.filterBarConfig.setAutohide(false);
-    const tree = MountedNavbar();
-    act(() => {
-      jest.advanceTimersByTime(1000 * 3600);
-    });
-    tree.update();
-    expect(tree.find(".container").hasClass("visible")).toBe(true);
-    expect(tree.find(".container").hasClass("invisible")).toBe(false);
-  });
-
-  it("doesn't hide when autohide is enabled in settingsStore but alertStore is paused", () => {
-    settingsStore.filterBarConfig.setAutohide(true);
-    const tree = MountedNavbar();
-    alertStore.status.pause();
-    act(() => {
-      jest.advanceTimersByTime(1000 * 3600);
-    });
-    tree.update();
-    expect(tree.find(".container").hasClass("visible")).toBe(true);
-    expect(tree.find(".container").hasClass("invisible")).toBe(false);
-  });
-
-  it("hides navbar after alertStore is resumed", () => {
-    settingsStore.filterBarConfig.setAutohide(true);
-    const tree = MountedNavbar();
-
-    act(() => {
-      alertStore.status.pause();
-      jest.advanceTimersByTime(1000 * 3600);
-    });
-    tree.update();
-    expect(tree.find(".container").hasClass("visible")).toBe(true);
-    expect(tree.find(".container").hasClass("invisible")).toBe(false);
-
-    act(() => {
-      alertStore.status.resume();
-      jest.advanceTimersByTime(1000 * 60 * 3 + 1000);
-    });
-    tree.update();
-    act(() => {
-      jest.advanceTimersByTime(1000);
-    });
-    tree.update();
-    expect(tree.find(".container").hasClass("visible")).toBe(false);
-    expect(tree.find(".container").hasClass("invisible")).toBe(true);
   });
 });

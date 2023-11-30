@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.117
+
+### Changed
+
+- Migrated project from Create React App to [Vite](http://vitejs.dev).
+
 ## v0.116
 
 ### Added

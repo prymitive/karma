@@ -10,7 +10,7 @@ NODE_INSTALL := $(NODE_MODULES)/.install
 PATH         := $(PATH):$(NODE_PATH)
 SHELL        := env PATH=$(PATH) /bin/sh
 
-.DEFAULT_GOAL := build/index.html
+.DEFAULT_GOAL := dist/index.html
 
 $(NODE_INSTALL): package.json package-lock.json
 	@if [ -e $(NODE_INSTALL) ]; then npm install ; else npm ci; fi
@@ -22,16 +22,16 @@ npm-fetch: $(NODE_INSTALL)
 $(NODE_PATH)/%: $(NODE_INSTALL)
 	@if [ ! -x $@ ]; then echo "missing script: $@" ; exit 1; fi
 
-build/index.html: $(NODE_INSTALL) $(NODE_PATH)/react-scripts $(call rwildcard, public src, *) purgecss.config.js restore-css
+dist/index.html: $(NODE_INSTALL) $(NODE_PATH)/vite $(call rwildcard, public src, *)
 	@rm -fr node_modules/.cache/eslint-loader
 	cat node_modules/bootstrap/scss/_root.scss | sed s/':root {'/'* {'/ > src/Styles/BootstrapRoot.scss
 	npm run build
 
 .PHONY: build
-build: build/index.html
+build: dist/index.html
 
 .PHONY: test-js
-test-js: $(NODE_PATH)/react-scripts $(NODE_PATH)/jest
+test-js: $(NODE_PATH)/vite $(NODE_PATH)/jest
 	CI=true NODE_OPTIONS="--unhandled-rejections=strict" npm test -- --coverage
 
 .PHONY: lint-js
@@ -49,22 +49,8 @@ lint-typescript:
 format: $(NODE_PATH)/prettier
 	prettier --write 'src/**/*.ts' 'src/**/*.tsx'
 
-build/stats.json: build
-	env NODE_OPTIONS=--no-experimental-fetch npx source-map-explorer build/static/*/*.{js,css} --json > build/stats.json
-
-.PHONY: backup-css
-backup-css:
-	mkdir -p build/static/css build.pre/static
-	rm -fr build.pre/static/*
-	cp -R build/static/css build.pre/static/css
-
-.PHONY: restore-css
-restore-css:
-	@(test -d build/static/css && test -d build.pre/static/css && rm -fr build/static/css && cp -R build.pre/static/css build/static/css) || echo
-
-build.pre/css.diff: build purgecss.config.js
-	npx prettier -w build.pre/static/css/*.css build/static/css/*.css
-	diff -uNr build.pre/static/css build/static/css > build.pre/css.diff || echo
+dist/stats.json: build
+	env NODE_OPTIONS=--no-experimental-fetch npx source-map-explorer dist/assets/*.{js,css} --json > dist/stats.json
 
 .PHONY: npm-upgrade
 npm-upgrade:

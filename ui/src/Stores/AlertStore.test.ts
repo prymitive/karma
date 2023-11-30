@@ -5,7 +5,6 @@ import { MockGroup } from "__fixtures__/Stories";
 import {
   AlertStore,
   AlertStoreStatuses,
-  FormatBackendURI,
   FormatAlertsQ,
   DecodeLocationSearch,
   UpdateLocationSearch,
@@ -19,8 +18,6 @@ beforeEach(() => {
 afterEach(() => {
   jest.restoreAllMocks();
   fetchMock.reset();
-  // wipe REACT_APP_BACKEND_URI env on each run as it's used by some tests
-  delete process.env.REACT_APP_BACKEND_URI;
 });
 
 describe("AlertStore.data", () => {
@@ -314,19 +311,6 @@ describe("AlertStore.filters", () => {
     const store = new AlertStore(["far"]);
     store.filters.setWithoutLocation([]);
     expect(store.filters.values).toHaveLength(0);
-  });
-});
-
-describe("FormatBackendURI", () => {
-  it("FormatBackendURI without REACT_APP_BACKEND_URI env returns ./ prefixed URIs", () => {
-    const uri = FormatBackendURI("foo/bar");
-    expect(uri).toEqual("./foo/bar");
-  });
-
-  it("FormatBackendURI with REACT_APP_BACKEND_URI env returns env value prefixed URIs", () => {
-    process.env.REACT_APP_BACKEND_URI = "http://localhost:1234";
-    const uri = FormatBackendURI("foo/bar");
-    expect(uri).toEqual("http://localhost:1234/foo/bar");
   });
 });
 

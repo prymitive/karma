@@ -87,7 +87,7 @@ func setupRouter(router *chi.Mux, historyPoller *historyPoller) {
 	compressor := middleware.NewCompressor(flate.DefaultCompression)
 	router.Use(compressor.Handler)
 
-	router.Use(serverStaticFiles(getViewURL("/"), "build"))
+	router.Use(serverStaticFiles(getViewURL("/"), "dist"))
 	router.Use(serverStaticFiles(getViewURL("/__test__/"), "mock"))
 	corsOptions := cors.Options{
 		AllowedOrigins:   config.Config.Listen.Cors.AllowedOrigins,
@@ -325,7 +325,7 @@ func setupLogger() error {
 
 func loadTemplates() error {
 	var t *template.Template
-	t, err := template.ParseFS(ui.StaticFiles, "build/index.html")
+	t, err := template.ParseFS(ui.StaticFiles, "dist/index.html")
 	if err != nil {
 		return fmt.Errorf("failed to load template: %w", err)
 	}

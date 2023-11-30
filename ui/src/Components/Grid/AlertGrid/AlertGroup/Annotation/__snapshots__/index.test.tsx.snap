@@ -3,24 +3,24 @@
 exports[`<RenderLinkAnnotation /> matches snapshot 1`] = `
 "
 <a
-  href=\\"http://localhost/foo\\"
-  target=\\"_blank\\"
-  rel=\\"noopener noreferrer\\"
-  class=\\"components-label components-label-with-hover badge border components-grid-annotation-link\\"
+  href="http://localhost/foo"
+  target="_blank"
+  rel="noopener noreferrer"
+  class="components-label components-label-with-hover badge border components-grid-annotation-link"
 >
   <svg
-    aria-hidden=\\"true\\"
-    focusable=\\"false\\"
-    data-prefix=\\"fas\\"
-    data-icon=\\"up-right-from-square\\"
-    class=\\"svg-inline--fa fa-up-right-from-square \\"
-    role=\\"img\\"
-    xmlns=\\"http://www.w3.org/2000/svg\\"
-    viewbox=\\"0 0 512 512\\"
+    aria-hidden="true"
+    focusable="false"
+    data-prefix="fas"
+    data-icon="up-right-from-square"
+    class="svg-inline--fa fa-up-right-from-square "
+    role="img"
+    xmlns="http://www.w3.org/2000/svg"
+    viewbox="0 0 512 512"
   >
     <path
-      fill=\\"currentColor\\"
-      d=\\"M352 0c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9L370.7 96 201.4 265.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L416 141.3l41.4 41.4c9.2 9.2 22.9 11.9 34.9 6.9s19.8-16.6 19.8-29.6V32c0-17.7-14.3-32-32-32H352zM80 32C35.8 32 0 67.8 0 112V432c0 44.2 35.8 80 80 80H400c44.2 0 80-35.8 80-80V320c0-17.7-14.3-32-32-32s-32 14.3-32 32V432c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16V112c0-8.8 7.2-16 16-16H192c17.7 0 32-14.3 32-32s-14.3-32-32-32H80z\\"
+      fill="currentColor"
+      d="M352 0c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9L370.7 96 201.4 265.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L416 141.3l41.4 41.4c9.2 9.2 22.9 11.9 34.9 6.9s19.8-16.6 19.8-29.6V32c0-17.7-14.3-32-32-32H352zM80 32C35.8 32 0 67.8 0 112V432c0 44.2 35.8 80 80 80H400c44.2 0 80-35.8 80-80V320c0-17.7-14.3-32-32-32s-32 14.3-32 32V432c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16V112c0-8.8 7.2-16 16-16H192c17.7 0 32-14.3 32-32s-14.3-32-32-32H80z"
     >
     </path>
   </svg>
@@ -31,21 +31,21 @@ exports[`<RenderLinkAnnotation /> matches snapshot 1`] = `
 
 exports[`<RenderNonLinkAnnotation /> matches snapshot when visible=false 1`] = `
 "
-<div class=\\" tooltip-trigger\\">
-  <div class=\\"mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100 cursor-pointer\\">
+<div class=" tooltip-trigger">
+  <div class="mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100 cursor-pointer">
     <svg
-      aria-hidden=\\"true\\"
-      focusable=\\"false\\"
-      data-prefix=\\"fas\\"
-      data-icon=\\"angle-left\\"
-      class=\\"svg-inline--fa fa-angle-left me-1\\"
-      role=\\"img\\"
-      xmlns=\\"http://www.w3.org/2000/svg\\"
-      viewbox=\\"0 0 320 512\\"
+      aria-hidden="true"
+      focusable="false"
+      data-prefix="fas"
+      data-icon="angle-left"
+      class="svg-inline--fa fa-angle-left me-1"
+      role="img"
+      xmlns="http://www.w3.org/2000/svg"
+      viewbox="0 0 320 512"
     >
       <path
-        fill=\\"currentColor\\"
-        d=\\"M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z\\"
+        fill="currentColor"
+        d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"
       >
       </path>
     </svg>
@@ -57,30 +57,30 @@ exports[`<RenderNonLinkAnnotation /> matches snapshot when visible=false 1`] = `
 
 exports[`<RenderNonLinkAnnotation /> matches snapshot when visible=true 1`] = `
 "
-<div class=\\" tooltip-trigger\\">
-  <div class=\\"mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100\\">
-    <span class=\\"cursor-pointer\\">
+<div class=" tooltip-trigger">
+  <div class="mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100">
+    <span class="cursor-pointer">
       <svg
-        aria-hidden=\\"true\\"
-        focusable=\\"false\\"
-        data-prefix=\\"fas\\"
-        data-icon=\\"angle-right\\"
-        class=\\"svg-inline--fa fa-angle-right me-1 text-muted\\"
-        role=\\"img\\"
-        xmlns=\\"http://www.w3.org/2000/svg\\"
-        viewbox=\\"0 0 320 512\\"
+        aria-hidden="true"
+        focusable="false"
+        data-prefix="fas"
+        data-icon="angle-right"
+        class="svg-inline--fa fa-angle-right me-1 text-muted"
+        role="img"
+        xmlns="http://www.w3.org/2000/svg"
+        viewbox="0 0 320 512"
       >
         <path
-          fill=\\"currentColor\\"
-          d=\\"M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z\\"
+          fill="currentColor"
+          d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"
         >
         </path>
       </svg>
-      <span class=\\"text-muted\\">
+      <span class="text-muted">
         foo:
       </span>
     </span>
-    <span class=\\"Linkify\\">
+    <span class="Linkify">
       <span>
         some long text
       </span>

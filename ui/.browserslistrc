@@ -1,0 +1,9 @@
+>= 1%
+last 1 major version
+not dead
+Chrome >= 49
+Firefox >= 52
+Edge >= 12
+iOS >= 9
+Safari >= 10
+Android >= 4.4

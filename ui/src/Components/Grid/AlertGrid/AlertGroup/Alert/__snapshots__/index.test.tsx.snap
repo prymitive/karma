@@ -2,53 +2,53 @@
 
 exports[`<Alert /> matches snapshot when inhibited 1`] = `
 "
-<li class=\\"components-grid-alertgrid-alertgroup-alert list-group-item bg-transparent ps-1 pe-0 py-0 my-1 rounded-0 border-start-1 border-end-0 border-top-0 border-bottom-0 border-danger\\">
+<li class="components-grid-alertgrid-alertgroup-alert list-group-item bg-transparent ps-1 pe-0 py-0 my-1 rounded-0 border-start-1 border-end-0 border-top-0 border-bottom-0 border-danger">
   <div>
-    <div class=\\" tooltip-trigger\\">
-      <div class=\\"mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100\\">
-        <span class=\\"cursor-pointer\\">
+    <div class=" tooltip-trigger">
+      <div class="mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100">
+        <span class="cursor-pointer">
           <svg
-            aria-hidden=\\"true\\"
-            focusable=\\"false\\"
-            data-prefix=\\"fas\\"
-            data-icon=\\"angle-right\\"
-            class=\\"svg-inline--fa fa-angle-right me-1 text-muted\\"
-            role=\\"img\\"
-            xmlns=\\"http://www.w3.org/2000/svg\\"
-            viewbox=\\"0 0 320 512\\"
+            aria-hidden="true"
+            focusable="false"
+            data-prefix="fas"
+            data-icon="angle-right"
+            class="svg-inline--fa fa-angle-right me-1 text-muted"
+            role="img"
+            xmlns="http://www.w3.org/2000/svg"
+            viewbox="0 0 320 512"
           >
             <path
-              fill=\\"currentColor\\"
-              d=\\"M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z\\"
+              fill="currentColor"
+              d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"
             >
             </path>
           </svg>
-          <span class=\\"text-muted\\">
+          <span class="text-muted">
             help:
           </span>
         </span>
-        <span class=\\"Linkify\\">
+        <span class="Linkify">
           <span>
             some long text
           </span>
         </span>
       </div>
     </div>
-    <div class=\\" tooltip-trigger\\">
-      <div class=\\"mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100 cursor-pointer\\">
+    <div class=" tooltip-trigger">
+      <div class="mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100 cursor-pointer">
         <svg
-          aria-hidden=\\"true\\"
-          focusable=\\"false\\"
-          data-prefix=\\"fas\\"
-          data-icon=\\"angle-left\\"
-          class=\\"svg-inline--fa fa-angle-left me-1\\"
-          role=\\"img\\"
-          xmlns=\\"http://www.w3.org/2000/svg\\"
-          viewbox=\\"0 0 320 512\\"
+          aria-hidden="true"
+          focusable="false"
+          data-prefix="fas"
+          data-icon="angle-left"
+          class="svg-inline--fa fa-angle-left me-1"
+          role="img"
+          xmlns="http://www.w3.org/2000/svg"
+          viewbox="0 0 320 512"
         >
           <path
-            fill=\\"currentColor\\"
-            d=\\"M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z\\"
+            fill="currentColor"
+            d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"
           >
           </path>
         </svg>
@@ -58,88 +58,88 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
   </div>
   <span>
     <span
-      class=\\"components-label components-label-with-hover px-1 me-1 badge bg-secondary cursor-pointer\\"
-      data-toggle=\\"dropdown\\"
+      class="components-label components-label-with-hover px-1 me-1 badge bg-secondary cursor-pointer"
+      data-toggle="dropdown"
     >
       <svg
-        aria-hidden=\\"true\\"
-        focusable=\\"false\\"
-        data-prefix=\\"fas\\"
-        data-icon=\\"caret-down\\"
-        class=\\"svg-inline--fa fa-caret-down pe-1\\"
-        role=\\"img\\"
-        xmlns=\\"http://www.w3.org/2000/svg\\"
-        viewbox=\\"0 0 320 512\\"
-        style=\\"width: 0.8rem;\\"
+        aria-hidden="true"
+        focusable="false"
+        data-prefix="fas"
+        data-icon="caret-down"
+        class="svg-inline--fa fa-caret-down pe-1"
+        role="img"
+        xmlns="http://www.w3.org/2000/svg"
+        viewbox="0 0 320 512"
+        style="width: 0.8rem;"
       >
         <path
-          fill=\\"currentColor\\"
-          d=\\"M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z\\"
+          fill="currentColor"
+          d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z"
         >
         </path>
       </svg>
       1 day ago
     </span>
   </span>
-  <div class=\\" tooltip-trigger\\">
-    <span class=\\"badge bg-light components-label components-label-with-hover cursor-pointer\\">
+  <div class=" tooltip-trigger">
+    <span class="badge bg-light components-label components-label-with-hover cursor-pointer">
       <svg
-        aria-hidden=\\"true\\"
-        focusable=\\"false\\"
-        data-prefix=\\"fas\\"
-        data-icon=\\"volume-xmark\\"
-        class=\\"svg-inline--fa fa-volume-xmark text-success\\"
-        role=\\"img\\"
-        xmlns=\\"http://www.w3.org/2000/svg\\"
-        viewbox=\\"0 0 576 512\\"
+        aria-hidden="true"
+        focusable="false"
+        data-prefix="fas"
+        data-icon="volume-xmark"
+        class="svg-inline--fa fa-volume-xmark text-success"
+        role="img"
+        xmlns="http://www.w3.org/2000/svg"
+        viewbox="0 0 576 512"
       >
         <path
-          fill=\\"currentColor\\"
-          d=\\"M301.1 34.8C312.6 40 320 51.4 320 64V448c0 12.6-7.4 24-18.9 29.2s-25 3.1-34.4-5.3L131.8 352H64c-35.3 0-64-28.7-64-64V224c0-35.3 28.7-64 64-64h67.8L266.7 40.1c9.4-8.4 22.9-10.4 34.4-5.3zM425 167l55 55 55-55c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-55 55 55 55c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-55-55-55 55c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l55-55-55-55c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0z\\"
+          fill="currentColor"
+          d="M301.1 34.8C312.6 40 320 51.4 320 64V448c0 12.6-7.4 24-18.9 29.2s-25 3.1-34.4-5.3L131.8 352H64c-35.3 0-64-28.7-64-64V224c0-35.3 28.7-64 64-64h67.8L266.7 40.1c9.4-8.4 22.9-10.4 34.4-5.3zM425 167l55 55 55-55c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-55 55 55 55c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-55-55-55 55c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l55-55-55-55c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0z"
         >
         </path>
       </svg>
     </span>
   </div>
-  <div class=\\" tooltip-trigger\\">
-    <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover components-label-without-select\\">
-      <span class=\\"components-label-name\\">
+  <div class=" tooltip-trigger">
+    <span class="components-label badge bg-default components-label-dark components-label-with-hover components-label-without-select">
+      <span class="components-label-name">
         job:
       </span>
-      <span class=\\"components-label-value\\">
+      <span class="components-label-value">
         node_exporter
       </span>
     </span>
   </div>
-  <div class=\\" tooltip-trigger\\">
-    <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover components-label-without-select\\">
-      <span class=\\"components-label-name\\">
+  <div class=" tooltip-trigger">
+    <span class="components-label badge bg-default components-label-dark components-label-with-hover components-label-without-select">
+      <span class="components-label-name">
         cluster:
       </span>
-      <span class=\\"components-label-value\\">
+      <span class="components-label-value">
         dev
       </span>
     </span>
   </div>
   <a
-    href=\\"http://localhost\\"
-    target=\\"_blank\\"
-    rel=\\"noopener noreferrer\\"
-    class=\\"components-label components-label-with-hover badge border components-grid-annotation-link\\"
+    href="http://localhost"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="components-label components-label-with-hover badge border components-grid-annotation-link"
   >
     <svg
-      aria-hidden=\\"true\\"
-      focusable=\\"false\\"
-      data-prefix=\\"fas\\"
-      data-icon=\\"up-right-from-square\\"
-      class=\\"svg-inline--fa fa-up-right-from-square \\"
-      role=\\"img\\"
-      xmlns=\\"http://www.w3.org/2000/svg\\"
-      viewbox=\\"0 0 512 512\\"
+      aria-hidden="true"
+      focusable="false"
+      data-prefix="fas"
+      data-icon="up-right-from-square"
+      class="svg-inline--fa fa-up-right-from-square "
+      role="img"
+      xmlns="http://www.w3.org/2000/svg"
+      viewbox="0 0 512 512"
     >
       <path
-        fill=\\"currentColor\\"
-        d=\\"M352 0c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9L370.7 96 201.4 265.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L416 141.3l41.4 41.4c9.2 9.2 22.9 11.9 34.9 6.9s19.8-16.6 19.8-29.6V32c0-17.7-14.3-32-32-32H352zM80 32C35.8 32 0 67.8 0 112V432c0 44.2 35.8 80 80 80H400c44.2 0 80-35.8 80-80V320c0-17.7-14.3-32-32-32s-32 14.3-32 32V432c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16V112c0-8.8 7.2-16 16-16H192c17.7 0 32-14.3 32-32s-14.3-32-32-32H80z\\"
+        fill="currentColor"
+        d="M352 0c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9L370.7 96 201.4 265.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L416 141.3l41.4 41.4c9.2 9.2 22.9 11.9 34.9 6.9s19.8-16.6 19.8-29.6V32c0-17.7-14.3-32-32-32H352zM80 32C35.8 32 0 67.8 0 112V432c0 44.2 35.8 80 80 80H400c44.2 0 80-35.8 80-80V320c0-17.7-14.3-32-32-32s-32 14.3-32 32V432c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16V112c0-8.8 7.2-16 16-16H192c17.7 0 32-14.3 32-32s-14.3-32-32-32H80z"
       >
       </path>
     </svg>
@@ -151,53 +151,53 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
 
 exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=false 1`] = `
 "
-<li class=\\"components-grid-alertgrid-alertgroup-alert list-group-item bg-transparent ps-1 pe-0 py-0 my-1 rounded-0 border-start-1 border-end-0 border-top-0 border-bottom-0 border-danger\\">
+<li class="components-grid-alertgrid-alertgroup-alert list-group-item bg-transparent ps-1 pe-0 py-0 my-1 rounded-0 border-start-1 border-end-0 border-top-0 border-bottom-0 border-danger">
   <div>
-    <div class=\\" tooltip-trigger\\">
-      <div class=\\"mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100\\">
-        <span class=\\"cursor-pointer\\">
+    <div class=" tooltip-trigger">
+      <div class="mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100">
+        <span class="cursor-pointer">
           <svg
-            aria-hidden=\\"true\\"
-            focusable=\\"false\\"
-            data-prefix=\\"fas\\"
-            data-icon=\\"angle-right\\"
-            class=\\"svg-inline--fa fa-angle-right me-1 text-muted\\"
-            role=\\"img\\"
-            xmlns=\\"http://www.w3.org/2000/svg\\"
-            viewbox=\\"0 0 320 512\\"
+            aria-hidden="true"
+            focusable="false"
+            data-prefix="fas"
+            data-icon="angle-right"
+            class="svg-inline--fa fa-angle-right me-1 text-muted"
+            role="img"
+            xmlns="http://www.w3.org/2000/svg"
+            viewbox="0 0 320 512"
           >
             <path
-              fill=\\"currentColor\\"
-              d=\\"M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z\\"
+              fill="currentColor"
+              d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"
             >
             </path>
           </svg>
-          <span class=\\"text-muted\\">
+          <span class="text-muted">
             help:
           </span>
         </span>
-        <span class=\\"Linkify\\">
+        <span class="Linkify">
           <span>
             some long text
           </span>
         </span>
       </div>
     </div>
-    <div class=\\" tooltip-trigger\\">
-      <div class=\\"mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100 cursor-pointer\\">
+    <div class=" tooltip-trigger">
+      <div class="mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100 cursor-pointer">
         <svg
-          aria-hidden=\\"true\\"
-          focusable=\\"false\\"
-          data-prefix=\\"fas\\"
-          data-icon=\\"angle-left\\"
-          class=\\"svg-inline--fa fa-angle-left me-1\\"
-          role=\\"img\\"
-          xmlns=\\"http://www.w3.org/2000/svg\\"
-          viewbox=\\"0 0 320 512\\"
+          aria-hidden="true"
+          focusable="false"
+          data-prefix="fas"
+          data-icon="angle-left"
+          class="svg-inline--fa fa-angle-left me-1"
+          role="img"
+          xmlns="http://www.w3.org/2000/svg"
+          viewbox="0 0 320 512"
         >
           <path
-            fill=\\"currentColor\\"
-            d=\\"M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z\\"
+            fill="currentColor"
+            d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"
           >
           </path>
         </svg>
@@ -207,68 +207,68 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
   </div>
   <span>
     <span
-      class=\\"components-label components-label-with-hover px-1 me-1 badge bg-secondary cursor-pointer\\"
-      data-toggle=\\"dropdown\\"
+      class="components-label components-label-with-hover px-1 me-1 badge bg-secondary cursor-pointer"
+      data-toggle="dropdown"
     >
       <svg
-        aria-hidden=\\"true\\"
-        focusable=\\"false\\"
-        data-prefix=\\"fas\\"
-        data-icon=\\"caret-down\\"
-        class=\\"svg-inline--fa fa-caret-down pe-1\\"
-        role=\\"img\\"
-        xmlns=\\"http://www.w3.org/2000/svg\\"
-        viewbox=\\"0 0 320 512\\"
-        style=\\"width: 0.8rem;\\"
+        aria-hidden="true"
+        focusable="false"
+        data-prefix="fas"
+        data-icon="caret-down"
+        class="svg-inline--fa fa-caret-down pe-1"
+        role="img"
+        xmlns="http://www.w3.org/2000/svg"
+        viewbox="0 0 320 512"
+        style="width: 0.8rem;"
       >
         <path
-          fill=\\"currentColor\\"
-          d=\\"M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z\\"
+          fill="currentColor"
+          d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z"
         >
         </path>
       </svg>
       1 day ago
     </span>
   </span>
-  <div class=\\" tooltip-trigger\\">
-    <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover components-label-without-select\\">
-      <span class=\\"components-label-name\\">
+  <div class=" tooltip-trigger">
+    <span class="components-label badge bg-default components-label-dark components-label-with-hover components-label-without-select">
+      <span class="components-label-name">
         job:
       </span>
-      <span class=\\"components-label-value\\">
+      <span class="components-label-value">
         node_exporter
       </span>
     </span>
   </div>
-  <div class=\\" tooltip-trigger\\">
-    <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover components-label-without-select\\">
-      <span class=\\"components-label-name\\">
+  <div class=" tooltip-trigger">
+    <span class="components-label badge bg-default components-label-dark components-label-with-hover components-label-without-select">
+      <span class="components-label-name">
         cluster:
       </span>
-      <span class=\\"components-label-value\\">
+      <span class="components-label-value">
         dev
       </span>
     </span>
   </div>
   <a
-    href=\\"http://localhost\\"
-    target=\\"_blank\\"
-    rel=\\"noopener noreferrer\\"
-    class=\\"components-label components-label-with-hover badge border components-grid-annotation-link\\"
+    href="http://localhost"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="components-label components-label-with-hover badge border components-grid-annotation-link"
   >
     <svg
-      aria-hidden=\\"true\\"
-      focusable=\\"false\\"
-      data-prefix=\\"fas\\"
-      data-icon=\\"up-right-from-square\\"
-      class=\\"svg-inline--fa fa-up-right-from-square \\"
-      role=\\"img\\"
-      xmlns=\\"http://www.w3.org/2000/svg\\"
-      viewbox=\\"0 0 512 512\\"
+      aria-hidden="true"
+      focusable="false"
+      data-prefix="fas"
+      data-icon="up-right-from-square"
+      class="svg-inline--fa fa-up-right-from-square "
+      role="img"
+      xmlns="http://www.w3.org/2000/svg"
+      viewbox="0 0 512 512"
     >
       <path
-        fill=\\"currentColor\\"
-        d=\\"M352 0c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9L370.7 96 201.4 265.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L416 141.3l41.4 41.4c9.2 9.2 22.9 11.9 34.9 6.9s19.8-16.6 19.8-29.6V32c0-17.7-14.3-32-32-32H352zM80 32C35.8 32 0 67.8 0 112V432c0 44.2 35.8 80 80 80H400c44.2 0 80-35.8 80-80V320c0-17.7-14.3-32-32-32s-32 14.3-32 32V432c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16V112c0-8.8 7.2-16 16-16H192c17.7 0 32-14.3 32-32s-14.3-32-32-32H80z\\"
+        fill="currentColor"
+        d="M352 0c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9L370.7 96 201.4 265.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L416 141.3l41.4 41.4c9.2 9.2 22.9 11.9 34.9 6.9s19.8-16.6 19.8-29.6V32c0-17.7-14.3-32-32-32H352zM80 32C35.8 32 0 67.8 0 112V432c0 44.2 35.8 80 80 80H400c44.2 0 80-35.8 80-80V320c0-17.7-14.3-32-32-32s-32 14.3-32 32V432c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16V112c0-8.8 7.2-16 16-16H192c17.7 0 32-14.3 32-32s-14.3-32-32-32H80z"
       >
       </path>
     </svg>

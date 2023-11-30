@@ -17,7 +17,7 @@ const pollyfillsLoaded: string[] = [];
 if ("ResizeObserver" in window === false) {
   pollyfillsLoaded.push("ResizeObserver");
   const module = require("@juggle/resize-observer"); // eslint-disable-line @typescript-eslint/no-var-requires
-  window.ResizeObserver = module.ResizeObserver;
+  (window as Window).ResizeObserver = module.ResizeObserver;
 }
 
 export default pollyfillsLoaded;

@@ -2,12 +2,12 @@
 
 exports[`<FilteringLabel /> matches snapshot 1`] = `
 "
-<div class=\\" tooltip-trigger\\">
-  <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover components-label-without-select\\">
-    <span class=\\"components-label-name\\">
+<div class=" tooltip-trigger">
+  <span class="components-label badge bg-default components-label-dark components-label-with-hover components-label-without-select">
+    <span class="components-label-name">
       foo:
     </span>
-    <span class=\\"components-label-value\\">
+    <span class="components-label-value">
       bar
     </span>
   </span>
