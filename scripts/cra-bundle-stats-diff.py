@@ -4,10 +4,11 @@
 from collections import namedtuple
 import json
 import os
+import re
 import sys
 
 
-Bundle = namedtuple('Bundle' , 'seq ext bundleName totalBytes files')
+Bundle = namedtuple('Bundle' , 'bundleName totalBytes files')
 
 Diff = namedtuple('Diff', 'status path oldBytes newBytes isBigger diff')
 BundleDiff = namedtuple('BundleDiff', 'total files')
@@ -38,6 +39,12 @@ def normalizePath(path):
     return path
 
 
+def normalizeBundleName(path):
+    if path.startswith('dist/assets/index-'):
+        return path
+    return re.sub(r'\-.{8}\.([a-zA-Z-])', r'.\1', path)
+
+
 def mergeFiles(allFiles):
     files = {}
     for path, meta in allFiles.items():
@@ -54,13 +61,8 @@ def readBundle(path):
     with open(path) as f:
         data = json.load(f)
         for result in data['results']:
-            filename = os.path.basename(result['bundleName'])
-            seq = filename.split('.')[0]
-            _, ext = os.path.splitext(filename)
             bundle = Bundle(
-                seq=seq,
-                ext=ext,
-                bundleName=result['bundleName'],
+                bundleName=normalizeBundleName(result['bundleName']),
                 totalBytes=result['totalBytes'],
                 files=mergeFiles(result['files']))
             bundles.append(bundle)
@@ -173,7 +175,7 @@ def diffBundles(a, b):
     for ba in a:
         found = False
         for bb in b:
-            if ba.seq == bb.seq and ba.ext == bb.ext:
+            if ba.bundleName == bb.bundleName:
                 found = True
                 d = diffBundle(ba, bb)
                 if d:
@@ -181,8 +183,6 @@ def diffBundles(a, b):
                 break
         if not found:
             bb = Bundle(
-                    seq=ba.seq,
-                    ext=ba.ext,
                     bundleName=ba.bundleName,
                     totalBytes=0,
                     files={}
@@ -194,12 +194,10 @@ def diffBundles(a, b):
     for bb in b:
         found = False
         for ba in a:
-            if bb.seq == ba.seq and ba.ext == bb.ext:
+            if ba.bundleName == bb.bundleName:
                 found = True
         if not found:
             ba = Bundle(
-                    seq=bb.seq,
-                    ext=bb.ext,
                     bundleName=bb.bundleName,
                     totalBytes=0,
                     files={}
