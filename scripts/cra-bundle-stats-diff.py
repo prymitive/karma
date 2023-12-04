@@ -40,8 +40,6 @@ def normalizePath(path):
 
 
 def normalizeBundleName(path):
-    if path.startswith('dist/assets/index-'):
-        return path
     return re.sub(r'\-.{8}\.([a-zA-Z-])', r'.\1', path)
 
 
@@ -56,6 +54,32 @@ def mergeFiles(allFiles):
     return files
 
 
+def mergeSize(a, b):
+    for k,v in b.items():
+        if k in a:
+            a[k] += v
+        else:
+            a[k] = v
+    return a
+
+
+def mergeBundles(allBundles):
+    bundles = {}
+    for a in allBundles:
+        if a.bundleName not in bundles:
+            bundles[a.bundleName] = Bundle(
+                bundleName=a.bundleName,
+                totalBytes=0,
+                files={},
+            )
+        bundles[a.bundleName] = Bundle(
+            bundleName=a.bundleName,
+            totalBytes=bundles[a.bundleName].totalBytes + a.totalBytes,
+            files=mergeSize(bundles[a.bundleName].files, a.files),
+        )       
+    return bundles.values()
+
+
 def readBundle(path):
     bundles = []
     with open(path) as f:
@@ -66,7 +90,7 @@ def readBundle(path):
                 totalBytes=result['totalBytes'],
                 files=mergeFiles(result['files']))
             bundles.append(bundle)
-    return bundles
+    return mergeBundles(bundles)
 
 
 def printRow(diff, element):
