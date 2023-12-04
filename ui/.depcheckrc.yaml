@@ -13,7 +13,6 @@ ignores:
   - "@types/node"
   - "eslint-plugin-jest"
   - "node-fetch"
-  - "@babel/plugin-proposal-private-property-in-object"
   - identity-obj-proxy
   - jest
   - jest-fetch-mock
