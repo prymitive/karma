@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.118
+
+### Fixed
+
+- Fixed `listen:prefix` handling that was broken in v0.117 - #5623.
+
 ## v0.117
 
 ### Changed
