@@ -9,6 +9,7 @@ ignores:
   - vite
   - typescript
   # devDeps
+  - "csstype"
   - "@types/jest"
   - "@types/node"
   - "eslint-plugin-jest"
