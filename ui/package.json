@@ -65,7 +65,7 @@
     "@types/lodash.uniqueid": "4.0.9",
     "@types/node": "20.10.5",
     "@types/promise-retry": "1.1.6",
-    "@types/qs": "6.9.10",
+    "@types/qs": "6.9.11",
     "@types/react": "17.0.50",
     "@types/react-dom": "17.0.17",
     "@vitejs/plugin-legacy": "5.2.0",
