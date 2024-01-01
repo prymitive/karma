@@ -1,7 +1,7 @@
 import { mount } from "enzyme";
 
-import addSeconds from "date-fns/addSeconds";
-import subSeconds from "date-fns/subSeconds";
+import { addSeconds } from "date-fns/addSeconds";
+import { subSeconds } from "date-fns/subSeconds";
 
 import { DateFromNow } from ".";
 

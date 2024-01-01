@@ -2,11 +2,11 @@ import { FC, useEffect, useState, useCallback, ReactNode } from "react";
 
 import { observer } from "mobx-react-lite";
 
-import differenceInMinutes from "date-fns/differenceInMinutes";
-import differenceInHours from "date-fns/differenceInHours";
-import differenceInDays from "date-fns/differenceInDays";
-import setSeconds from "date-fns/setSeconds";
-import isSameMonth from "date-fns/isSameMonth";
+import { differenceInMinutes } from "date-fns/differenceInMinutes";
+import { differenceInHours } from "date-fns/differenceInHours";
+import { differenceInDays } from "date-fns/differenceInDays";
+import { setSeconds } from "date-fns/setSeconds";
+import { isSameMonth } from "date-fns/isSameMonth";
 
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";

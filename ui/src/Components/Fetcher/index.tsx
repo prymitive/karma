@@ -3,8 +3,8 @@ import React, { useEffect, useRef, useState, FC } from "react";
 import { reaction, toJS } from "mobx";
 import { observer } from "mobx-react-lite";
 
-import addSeconds from "date-fns/addSeconds";
-import differenceInSeconds from "date-fns/differenceInSeconds";
+import { addSeconds } from "date-fns/addSeconds";
+import { differenceInSeconds } from "date-fns/differenceInSeconds";
 
 import { CSSTransition } from "react-transition-group";
 

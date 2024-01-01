@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 
 import { observer } from "mobx-react-lite";
 
-import parseISO from "date-fns/parseISO";
+import { parseISO } from "date-fns/parseISO";
 
 import copy from "copy-to-clipboard";
 

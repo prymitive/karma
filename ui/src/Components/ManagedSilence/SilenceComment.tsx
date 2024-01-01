@@ -2,7 +2,7 @@ import { Fragment, FC } from "react";
 
 import { observer } from "mobx-react-lite";
 
-import parseISO from "date-fns/parseISO";
+import { parseISO } from "date-fns/parseISO";
 import { differenceInSeconds } from "date-fns";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
