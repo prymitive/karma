@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from "react";
 import { toJS } from "mobx";
 import { observer } from "mobx-react-lite";
 
-import addSeconds from "date-fns/addSeconds";
+import { addSeconds } from "date-fns/addSeconds";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons/faCheck";

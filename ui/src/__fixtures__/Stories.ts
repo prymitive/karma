@@ -1,4 +1,4 @@
-import subMinutes from "date-fns/subMinutes";
+import { subMinutes } from "date-fns/subMinutes";
 
 import type { AlertStateT, APIAlertGroupT } from "Models/APITypes";
 import type { AlertStore } from "Stores/AlertStore";

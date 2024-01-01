@@ -2,8 +2,8 @@ import { FC, useEffect, useState } from "react";
 
 import { observer } from "mobx-react-lite";
 
-import parseISO from "date-fns/parseISO";
-import getUnixTime from "date-fns/getUnixTime";
+import { parseISO } from "date-fns/parseISO";
+import { getUnixTime } from "date-fns/getUnixTime";
 
 import type { APISilenceT, APIAlertmanagerUpstreamT } from "Models/APITypes";
 import type { AlertStore } from "Stores/AlertStore";

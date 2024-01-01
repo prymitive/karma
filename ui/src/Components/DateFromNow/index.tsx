@@ -1,8 +1,8 @@
 import { FC, useState, useEffect } from "react";
 
-import parseISO from "date-fns/parseISO";
-import differenceInSeconds from "date-fns/differenceInSeconds";
-import formatDistanceToNowStrict from "date-fns/formatDistanceToNowStrict";
+import { parseISO } from "date-fns/parseISO";
+import { differenceInSeconds } from "date-fns/differenceInSeconds";
+import { formatDistanceToNowStrict } from "date-fns/formatDistanceToNowStrict";
 
 const formatLabel = (timestamp: string) => {
   const ts = parseISO(timestamp);

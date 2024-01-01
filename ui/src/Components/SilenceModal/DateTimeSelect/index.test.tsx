@@ -4,9 +4,9 @@ import { mount, shallow } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
 
-import addMinutes from "date-fns/addMinutes";
-import addHours from "date-fns/addHours";
-import differenceInMilliseconds from "date-fns/differenceInMilliseconds";
+import { addMinutes } from "date-fns/addMinutes";
+import { addHours } from "date-fns/addHours";
+import { differenceInMilliseconds } from "date-fns/differenceInMilliseconds";
 import { format } from "date-fns";
 
 import { SilenceFormStore } from "Stores/SilenceFormStore";

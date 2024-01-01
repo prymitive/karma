@@ -1,8 +1,8 @@
-import differenceInMinutes from "date-fns/differenceInMinutes";
-import differenceInMilliseconds from "date-fns/differenceInMilliseconds";
-import isSameDay from "date-fns/isSameDay";
-import addHours from "date-fns/addHours";
-import addMinutes from "date-fns/addMinutes";
+import { differenceInMinutes } from "date-fns/differenceInMinutes";
+import { differenceInMilliseconds } from "date-fns/differenceInMilliseconds";
+import { isSameDay } from "date-fns/isSameDay";
+import { addHours } from "date-fns/addHours";
+import { addMinutes } from "date-fns/addMinutes";
 
 import {
   MockAlert,
