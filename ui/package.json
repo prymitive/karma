@@ -10,7 +10,6 @@
     "@fortawesome/free-solid-svg-icons": "6.5.1",
     "@fortawesome/react-fontawesome": "0.2.0",
     "@juggle/resize-observer": "3.4.0",
-    "@vitejs/plugin-react": "4.2.1",
     "body-scroll-lock": "3.1.5",
     "bootstrap": "5.2.3",
     "bootswatch": "5.2.3",
@@ -45,9 +44,7 @@
     "react-range": "1.8.14",
     "react-select": "5.8.0",
     "react-transition-group": "4.4.5",
-    "typeface-open-sans": "1.1.13",
-    "vite": "5.0.10",
-    "vite-tsconfig-paths": "4.2.3"
+    "typeface-open-sans": "1.1.13"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "6.1.6",
@@ -69,6 +66,7 @@
     "@types/react": "17.0.50",
     "@types/react-dom": "17.0.17",
     "@vitejs/plugin-legacy": "5.2.0",
+    "@vitejs/plugin-react": "4.2.1",
     "@wojtekmaj/enzyme-adapter-react-17": "0.8.0",
     "csstype": "3.1.2",
     "diffable-html": "5.0.0",
@@ -87,7 +85,9 @@
     "sass": "1.69.6",
     "terser": "5.26.0",
     "ts-jest": "29.1.1",
-    "typescript": "5.3.3"
+    "typescript": "5.3.3",
+    "vite": "5.0.10",
+    "vite-tsconfig-paths": "4.2.3"
   },
   "overrides": {
     "@types/enzyme": {
