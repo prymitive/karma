@@ -282,7 +282,7 @@ func setupLogger() error {
 				NoColor:       true,
 				FormatLevel:   lvlFormatter,
 				FormatMessage: msgFormatter,
-				TimeFormat:    "15:04:05",
+				TimeFormat:    "2006-01-02T15:04:05.000000",
 			})
 		} else {
 			log.Logger = zerolog.New(os.Stderr).Output(zerolog.ConsoleWriter{
