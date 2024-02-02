@@ -50,6 +50,8 @@ jobs:
         with:
           flags: backend
           files: ./coverage.txt
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   lint-go:
     name: Lint Go code
