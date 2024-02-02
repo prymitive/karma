@@ -115,6 +115,8 @@ jobs:
         with:
           flags: ui
           directory: ./ui/coverage
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   lint-js:
     name: Lint JS code
