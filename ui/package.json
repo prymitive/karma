@@ -81,7 +81,7 @@
     "jest-environment-jsdom": "29.7.0",
     "jest-fetch-mock": "3.0.3",
     "node-fetch": "2.6.11",
-    "prettier": "3.2.4",
+    "prettier": "3.2.5",
     "sass": "1.70.0",
     "terser": "5.27.0",
     "ts-jest": "29.1.2",
