@@ -370,7 +370,7 @@ func TestProxyToSubURIAlertmanager(t *testing.T) {
 			}
 			setupRouterProxyHandlers(r, am)
 
-			httpmock.RegisterResponder("POST", "http://alertmanager.example.com/suburi/api/v2/silences", func(req *http.Request) (*http.Response, error) {
+			httpmock.RegisterResponder("POST", "http://alertmanager.example.com/suburi/api/v2/silences", func(_ *http.Request) (*http.Response, error) {
 				return httpmock.NewStringResponse(200, "ok"), nil
 			})
 
