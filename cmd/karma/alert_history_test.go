@@ -603,7 +603,7 @@ func TestAlertHistory(t *testing.T) {
 	go hp.run(5)
 	defer hp.stop()
 
-	opt := cmp.Comparer(func(x, y time.Time) bool {
+	opt := cmp.Comparer(func(_, _ time.Time) bool {
 		return true
 	})
 

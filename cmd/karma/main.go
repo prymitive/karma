@@ -98,13 +98,13 @@ func setupRouter(router *chi.Mux, historyPoller *historyPoller) {
 		MaxAge:           300,
 	}
 	if len(corsOptions.AllowedOrigins) == 0 {
-		corsOptions.AllowOriginFunc = func(r *http.Request, origin string) bool {
+		corsOptions.AllowOriginFunc = func(_ *http.Request, _ string) bool {
 			return true
 		}
 	}
 	router.Use(cors.Handler(corsOptions))
 
-	router.NotFound(func(w http.ResponseWriter, r *http.Request) {
+	router.NotFound(func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
 		contentText(w)
 		w.WriteHeader(http.StatusNotFound)
@@ -179,7 +179,7 @@ func setupRouter(router *chi.Mux, historyPoller *historyPoller) {
 		}
 	}
 
-	walkFunc := func(method, route string, handler http.Handler, middlewares ...func(http.Handler) http.Handler) error {
+	walkFunc := func(method, route string, _ http.Handler, _ ...func(http.Handler) http.Handler) error {
 		log.Debug().
 			Str("method", method).
 			Str("route", route).

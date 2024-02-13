@@ -96,7 +96,7 @@ func httpServer(ts *testscript.TestScript, _ bool, args []string) {
 		code, err := strconv.Atoi(args[3])
 		ts.Check(err)
 		body := strings.Join(args[4:], " ")
-		mocks.add(name, httpMock{pattern: path, handler: func(w http.ResponseWriter, r *http.Request) {
+		mocks.add(name, httpMock{pattern: path, handler: func(w http.ResponseWriter, _ *http.Request) {
 			w.WriteHeader(code)
 			_, err := w.Write([]byte(body))
 			ts.Check(err)
@@ -113,7 +113,7 @@ func httpServer(ts *testscript.TestScript, _ bool, args []string) {
 		code, err := strconv.Atoi(args[4])
 		ts.Check(err)
 		body := strings.Join(args[5:], " ")
-		mocks.add(name, httpMock{pattern: path, handler: func(w http.ResponseWriter, r *http.Request) {
+		mocks.add(name, httpMock{pattern: path, handler: func(w http.ResponseWriter, _ *http.Request) {
 			time.Sleep(delay)
 			w.WriteHeader(code)
 			_, err := w.Write([]byte(body))
@@ -127,7 +127,7 @@ func httpServer(ts *testscript.TestScript, _ bool, args []string) {
 		name := args[1]
 		srcpath := args[2]
 		dstpath := args[3]
-		mocks.add(name, httpMock{pattern: srcpath, handler: func(w http.ResponseWriter, r *http.Request) {
+		mocks.add(name, httpMock{pattern: srcpath, handler: func(w http.ResponseWriter, _ *http.Request) {
 			w.Header().Set("Location", dstpath)
 			w.WriteHeader(http.StatusFound)
 		}})
@@ -147,7 +147,7 @@ func httpServer(ts *testscript.TestScript, _ bool, args []string) {
 		}
 
 		mux := http.NewServeMux()
-		mux.HandleFunc("/__ping__", func(w http.ResponseWriter, r *http.Request) {
+		mux.HandleFunc("/__ping__", func(w http.ResponseWriter, _ *http.Request) {
 			w.WriteHeader(http.StatusOK)
 			_, _ = w.Write([]byte("pong"))
 		})

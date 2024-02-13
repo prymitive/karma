@@ -114,7 +114,7 @@ func TestHTTPReader(t *testing.T) {
 	for _, testCase := range httpTransportTests {
 		testCase := testCase
 		t.Run(testCase.name, func(t *testing.T) {
-			handler := func(w http.ResponseWriter, r *http.Request) {
+			handler := func(w http.ResponseWriter, _ *http.Request) {
 				for k, v := range testCase.responseHeaders {
 					w.Header().Set(k, v)
 				}
