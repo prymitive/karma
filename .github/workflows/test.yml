@@ -101,7 +101,7 @@ jobs:
       - name: Set up Node JS
         uses: actions/setup-node@v4
         with:
-          node-version: 21.6.1
+          node-version: 21.6.2
           cache: "npm"
           cache-dependency-path: "ui/package-lock.json"
 
@@ -128,7 +128,7 @@ jobs:
       - name: Set up Node JS
         uses: actions/setup-node@v4
         with:
-          node-version: 21.6.1
+          node-version: 21.6.2
           cache: "npm"
           cache-dependency-path: "ui/package-lock.json"
 
@@ -164,7 +164,7 @@ jobs:
       - name: Set up Node JS
         uses: actions/setup-node@v4
         with:
-          node-version: 21.6.1
+          node-version: 21.6.2
           cache: "npm"
           cache-dependency-path: "ui/package-lock.json"
 
@@ -197,7 +197,7 @@ jobs:
       - name: Set up Node JS
         uses: actions/setup-node@v4
         with:
-          node-version: 21.6.1
+          node-version: 21.6.2
           cache: "npm"
           cache-dependency-path: "ui/package-lock.json"
 
@@ -353,7 +353,7 @@ jobs:
       - name: Set up Node JS
         uses: actions/setup-node@v4
         with:
-          node-version: 21.6.1
+          node-version: 21.6.2
           cache: "npm"
           cache-dependency-path: "ui/package-lock.json"
 
@@ -405,7 +405,7 @@ jobs:
       - name: Set up Node JS
         uses: actions/setup-node@v4
         with:
-          node-version: 21.6.1
+          node-version: 21.6.2
           cache: "npm"
           cache-dependency-path: "ui/package-lock.json"
 
