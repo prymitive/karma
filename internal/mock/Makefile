@@ -5,7 +5,7 @@ DOCKER_ARGS  := --name $(DOCKER_NAME) --rm -d -p 9093:9093 \
 								-v $(CURDIR)/alertmanager.yml:/etc/alertmanager/alertmanager.yml
 
 # list of Alertmanager versions to generate mock files for
-VERSIONS := 0.22.0 022.1 0.23.0 0.24.0 0.25.0 0.26.0
+VERSIONS := 0.22.0 022.1 0.23.0 0.24.0 0.25.0 0.26.0 0.27.0
 
 %/.ok: livemock.py
 	$(eval VERSION := $(word 1, $(subst /, ,$@)))
