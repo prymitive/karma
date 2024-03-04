@@ -12,7 +12,7 @@
     "@juggle/resize-observer": "3.4.0",
     "body-scroll-lock": "3.1.5",
     "bootstrap": "5.2.3",
-    "bootswatch": "5.2.3",
+    "bootswatch": "5.3.3",
     "bricks.js": "1.8.0",
     "copy-to-clipboard": "3.3.3",
     "csshake": "1.7.0",
