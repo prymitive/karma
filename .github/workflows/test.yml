@@ -22,7 +22,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: 1.22.0
+          go-version: 1.22.1
           cache: false
 
       - name: Restore cache
@@ -63,7 +63,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: 1.22.0
+          go-version: 1.22.1
           cache: false
 
       - name: Restore cache
@@ -145,7 +145,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: 1.22.0
+          go-version: 1.22.1
           cache: false
 
       - name: Format Go code
@@ -301,7 +301,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: 1.22.0
+          go-version: 1.22.1
           cache: false
 
       - name: Restore cache
@@ -377,7 +377,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: 1.22.0
+          go-version: 1.22.1
           cache: false
 
       - name: Cache Go
