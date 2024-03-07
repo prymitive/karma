@@ -260,6 +260,152 @@ describe("<SilenceForm /> matchers", () => {
     ]);
   });
 
+  it("ignores matches from silenceForm.strip.labels", () => {
+    const filter = (name: string, matcher: string, value: string) => {
+      const f = NewUnappliedFilter(`${name}${matcher}${value}`);
+      f.name = name;
+      f.matcher = matcher;
+      f.value = value;
+      return f;
+    };
+
+    const filterCombos = (name: string) =>
+      Object.entries(QueryOperators).map(([k, v]) =>
+        filter(name, v, `${name}${k}`),
+      );
+
+    alertStore.settings.setValues({
+      ...alertStore.settings.values,
+      ...{
+        silenceForm: {
+          strip: { labels: ["cluster"] },
+          defaultAlertmanagers: [],
+        },
+      },
+    });
+
+    alertStore.filters.setFilterValues([
+      ...filterCombos(StaticLabels.AlertName),
+      ...filterCombos(StaticLabels.AlertManager),
+      ...filterCombos(StaticLabels.Receiver),
+      ...filterCombos(StaticLabels.State),
+      ...filterCombos(StaticLabels.SilencedBy),
+      ...filterCombos("cluster"),
+      ...filterCombos("foo"),
+    ]);
+    silenceFormStore.data.setAutofillMatchers(true);
+    const tree = MountedSilenceForm();
+    const matchers = tree.find("Memo(SilenceMatch)");
+    expect(matchers).toHaveLength(8);
+    expect(silenceFormStore.data.matchers).toHaveLength(8);
+    expect(silenceFormStore.data.matchers).toEqual([
+      {
+        id: "14",
+        isRegex: false,
+        isEqual: true,
+        name: "alertname",
+        values: [
+          {
+            label: "alertnameEqual",
+            value: "alertnameEqual",
+            wasCreated: true,
+          },
+        ],
+      },
+      {
+        id: "15",
+        isRegex: false,
+        isEqual: false,
+        name: "alertname",
+        values: [
+          {
+            label: "alertnameNotEqual",
+            value: "alertnameNotEqual",
+            wasCreated: true,
+          },
+        ],
+      },
+      {
+        id: "16",
+        isRegex: true,
+        isEqual: true,
+        name: "alertname",
+        values: [
+          {
+            label: ".*alertnameRegex.*",
+            value: ".*alertnameRegex.*",
+            wasCreated: true,
+          },
+        ],
+      },
+      {
+        id: "17",
+        isRegex: true,
+        isEqual: false,
+        name: "alertname",
+        values: [
+          {
+            label: ".*alertnameNegativeRegex.*",
+            value: ".*alertnameNegativeRegex.*",
+            wasCreated: true,
+          },
+        ],
+      },
+      {
+        id: "18",
+        isRegex: false,
+        isEqual: true,
+        name: "foo",
+        values: [
+          {
+            label: "fooEqual",
+            value: "fooEqual",
+            wasCreated: true,
+          },
+        ],
+      },
+      {
+        id: "19",
+        isRegex: false,
+        isEqual: false,
+        name: "foo",
+        values: [
+          {
+            label: "fooNotEqual",
+            value: "fooNotEqual",
+            wasCreated: true,
+          },
+        ],
+      },
+      {
+        id: "20",
+        isRegex: true,
+        isEqual: true,
+        name: "foo",
+        values: [
+          {
+            label: ".*fooRegex.*",
+            value: ".*fooRegex.*",
+            wasCreated: true,
+          },
+        ],
+      },
+      {
+        id: "21",
+        isRegex: true,
+        isEqual: false,
+        name: "foo",
+        values: [
+          {
+            label: ".*fooNegativeRegex.*",
+            value: ".*fooNegativeRegex.*",
+            wasCreated: true,
+          },
+        ],
+      },
+    ]);
+  });
+
   it("doesn't use filters to populate default matchers when silenceFormStore.data.autofillMatchers=false", () => {
     const filter = (name: string, matcher: string, value: string) => {
       const f = NewUnappliedFilter(`${name}${matcher}${value}`);
