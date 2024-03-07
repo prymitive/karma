@@ -112,7 +112,10 @@ const SilenceForm: FC<{
               (f.matcher === QueryOperators.Equal ||
                 f.matcher === QueryOperators.NotEqual ||
                 f.matcher === QueryOperators.Regex ||
-                f.matcher === QueryOperators.NegativeRegex),
+                f.matcher === QueryOperators.NegativeRegex) &&
+              !alertStore.settings.values.silenceForm.strip.labels.includes(
+                f.name,
+              ),
           )
           .forEach((f) => {
             const matcher = NewEmptyMatcher();

@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.119
+
+### Fixed
+
+- `silenceForm.strip.labels` did't strip labels that are in the filter bar #5817.
+
 ## v0.118
 
 ### Fixed
