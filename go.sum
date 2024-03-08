@@ -96,8 +96,8 @@ github.com/go-openapi/strfmt v0.22.2 h1:DPYOrm6gexCfZZfXUaXFS4+Jw6HAaIIG0SZ5630f
 github.com/go-openapi/strfmt v0.22.2/go.mod h1:HB/b7TCm91rno75Dembc1dFW/0FPLk5CEXsoF9ReNc4=
 github.com/go-openapi/swag v0.22.10 h1:4y86NVn7Z2yYd6pfS4Z+Nyh3aAUL3Nul+LMbhFKy0gA=
 github.com/go-openapi/swag v0.22.10/go.mod h1:Cnn8BYtRlx6BNE3DPN86f/xkapGIcLWzh3CLEb4C1jI=
-github.com/go-openapi/validate v0.23.1 h1:3YlF+7NP/pKpaZrSxB88oeVbIuCYlWPGKVMWvPcBMYw=
-github.com/go-openapi/validate v0.23.1/go.mod h1:DYvS/pv2Y65SE4hB6Tx+kFC+gS9sPKbqYbY1iwG6z7k=
+github.com/go-openapi/validate v0.23.2 h1:dSV8fmCwFwTE6TYGVmWtpWN9aOTsidzcBsB2qPohZYI=
+github.com/go-openapi/validate v0.23.2/go.mod h1:FencnMQqop3HPZk+wIkLsQHgOKP1EDAgF2LZDW7fWr8=
 github.com/go-stack/stack v1.8.0/go.mod h1:v0f6uXyyMGvRgIKkXu+yp6POWl0qKG85gN/melR3HDY=
 github.com/go-test/deep v1.0.2-0.20181118220953-042da051cf31/go.mod h1:wGDj63lr65AM2AQyKZd/NYHGb0R+1RLqB8NKt3aSFNA=
 github.com/godbus/dbus/v5 v5.0.4/go.mod h1:xhWf0FNVPg57R7Z0UbKHbJfkEywrmjJnf7w5xrFpKfA=
