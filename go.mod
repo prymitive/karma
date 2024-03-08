@@ -14,7 +14,7 @@ require (
 	github.com/go-openapi/runtime v0.27.2
 	github.com/go-openapi/strfmt v0.22.2
 	github.com/go-openapi/swag v0.22.10
-	github.com/go-openapi/validate v0.23.1
+	github.com/go-openapi/validate v0.23.2
 	github.com/google/go-cmp v0.6.0
 	github.com/hashicorp/golang-lru/v2 v2.0.7
 	github.com/jarcoal/httpmock v1.3.1
