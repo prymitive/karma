@@ -50,7 +50,7 @@ jobs:
         with:
           flags: backend
           files: ./coverage.txt
-          token: ${{ secrets.CODECOV_TOKEN }}
+          token: c77c73a6-81e1-4fa1-8372-9170d7953d41
 
   lint-go:
     name: Lint Go code
@@ -114,7 +114,7 @@ jobs:
         with:
           flags: ui
           directory: ./ui/coverage
-          token: ${{ secrets.CODECOV_TOKEN }}
+          token: c77c73a6-81e1-4fa1-8372-9170d7953d41
 
   lint-js:
     name: Lint JS code
