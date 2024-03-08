@@ -29,7 +29,7 @@
     "mobx-react-lite": "4.0.5",
     "mobx-stored": "1.1.0",
     "promise-retry": "2.0.1",
-    "qs": "6.11.2",
+    "qs": "6.12.0",
     "react": "17.0.2",
     "react-app-polyfill": "3.0.0",
     "react-cool-dimensions": "3.0.1",
