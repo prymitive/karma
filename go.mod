@@ -10,9 +10,9 @@ require (
 	github.com/fvbommel/sortorder v1.1.0
 	github.com/go-chi/chi/v5 v5.0.12
 	github.com/go-chi/cors v1.2.1
-	github.com/go-openapi/errors v0.21.1
+	github.com/go-openapi/errors v0.22.0
 	github.com/go-openapi/runtime v0.27.2
-	github.com/go-openapi/strfmt v0.22.2
+	github.com/go-openapi/strfmt v0.23.0
 	github.com/go-openapi/swag v0.22.10
 	github.com/go-openapi/validate v0.23.2
 	github.com/google/go-cmp v0.6.0
