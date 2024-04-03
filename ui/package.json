@@ -6,7 +6,7 @@
   "dependencies": {
     "@floating-ui/react-dom": "2.0.8",
     "@fortawesome/fontawesome-svg-core": "6.5.2",
-    "@fortawesome/free-regular-svg-icons": "6.5.1",
+    "@fortawesome/free-regular-svg-icons": "6.5.2",
     "@fortawesome/free-solid-svg-icons": "6.5.1",
     "@fortawesome/react-fontawesome": "0.2.0",
     "@juggle/resize-observer": "3.4.0",
