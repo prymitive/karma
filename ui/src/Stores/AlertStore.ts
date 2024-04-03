@@ -335,13 +335,19 @@ class AlertStore {
             );
         },
         get clustersWithoutReadOnly(): APIAlertsResponseUpstreamsClusterMapT {
+          const unhealthy = this.upstreams.instances
+            .filter((upstream) => upstream.error !== "")
+            .map((upstream) => upstream.name);
           const clusters: APIAlertsResponseUpstreamsClusterMapT = {};
           for (const clusterID of Object.keys(this.upstreams.clusters)) {
             const members = this.upstreams.clusters[clusterID].filter(
               (member) => this.isReadOnlyAlertmanager(member) === false,
             );
             if (members.length > 0) {
-              clusters[clusterID] = members;
+              clusters[clusterID] = [
+                ...members.filter((member) => !unhealthy.includes(member)),
+                ...members.filter((member) => unhealthy.includes(member)),
+              ];
             }
           }
           return clusters;

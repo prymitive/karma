@@ -94,6 +94,92 @@ describe("AlertStore.data", () => {
       store.data.getClusterAlertmanagersWithoutReadOnly("default"),
     ).toEqual([]);
   });
+
+  it("clustersWithoutReadOnly lists healthy members first", () => {
+    const store = new AlertStore([]);
+    store.data.setUpstreams({
+      counters: { total: 2, healthy: 1, failed: 1 },
+      clusters: { default: ["am1", "am2"] },
+      instances: [
+        {
+          name: "am1",
+          uri: "http://localhost",
+          publicURI: "http://example.com:8080",
+          readonly: false,
+          headers: { foo: "bar" },
+          corsCredentials: "include",
+          error: "bad",
+          version: "0.24.0",
+          cluster: "default",
+          clusterMembers: ["am1", "am2"],
+        },
+        {
+          name: "am2",
+          uri: "http://localhost:8081",
+          publicURI: "http://example.com",
+          readonly: false,
+          headers: {},
+          corsCredentials: "include",
+          error: "",
+          version: "0.24.0",
+          cluster: "default",
+          clusterMembers: ["am1", "am2"],
+        },
+      ],
+    });
+    expect(store.data.clustersWithoutReadOnly).toEqual({
+      default: ["am2", "am1"],
+    });
+  });
+
+  it("clustersWithoutReadOnly keeps healthy order", () => {
+    const store = new AlertStore([]);
+    store.data.setUpstreams({
+      counters: { total: 3, healthy: 3, failed: 0 },
+      clusters: { default: ["am1", "am2", "am3"] },
+      instances: [
+        {
+          name: "am1",
+          uri: "http://localhost",
+          publicURI: "http://example.com:8080",
+          readonly: false,
+          headers: { foo: "bar" },
+          corsCredentials: "include",
+          error: "",
+          version: "0.24.0",
+          cluster: "default",
+          clusterMembers: ["am1", "am2", "am3"],
+        },
+        {
+          name: "am2",
+          uri: "http://localhost:8081",
+          publicURI: "http://example.com",
+          readonly: false,
+          headers: {},
+          corsCredentials: "include",
+          error: "",
+          version: "0.24.0",
+          cluster: "default",
+          clusterMembers: ["am1", "am2", "am3"],
+        },
+        {
+          name: "am3",
+          uri: "http://localhost:8081",
+          publicURI: "http://example.com",
+          readonly: false,
+          headers: {},
+          corsCredentials: "include",
+          error: "",
+          version: "0.24.0",
+          cluster: "default",
+          clusterMembers: ["am1", "am2", "am3"],
+        },
+      ],
+    });
+    expect(store.data.clustersWithoutReadOnly).toEqual({
+      default: ["am1", "am2", "am3"],
+    });
+  });
 });
 
 describe("AlertStore.status", () => {
