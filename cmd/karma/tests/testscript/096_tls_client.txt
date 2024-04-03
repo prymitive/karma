@@ -109,26 +109,6 @@ func metrics(w http.ResponseWriter, r *http.Request) {
 `)
 }
 
-func status(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	io.WriteString(w, `
-{
-    "cluster": {
-        "name": "01EB67XCFES27NAFAGSW48NAHC",
-        "peers": [
-            {
-                "address": "172.17.0.2:9094",
-                "name": "01EB67XCFES27NAFAGSW48NAHC"
-            }
-        ],
-        "status": "ready"
-    },
-    "versionInfo": {
-        "version": "0.24.0"
-    }
-}`)
-}
-
 func empty(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	io.WriteString(w, "[]")
@@ -142,7 +122,6 @@ func main() {
 	}
 
 	http.HandleFunc("/metrics", metrics)
-	http.HandleFunc("/api/v2/status", status)
 	http.HandleFunc("/api/v2/silences", empty)
 	http.HandleFunc("/api/v2/alerts/groups", empty)
 

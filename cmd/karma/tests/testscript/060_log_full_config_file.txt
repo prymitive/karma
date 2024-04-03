@@ -285,10 +285,10 @@ level=info msg="  alertsPerGroup: 5"
 level=info msg="  collapseGroups: collapsedOnMobile"
 level=info msg="  multiGridLabel: severity"
 level=info msg="  multiGridSortReverse: true"
-level=info msg="Configured Alertmanager source" name=ha1 proxy=true readonly=false uri=http://127.0.0.1:9093
-level=info msg="Configured Alertmanager source" name=ha2 proxy=false readonly=true uri=http://127.0.0.1:9094
-level=info msg="Configured Alertmanager source" name=local proxy=true readonly=false uri=http://foo:xxx@127.0.0.1:9095
-level=info msg="Configured Alertmanager source" name=client-auth proxy=false readonly=false uri=https://127.0.0.1:9096
+level=info msg="Configured Alertmanager source" cluster=HA name=ha1 proxy=true readonly=false uri=http://127.0.0.1:9093
+level=info msg="Configured Alertmanager source" cluster=HA name=ha2 proxy=false readonly=true uri=http://127.0.0.1:9094
+level=info msg="Configured Alertmanager source" cluster=local name=local proxy=true readonly=false uri=http://foo:xxx@127.0.0.1:9095
+level=info msg="Configured Alertmanager source" cluster=client-auth name=client-auth proxy=false readonly=false uri=https://127.0.0.1:9096
 level=info msg="Setting up proxy endpoints" alertmanager=ha1
 level=info msg="Setting up proxy endpoints" alertmanager=local
 level=info msg="Configuration is valid"

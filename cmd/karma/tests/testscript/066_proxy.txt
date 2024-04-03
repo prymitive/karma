@@ -134,7 +134,7 @@ level=info msg="  alertsPerGroup: 5"
 level=info msg="  collapseGroups: collapsedOnMobile"
 level=info msg="  multiGridLabel: \"\""
 level=info msg="  multiGridSortReverse: false"
-level=info msg="Configured Alertmanager source" name=proxied proxy=true readonly=false uri=http://127.0.0.1
+level=info msg="Configured Alertmanager source" cluster=proxied name=proxied proxy=true readonly=false uri=http://127.0.0.1
 level=info msg="Setting up proxy endpoints" alertmanager=proxied
 level=info msg="Configuration is valid"
 -- karma.yaml --

@@ -92,10 +92,9 @@ func getUpstreams() models.AlertmanagerAPISummary {
 	upstreams := alertmanager.GetAlertmanagers()
 	for _, upstream := range upstreams {
 		members := upstream.ClusterMemberNames()
-		clusterName := upstream.ClusterName()
 
-		if _, found := clusters[clusterName]; !found {
-			clusters[clusterName] = members
+		if _, found := clusters[upstream.Cluster]; !found {
+			clusters[upstream.Cluster] = members
 		}
 
 		u := models.AlertmanagerAPIStatus{
@@ -107,7 +106,7 @@ func getUpstreams() models.AlertmanagerAPISummary {
 			CORSCredentials: upstream.CORSCredentials,
 			Error:           upstream.Error(),
 			Version:         upstream.Version(),
-			Cluster:         clusterName,
+			Cluster:         upstream.Cluster,
 			ClusterMembers:  members,
 		}
 		if !upstream.ProxyRequests {

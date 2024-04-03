@@ -13,7 +13,6 @@ import (
 	"github.com/prymitive/karma/internal/mapper"
 	"github.com/prymitive/karma/internal/mapper/v017/client"
 	"github.com/prymitive/karma/internal/mapper/v017/client/alertgroup"
-	"github.com/prymitive/karma/internal/mapper/v017/client/general"
 	"github.com/prymitive/karma/internal/mapper/v017/client/silence"
 	ammodels "github.com/prymitive/karma/internal/mapper/v017/models"
 	"github.com/prymitive/karma/internal/models"
@@ -114,22 +113,6 @@ func silences(c *client.AlertmanagerAPI, timeout time.Duration, si *intern.Inter
 			us.Matchers = append(us.Matchers, sm)
 		}
 		ret = append(ret, us)
-	}
-
-	return ret, nil
-}
-
-func status(c *client.AlertmanagerAPI, timeout time.Duration) (models.AlertmanagerStatus, error) {
-	ret := models.AlertmanagerStatus{}
-
-	status, err := c.General.GetStatus(general.NewGetStatusParamsWithTimeout(timeout))
-	if err != nil {
-		return ret, err
-	}
-
-	ret.ID = status.Payload.Cluster.Name
-	for _, p := range status.Payload.Cluster.Peers {
-		ret.PeerIDs = append(ret.PeerIDs, *p.Name)
 	}
 
 	return ret, nil

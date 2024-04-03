@@ -6,7 +6,7 @@ cmp stderr stderr.txt
 -- stderr.txt --
 level=info msg="Reading configuration file" path=karma.yaml
 level=info msg="Version: dev"
-level=info msg="Configured Alertmanager source" name=default proxy=false readonly=false uri=https://127.0.0.1:9093
+level=info msg="Configured Alertmanager source" cluster=default name=default proxy=false readonly=false uri=https://127.0.0.1:9093
 level=info msg="Reading silence ACL config file" path=acl.yaml
 level=error msg="Execution failed" error="invalid silence ACL rule at position 0: invalid ACL rule, no alertmanager with name \"unknown\" found"
 -- karma.yaml --

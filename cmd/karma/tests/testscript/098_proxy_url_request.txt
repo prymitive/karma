@@ -4,7 +4,7 @@ exec bash -x ./test.sh &
 exec bash -c 'I=0 ; while [ ! -f alertmanager.pid ] && [ $I -lt 30 ]; do sleep 1; I=$((I+1)); done'
 karma.bin-should-work --pid-file=karma.pid
 ! stdout .
-stderr 'level=info msg="Configured Alertmanager source" name=proxy-url proxy=false readonly=false uri=http://am.example.com'
+stderr 'level=info msg="Configured Alertmanager source" cluster=proxy-url name=proxy-url proxy=false readonly=false uri=http://am.example.com'
 stderr 'level=info msg="GET request" timeout=10 uri=http://am.example.com/metrics'
 stderr 'level=info msg="Upstream version" alertmanager=proxy-url version=0.24.0'
 stderr 'level=info msg="Got silences" alertmanager=proxy-url duration=.+ silences=0'
@@ -65,31 +65,6 @@ func metrics(w http.ResponseWriter, r *http.Request) {
 `)
 }
 
-func status(w http.ResponseWriter, r *http.Request) {
-	if r.Host != "am.example.com" {
-		w.WriteHeader(400)
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	io.WriteString(w, `
-{
-    "cluster": {
-        "name": "01EB67XCFES27NAFAGSW48NAHC",
-        "peers": [
-            {
-                "address": "172.17.0.2:9094",
-                "name": "01EB67XCFES27NAFAGSW48NAHC"
-            }
-        ],
-        "status": "ready"
-    },
-    "versionInfo": {
-        "version": "0.24.0"
-    }
-}`)
-}
-
 func empty(w http.ResponseWriter, r *http.Request) {
 	if r.Host != "am.example.com" {
 		w.WriteHeader(400)
@@ -108,7 +83,6 @@ func main() {
 	}
 
 	http.HandleFunc("/metrics", metrics)
-	http.HandleFunc("/api/v2/status", status)
 	http.HandleFunc("/api/v2/silences", empty)
 	http.HandleFunc("/api/v2/alerts/groups", empty)
 
