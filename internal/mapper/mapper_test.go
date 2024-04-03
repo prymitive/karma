@@ -94,32 +94,3 @@ func TestGetSilenceMapper(t *testing.T) {
 		})
 	}
 }
-
-func TestGetStatusMapper(t *testing.T) {
-	mapper.RegisterStatusMapper(v017.StatusMapper{})
-
-	for _, testCase := range testCases {
-		t.Run(testCase.requestedVersion, func(t *testing.T) {
-			hadPanic := false
-			defer func() {
-				if r := recover(); r != nil {
-					hadPanic = true
-					if hadPanic != testCase.hadPanic {
-						t.Errorf("[%s] expected panic=%v, got %v", testCase.requestedVersion, testCase.hadPanic, hadPanic)
-					}
-				}
-			}()
-
-			m, err := mapper.GetStatusMapper(testCase.requestedVersion)
-			if (err != nil) != testCase.hadError {
-				t.Errorf("[%s] expected error=%v, got %v", testCase.requestedVersion, testCase.hadError, err)
-			}
-			if hadPanic != testCase.hadPanic {
-				t.Errorf("[%s] expected panic=%v, got %v", testCase.requestedVersion, testCase.hadPanic, hadPanic)
-			}
-			if m == nil && !testCase.hadError && !testCase.hadPanic {
-				t.Errorf("[%s] got nil mapper", testCase.requestedVersion)
-			}
-		})
-	}
-}

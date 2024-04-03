@@ -23,11 +23,6 @@ func TestGetAlertMapper(t *testing.T) {
 		if err != nil {
 			t.Errorf("mapper.GetSilenceMapper(%s) returned error: %s", version, err)
 		}
-
-		_, err = mapper.GetStatusMapper(version)
-		if err != nil {
-			t.Errorf("mapper.GetStatusMapper(%s) returned error: %s", version, err)
-		}
 	}
 }
 
@@ -47,11 +42,6 @@ func TestGetInvalidAlertMapper(t *testing.T) {
 		_, err = mapper.GetSilenceMapper(version)
 		if err == nil {
 			t.Errorf("mapper.GetSilenceMapper(%s) didn't return an error", version)
-		}
-
-		_, err = mapper.GetStatusMapper(version)
-		if err == nil {
-			t.Errorf("mapper.GetStatusMapper(%s) didn't return an error", version)
 		}
 	}
 }

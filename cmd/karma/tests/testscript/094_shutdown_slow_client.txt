@@ -9,7 +9,7 @@ wait
 -- stderr.txt --
 level=info msg="Reading configuration file" path=karma.yaml
 level=info msg="Version: dev"
-level=info msg="Configured Alertmanager source" name=proxied proxy=true readonly=false uri=http://127.0.0.1:9094
+level=info msg="Configured Alertmanager source" cluster=proxied name=proxied proxy=true readonly=false uri=http://127.0.0.1:9094
 level=info msg="Setting up proxy endpoints" alertmanager=proxied
 level=info msg="Writing PID file" path=karma.pid
 level=info msg="Initial Alertmanager collection"
@@ -17,10 +17,10 @@ level=info msg="Pulling latest alerts and silences from Alertmanager"
 level=info msg="Collecting alerts and silences" alertmanager=proxied
 level=info msg="GET request" timeout=40 uri=http://127.0.0.1:9094/metrics
 level=error msg="Request failed" error="Get \"http://127.0.0.1:9094/metrics\": dial tcp 127.0.0.1:9094: connect: connection refused" alertmanager=proxied uri=http://127.0.0.1:9094
-level=error msg="Collection failed" error="Get \"http://127.0.0.1:9094/api/v2/status\": dial tcp 127.0.0.1:9094: connect: connection refused" alertmanager=proxied try=1/2
+level=error msg="Collection failed" error="Get \"http://127.0.0.1:9094/api/v2/silences\": dial tcp 127.0.0.1:9094: connect: connection refused" alertmanager=proxied try=1/2
 level=info msg="GET request" timeout=40 uri=http://127.0.0.1:9094/metrics
 level=error msg="Request failed" error="Get \"http://127.0.0.1:9094/metrics\": dial tcp 127.0.0.1:9094: connect: connection refused" alertmanager=proxied uri=http://127.0.0.1:9094
-level=error msg="Collection failed" error="Get \"http://127.0.0.1:9094/api/v2/status\": dial tcp 127.0.0.1:9094: connect: connection refused" alertmanager=proxied try=2/2
+level=error msg="Collection failed" error="Get \"http://127.0.0.1:9094/api/v2/silences\": dial tcp 127.0.0.1:9094: connect: connection refused" alertmanager=proxied try=2/2
 level=info msg="Collection completed"
 level=info msg="Done, starting HTTP server"
 level=info msg="Starting HTTP server" address=127.0.0.1:8094

@@ -84,7 +84,6 @@ func TestAuthHeader(t *testing.T) {
 
 			for _, m := range []string{
 				"metrics",
-				"api/v2/status",
 				"api/v2/silences",
 				"api/v2/alerts/groups",
 			} {

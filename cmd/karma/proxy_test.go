@@ -563,7 +563,6 @@ func TestProxyUserRewrite(t *testing.T) {
 				apiCache, _ = lru.New[string, []byte](100)
 				httpmock.Reset()
 				mock.RegisterURL("http://localhost/metrics", version, "metrics")
-				mock.RegisterURL("http://localhost/api/v2/status", version, "api/v2/status")
 				mock.RegisterURL("http://localhost/api/v2/silences", version, "api/v2/silences")
 				mock.RegisterURL("http://localhost/api/v2/alerts/groups", version, "api/v2/alerts/groups")
 				_ = am.Pull(intern.New())
@@ -1337,7 +1336,6 @@ func TestProxySilenceACL(t *testing.T) {
 				apiCache, _ = lru.New[string, []byte](100)
 				httpmock.Reset()
 				mock.RegisterURL("http://localhost/metrics", version, "metrics")
-				mock.RegisterURL("http://localhost/api/v2/status", version, "api/v2/status")
 				mock.RegisterURL("http://localhost/api/v2/silences", version, "api/v2/silences")
 				mock.RegisterURL("http://localhost/api/v2/alerts/groups", version, "api/v2/alerts/groups")
 				_ = am.Pull(intern.New())
@@ -1432,13 +1430,6 @@ func TestProxyRequestToUnsupportedAlertmanager(t *testing.T) {
 	httpmock.Reset()
 	httpmock.RegisterResponder("GET", "http://localhost/metrics", httpmock.NewStringResponder(200, `alertmanager_build_info{version="0.1.0"} 1
 	`))
-	httpmock.RegisterResponder("GET", "http://localhost/api/v2/status", httpmock.NewStringResponder(200, `{
-		"cluster": {
-			"name": "BBBBBBBBBBBBBBBBBBBBBBBBBB",
-			"peers": [],
-			"status": "ready"
-		}
-	}`))
 	httpmock.RegisterResponder("POST", "http://localhost/api/v2/silences", httpmock.NewStringResponder(200, "{}"))
 	httpmock.RegisterResponder("GET", "http://localhost/api/v2/silences", httpmock.NewStringResponder(200, "[]"))
 	httpmock.RegisterResponder("GET", "http://localhost/api/v2/alerts/groups", httpmock.NewStringResponder(200, "[]"))

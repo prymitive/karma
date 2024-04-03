@@ -26,7 +26,6 @@ VERSIONS := 0.22.0 022.1 0.23.0 0.24.0 0.25.0 0.26.0 0.27.0
 
 	@mkdir -p $(CURDIR)/$(VERSION)/api/v$(API) $(CURDIR)/$(VERSION)/api/v$(API)/alerts
 	@curl --fail -s localhost:9093/metrics > $(CURDIR)/$(VERSION)/metrics
-	@curl --fail -s localhost:9093/api/v$(API)/status | python3 -m json.tool > $(CURDIR)/$(VERSION)/api/v$(API)/status
 	@curl --fail -s localhost:9093/api/v$(API)/silences | python3 -m json.tool > $(CURDIR)/$(VERSION)/api/v$(API)/silences
 	@curl --fail -s localhost:9093/api/v$(API)/alerts/groups | python3 -m json.tool > $(CURDIR)/$(VERSION)/api/v$(API)/alerts/groups
 

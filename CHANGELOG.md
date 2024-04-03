@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.120
+
+### Changed
+
+- Karma no longer uses alertmanager `api/v2/status` to discover cluster peers.
+  It will only rely on `cluster` field configuration options set in karma config
+  file.
+
 ## v0.119
 
 ### Fixed

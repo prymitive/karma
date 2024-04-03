@@ -244,15 +244,6 @@ func TestAlertmanagerPullSilencesWithInvalidVersion(t *testing.T) {
 	}
 }
 
-func TestAlertmanagerFetchStatusWithInvalidVersion(t *testing.T) {
-	zerolog.SetGlobalLevel(zerolog.PanicLevel)
-	am, _ := NewAlertmanager("cluster", "test", "http://localhost")
-	_, err := am.fetchStatus("0.0.1")
-	if err == nil {
-		t.Error("am.fetchStatus(invalid version) didn't return any error")
-	}
-}
-
 func TestExpiredSilences(t *testing.T) {
 	config.Config.Silences.Expired = time.Minute * 10
 
@@ -271,14 +262,6 @@ func TestExpiredSilences(t *testing.T) {
 
 	httpmock.RegisterResponder("GET", fmt.Sprintf("%s/metrics", uri),
 		httpmock.NewStringResponder(200, "alertmanager_build_info{version=\"0.22.1\"} 1\n"))
-	httpmock.RegisterResponder("GET", fmt.Sprintf("%s/api/v2/status", uri),
-		httpmock.NewStringResponder(200, `{
-		"cluster": {
-			"name": "BBBBBBBBBBBBBBBBBBBBBBBBBB",
-			"peers": [],
-			"status": "ready"
-		}
-	}`))
 	httpmock.RegisterResponder("GET", fmt.Sprintf("%s/api/v2/silences", uri),
 		httpmock.NewStringResponder(200, fmt.Sprintf(`[
 {

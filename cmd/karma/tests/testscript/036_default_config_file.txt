@@ -6,7 +6,7 @@ cmp stderr stderr.txt
 -- stderr.txt --
 level=info msg="Reading configuration file" path=karma.yaml
 level=info msg="Version: dev"
-level=info msg="Configured Alertmanager source" name=cwd proxy=true readonly=false uri=http://127.0.0.1:8080
+level=info msg="Configured Alertmanager source" cluster=cwd name=cwd proxy=true readonly=false uri=http://127.0.0.1:8080
 level=info msg="Setting up proxy endpoints" alertmanager=cwd
 level=info msg="Configuration is valid"
 -- karma.yaml --

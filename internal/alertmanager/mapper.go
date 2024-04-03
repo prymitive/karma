@@ -9,5 +9,4 @@ import (
 func init() {
 	mapper.RegisterAlertMapper(v017.AlertMapper{})
 	mapper.RegisterSilenceMapper(v017.SilenceMapper{})
-	mapper.RegisterStatusMapper(v017.StatusMapper{})
 }

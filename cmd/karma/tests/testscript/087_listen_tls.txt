@@ -21,7 +21,7 @@ level=info msg="Pulling latest alerts and silences from Alertmanager"
 level=info msg="Collecting alerts and silences" alertmanager=local
 level=info msg="GET request" timeout=10 uri=https://127.0.0.1:9093/metrics
 level=error msg="Request failed" error="Get \"https://127.0.0.1:9093/metrics\": dial tcp 127.0.0.1:9093: connect: connection refused" alertmanager=local uri=https://127.0.0.1:9093
-level=error msg="Collection failed" error="Get \"https://127.0.0.1:9093/api/v2/status\": dial tcp 127.0.0.1:9093: connect: connection refused" alertmanager=local
+level=error msg="Collection failed" error="Get \"https://127.0.0.1:9093/api/v2/silences\": dial tcp 127.0.0.1:9093: connect: connection refused" alertmanager=local
 level=info msg="Collection completed"
 level=info msg="Done, starting HTTP server"
 level=info msg="Starting HTTPS server" address=127.0.0.1:8087

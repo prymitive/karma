@@ -13,7 +13,6 @@ import (
 var (
 	alertMappers   = []AlertMapper{}
 	silenceMappers = []SilenceMapper{}
-	statusMappers  = []StatusMapper{}
 )
 
 // Mapper converts Alertmanager response body and maps to karma data structures
@@ -33,12 +32,6 @@ type SilenceMapper interface {
 	Collect(*intern.Interner, string, map[string]string, time.Duration, http.RoundTripper) ([]models.Silence, error)
 	RewriteUsername([]byte, string) ([]byte, error)
 	Unmarshal([]byte) (*models.Silence, error)
-}
-
-// StatusMapper handles mapping Alertmanager status information containing cluster config
-type StatusMapper interface {
-	Mapper
-	Collect(string, map[string]string, time.Duration, http.RoundTripper) (models.AlertmanagerStatus, error)
 }
 
 // RegisterAlertMapper allows to register mapper implementing alert data
@@ -85,21 +78,4 @@ func GetSilenceMapper(version string) (SilenceMapper, error) {
 		}
 	}
 	return nil, fmt.Errorf("can't find silence mapper for Alertmanager %s", version)
-}
-
-// RegisterStatusMapper allows to register mapper implementing status data
-// handling for specific Alertmanager versions
-func RegisterStatusMapper(m StatusMapper) {
-	statusMappers = append(statusMappers, m)
-}
-
-// GetStatusMapper returns mapper for given version
-func GetStatusMapper(version string) (StatusMapper, error) {
-	ver := latestIfEmpty(version)
-	for _, m := range statusMappers {
-		if m.IsSupported(fixSemVersion(ver)) {
-			return m, nil
-		}
-	}
-	return nil, fmt.Errorf("can't find status mapper for Alertmanager %s", version)
 }

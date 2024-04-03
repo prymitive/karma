@@ -6,17 +6,17 @@ cmp stderr stderr.txt
 
 -- stderr.txt --
 level=info msg="Version: dev"
-level=info msg="Configured Alertmanager source" name=default proxy=false readonly=false uri=http://foo:xxx@127.0.0.1
+level=info msg="Configured Alertmanager source" cluster=default name=default proxy=false readonly=false uri=http://foo:xxx@127.0.0.1
 level=info msg="Writing PID file" path=karma.pid
 level=info msg="Initial Alertmanager collection"
 level=info msg="Pulling latest alerts and silences from Alertmanager"
 level=info msg="Collecting alerts and silences" alertmanager=default
 level=info msg="GET request" timeout=40 uri=http://foo:xxx@127.0.0.1/metrics
 level=error msg="Request failed" error="Get \"http://foo:***@127.0.0.1/metrics\": dial tcp 127.0.0.1:80: connect: connection refused" alertmanager=default uri=http://foo:xxx@127.0.0.1
-level=error msg="Collection failed" error="Get \"http://127.0.0.1/api/v2/status\": dial tcp 127.0.0.1:80: connect: connection refused" alertmanager=default try=1/2
+level=error msg="Collection failed" error="Get \"http://127.0.0.1/api/v2/silences\": dial tcp 127.0.0.1:80: connect: connection refused" alertmanager=default try=1/2
 level=info msg="GET request" timeout=40 uri=http://foo:xxx@127.0.0.1/metrics
 level=error msg="Request failed" error="Get \"http://foo:***@127.0.0.1/metrics\": dial tcp 127.0.0.1:80: connect: connection refused" alertmanager=default uri=http://foo:xxx@127.0.0.1
-level=error msg="Collection failed" error="Get \"http://127.0.0.1/api/v2/status\": dial tcp 127.0.0.1:80: connect: connection refused" alertmanager=default try=2/2
+level=error msg="Collection failed" error="Get \"http://127.0.0.1/api/v2/silences\": dial tcp 127.0.0.1:80: connect: connection refused" alertmanager=default try=2/2
 level=info msg="Collection completed"
 level=info msg="Done, starting HTTP server"
 level=error msg="Execution failed" error="listen tcp: address 9999999: invalid port"

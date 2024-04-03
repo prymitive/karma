@@ -827,7 +827,10 @@ func TestVerifyAllGroups(t *testing.T) {
 
 		am, foundAM := ur.Silences["default"]
 		if !foundAM {
-			t.Errorf("[%s] Alertmanager cluster 'default' (default) missing from silences", version)
+			t.Errorf("[%s] Alertmanager cluster 'default' missing from silences", version)
+			for name := range ur.Silences {
+				t.Logf("Cluster: %s", name)
+			}
 		} else if len(am) == 0 {
 			t.Errorf("[%s] Silences mismatch, expected >0 but got %d", version, len(am))
 		}

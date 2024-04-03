@@ -2,7 +2,6 @@ package alertmanager_test
 
 import (
 	"fmt"
-	"strings"
 	"testing"
 	"time"
 
@@ -34,7 +33,6 @@ func init() {
 		}
 
 		mock.RegisterURL(fmt.Sprintf("%s/metrics", uri), version, "metrics")
-		mock.RegisterURL(fmt.Sprintf("%s/api/v2/status", uri), version, "api/v2/status")
 		mock.RegisterURL(fmt.Sprintf("%s/api/v2/silences", uri), version, "api/v2/silences")
 		mock.RegisterURL(fmt.Sprintf("%s/api/v2/alerts/groups", uri), version, "api/v2/alerts/groups")
 	}
@@ -211,7 +209,6 @@ func TestClearData(t *testing.T) {
 			t.Errorf("[%s] Get %d known labels", am.Name, len(am.KnownLabels()))
 		}
 
-		mock.RegisterURL(fmt.Sprintf("%s/api/v2/status", uri), version, "api/v2/status")
 		mock.RegisterURL(fmt.Sprintf("%s/api/v2/silences", uri), version, "api/v2/silences")
 		_ = am.Pull(intern.New())
 		if am.Version() == "" {
@@ -234,9 +231,6 @@ func TestClearData(t *testing.T) {
 		_ = am.Pull(intern.New())
 		if am.Version() == "" {
 			t.Errorf("[%s] Got empty version string", am.Name)
-		}
-		if !strings.HasPrefix(am.Error(), "missing cluster peers:") {
-			t.Errorf("[%s] Got non-empty error string: %s", am.Name, am.Error())
 		}
 		if len(am.Silences()) == 0 {
 			t.Errorf("[%s] Get %d silences", am.Name, len(am.Silences()))

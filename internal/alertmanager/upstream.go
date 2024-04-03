@@ -22,6 +22,9 @@ var upstreams = map[string]*Alertmanager{}
 
 // NewAlertmanager creates a new Alertmanager instance
 func NewAlertmanager(cluster, name, upstreamURI string, opts ...Option) (*Alertmanager, error) {
+	if cluster == "" {
+		cluster = name
+	}
 	am := &Alertmanager{
 		URI:            upstreamURI,
 		ExternalURI:    "",
@@ -41,7 +44,6 @@ func NewAlertmanager(cluster, name, upstreamURI string, opts ...Option) (*Alertm
 				labelValueErrorsSilences: 0,
 			},
 		},
-		status:       models.AlertmanagerStatus{},
 		healthchecks: map[string]HealthCheck{},
 	}
 
@@ -77,6 +79,7 @@ func RegisterAlertmanager(am *Alertmanager) error {
 	// am.Name, uri.SanitizeURI(am.URI), am.ProxyRequests, am.ReadOnly
 	log.Info().
 		Str("name", am.Name).
+		Str("cluster", am.Cluster).
 		Str("uri", uri.SanitizeURI(am.URI)).
 		Bool("proxy", am.ProxyRequests).
 		Bool("readonly", am.ReadOnly).
