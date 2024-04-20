@@ -16,4 +16,4 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run actionlint
-        uses: reviewdog/action-actionlint@v1.43.0
+        uses: reviewdog/action-actionlint@v1.44.0
