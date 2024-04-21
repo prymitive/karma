@@ -33,7 +33,7 @@
     "react": "17.0.2",
     "react-app-polyfill": "3.0.0",
     "react-cool-dimensions": "3.0.1",
-    "react-day-picker": "8.10.0",
+    "react-day-picker": "8.10.1",
     "react-dom": "17.0.2",
     "react-hotkeys-hook": "4.4.1",
     "react-idle-timer": "4.6.4",
