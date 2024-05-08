@@ -6,7 +6,6 @@ output:
 
 linters:
   enable:
-    - depguard
     - gofumpt
     - goimports
     - revive
@@ -17,27 +16,12 @@ linters:
     - errorlint
     - exportloopref
     - predeclared
-    - maligned
 
 issues:
   max-same-issues: 0
-  exclude-rules:
-    - path: _test.go
-      linters:
-        - maligned
 
 linters-settings:
-  depguard:
-    rules:
-      main:
-        files:
-          - '$all'
-        deny:
-          - pkg: "io/ioutil"
-            desc: "Use corresponding 'os' or 'io' functions instead."
   goimports:
     local-prefixes: github.com/prymitive/karma
   gofumpt:
     extra-rules: true
-  maligned:
-    suggest-new: true
