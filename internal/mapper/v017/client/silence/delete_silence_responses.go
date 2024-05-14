@@ -6,6 +6,7 @@ package silence
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 
@@ -82,11 +83,11 @@ func (o *DeleteSilenceOK) Code() int {
 }
 
 func (o *DeleteSilenceOK) Error() string {
-	return fmt.Sprintf("[DELETE /silence/{silenceID}][%d] deleteSilenceOK ", 200)
+	return fmt.Sprintf("[DELETE /silence/{silenceID}][%d] deleteSilenceOK", 200)
 }
 
 func (o *DeleteSilenceOK) String() string {
-	return fmt.Sprintf("[DELETE /silence/{silenceID}][%d] deleteSilenceOK ", 200)
+	return fmt.Sprintf("[DELETE /silence/{silenceID}][%d] deleteSilenceOK", 200)
 }
 
 func (o *DeleteSilenceOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -139,11 +140,13 @@ func (o *DeleteSilenceInternalServerError) Code() int {
 }
 
 func (o *DeleteSilenceInternalServerError) Error() string {
-	return fmt.Sprintf("[DELETE /silence/{silenceID}][%d] deleteSilenceInternalServerError  %+v", 500, o.Payload)
+	payload, _ := json.Marshal(o.Payload)
+	return fmt.Sprintf("[DELETE /silence/{silenceID}][%d] deleteSilenceInternalServerError %s", 500, payload)
 }
 
 func (o *DeleteSilenceInternalServerError) String() string {
-	return fmt.Sprintf("[DELETE /silence/{silenceID}][%d] deleteSilenceInternalServerError  %+v", 500, o.Payload)
+	payload, _ := json.Marshal(o.Payload)
+	return fmt.Sprintf("[DELETE /silence/{silenceID}][%d] deleteSilenceInternalServerError %s", 500, payload)
 }
 
 func (o *DeleteSilenceInternalServerError) GetPayload() string {

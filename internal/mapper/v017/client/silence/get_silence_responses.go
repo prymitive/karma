@@ -6,6 +6,7 @@ package silence
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 
@@ -91,11 +92,13 @@ func (o *GetSilenceOK) Code() int {
 }
 
 func (o *GetSilenceOK) Error() string {
-	return fmt.Sprintf("[GET /silence/{silenceID}][%d] getSilenceOK  %+v", 200, o.Payload)
+	payload, _ := json.Marshal(o.Payload)
+	return fmt.Sprintf("[GET /silence/{silenceID}][%d] getSilenceOK %s", 200, payload)
 }
 
 func (o *GetSilenceOK) String() string {
-	return fmt.Sprintf("[GET /silence/{silenceID}][%d] getSilenceOK  %+v", 200, o.Payload)
+	payload, _ := json.Marshal(o.Payload)
+	return fmt.Sprintf("[GET /silence/{silenceID}][%d] getSilenceOK %s", 200, payload)
 }
 
 func (o *GetSilenceOK) GetPayload() *models.GettableSilence {
@@ -158,11 +161,11 @@ func (o *GetSilenceNotFound) Code() int {
 }
 
 func (o *GetSilenceNotFound) Error() string {
-	return fmt.Sprintf("[GET /silence/{silenceID}][%d] getSilenceNotFound ", 404)
+	return fmt.Sprintf("[GET /silence/{silenceID}][%d] getSilenceNotFound", 404)
 }
 
 func (o *GetSilenceNotFound) String() string {
-	return fmt.Sprintf("[GET /silence/{silenceID}][%d] getSilenceNotFound ", 404)
+	return fmt.Sprintf("[GET /silence/{silenceID}][%d] getSilenceNotFound", 404)
 }
 
 func (o *GetSilenceNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -215,11 +218,13 @@ func (o *GetSilenceInternalServerError) Code() int {
 }
 
 func (o *GetSilenceInternalServerError) Error() string {
-	return fmt.Sprintf("[GET /silence/{silenceID}][%d] getSilenceInternalServerError  %+v", 500, o.Payload)
+	payload, _ := json.Marshal(o.Payload)
+	return fmt.Sprintf("[GET /silence/{silenceID}][%d] getSilenceInternalServerError %s", 500, payload)
 }
 
 func (o *GetSilenceInternalServerError) String() string {
-	return fmt.Sprintf("[GET /silence/{silenceID}][%d] getSilenceInternalServerError  %+v", 500, o.Payload)
+	payload, _ := json.Marshal(o.Payload)
+	return fmt.Sprintf("[GET /silence/{silenceID}][%d] getSilenceInternalServerError %s", 500, payload)
 }
 
 func (o *GetSilenceInternalServerError) GetPayload() string {

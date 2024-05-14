@@ -30,7 +30,7 @@ type AlertStatus struct {
 
 	// state
 	// Required: true
-	// Enum: [unprocessed active suppressed]
+	// Enum: ["unprocessed","active","suppressed"]
 	State *string `json:"state"`
 }
 

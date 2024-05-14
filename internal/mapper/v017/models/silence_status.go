@@ -22,7 +22,7 @@ type SilenceStatus struct {
 
 	// state
 	// Required: true
-	// Enum: [expired active pending]
+	// Enum: ["expired","active","pending"]
 	State *string `json:"state"`
 }
 
