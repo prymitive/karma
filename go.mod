@@ -8,7 +8,7 @@ require (
 	github.com/cespare/xxhash/v2 v2.3.0
 	github.com/cnf/structhash v0.0.0-20201127153200-e1b16c1ebc08
 	github.com/fvbommel/sortorder v1.1.0
-	github.com/go-chi/chi/v5 v5.0.12
+	github.com/go-chi/chi/v5 v5.0.14
 	github.com/go-chi/cors v1.2.1
 	github.com/go-openapi/errors v0.22.0
 	github.com/go-openapi/runtime v0.28.0
