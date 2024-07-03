@@ -1,4 +1,4 @@
-FROM node:22.3.0-alpine as nodejs-builder
+FROM node:22.4.0-alpine as nodejs-builder
 RUN mkdir -p /src/ui
 COPY ui/package.json ui/package-lock.json /src/ui/
 RUN cd /src/ui && npm ci && touch node_modules/.install
