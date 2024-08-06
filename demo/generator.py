@@ -310,7 +310,7 @@ class SilencedAlert(AlertGenerator):
         ]
 
     def silences(self):
-        now = datetime.datetime.utcnow().replace(microsecond=0)
+        now = datetime.datetime.now(datetime.UTC).replace(microsecond=0)
         return [
             (
                 [newMatcher("alertname", self.name, False)],
@@ -356,7 +356,7 @@ class MixedAlerts(AlertGenerator):
         ]
 
     def silences(self):
-        now = datetime.datetime.utcnow().replace(microsecond=0)
+        now = datetime.datetime.now(datetime.UTC).replace(microsecond=0)
         return [
             (
                 [
@@ -475,7 +475,7 @@ class SilencedAlertWithJiraLink(AlertGenerator):
         ]
 
     def silences(self):
-        now = datetime.datetime.utcnow().replace(microsecond=0)
+        now = datetime.datetime.now(datetime.UTC).replace(microsecond=0)
         return [
             (
                 [newMatcher("alertname", self.name, False)],
@@ -507,7 +507,7 @@ class PaginationTest(AlertGenerator):
         ]
 
     def silences(self):
-        now = datetime.datetime.utcnow().replace(microsecond=0)
+        now = datetime.datetime.now(datetime.UTC).replace(microsecond=0)
         return [
             (
                 [
