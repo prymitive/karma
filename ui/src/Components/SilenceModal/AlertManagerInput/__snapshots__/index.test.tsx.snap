@@ -17,14 +17,14 @@ exports[`<AlertManagerInput /> matches snapshot 1`] = `
   >
   </span>
   <div class="react-select__control css-18hiu1u-control">
-    <div class="react-select__value-container react-select__value-container--is-multi react-select__value-container--has-value css-127noje-ValueContainer">
+    <div class="react-select__value-container react-select__value-container--is-multi react-select__value-container--has-value css-zz5bvt">
       <div class="react-select__multi-value css-1laq446-multiValue">
-        <div class="react-select__multi-value__label css-iljojb-MultiValueGeneric">
+        <div class="react-select__multi-value__label css-1vlm35c">
           Cluster: HA
         </div>
         <div
           role="button"
-          class="react-select__multi-value__remove css-1izoyac-MultiValueRemove"
+          class="react-select__multi-value__remove css-16j2jaw"
           aria-label="Remove Cluster: HA"
         >
           <svg
@@ -41,12 +41,12 @@ exports[`<AlertManagerInput /> matches snapshot 1`] = `
         </div>
       </div>
       <div class="react-select__multi-value css-1laq446-multiValue">
-        <div class="react-select__multi-value__label css-iljojb-MultiValueGeneric">
+        <div class="react-select__multi-value__label css-1vlm35c">
           am3
         </div>
         <div
           role="button"
-          class="react-select__multi-value__remove css-1izoyac-MultiValueRemove"
+          class="react-select__multi-value__remove css-16j2jaw"
           aria-label="Remove am3"
         >
           <svg
@@ -63,7 +63,7 @@ exports[`<AlertManagerInput /> matches snapshot 1`] = `
         </div>
       </div>
       <div
-        class="react-select__input-container css-3qym3m-Input"
+        class="react-select__input-container css-6hzavh"
         data-value
       >
         <input
@@ -85,7 +85,7 @@ exports[`<AlertManagerInput /> matches snapshot 1`] = `
         >
       </div>
     </div>
-    <div class="react-select__indicators css-vcwr3k-IndicatorsContainer">
+    <div class="react-select__indicators css-mik995">
       <div
         class="react-select__indicator react-select__clear-indicator css-1xc3v61-indicatorContainer"
         aria-hidden="true"
