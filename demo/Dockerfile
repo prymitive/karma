@@ -1,4 +1,4 @@
-FROM node:22.5.1-alpine as nodejs-builder
+FROM node:22.5.1-alpine AS nodejs-builder
 RUN mkdir -p /src/ui
 RUN apk add make git
 COPY ui/package.json ui/package-lock.json /src/ui/
@@ -6,7 +6,7 @@ RUN cd /src/ui && npm ci && touch node_modules/.install
 COPY ui /src/ui
 RUN make -C /src/ui build
 
-FROM golang:1.22.5-alpine as go-builder
+FROM golang:1.22.5-alpine AS go-builder
 RUN apk add make git
 COPY Makefile /src/Makefile
 COPY make /src/make
@@ -22,9 +22,9 @@ COPY internal /src/internal
 ARG VERSION
 RUN CGO_ENABLED=0 make -C /src VERSION="${VERSION:-dev}" karma
 
-FROM ghcr.io/prymitive/kthxbye:v0.16 as kthxbye
+FROM ghcr.io/prymitive/kthxbye:v0.16 AS kthxbye
 
-FROM prom/alertmanager:v0.27.0 as alertmanager
+FROM prom/alertmanager:v0.27.0 AS alertmanager
 
 FROM alpine:3.20
 COPY --from=kthxbye /kthxbye /kthxbye
