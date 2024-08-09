@@ -18,6 +18,7 @@ const AlertGroupConfiguration: FC<{
   return (
     <div className="p-3 text-center">
       <Range
+        label=""
         step={1}
         min={1}
         max={25}

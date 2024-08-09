@@ -44,6 +44,7 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
                   aria-valuemin="10"
                   aria-valuenow="30"
                   draggable="false"
+                  aria-label
                   role="slider"
                 >
                   30s
@@ -222,6 +223,7 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
                   aria-valuemin="300"
                   aria-valuenow="420"
                   draggable="false"
+                  aria-label
                   role="slider"
                 >
                   420
@@ -255,6 +257,7 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
                   aria-valuemin="1"
                   aria-valuenow="5"
                   draggable="false"
+                  aria-label
                   role="slider"
                 >
                   5
