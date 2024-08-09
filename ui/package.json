@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "license": "Apache-2.0",
   "private": true,
+  "type": "module",
   "dependencies": {
     "@floating-ui/react-dom": "2.1.1",
     "@fortawesome/fontawesome-svg-core": "6.6.0",
