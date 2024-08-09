@@ -18,6 +18,7 @@ const FetchConfiguration: FC<{
   return (
     <div className="p-3 text-center">
       <Range
+        label=""
         step={10}
         min={10}
         max={120}

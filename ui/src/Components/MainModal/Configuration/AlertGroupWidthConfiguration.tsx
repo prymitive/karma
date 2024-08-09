@@ -20,6 +20,7 @@ const AlertGroupWidthConfiguration: FC<{
   return (
     <div className="p-3 text-center">
       <Range
+        label=""
         step={10}
         min={300}
         max={800}

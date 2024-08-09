@@ -15,6 +15,7 @@ exports[`<FetchConfiguration /> matches snapshot with default values 1`] = `
       aria-valuemin="10"
       aria-valuenow="30"
       draggable="false"
+      aria-label
       role="slider"
     >
       30s
