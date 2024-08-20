@@ -93,6 +93,9 @@
   "overrides": {
     "@types/enzyme": {
       "@types/react": "16.14.46"
+    },
+    "enzyme@3.11.0": {
+      "cheerio": "1.0.0-rc.12"
     }
   },
   "scripts": {
