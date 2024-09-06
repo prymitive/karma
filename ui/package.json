@@ -83,7 +83,7 @@
     "jest-fetch-mock": "3.0.3",
     "node-fetch": "2.6.11",
     "prettier": "3.3.3",
-    "sass": "1.77.8",
+    "sass": "1.78.0",
     "terser": "5.31.6",
     "ts-jest": "29.2.5",
     "typescript": "5.5.4",
