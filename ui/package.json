@@ -86,7 +86,7 @@
     "sass": "1.78.0",
     "terser": "5.32.0",
     "ts-jest": "29.2.5",
-    "typescript": "5.5.4",
+    "typescript": "5.6.2",
     "vite": "5.4.4",
     "vite-tsconfig-paths": "5.0.1"
   },
