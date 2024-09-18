@@ -1,4 +1,4 @@
-FROM node:22.8.0-alpine AS nodejs-builder
+FROM node:22.9.0-alpine AS nodejs-builder
 RUN mkdir -p /src/ui
 RUN apk add make git
 COPY ui/package.json ui/package-lock.json /src/ui/
