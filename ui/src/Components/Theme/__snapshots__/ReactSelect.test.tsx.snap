@@ -2,7 +2,7 @@
 
 exports[`<WrappedCustomMultiSelect /> matches snapshot when focused 1`] = `
 "
-<div class=" css-b62m3t-container">
+<div class="css-b62m3t-container">
   <span
     id="react-select-3-live-region"
     class="css-1f43avz-a11yText-A11yText"
@@ -26,16 +26,16 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot when focused 1`] = `
     class="css-1f43avz-a11yText-A11yText"
   >
   </span>
-  <div class=" css-ath5wh-control">
-    <div class=" css-1tlotun">
+  <div class="css-ath5wh-control">
+    <div class="css-1tlotun">
       <div
-        class=" css-1jqq78o-placeholder"
+        class="css-1jqq78o-placeholder"
         id="react-select-3-placeholder"
       >
         Select...
       </div>
       <div
-        class=" css-6hzavh"
+        class="css-6hzavh"
         data-value
       >
         <input
@@ -58,11 +58,11 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot when focused 1`] = `
         >
       </div>
     </div>
-    <div class=" css-mik995">
-      <span class=" css-1u9des2-indicatorSeparator">
+    <div class="css-mik995">
+      <span class="css-1u9des2-indicatorSeparator">
       </span>
       <div
-        class=" css-1fu8xx8-indicatorContainer"
+        class="css-1fu8xx8-indicatorContainer"
         aria-hidden="true"
       >
         <svg
@@ -85,7 +85,7 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot when focused 1`] = `
 
 exports[`<WrappedCustomMultiSelect /> matches snapshot when focused and disabled 1`] = `
 "
-<div class=" css-3iigni-container">
+<div class="css-3iigni-container">
   <span
     id="react-select-4-live-region"
     class="css-1f43avz-a11yText-A11yText"
@@ -110,18 +110,18 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot when focused and disabled
   >
   </span>
   <div
-    class=" css-zximad-control"
+    class="css-zximad-control"
     aria-disabled="true"
   >
-    <div class=" css-1tlotun">
+    <div class="css-1tlotun">
       <div
-        class=" css-1jqq78o-placeholder"
+        class="css-1jqq78o-placeholder"
         id="react-select-4-placeholder"
       >
         Select...
       </div>
       <div
-        class=" css-1c1b03h"
+        class="css-1c1b03h"
         data-value
       >
         <input
@@ -145,11 +145,11 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot when focused and disabled
         >
       </div>
     </div>
-    <div class=" css-191n9vh">
-      <span class=" css-894a34-indicatorSeparator">
+    <div class="css-191n9vh">
+      <span class="css-894a34-indicatorSeparator">
       </span>
       <div
-        class=" css-1fu8xx8-indicatorContainer"
+        class="css-1fu8xx8-indicatorContainer"
         aria-hidden="true"
       >
         <svg
@@ -172,7 +172,7 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot when focused and disabled
 
 exports[`<WrappedCustomMultiSelect /> matches snapshot with a value 1`] = `
 "
-<div class=" css-b62m3t-container">
+<div class="css-b62m3t-container">
   <span
     id="react-select-5-live-region"
     class="css-1f43avz-a11yText-A11yText"
@@ -186,13 +186,13 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with a value 1`] = `
     class="css-1f43avz-a11yText-A11yText"
   >
   </span>
-  <div class=" css-18hiu1u-control">
-    <div class=" css-1tlotun">
-      <div class=" css-qav5hl-singleValue">
+  <div class="css-18hiu1u-control">
+    <div class="css-1tlotun">
+      <div class="css-qav5hl-singleValue">
         foo
       </div>
       <div
-        class=" css-6hzavh"
+        class="css-6hzavh"
         data-value
       >
         <input
@@ -214,11 +214,11 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with a value 1`] = `
         >
       </div>
     </div>
-    <div class=" css-mik995">
-      <span class=" css-1u9des2-indicatorSeparator">
+    <div class="css-mik995">
+      <span class="css-1u9des2-indicatorSeparator">
       </span>
       <div
-        class=" css-1xc3v61-indicatorContainer"
+        class="css-1xc3v61-indicatorContainer"
         aria-hidden="true"
       >
         <svg
@@ -241,7 +241,7 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with a value 1`] = `
 
 exports[`<WrappedCustomMultiSelect /> matches snapshot with isDisabled=true 1`] = `
 "
-<div class=" css-3iigni-container">
+<div class="css-3iigni-container">
   <span
     id="react-select-7-live-region"
     class="css-1f43avz-a11yText-A11yText"
@@ -256,15 +256,15 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isDisabled=true 1`] 
   >
   </span>
   <div
-    class=" css-1bxufhm-control"
+    class="css-1bxufhm-control"
     aria-disabled="true"
   >
-    <div class=" css-1tlotun">
-      <div class=" css-qav5hl-singleValue">
+    <div class="css-1tlotun">
+      <div class="css-qav5hl-singleValue">
         foo
       </div>
       <div
-        class=" css-1c1b03h"
+        class="css-1c1b03h"
         data-value
       >
         <input
@@ -287,11 +287,11 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isDisabled=true 1`] 
         >
       </div>
     </div>
-    <div class=" css-191n9vh">
-      <span class=" css-894a34-indicatorSeparator">
+    <div class="css-191n9vh">
+      <span class="css-894a34-indicatorSeparator">
       </span>
       <div
-        class=" css-1xc3v61-indicatorContainer"
+        class="css-1xc3v61-indicatorContainer"
         aria-hidden="true"
       >
         <svg
@@ -314,7 +314,7 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isDisabled=true 1`] 
 
 exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true 1`] = `
 "
-<div class=" css-b62m3t-container">
+<div class="css-b62m3t-container">
   <span
     id="react-select-2-live-region"
     class="css-1f43avz-a11yText-A11yText"
@@ -328,16 +328,16 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true 1`] = `
     class="css-1f43avz-a11yText-A11yText"
   >
   </span>
-  <div class=" css-18hiu1u-control">
-    <div class=" css-zz5bvt">
+  <div class="css-18hiu1u-control">
+    <div class="css-zz5bvt">
       <div
-        class=" css-1jqq78o-placeholder"
+        class="css-1jqq78o-placeholder"
         id="react-select-2-placeholder"
       >
         Select...
       </div>
       <div
-        class=" css-6hzavh"
+        class="css-6hzavh"
         data-value
       >
         <input
@@ -360,11 +360,11 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true 1`] = `
         >
       </div>
     </div>
-    <div class=" css-mik995">
-      <span class=" css-1u9des2-indicatorSeparator">
+    <div class="css-mik995">
+      <span class="css-1u9des2-indicatorSeparator">
       </span>
       <div
-        class=" css-1xc3v61-indicatorContainer"
+        class="css-1xc3v61-indicatorContainer"
         aria-hidden="true"
       >
         <svg
@@ -387,7 +387,7 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true 1`] = `
 
 exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true and a value 1`] = `
 "
-<div class=" css-b62m3t-container">
+<div class="css-b62m3t-container">
   <span
     id="react-select-6-live-region"
     class="css-1f43avz-a11yText-A11yText"
@@ -401,15 +401,15 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true and a v
     class="css-1f43avz-a11yText-A11yText"
   >
   </span>
-  <div class=" css-18hiu1u-control">
-    <div class=" css-zz5bvt">
-      <div class=" css-1laq446-multiValue">
-        <div class=" css-1vlm35c">
+  <div class="css-18hiu1u-control">
+    <div class="css-zz5bvt">
+      <div class="css-1laq446-multiValue">
+        <div class="css-1vlm35c">
           foo
         </div>
         <div
           role="button"
-          class=" css-16j2jaw"
+          class="css-16j2jaw"
           aria-label="Remove foo"
         >
           <svg
@@ -426,7 +426,7 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true and a v
         </div>
       </div>
       <div
-        class=" css-6hzavh"
+        class="css-6hzavh"
         data-value
       >
         <input
@@ -448,9 +448,9 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true and a v
         >
       </div>
     </div>
-    <div class=" css-mik995">
+    <div class="css-mik995">
       <div
-        class=" css-1xc3v61-indicatorContainer"
+        class="css-1xc3v61-indicatorContainer"
         aria-hidden="true"
       >
         <svg
@@ -465,10 +465,10 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true and a v
           </path>
         </svg>
       </div>
-      <span class=" css-1u9des2-indicatorSeparator">
+      <span class="css-1u9des2-indicatorSeparator">
       </span>
       <div
-        class=" css-1xc3v61-indicatorContainer"
+        class="css-1xc3v61-indicatorContainer"
         aria-hidden="true"
       >
         <svg

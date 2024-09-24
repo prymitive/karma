@@ -3,7 +3,7 @@
 exports[`<AlertGroupCollapseConfiguration /> matches snapshot with default values 1`] = `
 "
 <div class="mb-0">
-  <div class=" css-b62m3t-container">
+  <div class="css-b62m3t-container">
     <span
       id="react-select-configuration-collapse-live-region"
       class="css-1f43avz-a11yText-A11yText"
