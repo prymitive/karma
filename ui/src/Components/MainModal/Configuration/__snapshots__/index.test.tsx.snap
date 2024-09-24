@@ -79,7 +79,7 @@ exports[`<Configuration /> matches snapshot 1`] = `
     <div class="accordion-collapse show">
       <div class="accordion-body">
         <div class="mb-2">
-          <div class=" css-b62m3t-container">
+          <div class="css-b62m3t-container">
             <span
               id="react-select-configuration-theme-live-region"
               class="css-1f43avz-a11yText-A11yText"
@@ -262,7 +262,7 @@ exports[`<Configuration /> matches snapshot 1`] = `
     <div class="accordion-collapse show">
       <div class="accordion-body">
         <div class="mb-0">
-          <div class=" css-b62m3t-container">
+          <div class="css-b62m3t-container">
             <span
               id="react-select-configuration-collapse-live-region"
               class="css-1f43avz-a11yText-A11yText"
@@ -344,7 +344,7 @@ exports[`<Configuration /> matches snapshot 1`] = `
         <div class="mb-0">
           <div class="d-flex flex-fill flex-lg-row flex-column justify-content-between">
             <div class="flex-shrink-0 flex-grow-1 flex-basis-auto">
-              <div class=" css-b62m3t-container">
+              <div class="css-b62m3t-container">
                 <span
                   id="react-select-configuration-sort-order-live-region"
                   class="css-1f43avz-a11yText-A11yText"
@@ -428,7 +428,7 @@ exports[`<Configuration /> matches snapshot 1`] = `
         <div class="mb-0">
           <div class="d-flex flex-fill flex-lg-row flex-column justify-content-between">
             <div class="flex-shrink-0 flex-grow-1 flex-basis-auto mx-0 mx-lg-1 mt-1 mt-lg-0">
-              <div class=" css-b62m3t-container">
+              <div class="css-b62m3t-container">
                 <span
                   id="react-select-configuration-grid-label-live-region"
                   class="css-1f43avz-a11yText-A11yText"

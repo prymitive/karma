@@ -2,7 +2,7 @@
 
 exports[`<AlertManagerInput /> matches snapshot 1`] = `
 "
-<div class=" css-b62m3t-container">
+<div class="css-b62m3t-container">
   <span
     id="react-select-silence-input-alertmanagers-live-region"
     class="css-1f43avz-a11yText-A11yText"
