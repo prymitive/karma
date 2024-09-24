@@ -34,6 +34,10 @@ build: dist/index.html
 test-js: $(NODE_PATH)/vite $(NODE_PATH)/jest
 	CI=true NODE_OPTIONS="--unhandled-rejections=strict" npm test -- --coverage
 
+.PHONY: update-snapshots
+update-snapshots: $(NODE_PATH)/vite $(NODE_PATH)/jest
+	CI=true NODE_OPTIONS="--unhandled-rejections=strict" npm test -- -u
+
 .PHONY: lint-js
 lint-js: $(NODE_PATH)/eslint
 	@rm -fr node_modules/.cache/eslint-loader

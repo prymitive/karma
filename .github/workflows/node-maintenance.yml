@@ -24,6 +24,9 @@ jobs:
       - name: Rebuild react app
         run: make -C ui build
 
+      - name: Update snapshots
+        run: make -C ui update-snapshots
+
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v7.0.5
