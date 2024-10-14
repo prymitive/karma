@@ -61,11 +61,11 @@ require (
 	github.com/prometheus/procfs v0.15.1 // indirect
 	github.com/sergi/go-diff v1.2.0 // indirect
 	go.mongodb.org/mongo-driver v1.17.1 // indirect
-	go.opentelemetry.io/otel v1.30.0 // indirect
-	go.opentelemetry.io/otel/metric v1.30.0 // indirect
-	go.opentelemetry.io/otel/trace v1.30.0 // indirect
+	go.opentelemetry.io/otel v1.31.0 // indirect
+	go.opentelemetry.io/otel/metric v1.31.0 // indirect
+	go.opentelemetry.io/otel/trace v1.31.0 // indirect
 	golang.org/x/sync v0.8.0 // indirect
 	golang.org/x/sys v0.26.0 // indirect
 	golang.org/x/tools v0.22.0 // indirect
-	google.golang.org/protobuf v1.35.0 // indirect
+	google.golang.org/protobuf v1.35.1 // indirect
 )
