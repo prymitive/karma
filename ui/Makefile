@@ -54,7 +54,7 @@ format: $(NODE_PATH)/prettier
 	prettier --write 'src/**/*.ts' 'src/**/*.tsx'
 
 dist/stats.json: build
-	env NODE_OPTIONS=--no-experimental-fetch npx source-map-explorer dist/assets/*.{js,css} --json > dist/stats.json
+	npx source-map-explorer dist/assets/*.{js,css} --json > dist/stats.json
 
 .PHONY: npm-upgrade
 npm-upgrade:
