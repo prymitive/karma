@@ -4,6 +4,9 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    ignore:
+      - dependency-name: "node"
+        versions: [ "23.x", "25.x", "27.x", "29.x", "31.x" ]
   - package-ecosystem: "docker"
     directory: "/demo"
     schedule:
