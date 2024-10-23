@@ -20,7 +20,9 @@ COPY --from=nodejs-builder /src/ui/embed.go /src/ui/embed.go
 COPY cmd /src/cmd
 COPY internal /src/internal
 ARG VERSION
-RUN CGO_ENABLED=0 make -C /src VERSION="${VERSION:-dev}" karma
+# touch /src/ui/dist/index.html before building to make sure it's newer than the source, even in podman
+RUN touch /src/ui/dist/index.html && \
+    CGO_ENABLED=0 make -C /src VERSION="${VERSION:-dev}" karma
 
 FROM gcr.io/distroless/static
 ARG VERSION
