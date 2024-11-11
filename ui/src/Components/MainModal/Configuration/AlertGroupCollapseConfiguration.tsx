@@ -2,7 +2,7 @@ import React, { FC } from "react";
 
 import { observer } from "mobx-react-lite";
 
-import Select from "react-select";
+import Select, { OnChangeValue } from "react-select";
 
 import type { OptionT } from "Common/Select";
 import type { Settings, CollapseStateT } from "Stores/Settings";
@@ -44,7 +44,7 @@ const AlertGroupCollapseConfiguration: FC<{
           settingsStore.alertGroupConfig.config.defaultCollapseState,
         )}
         options={Object.values(settingsStore.alertGroupConfig.options)}
-        onChange={(option) =>
+        onChange={(option: OnChangeValue<OptionT, false>) =>
           onCollapseChange((option as OptionT).value as CollapseStateT)
         }
         hideSelectedOptions
