@@ -10,6 +10,7 @@ import { useFetchGet } from "Hooks/useFetchGet";
 import { ThemeContext } from "Components/Theme";
 import { AnimatedMenu } from "Components/Select";
 import { NewLabelName, StringToOption } from "Common/Select";
+import { OnChangeValue } from "react-select";
 
 const SortLabelName: FC<{
   settingsStore: Settings;
@@ -36,7 +37,7 @@ const SortLabelName: FC<{
       options={
         response ? response.map((value: string) => StringToOption(value)) : []
       }
-      onChange={(option) => {
+      onChange={(option: OnChangeValue<OptionT, false>) => {
         settingsStore.gridConfig.setSortLabel(
           (option as OptionT).value as string,
         );

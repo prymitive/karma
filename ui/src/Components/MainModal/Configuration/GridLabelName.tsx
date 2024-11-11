@@ -8,6 +8,7 @@ import type { Settings } from "Stores/Settings";
 import { ThemeContext } from "Components/Theme";
 import { AnimatedMenu } from "Components/Select";
 import { NewLabelName, StringToOption, OptionT } from "Common/Select";
+import { OnChangeValue } from "react-select";
 
 const disabledLabel = "Disable multi-grid";
 
@@ -54,7 +55,7 @@ const GridLabelName: FC<{
             ]
           : staticValues
       }
-      onChange={(option) => {
+      onChange={(option: OnChangeValue<OptionT, false>) => {
         settingsStore.multiGridConfig.setGridLabel((option as OptionT).value);
       }}
       components={{ Menu: AnimatedMenu }}

@@ -9,6 +9,7 @@ import { ValidationError } from "Components/ValidationError";
 import { ThemeContext } from "Components/Theme";
 import { AnimatedMenu } from "Components/Select";
 import { NewLabelName, OptionT, StringToOption } from "Common/Select";
+import { OnChangeValue } from "react-select";
 
 const LabelNameInput: FC<{
   matcher: MatcherWithIDT;
@@ -31,7 +32,7 @@ const LabelNameInput: FC<{
         response ? response.map((value: string) => StringToOption(value)) : []
       }
       placeholder={isValid ? "Label name" : <ValidationError />}
-      onChange={(option) => {
+      onChange={(option: OnChangeValue<OptionT, false>) => {
         matcher.name = (option as OptionT).value;
       }}
       hideSelectedOptions
