@@ -66,7 +66,7 @@
     "@types/qs": "6.9.17",
     "@types/react": "17.0.50",
     "@types/react-dom": "17.0.17",
-    "@vitejs/plugin-legacy": "5.4.3",
+    "@vitejs/plugin-legacy": "6.0.0",
     "@vitejs/plugin-react": "4.3.4",
     "@wojtekmaj/enzyme-adapter-react-17": "0.8.0",
     "csstype": "3.1.2",
