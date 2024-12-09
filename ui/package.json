@@ -84,7 +84,7 @@
     "node-fetch": "2.6.11",
     "prettier": "3.4.1",
     "sass": "1.81.0",
-    "terser": "5.36.0",
+    "terser": "5.37.0",
     "ts-jest": "29.2.5",
     "typescript": "5.7.2",
     "vite": "6.0.2",
