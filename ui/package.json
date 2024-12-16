@@ -27,7 +27,7 @@
     "lodash.throttle": "4.1.1",
     "lodash.uniqueid": "4.0.1",
     "mobx": "6.13.5",
-    "mobx-react-lite": "4.0.7",
+    "mobx-react-lite": "4.1.0",
     "mobx-stored": "1.1.0",
     "promise-retry": "2.0.1",
     "qs": "6.13.1",
