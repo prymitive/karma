@@ -87,7 +87,7 @@
     "terser": "5.37.0",
     "ts-jest": "29.2.5",
     "typescript": "5.7.2",
-    "vite": "6.0.5",
+    "vite": "6.0.6",
     "vite-tsconfig-paths": "5.1.4"
   },
   "overrides": {
