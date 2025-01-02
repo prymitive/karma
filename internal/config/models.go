@@ -199,7 +199,7 @@ type configSchema struct {
 		KeepRegex          []string         `yaml:"keep_re" koanf:"keep_re"`
 		CompiledKeepRegex  []*regexp.Regexp `yaml:"-"`
 		Strip              []string
-		StripRegex         []string         `yaml:"keep_re" koanf:"keep_re"`
+		StripRegex         []string         `yaml:"strip_re" koanf:"strip_re"`
 		CompiledStripRegex []*regexp.Regexp `yaml:"-"`
 	}
 	Silences struct {

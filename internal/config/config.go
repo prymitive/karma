@@ -429,7 +429,7 @@ func (config *configSchema) Read(flags *pflag.FlagSet) (string, error) {
 	for i, stripRegex := range config.Receivers.KeepRegex {
 		config.Receivers.CompiledStripRegex[i], err = regex.CompileAnchored(stripRegex)
 		if err != nil {
-			return "", fmt.Errorf("keep regex rule '%s' is invalid: %w", stripRegex, err)
+			return "", fmt.Errorf("strip regex rule '%s' is invalid: %w", stripRegex, err)
 		}
 	}
 
