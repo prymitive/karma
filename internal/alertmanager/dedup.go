@@ -37,7 +37,13 @@ func DedupAlerts() []models.AlertGroup {
 				alert := alert // scopelint pin
 				// remove all alerts for receiver(s) that the user doesn't
 				// want to see in the UI
-				if transform.StripReceivers(config.Config.Receivers.Keep, config.Config.Receivers.Strip, alert.Receiver) {
+				if transform.StripReceivers(
+					config.Config.Receivers.Keep,
+					config.Config.Receivers.Strip,
+					config.Config.Receivers.CompiledKeepRegex,
+					config.Config.Receivers.CompiledStripRegex,
+					alert.Receiver,
+				) {
 					continue
 				}
 
