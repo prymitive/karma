@@ -201,6 +201,8 @@ func getCompiledRegex(regexes []string, t *testing.T) []*regexp.Regexp {
 type stripReceiverTest struct {
 	strip    []string
 	keep     []string
+	stripRe  []string
+	keepRe   []string
 	receiver string
 	stripped bool
 }
@@ -209,44 +211,82 @@ var stripReceiverTests = []stripReceiverTest{
 	{
 		strip:    []string{},
 		keep:     []string{},
+		stripRe:  []string{},
+		keepRe:   []string{},
 		receiver: "default",
 		stripped: false,
 	},
 	{
 		strip:    []string{"default"},
 		keep:     []string{},
+		stripRe:  []string{},
+		keepRe:   []string{},
 		receiver: "default",
 		stripped: true,
 	},
 	{
 		strip:    []string{"default"},
 		keep:     []string{"default"},
+		stripRe:  []string{},
+		keepRe:   []string{},
 		receiver: "default",
 		stripped: true,
 	},
 	{
 		strip:    []string{},
 		keep:     []string{"default"},
+		stripRe:  []string{},
+		keepRe:   []string{},
 		receiver: "default",
 		stripped: false,
 	},
 	{
 		strip:    []string{"foo", "bar"},
 		keep:     []string{},
+		stripRe:  []string{},
+		keepRe:   []string{},
 		receiver: "default",
 		stripped: false,
 	},
 	{
 		strip:    []string{"foo", "default"},
 		keep:     []string{"foo", "bar"},
+		stripRe:  []string{},
+		keepRe:   []string{},
 		receiver: "default",
+		stripped: true,
+	},
+	{
+		strip:    []string{},
+		keep:     []string{},
+		stripRe:  []string{},
+		keepRe:   []string{"default-.+"},
+		receiver: "default-foo",
+		stripped: false,
+	},
+	{
+		strip:    []string{},
+		keep:     []string{},
+		stripRe:  []string{},
+		keepRe:   []string{"default-.+"},
+		receiver: "foo-bar",
+		stripped: true,
+	},
+	{
+		strip:    []string{},
+		keep:     []string{"default-foo"},
+		stripRe:  []string{"default-.+"},
+		keepRe:   []string{},
+		receiver: "default-foo",
 		stripped: true,
 	},
 }
 
 func TestStripReceivers(t *testing.T) {
 	for _, testCase := range stripReceiverTests {
-		stripped := transform.StripReceivers(testCase.keep, testCase.strip, testCase.receiver)
+		keepRegex := getCompiledRegex(testCase.keepRe, t)
+		stripRegex := getCompiledRegex(testCase.keepRe, t)
+		stripped := transform.StripReceivers(testCase.keep, testCase.strip, keepRegex, stripRegex, testCase.receiver)
 		if stripped != testCase.stripped {
 			t.Errorf("StripReceivers failed, expected %v, got %v", testCase.stripped, stripped)
 		}
