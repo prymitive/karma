@@ -40,13 +40,14 @@ func StripLables(keptLabels, ignoredLabels []string, keptLabelsRegex, ignoredLab
 
 // StripReceivers allows filtering all alerts for specified receiver(s)
 // it will return true if alert uses receiver that should be stripped
-func StripReceivers(keptReceivers, ignoredReceivers []string, alertReceiver string) bool {
-	// true if we keep by default
-	keepAll := len(keptReceivers) == 0
-	// is this receiver on the whitelist ?
-	inKeep := slices.StringInSlice(keptReceivers, alertReceiver)
-	// is this receiver on the blacklist ?
-	inStrip := slices.StringInSlice(ignoredReceivers, alertReceiver)
+func StripReceivers(keptReceivers, ignoredReceivers []string, keptReceiversRegex, ignoredReceiversRegex []*regexp.Regexp, alertReceiver string) bool {
+	// empty keep lists means keep everything by default
+	keepAll := len(keptReceivers) == 0 && len(keptReceiversRegex) == 0
+	// is explicitly marked to be kept
+	inKeep := slices.StringInSlice(keptReceivers, alertReceiver) || slices.MatchesAnyRegex(alertReceiver, keptReceiversRegex)
+	// is explicitly marked to be stripped
+	inStrip := slices.StringInSlice(ignoredReceivers, alertReceiver) || slices.MatchesAnyRegex(alertReceiver, ignoredReceiversRegex)
+
 	if (keepAll || inKeep) && !inStrip {
 		return false
 	}

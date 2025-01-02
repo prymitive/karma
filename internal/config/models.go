@@ -195,8 +195,12 @@ type configSchema struct {
 		Timestamp bool
 	}
 	Receivers struct {
-		Keep  []string
-		Strip []string
+		Keep               []string
+		KeepRegex          []string         `yaml:"keep_re" koanf:"keep_re"`
+		CompiledKeepRegex  []*regexp.Regexp `yaml:"-"`
+		Strip              []string
+		StripRegex         []string         `yaml:"strip_re" koanf:"strip_re"`
+		CompiledStripRegex []*regexp.Regexp `yaml:"-"`
 	}
 	Silences struct {
 		Expired  time.Duration
