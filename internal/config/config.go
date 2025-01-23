@@ -126,8 +126,12 @@ func SetupFlags(f *pflag.FlagSet) {
 
 	f.StringSlice("receivers.keep", []string{},
 		"List of receivers to keep, all alerts with different receivers will be ignored")
+	f.StringSlice("receivers.keep_re", []string{},
+		"List of regular expressions to keep matching receivers, all other receivers will be ignored")
 	f.StringSlice("receivers.strip", []string{},
 		"List of receivers to not display alerts for")
+	f.StringSlice("receivers.strip_re", []string{},
+		"List of regular expressions to ignore matching receivers")
 
 	f.Duration("silences.expired", time.Minute*10, "Maximum age of expired silences to show on active alerts")
 	f.StringSlice("silenceForm.strip.labels", []string{}, "List of labels to ignore when auto-filling silence form from alerts")
@@ -410,6 +414,22 @@ func (config *configSchema) Read(flags *pflag.FlagSet) (string, error) {
 					return "", fmt.Errorf("failed to parse custom color regex rule '%s' for '%s' label: %w", customColor.ValueRegex, labelName, err)
 				}
 			}
+		}
+	}
+
+	config.Receivers.CompiledKeepRegex = make([]*regexp.Regexp, len(config.Receivers.KeepRegex))
+	for i, keepRegex := range config.Receivers.KeepRegex {
+		config.Receivers.CompiledKeepRegex[i], err = regex.CompileAnchored(keepRegex)
+		if err != nil {
+			return "", fmt.Errorf("keep regex rule '%s' is invalid: %w", keepRegex, err)
+		}
+	}
+
+	config.Receivers.CompiledStripRegex = make([]*regexp.Regexp, len(config.Receivers.StripRegex))
+	for i, stripRegex := range config.Receivers.KeepRegex {
+		config.Receivers.CompiledStripRegex[i], err = regex.CompileAnchored(stripRegex)
+		if err != nil {
+			return "", fmt.Errorf("strip regex rule '%s' is invalid: %w", stripRegex, err)
 		}
 	}
 
