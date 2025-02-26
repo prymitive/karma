@@ -128,6 +128,8 @@ func SetupFlags(f *pflag.FlagSet) {
 		"List of receivers to keep, all alerts with different receivers will be ignored")
 	f.StringSlice("receivers.strip", []string{},
 		"List of receivers to not display alerts for")
+	f.StringSlice("receivers.stripIfDuplicated", []string{},
+		"List of receivers to not display alerts for if they are duplicated for the same alert")
 
 	f.Duration("silences.expired", time.Minute*10, "Maximum age of expired silences to show on active alerts")
 	f.StringSlice("silenceForm.strip.labels", []string{}, "List of labels to ignore when auto-filling silence form from alerts")

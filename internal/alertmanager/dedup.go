@@ -28,6 +28,25 @@ func DedupAlerts() []models.AlertGroup {
 		}
 	}
 
+	// map of alerts fingerprints to list of receivers, taking into account strip/keep configuration
+	receiversMap := map[string][]string{}
+	for _, agList := range uniqueGroups {
+		for _, ag := range agList {
+			for _, alert := range ag.Alerts {
+				lfp := alert.LabelsFingerprint()
+				a, found := receiversMap[lfp]
+				if transform.StripReceivers(config.Config.Receivers.Keep, config.Config.Receivers.Strip, alert.Receiver) {
+					continue
+				}
+				if found && !slices.StringInSlice(a, alert.Receiver) {
+					receiversMap[lfp] = append(a, alert.Receiver)
+				} else {
+					receiversMap[lfp] = []string{alert.Receiver}
+				}
+			}
+		}
+	}
+
 	dedupedGroups := []models.AlertGroup{}
 	alertStates := map[string][]string{}
 	for _, agList := range uniqueGroups {
@@ -39,6 +58,15 @@ func DedupAlerts() []models.AlertGroup {
 				// want to see in the UI
 				if transform.StripReceivers(config.Config.Receivers.Keep, config.Config.Receivers.Strip, alert.Receiver) {
 					continue
+				}
+
+				// skip alert if its receiver is duplicated
+				d, receiverFound := receiversMap[alert.LabelsFingerprint()]
+				if receiverFound {
+					if slices.StringInSlice(config.Config.Receivers.StripIfDuplicated, alert.Receiver) && len(d) > 1 {
+						log.Debug().Str("fingerprint", alert.Fingerprint).Strs("receivers", d).Msg("Skipping alert with duplicated receiver")
+						continue
+					}
 				}
 
 				keep := true

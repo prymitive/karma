@@ -195,8 +195,9 @@ type configSchema struct {
 		Timestamp bool
 	}
 	Receivers struct {
-		Keep  []string
-		Strip []string
+		Keep              []string
+		Strip             []string
+		StripIfDuplicated []string `yaml:"stripIfDuplicated" koanf:"stripIfDuplicated"`
 	}
 	Silences struct {
 		Expired  time.Duration

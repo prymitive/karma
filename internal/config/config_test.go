@@ -143,6 +143,7 @@ log:
 receivers:
   keep: []
   strip: []
+  stripIfDuplicated: []
 silences:
   expired: 10m0s
   comments:
@@ -395,6 +396,7 @@ func TestDefaultConfig(t *testing.T) {
 	expectedConfig.Grid.Auto.Order = []string{}
 	expectedConfig.Receivers.Keep = []string{}
 	expectedConfig.Receivers.Strip = []string{}
+	expectedConfig.Receivers.StripIfDuplicated = []string{}
 	expectedConfig.SilenceForm.Strip.Labels = []string{}
 	expectedConfig.SilenceForm.DefaultAlertmanagers = []string{}
 
