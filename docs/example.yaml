@@ -59,6 +59,7 @@ silences:
 receivers:
   keep: []
   strip: []
+  stripIfDuplicated: []
 silenceForm:
   strip:
     labels:

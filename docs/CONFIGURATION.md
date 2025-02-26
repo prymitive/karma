@@ -1211,18 +1211,22 @@ silences:
 
 `receivers` section allows configuring how alerts from different receivers are
 handled by karma. If alerts are routed to multiple receivers they can be
-duplicated in the UI, each instance will have different value for `@receiver`.
+duplicated in the UI unless the receiver is listed in `stripIfDuplicated`. Each
+instance will have different value for `@receiver`.
 Syntax:
 
 ```YAML
 receivers:
   keep: list of strings
   strip: list of strings
+  stripIfDuplicated: list of strings
 ```
 
 - `keep` - list of receivers name that are allowed, if empty all receivers are
   allowed.
 - `strip` - list of receiver names that will not be shown in the UI.
+- `stripIfDuplicated` - list of receiver names to consider when hiding
+  duplicated alerts.
 
 Example where alerts that are routed to the `alertmanage2es` receiver are
 ignored by karma.
