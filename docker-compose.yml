@@ -1,0 +1,7 @@
+services:
+  karma:
+    image: prymitive/karma:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - ALERTMANAGER_URI=https://alertmanager.example.com
