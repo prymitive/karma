@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.121
+
+### Added
+
+- Added `receivers:keep_re` and `receivers:strip_re` options - #6400.
+
 ## v0.120
 
 ### Changed

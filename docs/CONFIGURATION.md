@@ -1217,12 +1217,16 @@ Syntax:
 ```YAML
 receivers:
   keep: list of strings
+  keep_re: list of regex expressions 
   strip: list of strings
+  strip_re: list of regex expressions 
 ```
 
 - `keep` - list of receivers name that are allowed, if empty all receivers are
   allowed.
+- `keep_re` - same as `keep` but accepts regular expression instead of static strings.
 - `strip` - list of receiver names that will not be shown in the UI.
+- `strip_re` - same as `strip` but accepts regular expression instead of static strings.
 
 Example where alerts that are routed to the `alertmanage2es` receiver are
 ignored by karma.
@@ -1233,11 +1237,20 @@ receivers:
     - alertmanage2es
 ```
 
+```YAML
+receivers:
+  strip_re:
+    - alertmanager.+
+```
+
 Defaults:
 
 ```YAML
 receivers:
+  keep: []
+  keep_re: []
   strip: []
+  strip_re: []
 ```
 
 ## Silence form
