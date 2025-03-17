@@ -1,6 +1,7 @@
 package transform_test
 
 import (
+	"fmt"
 	"reflect"
 	"regexp"
 	"testing"
@@ -209,74 +210,74 @@ type stripReceiverTest struct {
 
 var stripReceiverTests = []stripReceiverTest{
 	{
-		strip:    []string{},
 		keep:     []string{},
-		stripRe:  []string{},
 		keepRe:   []string{},
+		strip:    []string{},
+		stripRe:  []string{},
 		receiver: "default",
 		stripped: false,
 	},
 	{
-		strip:    []string{"default"},
 		keep:     []string{},
-		stripRe:  []string{},
 		keepRe:   []string{},
-		receiver: "default",
-		stripped: true,
-	},
-	{
 		strip:    []string{"default"},
-		keep:     []string{"default"},
 		stripRe:  []string{},
-		keepRe:   []string{},
 		receiver: "default",
 		stripped: true,
 	},
 	{
-		strip:    []string{},
 		keep:     []string{"default"},
-		stripRe:  []string{},
 		keepRe:   []string{},
+		strip:    []string{"default"},
+		stripRe:  []string{},
+		receiver: "default",
+		stripped: true,
+	},
+	{
+		keep:     []string{"default"},
+		keepRe:   []string{},
+		strip:    []string{},
+		stripRe:  []string{},
 		receiver: "default",
 		stripped: false,
 	},
 	{
+		keep:     []string{},
+		keepRe:   []string{},
 		strip:    []string{"foo", "bar"},
-		keep:     []string{},
 		stripRe:  []string{},
-		keepRe:   []string{},
 		receiver: "default",
 		stripped: false,
 	},
 	{
-		strip:    []string{"foo", "default"},
 		keep:     []string{"foo", "bar"},
-		stripRe:  []string{},
 		keepRe:   []string{},
+		strip:    []string{"foo", "default"},
+		stripRe:  []string{},
 		receiver: "default",
 		stripped: true,
 	},
 	{
-		strip:    []string{},
 		keep:     []string{},
-		stripRe:  []string{},
 		keepRe:   []string{"default-.+"},
+		strip:    []string{},
+		stripRe:  []string{},
 		receiver: "default-foo",
 		stripped: false,
 	},
 	{
-		strip:    []string{},
 		keep:     []string{},
-		stripRe:  []string{},
 		keepRe:   []string{"default-.+"},
+		strip:    []string{},
+		stripRe:  []string{".+"},
 		receiver: "foo-bar",
 		stripped: true,
 	},
 	{
-		strip:    []string{},
 		keep:     []string{"default-foo"},
-		stripRe:  []string{"default-.+"},
 		keepRe:   []string{},
+		strip:    []string{},
+		stripRe:  []string{"default-.+"},
 		receiver: "default-foo",
 		stripped: true,
 	},
@@ -284,12 +285,16 @@ var stripReceiverTests = []stripReceiverTest{
 
 func TestStripReceivers(t *testing.T) {
 	for _, testCase := range stripReceiverTests {
-		keepRegex := getCompiledRegex(testCase.keepRe, t)
-		stripRegex := getCompiledRegex(testCase.keepRe, t)
-		stripped := transform.StripReceivers(testCase.keep, testCase.strip, keepRegex, stripRegex, testCase.receiver)
-		if stripped != testCase.stripped {
-			t.Errorf("StripReceivers failed, expected %v, got %v", testCase.stripped, stripped)
-		}
+		t.Run(
+			fmt.Sprintf("keep=%v keep_re=%v strip=%v strip_re=%s receiver=%s",
+				testCase.keep, testCase.keepRe, testCase.strip, testCase.stripRe, testCase.receiver), func(t *testing.T) {
+				keepRegex := getCompiledRegex(testCase.keepRe, t)
+				stripRegex := getCompiledRegex(testCase.stripRe, t)
+				stripped := transform.StripReceivers(testCase.keep, testCase.strip, keepRegex, stripRegex, testCase.receiver)
+				if stripped != testCase.stripped {
+					t.Errorf("StripReceivers failed, expected %v, got %v", testCase.stripped, stripped)
+				}
+			})
 	}
 }
 
