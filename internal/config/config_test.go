@@ -142,7 +142,9 @@ log:
   timestamp: false
 receivers:
   keep: []
+  keep_re: []
   strip: []
+  strip_re: []
 silences:
   expired: 10m0s
   comments:
@@ -394,7 +396,11 @@ func TestDefaultConfig(t *testing.T) {
 	expectedConfig.Grid.Auto.Ignore = []string{}
 	expectedConfig.Grid.Auto.Order = []string{}
 	expectedConfig.Receivers.Keep = []string{}
+	expectedConfig.Receivers.KeepRegex = []string{}
+	expectedConfig.Receivers.CompiledKeepRegex = []*regexp.Regexp{}
 	expectedConfig.Receivers.Strip = []string{}
+	expectedConfig.Receivers.StripRegex = []string{}
+	expectedConfig.Receivers.CompiledStripRegex = []*regexp.Regexp{}
 	expectedConfig.SilenceForm.Strip.Labels = []string{}
 	expectedConfig.SilenceForm.DefaultAlertmanagers = []string{}
 
