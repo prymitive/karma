@@ -426,7 +426,7 @@ func (config *configSchema) Read(flags *pflag.FlagSet) (string, error) {
 	}
 
 	config.Receivers.CompiledStripRegex = make([]*regexp.Regexp, len(config.Receivers.StripRegex))
-	for i, stripRegex := range config.Receivers.KeepRegex {
+	for i, stripRegex := range config.Receivers.StripRegex {
 		config.Receivers.CompiledStripRegex[i], err = regex.CompileAnchored(stripRegex)
 		if err != nil {
 			return "", fmt.Errorf("strip regex rule '%s' is invalid: %w", stripRegex, err)
