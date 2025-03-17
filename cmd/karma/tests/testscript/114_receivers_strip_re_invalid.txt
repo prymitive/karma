@@ -1,0 +1,14 @@
+karma.bin-should-fail --config.file=karma.yaml
+! stdout .
+cmp stderr stderr.txt
+
+-- stderr.txt --
+level=error msg="Execution failed" error="strip regex rule 'foo.++++' is invalid: error parsing regexp: invalid nested repetition operator: `++`"
+-- karma.yaml --
+alertmanager:
+  servers:
+    - name: default
+      uri: https://127.0.0.1:9093
+receivers:
+  strip_re:
+    - foo.++++
