@@ -1,13 +1,13 @@
 # Raises an error if tls CA cert is missing
 
-karma.bin-should-fail --pid-file=karma.pid --config.file=karma.yaml --listen.address=127.0.0.1 --listen.port=8078
+! exec karma --pid-file=karma.pid --config.file=karma.yaml --listen.address=127.0.0.1 --listen.port=8078
 ! stdout .
 cmp stderr stderr.txt
 
 -- stderr.txt --
 level=info msg="Reading configuration file" path=karma.yaml
 level=info msg="Version: dev"
-level=error msg="Execution failed" error="failed to create HTTP transport for Alertmanager 'client-auth' with URI 'https://127.0.0.1:9093': tls: failed to find any PEM data in certificate input"
+level=fatal msg="Execution failed" error="failed to create HTTP transport for Alertmanager 'client-auth' with URI 'https://127.0.0.1:9093': tls: failed to find any PEM data in certificate input"
 -- karma.yaml --
 alertmanager:
   servers:

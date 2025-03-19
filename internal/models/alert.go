@@ -41,7 +41,7 @@ func (l Label) String() string {
 type Labels []Label
 
 func (ls Labels) String() string {
-	var s []string
+	s := make([]string, 0, len(ls))
 	for _, l := range ls {
 		s = append(s, l.String())
 	}
@@ -87,7 +87,6 @@ func (ls Labels) Less(i, j int) bool {
 
 func (ls Labels) Get(name string) *Label {
 	for _, l := range ls {
-		l := l
 		if l.Name == name {
 			return &l
 		}

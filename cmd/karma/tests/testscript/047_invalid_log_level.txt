@@ -1,7 +1,7 @@
 # Raises an error if invalid log level is passed
-karma.bin-should-fail --log.timestamp=false --log.level=foobar
+! exec karma --log.timestamp=false --log.level=foobar
 ! stdout .
 cmp stderr stderr.txt
 
 -- stderr.txt --
-level=error msg="Execution failed" error="unknown log level 'foobar'"
+level=fatal msg="Execution failed" error="unknown log level 'foobar'"

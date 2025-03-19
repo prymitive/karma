@@ -1,9 +1,9 @@
-karma.bin-should-fail --check-config
+! exec karma --check-config
 ! stdout .
 cmp stderr stderr.txt
 
 -- stderr.txt --
-level=error msg="Execution failed" error="failed to unmarshal configuration: 1 error(s) decoding:\n\n* error decoding 'Silences.Expired': time: invalid duration \"abc\""
+level=fatal msg="Execution failed" error="failed to unmarshal configuration: 1 error(s) decoding:\n\n* error decoding 'Silences.Expired': time: invalid duration \"abc\""
 -- karma.yaml --
 alertmanager:
   servers:

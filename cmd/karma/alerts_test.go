@@ -94,7 +94,6 @@ func TestSortByStartsAt(t *testing.T) {
 	}
 
 	for _, testCase := range testCases {
-		testCase := testCase
 		sort.Slice(testCase.groups, func(i, j int) bool {
 			return sortByStartsAt(i, j, testCase.groups, testCase.sortReverse)
 		})

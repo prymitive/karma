@@ -1,7 +1,7 @@
 # Raises an error if negative refresh interval is passed
-karma.bin-should-fail --alertmanager.interval=-4s
+! exec karma --alertmanager.interval=-4s
 ! stdout .
 cmp stderr stderr.txt
 
 -- stderr.txt --
-level=error msg="Execution failed" error="invalid alertmanager.interval value '-4s'"
+level=fatal msg="Execution failed" error="invalid alertmanager.interval value '-4s'"

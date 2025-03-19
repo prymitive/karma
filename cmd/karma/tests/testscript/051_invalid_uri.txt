@@ -1,8 +1,8 @@
 # Raises an error if alertmanager URI is invalid
-karma.bin-should-fail --alertmanager.uri httpz://username:secret@127.0.0.1
+! exec karma --alertmanager.uri httpz://username:secret@127.0.0.1
 ! stdout .
 cmp stderr stderr.txt
 
 -- stderr.txt --
 level=info msg="Version: dev"
-level=error msg="Execution failed" error="failed to create Alertmanager 'default' with URI 'httpz://username:xxx@127.0.0.1': unsupported URI scheme 'httpz' in 'httpz://username:xxx@127.0.0.1'"
+level=fatal msg="Execution failed" error="failed to create Alertmanager 'default' with URI 'httpz://username:xxx@127.0.0.1': unsupported URI scheme 'httpz' in 'httpz://username:xxx@127.0.0.1'"

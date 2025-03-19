@@ -1,5 +1,5 @@
 # Print out and compare logged config set via config file
-karma.bin-should-work --config.file=custom.yaml --check-config
+exec karma --config.file=custom.yaml --check-config
 ! stdout .
 cmp stderr stderr.txt
 

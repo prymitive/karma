@@ -1,7 +1,7 @@
 # Basic Auth headers are passed to the UI in the API response
 
 exec bash -x ./test.sh &
-karma.bin-should-work --pid-file=karma.pid --alertmanager.uri=http://foo:bar@127.0.0.1 --listen.address=127.0.0.1 --listen.port=8076
+exec karma --pid-file=karma.pid --alertmanager.uri=http://foo:bar@127.0.0.1 --listen.address=127.0.0.1 --listen.port=8076
 exec sleep 5
 grep '"headers":{"Authorization":"Basic Zm9vOmJhcg=="}' out.txt
 grep '"publicURI":"http://foo:bar@127.0.0.1"' out.txt

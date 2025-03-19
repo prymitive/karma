@@ -872,8 +872,7 @@ func TestFilters(t *testing.T) {
 	}
 	for _, ft := range tests {
 		t.Run(ft.Expression, func(t *testing.T) {
-			ft := ft
-			alert := models.Alert(ft.Alert)
+			alert := ft.Alert
 			if len(ft.Alertmanagers) > 0 {
 				alert.Alertmanager = ft.Alertmanagers
 			} else {
@@ -929,7 +928,6 @@ func TestFilters(t *testing.T) {
 
 				if m && f.GetIsAlertmanagerFilter() {
 					for _, am := range alert.Alertmanager {
-						am := am
 						m := f.MatchAlertmanager(&am)
 						if m != ft.IsAlertmanagerMatch {
 							j, _ := json.Marshal(alert)

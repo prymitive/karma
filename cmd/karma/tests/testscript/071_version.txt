@@ -1,4 +1,4 @@
 # Prints version when --version is passed
-karma.bin-should-work --version
+exec karma --version
 stdout 'dev\n'
 ! stderr .

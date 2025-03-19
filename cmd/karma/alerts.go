@@ -347,8 +347,6 @@ func filterAlerts(dedupedAlerts []models.AlertGroup, fl []filters.FilterT) (filt
 			agCopy.StateCount[s] = 0
 		}
 		for _, alert := range ag.Alerts {
-			alert := alert
-
 			var hadMismatch bool
 			for _, filter := range fl {
 				if filter.GetIsValid() {
@@ -363,7 +361,6 @@ func filterAlerts(dedupedAlerts []models.AlertGroup, fl []filters.FilterT) (filt
 
 			blockedAMs := map[string]bool{}
 			for _, am := range alert.Alertmanager {
-				am := am
 				for _, filter := range fl {
 					if filter.GetIsValid() && filter.GetIsAlertmanagerFilter() && !filter.MatchAlertmanager(&am) {
 						blockedAMs[am.Name] = true
@@ -393,7 +390,7 @@ func filterAlerts(dedupedAlerts []models.AlertGroup, fl []filters.FilterT) (filt
 		}
 	}
 
-	return
+	return filteredAlerts
 }
 
 func newStateCount() map[string]int {

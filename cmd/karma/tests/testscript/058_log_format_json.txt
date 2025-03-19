@@ -1,7 +1,7 @@
 # Logs messages as JSON when log.format=json is passed
 
 exec bash -x ./test.sh &
-karma.bin-should-work --log.format=json --log.timestamp=false --pid-file=karma.pid --listen.address=127.0.0.1 --listen.port=8058
+exec karma --log.format=json --log.timestamp=false --pid-file=karma.pid --listen.address=127.0.0.1 --listen.port=8058
 ! stdout .
 cmp stderr stderr.txt
 wait

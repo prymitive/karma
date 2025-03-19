@@ -1,10 +1,10 @@
 # Raises an error if authorization group is missing name
-karma.bin-should-fail --check-config
+! exec karma --check-config
 ! stdout .
 cmp stderr stderr.txt
 
 -- stderr.txt --
-level=error msg="Execution failed" error="'members' is required for every authorization group"
+level=fatal msg="Execution failed" error="'members' is required for every authorization group"
 -- karma.yaml --
 authentication:
   header:

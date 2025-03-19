@@ -1,10 +1,10 @@
 # Raises an error if we pass alertmanager.interval value that doesn't parse
-karma.bin-should-fail --config.file karma.yaml
+! exec karma --config.file karma.yaml
 ! stdout .
 cmp stderr stderr.txt
 
 -- stderr.txt --
-level=error msg="Execution failed" error="failed to unmarshal configuration: 1 error(s) decoding:\n\n* error decoding 'Alertmanager.Interval': time: invalid duration \"abc123\""
+level=fatal msg="Execution failed" error="failed to unmarshal configuration: 1 error(s) decoding:\n\n* error decoding 'Alertmanager.Interval': time: invalid duration \"abc123\""
 -- karma.yaml --
 alertmanager:
   interval: abc123

@@ -1,4 +1,4 @@
-karma.bin-should-work --log.config --silenceForm.defaultAlertmanagers=aaa --silenceForm.defaultAlertmanagers=bbb --check-config
+exec karma --log.config --silenceForm.defaultAlertmanagers=aaa --silenceForm.defaultAlertmanagers=bbb --check-config
 ! stdout .
 cmp stderr stderr.txt
 

@@ -1,7 +1,7 @@
 # Terminates with an error on slow client
 
 exec bash -x ./test.sh &
-karma.bin-should-fail --pid-file=karma.pid --alertmanager.uri http://127.0.0.1 --listen.address=127.0.0.1 --listen.port 8094
+! exec karma --pid-file=karma.pid --alertmanager.uri http://127.0.0.1 --listen.address=127.0.0.1 --listen.port 8094
 ! stdout .
 cmp stderr stderr.txt
 wait
@@ -26,7 +26,7 @@ level=info msg="Done, starting HTTP server"
 level=info msg="Starting HTTP server" address=127.0.0.1:8094
 level=info msg="Shutting down HTTP server" signal=terminated
 level=info msg="Removing PID file" path=karma.pid
-level=error msg="Execution failed" error="shutdown error: context deadline exceeded"
+level=fatal msg="Execution failed" error="shutdown error: context deadline exceeded"
 -- karma.yaml --
 alertmanager:
   servers:

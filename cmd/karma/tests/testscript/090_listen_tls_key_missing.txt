@@ -1,7 +1,7 @@
 # Fails on missing TLS key
 
 cert $WORK karma
-karma.bin-should-work --pid-file=karma.pid --config.file=karma.yaml --listen.address=127.0.0.1 --listen.port=8090
+exec karma --pid-file=karma.pid --config.file=karma.yaml --listen.address=127.0.0.1 --listen.port=8090
 ! stdout .
 cmp stderr stderr.txt
 

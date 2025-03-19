@@ -1,9 +1,9 @@
-karma.bin-should-fail --check-config
+! exec karma --check-config
 ! stdout .
 cmp stderr stderr.txt
 
 -- stderr.txt --
-level=error msg="Execution failed" error="history.workers must be >= 1"
+level=fatal msg="Execution failed" error="history.workers must be >= 1"
 -- karma.yaml --
 alertmanager:
   servers:

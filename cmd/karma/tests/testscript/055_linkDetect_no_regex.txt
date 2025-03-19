@@ -1,12 +1,12 @@
 # Raises an error if linkDetect config is missing regex rule
-karma.bin-should-fail --config.file=karma.yaml
+! exec karma --config.file=karma.yaml
 ! stdout .
 cmp stderr stderr.txt
 
 -- stderr.txt --
 level=info msg="Reading configuration file" path=karma.yaml
 level=info msg="Version: dev"
-level=error msg="Execution failed" error="invalid link detect rule, regex '' uriTemplate 'https://jira.example.com/'"
+level=fatal msg="Execution failed" error="invalid link detect rule, regex '' uriTemplate 'https://jira.example.com/'"
 -- karma.yaml --
 alertmanager:
   servers:

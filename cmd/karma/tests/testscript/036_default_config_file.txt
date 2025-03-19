@@ -1,5 +1,5 @@
 # Load 'karma.yaml' from cwd by default
-karma.bin-should-work --check-config
+exec karma --check-config
 ! stdout .
 cmp stderr stderr.txt
 

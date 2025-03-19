@@ -1,5 +1,5 @@
 # Check if proxy_url is set correctly on server configuration
-karma.bin-should-work --log.config=true --config.file=karma.yaml --check-config
+exec karma --log.config=true --config.file=karma.yaml --check-config
 ! stdout .
 cmp stderr stderr.txt
 

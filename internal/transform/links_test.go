@@ -105,7 +105,6 @@ func TestDetectTickets(t *testing.T) {
 	transform.SetLinkRules(linkDetectRules)
 
 	for _, testCase := range linkTests {
-		testCase := testCase
 		text, uri := transform.DetectLinks(&testCase.silence)
 		if text != testCase.text {
 			t.Errorf("Invalid ticket ID detected in silence comment '%s', expected '%s', got '%s'",

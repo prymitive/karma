@@ -1,5 +1,5 @@
 # Check if proxy mode is set correctly
-karma.bin-should-fail --log.config=true --config.file=karma.yaml --check-config
+! exec karma --log.config=true --config.file=karma.yaml --check-config
 ! stdout .
 cmp stderr stderr.txt
 
@@ -136,7 +136,7 @@ level=info msg="  alertsPerGroup: 5"
 level=info msg="  collapseGroups: collapsedOnMobile"
 level=info msg="  multiGridLabel: \"\""
 level=info msg="  multiGridSortReverse: false"
-level=error msg="Execution failed" error="failed to create Alertmanager 'failed' with URI 'http://127.0.0.1': cannot use proxy and readonly mode at the same time"
+level=fatal msg="Execution failed" error="failed to create Alertmanager 'failed' with URI 'http://127.0.0.1': cannot use proxy and readonly mode at the same time"
 -- karma.yaml --
 alertmanager:
   servers:

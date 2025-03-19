@@ -1,10 +1,10 @@
 # Raises an error if label custom color config is missing a value
-karma.bin-should-fail --config.file=karma.yaml
+! exec karma --config.file=karma.yaml
 ! stdout .
 cmp stderr stderr.txt
 
 -- stderr.txt --
-level=error msg="Execution failed" error="custom label color for 'region' is missing 'value' or 'value_re'"
+level=fatal msg="Execution failed" error="custom label color for 'region' is missing 'value' or 'value_re'"
 -- karma.yaml --
 alertmanager:
   servers:

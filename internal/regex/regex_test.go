@@ -23,7 +23,6 @@ func TestMustCompileAnchored(t *testing.T) {
 	}
 
 	for _, testCase := range testCases {
-		testCase := testCase
 		t.Run(fmt.Sprintf("%q => %q", testCase.in, testCase.out), func(t *testing.T) {
 			r := regex.MustCompileAnchored(testCase.in)
 			if r.String() != testCase.out {
@@ -51,7 +50,6 @@ func TestCompileAnchored(t *testing.T) {
 	}
 
 	for _, testCase := range testCases {
-		testCase := testCase
 		t.Run(fmt.Sprintf("%q => %q", testCase.in, testCase.out), func(t *testing.T) {
 			r, err := regex.CompileAnchored(testCase.in)
 			hadError := err != nil

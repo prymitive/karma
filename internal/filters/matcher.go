@@ -63,7 +63,7 @@ func (matcher *moreThanMatcher) Compare(valA, valB any) bool {
 		}
 	}
 
-	return string(valA.(string)) > string(valB.(string))
+	return valA.(string) > valB.(string)
 }
 
 type lessThanMatcher struct {
@@ -87,7 +87,7 @@ func (matcher *lessThanMatcher) Compare(valA, valB any) bool {
 		}
 	}
 
-	return string(valA.(string)) < string(valB.(string))
+	return valA.(string) < valB.(string)
 }
 
 type regexpMatcher struct {

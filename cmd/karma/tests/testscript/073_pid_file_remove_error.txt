@@ -1,7 +1,7 @@
 # Fails is we cannot remove a PID file
 
 exec bash -x ./test.sh &
-karma.bin-should-fail --pid-file=karma.pid --alertmanager.uri=http://127.0.0.1:7073 --listen.address=127.0.0.1 --listen.port=8073
+! exec karma --pid-file=karma.pid --alertmanager.uri=http://127.0.0.1:7073 --listen.address=127.0.0.1 --listen.port=8073
 ! stdout .
 cmp stderr stderr.txt
 wait
@@ -25,7 +25,7 @@ level=info msg="Starting HTTP server" address=127.0.0.1:8073
 level=info msg="Shutting down HTTP server" signal=terminated
 level=info msg="HTTP server shut down"
 level=info msg="Removing PID file" path=karma.pid
-level=error msg="Execution failed" error="failed to remove PID file: remove karma.pid: no such file or directory"
+level=fatal msg="Execution failed" error="failed to remove PID file: remove karma.pid: no such file or directory"
 -- test.sh --
 while [ ! -f karma.pid ]; do sleep 1 ; done
 sleep 1

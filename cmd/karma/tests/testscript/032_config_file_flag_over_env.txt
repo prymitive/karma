@@ -1,6 +1,6 @@
 # Loads config file from flags when CONFIG_FILE env is also set
 env CONFIG_FILE=env.yaml
-karma.bin-should-work --check-config --config.file=flag.yaml
+exec karma --check-config --config.file=flag.yaml
 ! stdout .
 cmp stderr stderr.txt
 

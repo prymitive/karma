@@ -1,7 +1,88 @@
 # Raises an error if we pass alertmanager.timeout value that doesn't parse
-karma.bin-should-fail --alertmanager.timeout=abc123 --alertmanager.uri=http://127.0.0.1:7044
-! stdout .
+! exec karma --alertmanager.timeout=abc123 --alertmanager.uri=http://127.0.0.1:7044
+cmp stdout stdout.txt
 cmp stderr stderr.txt
 
 -- stderr.txt --
-level=error msg="Execution failed" error="invalid argument \"abc123\" for \"--alertmanager.timeout\" flag: time: invalid duration \"abc123\""
+invalid argument "abc123" for "--alertmanager.timeout" flag: time: invalid duration "abc123"
+Usage of karma:
+      --alertAcknowledgement.author string         Default silence author when acknowledging alerts with short lived silences (default "karma")
+      --alertAcknowledgement.comment string        Comment used when acknowledging alerts with short lived silences (default "ACK! This alert was acknowledged using karma on %NOW%")
+      --alertAcknowledgement.duration duration     Initial silence duration when acknowledging alerts with short lived silences (default 15m0s)
+      --alertAcknowledgement.enabled               Enable alert acknowledging
+      --alertmanager.cors.credentials string       CORS credentials policy for browser fetch requests (default "include")
+      --alertmanager.external_uri string           Alertmanager server URI used for web UI links (only used with simplified config)
+      --alertmanager.interval duration             Interval for fetching data from Alertmanager servers (default 1m0s)
+      --alertmanager.name string                   Name for the Alertmanager server (only used with simplified config) (default "default")
+      --alertmanager.proxy                         Proxy all client requests to Alertmanager via karma (only used with simplified config)
+      --alertmanager.readonly                      Enable read-only mode that disable silence management (only used with simplified config)
+      --alertmanager.timeout duration              Timeout for requests sent to the Alertmanager server (only used with simplified config) (default 40s)
+      --alertmanager.tls.ca string                 Path to CA certificate used to establish TLS connection to the Alertmanager server (only used with simplified config)
+      --alertmanager.tls.cert string               Path to a TLS client certificate file to use when establishing TLS connections to the Alertmanager server - requires alertmanager.tls.key to be set (only used with simplified config)
+      --alertmanager.tls.key string                Path to a TLS client key file to use when establishing TLS connections to the Alertmanager server - requires alertmanager.tls.key to be set (only used with simplified config)
+      --alertmanager.uri string                    Alertmanager server URI (only used with simplified config)
+      --annotations.actions strings                List of annotations that will be moved to the alert menu
+      --annotations.default.hidden                 Hide all annotations by default unless explicitly listed in the 'visible' list
+      --annotations.enableInsecureHTML             Enable HTML strings in annotations to be parsed as HTML, enable at your own risk
+      --annotations.hidden strings                 List of annotations that are hidden by default
+      --annotations.keep strings                   List of annotations to keep, all other annotations will be stripped
+      --annotations.order strings                  Preferred order of annotation names
+      --annotations.strip strings                  List of annotations to ignore
+      --annotations.visible strings                List of annotations that are visible by default
+      --authorization.acl.silences string          Path to silence ACL config file
+      --check-config                               Validate configuration and exit
+      --config.file string                         Full path to the configuration file, 'karma.yaml' will be used if found in the current working directory
+      --custom.css string                          Path to a file with custom CSS to load
+      --custom.js string                           Path to a file with custom JavaScript to load
+      --debug                                      Enable debug mode
+      --filters.default strings                    List of default filters
+      --grid.auto.ignore strings                   List of label names not allowed for automatic multi-grid
+      --grid.auto.order strings                    Order of preference for selecting label names for automatic multi-grid
+      --grid.groupLimit int                        Default number of groups to show for each grid (default 40)
+      --grid.sorting.label string                  Label name to use when sorting alert grid by label (default "alertname")
+      --grid.sorting.order string                  Default sort order for alert grid (default "startsAt")
+      --grid.sorting.reverse                       Reverse sort order (default true)
+      --history.enabled                            Enable alert history queries (default true)
+      --history.timeout duration                   Timeout for history queries against source Prometheus servers (default 20s)
+      --history.workers int                        Number of history query workers to run (default 30)
+      --karma.name string                          Name for the karma instance (default "karma")
+      --labels.color.static strings                List of label names that should have the same (but distinct) color
+      --labels.color.unique strings                List of label names that should have unique color
+      --labels.keep strings                        List of labels to keep, all other labels will be stripped
+      --labels.keep_re strings                     List of regular expressions to keep matching labels, all other labels will be stripped
+      --labels.order strings                       Preferred order of label names
+      --labels.strip strings                       List of labels to ignore
+      --labels.strip_re strings                    List of regular expressions to ignore matching labels
+      --labels.valueOnly strings                   List of label names for which only the name will be shown in the UI
+      --labels.valueOnly_re strings                List of regular expressions to show only the name of matching labels
+      --listen.address string                      IP/Hostname to listen on
+      --listen.port int                            HTTP port to listen on (default 8080)
+      --listen.prefix string                       URL prefix (default "/")
+      --listen.timeout.read duration               HTTP request read timeout (default 10s)
+      --listen.timeout.write duration              HTTP response write timeout (default 20s)
+      --listen.tls.cert string                     TLS certificate path (enables HTTPS)
+      --listen.tls.key string                      TLS key path (enables HTTPS)
+      --log.config                                 Log used configuration to log on startup
+      --log.format string                          Log format, one of: text, json (default "text")
+      --log.level string                           Log level, one of: debug, info, warning, error, fatal and panic (default "info")
+      --log.requests                               Enable request logging
+      --log.timestamp                              Add timestamps to all log messages
+      --pid-file string                            If set PID of karma process will be written to this file
+      --receivers.keep strings                     List of receivers to keep, all alerts with different receivers will be ignored
+      --receivers.keep_re strings                  List of regular expressions to keep matching receivers, all other receivers will be ignored
+      --receivers.strip strings                    List of receivers to not display alerts for
+      --receivers.strip_re strings                 List of regular expressions to ignore matching receivers
+      --silenceForm.defaultAlertmanagers strings   List of Alertmanager names to use as default when creating a new silence
+      --silenceForm.strip.labels strings           List of labels to ignore when auto-filling silence form from alerts
+      --silences.expired duration                  Maximum age of expired silences to show on active alerts (default 10m0s)
+      --ui.alertsPerGroup int                      Default number of alerts to show for each alert group (default 5)
+      --ui.animations                              Enable UI animations (default true)
+      --ui.collapseGroups string                   Default state for alert groups (default "collapsedOnMobile")
+      --ui.colorTitlebar                           Color alert group titlebar based on alert state
+      --ui.hideFiltersWhenIdle                     Hide the filters bar when idle (default true)
+      --ui.minimalGroupWidth int                   Minimal width for each alert group on the grid (default 420)
+      --ui.refresh duration                        UI refresh interval (default 30s)
+      --ui.theme string                            Default theme, 'light', 'dark' or 'auto' (follow browser preference) (default "auto")
+      --version                                    Print version and exit
+-- stdout.txt --
+invalid argument "abc123" for "--alertmanager.timeout" flag: time: invalid duration "abc123"

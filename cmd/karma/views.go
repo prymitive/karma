@@ -268,8 +268,6 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 			labelMap[l.Name] = struct{}{}
 		}
 		for _, alert := range ag.Alerts {
-			alert := alert // scopelint pin
-
 			for _, l := range alert.Labels {
 				labelMap[l.Name] = struct{}{}
 			}
@@ -486,7 +484,6 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 
 	receivers := []string{}
 	for k := range allReceivers {
-		k := k
 		receivers = append(receivers, k)
 	}
 	sort.Strings(receivers)
@@ -768,7 +765,7 @@ func alertList(w http.ResponseWriter, r *http.Request) {
 			sortMap[v] = struct{}{}
 		}
 	}
-	var sortKeys []string
+	sortKeys := make([]string, 0, len(sortMap))
 	for k := range sortMap {
 		sortKeys = append(sortKeys, k)
 	}
@@ -841,8 +838,6 @@ func counters(w http.ResponseWriter, r *http.Request) {
 	for _, ag := range filtered {
 		total += len(ag.Alerts)
 		for _, alert := range ag.Alerts {
-			alert := alert
-
 			stateCount := newStateCount()
 			for _, am := range alert.Alertmanager {
 				stateCount[am.State]++

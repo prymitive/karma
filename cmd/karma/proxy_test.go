@@ -247,7 +247,6 @@ func TestProxyHeaders(t *testing.T) {
 	defer httpmock.DeactivateAndReset()
 
 	for _, testCase := range proxyHeaderTests {
-		testCase := testCase // scopelint pin
 		r := testRouter()
 		am, err := alertmanager.NewAlertmanager(
 			"cluster",

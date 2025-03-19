@@ -2,7 +2,7 @@
 
 exec bash -x ./test.sh &
 exec bash -c 'I=0 ; while [ ! -f alertmanager.pid ] && [ $I -lt 30 ]; do sleep 1; I=$((I+1)); done'
-karma.bin-should-work --pid-file=karma.pid
+exec karma --pid-file=karma.pid
 ! stdout .
 stderr 'level=info msg="Configured Alertmanager source" cluster=proxy-url name=proxy-url proxy=false readonly=false uri=http://am.example.com'
 stderr 'level=info msg="GET request" timeout=10 uri=http://am.example.com/metrics'

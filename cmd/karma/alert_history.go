@@ -147,7 +147,6 @@ func (hp *historyPoller) run(workers int) {
 	hp.isRunning.Store(true)
 	wg := sync.WaitGroup{}
 	for w := 1; w <= workers; w++ {
-		w := w
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
@@ -306,7 +305,7 @@ func rewriteTransport(rules []config.HistoryRewrite, uri string) (http.RoundTrip
 
 func countAlerts(uri string, timeout time.Duration, transport http.RoundTripper, labels map[string]string) (ret []OffsetSample, err error) {
 	if uri == "" {
-		return
+		return ret, err
 	}
 
 	client, err := api.NewClient(api.Config{

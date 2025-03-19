@@ -1,9 +1,9 @@
-karma.bin-should-fail --config.file=karma.yaml
+! exec karma --config.file=karma.yaml
 ! stdout .
 cmp stderr stderr.txt
 
 -- stderr.txt --
-level=error msg="Execution failed" error="authentication.header.group_name is required when authentication.header.group_value_re is set"
+level=fatal msg="Execution failed" error="authentication.header.group_name is required when authentication.header.group_value_re is set"
 -- karma.yaml --
 alertmanager:
   servers:
