@@ -1,10 +1,7 @@
 module _
 
-go 1.23.0
+go 1.24.0
 
-require golang.org/x/perf v0.0.0-20220920022801-e8d778a60d07
+require golang.org/x/perf v0.0.0-20250305200902-02a15fd477ba
 
-require (
-	github.com/google/safehtml v0.0.2 // indirect
-	golang.org/x/text v0.3.8 // indirect
-)
+require github.com/aclements/go-moremath v0.0.0-20210112150236-f10218a38794 // indirect
