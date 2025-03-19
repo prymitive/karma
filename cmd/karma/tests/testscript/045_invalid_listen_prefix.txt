@@ -1,7 +1,7 @@
 # Raises an error if listen.prefix is invalid
-karma.bin-should-fail --alertmanager.uri http://127.0.0.1 --listen.prefix karma
+! exec karma --alertmanager.uri http://127.0.0.1 --listen.prefix karma
 ! stdout .
 cmp stderr stderr.txt
 
 -- stderr.txt --
-level=error msg="Execution failed" error="listen.prefix must start with '/', got \"karma\""
+level=fatal msg="Execution failed" error="listen.prefix must start with '/', got \"karma\""

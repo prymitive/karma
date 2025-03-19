@@ -1,5 +1,5 @@
 # Uses 'default' as the default alertmanager name
-karma.bin-should-work --config.file=karma.yaml --check-config
+exec karma --config.file=karma.yaml --check-config
 ! stdout .
 cmp stderr stderr.txt
 

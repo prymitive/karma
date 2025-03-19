@@ -111,7 +111,6 @@ func TestGetViewURL(t *testing.T) {
 	}
 
 	for _, testCase := range tests {
-		testCase := testCase
 		t.Run(fmt.Sprintf("prefix=%q view=%v result=%q", testCase.prefix, testCase.view, testCase.result), func(t *testing.T) {
 			config.Config.Listen.Prefix = testCase.prefix
 			result := getViewURL(testCase.view)

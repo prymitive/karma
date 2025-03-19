@@ -1,7 +1,7 @@
 # Enables pprof endpoints when debug is enabled
 
 exec bash -x ./test.sh &
-karma.bin-should-work --pid-file=karma.pid --alertmanager.uri=http://127.0.0.1:7085 --listen.address=127.0.0.1 --listen.port=8085 --debug
+exec karma --pid-file=karma.pid --alertmanager.uri=http://127.0.0.1:7085 --listen.address=127.0.0.1 --listen.port=8085 --debug
 ! stdout .
 cmp stderr stderr.txt
 wait

@@ -5,7 +5,7 @@ http response prometheus /api/v1/query_range 200 {"status":"success","data":{"re
 http start prometheus 127.0.0.1:9103 $WORK/prometheus.pem $WORK/prometheus.key
 
 exec bash -x ./test.sh &
-karma.bin-should-work --pid-file=karma.pid --config.file=karma.yaml
+exec karma --pid-file=karma.pid --config.file=karma.yaml
 ! stdout .
 cmp stderr stderr.txt
 wait

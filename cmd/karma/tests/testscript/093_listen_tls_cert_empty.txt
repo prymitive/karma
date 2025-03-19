@@ -1,11 +1,11 @@
 # Fails on empty TLS cert
 
-karma.bin-should-fail --pid-file=karma.pid --config.file=karma.yaml --listen.address=127.0.0.1 --listen.port=8092
+! exec karma --pid-file=karma.pid --config.file=karma.yaml --listen.address=127.0.0.1 --listen.port=8092
 ! stdout .
 cmp stderr stderr.txt
 
 -- stderr.txt --
-level=error msg="Execution failed" error="listen.tls.cert must be set when listen.tls.key is set"
+level=fatal msg="Execution failed" error="listen.tls.cert must be set when listen.tls.key is set"
 -- karma.yaml --
 alertmanager:
   servers:

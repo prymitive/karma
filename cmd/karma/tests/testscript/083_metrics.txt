@@ -1,7 +1,7 @@
 # GET /metrics returns same list of metrics
 
 exec bash -x ./test.sh &
-karma.bin-should-work --pid-file=karma.pid --alertmanager.uri=http://127.0.0.1:7083 --listen.address=127.0.0.1 --listen.port=8083
+exec karma --pid-file=karma.pid --alertmanager.uri=http://127.0.0.1:7083 --listen.address=127.0.0.1 --listen.port=8083
 ! stdout .
 cmp stderr stderr.txt
 cmp curl.txt metrics.txt
@@ -20,10 +20,10 @@ go_gc_duration_seconds{quantile="0.75"}
 go_gc_duration_seconds{quantile="1"}
 go_gc_duration_seconds_sum
 go_gc_duration_seconds_count
-# HELP go_gc_gogc_percent Heap size target percentage configured by the user, otherwise 100. This value is set by the GOGC environment variable, and the runtime/debug.SetGCPercent function. Sourced from /gc/gogc:percent
+# HELP go_gc_gogc_percent Heap size target percentage configured by the user, otherwise 100. This value is set by the GOGC environment variable, and the runtime/debug.SetGCPercent function. Sourced from /gc/gogc:percent.
 # TYPE go_gc_gogc_percent gauge
 go_gc_gogc_percent
-# HELP go_gc_gomemlimit_bytes Go runtime memory limit configured by the user, otherwise math.MaxInt64. This value is set by the GOMEMLIMIT environment variable, and the runtime/debug.SetMemoryLimit function. Sourced from /gc/gomemlimit:bytes
+# HELP go_gc_gomemlimit_bytes Go runtime memory limit configured by the user, otherwise math.MaxInt64. This value is set by the GOMEMLIMIT environment variable, and the runtime/debug.SetMemoryLimit function. Sourced from /gc/gomemlimit:bytes.
 # TYPE go_gc_gomemlimit_bytes gauge
 go_gc_gomemlimit_bytes
 # HELP go_goroutines Number of goroutines that currently exist.
@@ -98,7 +98,7 @@ go_memstats_stack_sys_bytes
 # HELP go_memstats_sys_bytes Number of bytes obtained from system. Equals to /memory/classes/total:byte.
 # TYPE go_memstats_sys_bytes gauge
 go_memstats_sys_bytes
-# HELP go_sched_gomaxprocs_threads The current runtime.GOMAXPROCS setting, or the number of operating system threads that can execute user-level Go code simultaneously. Sourced from /sched/gomaxprocs:threads
+# HELP go_sched_gomaxprocs_threads The current runtime.GOMAXPROCS setting, or the number of operating system threads that can execute user-level Go code simultaneously. Sourced from /sched/gomaxprocs:threads.
 # TYPE go_sched_gomaxprocs_threads gauge
 go_sched_gomaxprocs_threads
 # HELP go_threads Number of OS threads created.

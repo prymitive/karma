@@ -1,5 +1,5 @@
 # Config is valid with example silence ACL rules
-karma.bin-should-work --check-config
+exec karma --check-config
 ! stdout .
 cmp stderr stderr.txt
 

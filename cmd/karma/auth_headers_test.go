@@ -65,7 +65,6 @@ func TestAuthHeader(t *testing.T) {
 	defer httpmock.DeactivateAndReset()
 
 	for _, testCase := range authHeaderTests {
-		testCase := testCase // scopelint pin
 		for _, version := range mock.ListAllMocks() {
 			apiCache, _ = lru.New[string, []byte](100)
 

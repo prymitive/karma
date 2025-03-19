@@ -1,10 +1,10 @@
 # Raises an error if --config.file points to a file that contains unknown keys
-karma.bin-should-fail --check-config
+! exec karma --check-config
 ! stdout .
 cmp stderr stderr.txt
 
 -- stderr.txt --
-level=error msg="Execution failed" error="failed to parse configuration file \"karma.yaml\": yaml: unmarshal errors:\n  line 5: field authorizationFoo not found in type config.configSchema"
+level=fatal msg="Execution failed" error="failed to parse configuration file \"karma.yaml\": yaml: unmarshal errors:\n  line 5: field authorizationFoo not found in type config.configSchema"
 -- karma.yaml --
 authentication:
   header:

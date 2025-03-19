@@ -34,7 +34,6 @@ func DedupAlerts() []models.AlertGroup {
 		alerts := map[string]models.Alert{}
 		for _, ag := range agList {
 			for _, alert := range ag.Alerts {
-				alert := alert // scopelint pin
 				// remove all alerts for receiver(s) that the user doesn't
 				// want to see in the UI
 				if transform.StripReceivers(
@@ -78,7 +77,7 @@ func DedupAlerts() []models.AlertGroup {
 					// and append alert state to the slice
 					alertStates[alertLFP] = append(alertStates[alertLFP], alert.State)
 				} else {
-					alerts[alertLFP] = models.Alert(alert)
+					alerts[alertLFP] = alert
 					// seed alert state slice
 					alertStates[alertLFP] = []string{alert.State}
 				}
@@ -88,14 +87,13 @@ func DedupAlerts() []models.AlertGroup {
 		if len(alerts) == 0 {
 			continue
 		}
-		ag := models.AlertGroup(agList[0])
+		ag := agList[0]
 		ag.Labels = transform.StripLables(
 			config.Config.Labels.Keep, config.Config.Labels.Strip,
 			config.Config.Labels.CompiledKeepRegex, config.Config.Labels.CompiledStripRegex,
 			ag.Labels)
 		ag.Alerts = make(models.AlertList, 0, len(alerts))
 		for _, alert := range alerts {
-			alert := alert // scopelint pin
 			// strip labels and annotations user doesn't want to see in the UI
 			alert.Labels = transform.StripLables(
 				config.Config.Labels.Keep, config.Config.Labels.Strip,

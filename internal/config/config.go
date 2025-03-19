@@ -492,7 +492,7 @@ func (config *configSchema) Read(flags *pflag.FlagSet) (string, error) {
 // LogValues will dump runtime config to logs
 func (config *configSchema) LogValues() {
 	// make a copy of our config so we can edit it
-	cfg := configSchema(*config)
+	cfg := *config
 
 	auth := []AuthenticationUser{}
 	for _, u := range cfg.Authentication.BasicAuth.Users {

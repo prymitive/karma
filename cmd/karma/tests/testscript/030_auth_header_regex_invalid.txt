@@ -1,10 +1,10 @@
 # Raises an error if header authentication config contains invalid regex rule
-karma.bin-should-fail --config.file=karma.yaml
+! exec karma --config.file=karma.yaml
 ! stdout .
 cmp stderr stderr.txt
 
 -- stderr.txt --
-level=error msg="Execution failed" error="invalid regex for authentication.header.value_re: error parsing regexp: invalid nested repetition operator: `++`"
+level=fatal msg="Execution failed" error="invalid regex for authentication.header.value_re: error parsing regexp: invalid nested repetition operator: `++`"
 -- karma.yaml --
 alertmanager:
   servers:

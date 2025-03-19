@@ -1,4 +1,4 @@
-karma.bin-should-work --check-config
+exec karma --check-config
 ! stdout .
 cmp stderr stderr.txt
 

@@ -160,12 +160,9 @@ var agFPTests = []agFPTest{
 func TestAlertGroupContentFingerprint(t *testing.T) {
 	fps := []string{}
 	for i, testCase := range agFPTests {
-		i := i               // scopelint pin
-		testCase := testCase // scopelint pin
 		t.Run(testCase.name, func(t *testing.T) {
 			alerts := models.AlertList{}
 			for _, alert := range testCase.ag.Alerts {
-				alert := alert // scopelint pin
 				alert.UpdateFingerprints()
 				alerts = append(alerts, alert)
 			}

@@ -1,10 +1,10 @@
 # Raises an error if header authentication config is missing regex rule
-karma.bin-should-fail --config.file=karma.yaml
+! exec karma --config.file=karma.yaml
 ! stdout .
 cmp stderr stderr.txt
 
 -- stderr.txt --
-level=error msg="Execution failed" error="authentication.header.value_re is required when authentication.header.name is set"
+level=fatal msg="Execution failed" error="authentication.header.value_re is required when authentication.header.name is set"
 -- karma.yaml --
 alertmanager:
   servers:

@@ -548,9 +548,7 @@ func TestGrids(t *testing.T) {
 
 	mockConfig(t.Setenv)
 	for _, version := range mock.ListAllMocks() {
-		version := version
 		for _, testCase := range testCases {
-			testCase := testCase
 			t.Run(fmt.Sprintf("version=%q request=%v", version, testCase.request), func(t *testing.T) {
 				payload, err := json.Marshal(testCase.request)
 				if err != nil {
@@ -1668,7 +1666,6 @@ func TestHealthcheckAlerts(t *testing.T) {
 				alertGroups := alertmanager.DedupAlerts()
 				for _, ag := range alertGroups {
 					for _, alert := range ag.Alerts {
-						alert := alert
 						name, hc := am.IsHealthCheckAlert(&alert)
 						if hc != nil && !testCase.visible {
 							t.Errorf("%s visible=%v but got hc alert %v", name, testCase.visible, alert)

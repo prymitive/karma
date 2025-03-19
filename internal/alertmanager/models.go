@@ -140,7 +140,6 @@ func (am *Alertmanager) pullSilences(version string, si *intern.Interner) error 
 		Msg("Detecting ticket links in silences")
 	silenceMap := make(map[string]models.Silence, len(silences))
 	for _, silence := range silences {
-		silence := silence // scopelint pin
 		silence.TicketID, silence.TicketURL = transform.DetectLinks(&silence)
 		silenceMap[silence.ID] = silence
 	}
@@ -218,8 +217,6 @@ func (am *Alertmanager) pullAlerts(version string, si *intern.Interner) error {
 			}
 		}
 		for _, alert := range ag.Alerts {
-			alert := alert
-
 			if _, found := uniqueAlerts[agID]; !found {
 				uniqueAlerts[agID] = map[string]models.Alert{}
 			}
@@ -251,7 +248,6 @@ func (am *Alertmanager) pullAlerts(version string, si *intern.Interner) error {
 	for _, ag := range uniqueGroups {
 		alerts := make(models.AlertList, 0, len(uniqueAlerts[ag.ID]))
 		for _, alert := range uniqueAlerts[ag.ID] {
-			alert := alert
 			silences := map[string]*models.Silence{}
 			for _, silenceID := range alert.SilencedBy {
 				silence, err := am.SilenceByID(silenceID)
@@ -307,7 +303,6 @@ func (am *Alertmanager) pullAlerts(version string, si *intern.Interner) error {
 		}
 
 		for _, hint := range filters.BuildAutocomplete(alerts) {
-			hint := hint
 			autocompleteMap[hint.Value] = &hint
 		}
 
@@ -536,7 +531,6 @@ func (am *Alertmanager) IsHealthy() bool {
 
 func (am *Alertmanager) IsHealthCheckAlert(alert *models.Alert) (string, *HealthCheck) {
 	for name, hc := range am.healthchecks {
-		hc := hc
 		positiveMatch := false
 		negativeMatch := false
 		for _, hcFilter := range hc.filters {

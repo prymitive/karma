@@ -1,6 +1,6 @@
 # Fails to start when invalid port is set
 
-karma.bin-should-fail --pid-file=karma.pid --alertmanager.uri=http://foo:bar@127.0.0.1 --listen.address=127.0.0.1 --listen.port=9999999
+! exec karma --pid-file=karma.pid --alertmanager.uri=http://foo:bar@127.0.0.1 --listen.address=127.0.0.1 --listen.port=9999999
 ! stdout .
 cmp stderr stderr.txt
 
@@ -19,4 +19,4 @@ level=error msg="Request failed" error="Get \"http://foo:***@127.0.0.1/metrics\"
 level=error msg="Collection failed" error="Get \"http://127.0.0.1/api/v2/silences\": dial tcp 127.0.0.1:80: connect: connection refused" alertmanager=default try=2/2
 level=info msg="Collection completed"
 level=info msg="Done, starting HTTP server"
-level=error msg="Execution failed" error="listen tcp: address 9999999: invalid port"
+level=fatal msg="Execution failed" error="listen tcp: address 9999999: invalid port"
