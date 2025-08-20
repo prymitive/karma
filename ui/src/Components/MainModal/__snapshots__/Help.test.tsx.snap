@@ -848,18 +848,16 @@ exports[`<Help /> matches snapshot 1`] = `
             </div>
             <div class="my-1 alert alert-secondary p-2">
               <svg
-                aria-hidden="true"
-                focusable="false"
                 data-prefix="fas"
                 data-icon="circle-info"
                 class="svg-inline--fa fa-circle-info me-1"
                 role="img"
-                xmlns="http://www.w3.org/2000/svg"
                 viewbox="0 0 512 512"
+                aria-hidden="true"
               >
                 <path
                   fill="currentColor"
-                  d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"
+                  d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM224 160a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm-8 64l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z"
                 >
                 </path>
               </svg>
@@ -975,18 +973,16 @@ exports[`<Help /> matches snapshot 1`] = `
             </div>
             <div class="my-1 alert alert-secondary p-2">
               <svg
-                aria-hidden="true"
-                focusable="false"
                 data-prefix="fas"
                 data-icon="circle-info"
                 class="svg-inline--fa fa-circle-info me-1"
                 role="img"
-                xmlns="http://www.w3.org/2000/svg"
                 viewbox="0 0 512 512"
+                aria-hidden="true"
               >
                 <path
                   fill="currentColor"
-                  d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"
+                  d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM224 160a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm-8 64l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z"
                 >
                 </path>
               </svg>

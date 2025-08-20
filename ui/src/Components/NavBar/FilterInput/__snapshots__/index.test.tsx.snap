@@ -11,18 +11,16 @@ exports[`<FilterInput /> matches snapshot with no filters 1`] = `
       <div class="autosuggest d-inline-block mw-100">
         <span class="input-group-text text-muted d-inline-block me-2 border-0 bg-inherit px-1">
           <svg
-            aria-hidden="true"
-            focusable="false"
             data-prefix="fas"
             data-icon="magnifying-glass"
             class="svg-inline--fa fa-magnifying-glass "
             role="img"
-            xmlns="http://www.w3.org/2000/svg"
             viewbox="0 0 512 512"
+            aria-hidden="true"
           >
             <path
               fill="currentColor"
-              d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"
+              d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376C296.3 401.1 253.9 416 208 416 93.1 416 0 322.9 0 208S93.1 0 208 0 416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"
             >
             </path>
           </svg>
@@ -58,18 +56,16 @@ exports[`<FilterInput /> matches snapshot with no filters 1`] = `
         aria-expanded="true"
       >
         <svg
-          aria-hidden="true"
-          focusable="false"
           data-prefix="fas"
           data-icon="caret-down"
           class="svg-inline--fa fa-caret-down "
           role="img"
-          xmlns="http://www.w3.org/2000/svg"
-          viewbox="0 0 320 512"
+          viewbox="0 0 384 512"
+          aria-hidden="true"
         >
           <path
             fill="currentColor"
-            d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z"
+            d="M352 160c12.9 0 24.6 7.8 29.6 19.8s2.2 25.7-6.9 34.9l-160 160c-12.5 12.5-32.8 12.5-45.3 0l-160-160c-9.2-9.2-11.9-22.9-6.9-34.9S19.1 160 32 160l320 0z"
           >
           </path>
         </svg>
@@ -93,18 +89,16 @@ exports[`<FilterInput /> matches snapshot with some filters 1`] = `
         class="btn-secondary btn-sm components-filteredinputlabel components-label btn d-inline-flex flex-row align-items-center"
       >
         <svg
-          aria-hidden="true"
-          focusable="false"
           data-prefix="fas"
           data-icon="spinner"
           class="svg-inline--fa fa-spinner fa-spin "
           role="img"
-          xmlns="http://www.w3.org/2000/svg"
           viewbox="0 0 512 512"
+          aria-hidden="true"
         >
           <path
             fill="currentColor"
-            d="M304 48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zm0 416a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM48 304a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm464-48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM142.9 437A48 48 0 1 0 75 369.1 48 48 0 1 0 142.9 437zm0-294.2A48 48 0 1 0 75 75a48 48 0 1 0 67.9 67.9zM369.1 437A48 48 0 1 0 437 369.1 48 48 0 1 0 369.1 437z"
+            d="M208 48a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm0 416a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zM48 208a48 48 0 1 1 0 96 48 48 0 1 1 0-96zm368 48a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zM75 369.1A48 48 0 1 1 142.9 437 48 48 0 1 1 75 369.1zM75 75A48 48 0 1 1 142.9 142.9 48 48 0 1 1 75 75zM437 369.1A48 48 0 1 1 369.1 437 48 48 0 1 1 437 369.1z"
           >
           </path>
         </svg>
@@ -117,18 +111,16 @@ exports[`<FilterInput /> matches snapshot with some filters 1`] = `
           </span>
         </div>
         <svg
-          aria-hidden="true"
-          focusable="false"
           data-prefix="fas"
           data-icon="xmark"
           class="svg-inline--fa fa-xmark cursor-pointer text-reset ms-1"
           role="img"
-          xmlns="http://www.w3.org/2000/svg"
           viewbox="0 0 384 512"
+          aria-hidden="true"
         >
           <path
             fill="currentColor"
-            d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"
+            d="M55.1 73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L147.2 256 9.9 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192.5 301.3 329.9 438.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.8 256 375.1 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192.5 210.7 55.1 73.4z"
           >
           </path>
         </svg>
@@ -138,18 +130,16 @@ exports[`<FilterInput /> matches snapshot with some filters 1`] = `
         class="btn-secondary btn-sm components-filteredinputlabel components-label btn d-inline-flex flex-row align-items-center"
       >
         <svg
-          aria-hidden="true"
-          focusable="false"
           data-prefix="fas"
           data-icon="spinner"
           class="svg-inline--fa fa-spinner fa-spin "
           role="img"
-          xmlns="http://www.w3.org/2000/svg"
           viewbox="0 0 512 512"
+          aria-hidden="true"
         >
           <path
             fill="currentColor"
-            d="M304 48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zm0 416a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM48 304a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm464-48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM142.9 437A48 48 0 1 0 75 369.1 48 48 0 1 0 142.9 437zm0-294.2A48 48 0 1 0 75 75a48 48 0 1 0 67.9 67.9zM369.1 437A48 48 0 1 0 437 369.1 48 48 0 1 0 369.1 437z"
+            d="M208 48a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm0 416a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zM48 208a48 48 0 1 1 0 96 48 48 0 1 1 0-96zm368 48a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zM75 369.1A48 48 0 1 1 142.9 437 48 48 0 1 1 75 369.1zM75 75A48 48 0 1 1 142.9 142.9 48 48 0 1 1 75 75zM437 369.1A48 48 0 1 1 369.1 437 48 48 0 1 1 437 369.1z"
           >
           </path>
         </svg>
@@ -162,18 +152,16 @@ exports[`<FilterInput /> matches snapshot with some filters 1`] = `
           </span>
         </div>
         <svg
-          aria-hidden="true"
-          focusable="false"
           data-prefix="fas"
           data-icon="xmark"
           class="svg-inline--fa fa-xmark cursor-pointer text-reset ms-1"
           role="img"
-          xmlns="http://www.w3.org/2000/svg"
           viewbox="0 0 384 512"
+          aria-hidden="true"
         >
           <path
             fill="currentColor"
-            d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"
+            d="M55.1 73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L147.2 256 9.9 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192.5 301.3 329.9 438.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.8 256 375.1 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192.5 210.7 55.1 73.4z"
           >
           </path>
         </svg>
@@ -210,18 +198,16 @@ exports[`<FilterInput /> matches snapshot with some filters 1`] = `
         aria-expanded="true"
       >
         <svg
-          aria-hidden="true"
-          focusable="false"
           data-prefix="fas"
           data-icon="caret-down"
           class="svg-inline--fa fa-caret-down "
           role="img"
-          xmlns="http://www.w3.org/2000/svg"
-          viewbox="0 0 320 512"
+          viewbox="0 0 384 512"
+          aria-hidden="true"
         >
           <path
             fill="currentColor"
-            d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z"
+            d="M352 160c12.9 0 24.6 7.8 29.6 19.8s2.2 25.7-6.9 34.9l-160 160c-12.5 12.5-32.8 12.5-45.3 0l-160-160c-9.2-9.2-11.9-22.9-6.9-34.9S19.1 160 32 160l320 0z"
           >
           </path>
         </svg>

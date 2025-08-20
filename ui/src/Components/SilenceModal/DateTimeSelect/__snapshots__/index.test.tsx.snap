@@ -43,18 +43,16 @@ exports[`<DateTimeSelect /> 'Duration' tab matches snapshot 1`] = `
             <td class="w-50 text-center with-click px-2">
               <span>
                 <svg
-                  aria-hidden="true"
-                  focusable="false"
                   data-prefix="fas"
                   data-icon="angle-up"
                   class="svg-inline--fa fa-angle-up fa-2x text-muted cursor-pointer"
                   role="img"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewbox="0 0 448 512"
+                  viewbox="0 0 384 512"
+                  aria-hidden="true"
                 >
                   <path
                     fill="currentColor"
-                    d="M201.4 137.4c12.5-12.5 32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L224 205.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l160-160z"
+                    d="M169.4 137.4c12.5-12.5 32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L192 205.3 54.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l160-160z"
                   >
                   </path>
                 </svg>
@@ -79,18 +77,16 @@ exports[`<DateTimeSelect /> 'Duration' tab matches snapshot 1`] = `
             <td class="w-50 text-center with-click px-2">
               <span>
                 <svg
-                  aria-hidden="true"
-                  focusable="false"
                   data-prefix="fas"
                   data-icon="angle-down"
                   class="svg-inline--fa fa-angle-down fa-2x text-muted cursor-pointer"
                   role="img"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewbox="0 0 448 512"
+                  viewbox="0 0 384 512"
+                  aria-hidden="true"
                 >
                   <path
                     fill="currentColor"
-                    d="M201.4 374.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 306.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"
+                    d="M169.4 374.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 306.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"
                   >
                   </path>
                 </svg>
@@ -109,18 +105,16 @@ exports[`<DateTimeSelect /> 'Duration' tab matches snapshot 1`] = `
             <td class="w-50 text-center with-click px-2">
               <span>
                 <svg
-                  aria-hidden="true"
-                  focusable="false"
                   data-prefix="fas"
                   data-icon="angle-up"
                   class="svg-inline--fa fa-angle-up fa-2x text-muted cursor-pointer"
                   role="img"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewbox="0 0 448 512"
+                  viewbox="0 0 384 512"
+                  aria-hidden="true"
                 >
                   <path
                     fill="currentColor"
-                    d="M201.4 137.4c12.5-12.5 32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L224 205.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l160-160z"
+                    d="M169.4 137.4c12.5-12.5 32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L192 205.3 54.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l160-160z"
                   >
                   </path>
                 </svg>
@@ -145,18 +139,16 @@ exports[`<DateTimeSelect /> 'Duration' tab matches snapshot 1`] = `
             <td class="w-50 text-center with-click px-2">
               <span>
                 <svg
-                  aria-hidden="true"
-                  focusable="false"
                   data-prefix="fas"
                   data-icon="angle-down"
                   class="svg-inline--fa fa-angle-down fa-2x text-muted cursor-pointer"
                   role="img"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewbox="0 0 448 512"
+                  viewbox="0 0 384 512"
+                  aria-hidden="true"
                 >
                   <path
                     fill="currentColor"
-                    d="M201.4 374.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 306.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"
+                    d="M169.4 374.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 306.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"
                   >
                   </path>
                 </svg>
@@ -175,18 +167,16 @@ exports[`<DateTimeSelect /> 'Duration' tab matches snapshot 1`] = `
             <td class="w-50 text-center with-click px-2">
               <span>
                 <svg
-                  aria-hidden="true"
-                  focusable="false"
                   data-prefix="fas"
                   data-icon="angle-up"
                   class="svg-inline--fa fa-angle-up fa-2x text-muted cursor-pointer"
                   role="img"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewbox="0 0 448 512"
+                  viewbox="0 0 384 512"
+                  aria-hidden="true"
                 >
                   <path
                     fill="currentColor"
-                    d="M201.4 137.4c12.5-12.5 32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L224 205.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l160-160z"
+                    d="M169.4 137.4c12.5-12.5 32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L192 205.3 54.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l160-160z"
                   >
                   </path>
                 </svg>
@@ -211,18 +201,16 @@ exports[`<DateTimeSelect /> 'Duration' tab matches snapshot 1`] = `
             <td class="w-50 text-center with-click px-2">
               <span>
                 <svg
-                  aria-hidden="true"
-                  focusable="false"
                   data-prefix="fas"
                   data-icon="angle-down"
                   class="svg-inline--fa fa-angle-down fa-2x text-muted cursor-pointer"
                   role="img"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewbox="0 0 448 512"
+                  viewbox="0 0 384 512"
+                  aria-hidden="true"
                 >
                   <path
                     fill="currentColor"
-                    d="M201.4 374.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 306.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"
+                    d="M169.4 374.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 306.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"
                   >
                   </path>
                 </svg>
@@ -848,18 +836,16 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                     <div class="d-flex justify-content-around mt-3">
                       <button class="btn btn-light btn-sm">
                         <svg
-                          aria-hidden="true"
-                          focusable="false"
                           data-prefix="fas"
                           data-icon="calendar-day"
                           class="svg-inline--fa fa-calendar-day fa-fw me-1"
                           role="img"
-                          xmlns="http://www.w3.org/2000/svg"
                           viewbox="0 0 448 512"
+                          aria-hidden="true"
                         >
                           <path
                             fill="currentColor"
-                            d="M128 0c17.7 0 32 14.3 32 32l0 32 128 0 0-32c0-17.7 14.3-32 32-32s32 14.3 32 32l0 32 48 0c26.5 0 48 21.5 48 48l0 48L0 160l0-48C0 85.5 21.5 64 48 64l48 0 0-32c0-17.7 14.3-32 32-32zM0 192l448 0 0 272c0 26.5-21.5 48-48 48L48 512c-26.5 0-48-21.5-48-48L0 192zm80 64c-8.8 0-16 7.2-16 16l0 96c0 8.8 7.2 16 16 16l96 0c8.8 0 16-7.2 16-16l0-96c0-8.8-7.2-16-16-16l-96 0z"
+                            d="M128 0c17.7 0 32 14.3 32 32l0 32 128 0 0-32c0-17.7 14.3-32 32-32s32 14.3 32 32l0 32 32 0c35.3 0 64 28.7 64 64l0 288c0 35.3-28.7 64-64 64L64 480c-35.3 0-64-28.7-64-64L0 128C0 92.7 28.7 64 64 64l32 0 0-32c0-17.7 14.3-32 32-32zm0 256c-17.7 0-32 14.3-32 32l0 64c0 17.7 14.3 32 32 32l64 0c17.7 0 32-14.3 32-32l0-64c0-17.7-14.3-32-32-32l-64 0z"
                           >
                           </path>
                         </svg>
@@ -881,18 +867,16 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
             <td class="components-hour-up with-click">
               <span>
                 <svg
-                  aria-hidden="true"
-                  focusable="false"
                   data-prefix="fas"
                   data-icon="angle-up"
                   class="svg-inline--fa fa-angle-up fa-2x text-muted cursor-pointer"
                   role="img"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewbox="0 0 448 512"
+                  viewbox="0 0 384 512"
+                  aria-hidden="true"
                 >
                   <path
                     fill="currentColor"
-                    d="M201.4 137.4c12.5-12.5 32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L224 205.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l160-160z"
+                    d="M169.4 137.4c12.5-12.5 32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L192 205.3 54.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l160-160z"
                   >
                   </path>
                 </svg>
@@ -903,18 +887,16 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
             <td class="components-minute-up with-click">
               <span>
                 <svg
-                  aria-hidden="true"
-                  focusable="false"
                   data-prefix="fas"
                   data-icon="angle-up"
                   class="svg-inline--fa fa-angle-up fa-2x text-muted cursor-pointer"
                   role="img"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewbox="0 0 448 512"
+                  viewbox="0 0 384 512"
+                  aria-hidden="true"
                 >
                   <path
                     fill="currentColor"
-                    d="M201.4 137.4c12.5-12.5 32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L224 205.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l160-160z"
+                    d="M169.4 137.4c12.5-12.5 32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L192 205.3 54.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l160-160z"
                   >
                   </path>
                 </svg>
@@ -942,18 +924,16 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
             <td class="components-hour-down with-click">
               <span>
                 <svg
-                  aria-hidden="true"
-                  focusable="false"
                   data-prefix="fas"
                   data-icon="angle-down"
                   class="svg-inline--fa fa-angle-down fa-2x text-muted cursor-pointer"
                   role="img"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewbox="0 0 448 512"
+                  viewbox="0 0 384 512"
+                  aria-hidden="true"
                 >
                   <path
                     fill="currentColor"
-                    d="M201.4 374.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 306.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"
+                    d="M169.4 374.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 306.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"
                   >
                   </path>
                 </svg>
@@ -964,18 +944,16 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
             <td class="components-minute-down with-click">
               <span>
                 <svg
-                  aria-hidden="true"
-                  focusable="false"
                   data-prefix="fas"
                   data-icon="angle-down"
                   class="svg-inline--fa fa-angle-down fa-2x text-muted cursor-pointer"
                   role="img"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewbox="0 0 448 512"
+                  viewbox="0 0 384 512"
+                  aria-hidden="true"
                 >
                   <path
                     fill="currentColor"
-                    d="M201.4 374.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 306.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"
+                    d="M169.4 374.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 306.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"
                   >
                   </path>
                 </svg>
@@ -1637,18 +1615,16 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                         disabled
                       >
                         <svg
-                          aria-hidden="true"
-                          focusable="false"
                           data-prefix="fas"
                           data-icon="calendar-day"
                           class="svg-inline--fa fa-calendar-day fa-fw me-1"
                           role="img"
-                          xmlns="http://www.w3.org/2000/svg"
                           viewbox="0 0 448 512"
+                          aria-hidden="true"
                         >
                           <path
                             fill="currentColor"
-                            d="M128 0c17.7 0 32 14.3 32 32l0 32 128 0 0-32c0-17.7 14.3-32 32-32s32 14.3 32 32l0 32 48 0c26.5 0 48 21.5 48 48l0 48L0 160l0-48C0 85.5 21.5 64 48 64l48 0 0-32c0-17.7 14.3-32 32-32zM0 192l448 0 0 272c0 26.5-21.5 48-48 48L48 512c-26.5 0-48-21.5-48-48L0 192zm80 64c-8.8 0-16 7.2-16 16l0 96c0 8.8 7.2 16 16 16l96 0c8.8 0 16-7.2 16-16l0-96c0-8.8-7.2-16-16-16l-96 0z"
+                            d="M128 0c17.7 0 32 14.3 32 32l0 32 128 0 0-32c0-17.7 14.3-32 32-32s32 14.3 32 32l0 32 32 0c35.3 0 64 28.7 64 64l0 288c0 35.3-28.7 64-64 64L64 480c-35.3 0-64-28.7-64-64L0 128C0 92.7 28.7 64 64 64l32 0 0-32c0-17.7 14.3-32 32-32zm0 256c-17.7 0-32 14.3-32 32l0 64c0 17.7 14.3 32 32 32l64 0c17.7 0 32-14.3 32-32l0-64c0-17.7-14.3-32-32-32l-64 0z"
                           >
                           </path>
                         </svg>
@@ -1670,18 +1646,16 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
             <td class="components-hour-up with-click">
               <span>
                 <svg
-                  aria-hidden="true"
-                  focusable="false"
                   data-prefix="fas"
                   data-icon="angle-up"
                   class="svg-inline--fa fa-angle-up fa-2x text-muted cursor-pointer"
                   role="img"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewbox="0 0 448 512"
+                  viewbox="0 0 384 512"
+                  aria-hidden="true"
                 >
                   <path
                     fill="currentColor"
-                    d="M201.4 137.4c12.5-12.5 32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L224 205.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l160-160z"
+                    d="M169.4 137.4c12.5-12.5 32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L192 205.3 54.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l160-160z"
                   >
                   </path>
                 </svg>
@@ -1692,18 +1666,16 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
             <td class="components-minute-up with-click">
               <span>
                 <svg
-                  aria-hidden="true"
-                  focusable="false"
                   data-prefix="fas"
                   data-icon="angle-up"
                   class="svg-inline--fa fa-angle-up fa-2x text-muted cursor-pointer"
                   role="img"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewbox="0 0 448 512"
+                  viewbox="0 0 384 512"
+                  aria-hidden="true"
                 >
                   <path
                     fill="currentColor"
-                    d="M201.4 137.4c12.5-12.5 32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L224 205.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l160-160z"
+                    d="M169.4 137.4c12.5-12.5 32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L192 205.3 54.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l160-160z"
                   >
                   </path>
                 </svg>
@@ -1731,18 +1703,16 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
             <td class="components-hour-down with-click">
               <span>
                 <svg
-                  aria-hidden="true"
-                  focusable="false"
                   data-prefix="fas"
                   data-icon="angle-down"
                   class="svg-inline--fa fa-angle-down fa-2x text-muted cursor-pointer"
                   role="img"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewbox="0 0 448 512"
+                  viewbox="0 0 384 512"
+                  aria-hidden="true"
                 >
                   <path
                     fill="currentColor"
-                    d="M201.4 374.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 306.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"
+                    d="M169.4 374.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 306.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"
                   >
                   </path>
                 </svg>
@@ -1753,18 +1723,16 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
             <td class="components-minute-down with-click">
               <span>
                 <svg
-                  aria-hidden="true"
-                  focusable="false"
                   data-prefix="fas"
                   data-icon="angle-down"
                   class="svg-inline--fa fa-angle-down fa-2x text-muted cursor-pointer"
                   role="img"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewbox="0 0 448 512"
+                  viewbox="0 0 384 512"
+                  aria-hidden="true"
                 >
                   <path
                     fill="currentColor"
-                    d="M201.4 374.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 306.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"
+                    d="M169.4 374.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 306.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"
                   >
                   </path>
                 </svg>
