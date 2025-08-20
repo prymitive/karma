@@ -16,18 +16,16 @@ exports[`<SilencePreview /> matches snapshot 1`] = `
         <li class="page-item disabled">
           <button class="page-link">
             <svg
-              aria-hidden="true"
-              focusable="false"
               data-prefix="fas"
               data-icon="angle-left"
               class="svg-inline--fa fa-angle-left "
               role="img"
-              xmlns="http://www.w3.org/2000/svg"
-              viewbox="0 0 320 512"
+              viewbox="0 0 256 512"
+              aria-hidden="true"
             >
               <path
                 fill="currentColor"
-                d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"
+                d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"
               >
               </path>
             </svg>
@@ -51,18 +49,16 @@ exports[`<SilencePreview /> matches snapshot 1`] = `
         <li class="page-item ">
           <button class="page-link">
             <svg
-              aria-hidden="true"
-              focusable="false"
               data-prefix="fas"
               data-icon="angle-right"
               class="svg-inline--fa fa-angle-right "
               role="img"
-              xmlns="http://www.w3.org/2000/svg"
-              viewbox="0 0 320 512"
+              viewbox="0 0 256 512"
+              aria-hidden="true"
             >
               <path
                 fill="currentColor"
-                d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"
+                d="M247.1 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L179.2 256 41.9 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"
               >
               </path>
             </svg>
@@ -78,18 +74,16 @@ exports[`<SilencePreview /> matches snapshot 1`] = `
     class="btn btn-primary"
   >
     <svg
-      aria-hidden="true"
-      focusable="false"
       data-prefix="fas"
       data-icon="circle-check"
       class="svg-inline--fa fa-circle-check pe-1"
       role="img"
-      xmlns="http://www.w3.org/2000/svg"
       viewbox="0 0 512 512"
+      aria-hidden="true"
     >
       <path
         fill="currentColor"
-        d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"
+        d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zm84.4-299.3l-80 128c-4.2 6.7-11.4 10.9-19.3 11.3s-15.5-3.2-20.2-9.6l-48-64c-8-10.6-5.8-25.6 4.8-33.6s25.6-5.8 33.6 4.8l27 36 61.4-98.3c7-11.2 21.8-14.7 33.1-7.6s14.7 21.8 7.6 33.1z"
       >
       </path>
     </svg>
@@ -100,18 +94,16 @@ exports[`<SilencePreview /> matches snapshot 1`] = `
     class="btn btn-danger me-2"
   >
     <svg
-      aria-hidden="true"
-      focusable="false"
       data-prefix="fas"
       data-icon="arrow-left"
       class="svg-inline--fa fa-arrow-left pe-1"
       role="img"
-      xmlns="http://www.w3.org/2000/svg"
-      viewbox="0 0 448 512"
+      viewbox="0 0 512 512"
+      aria-hidden="true"
     >
       <path
         fill="currentColor"
-        d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"
+        d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 288 480 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-370.7 0 105.4-105.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"
       >
       </path>
     </svg>
