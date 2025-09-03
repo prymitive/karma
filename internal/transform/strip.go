@@ -17,7 +17,11 @@ func StripLables(keptLabels, ignoredLabels []string, keptLabelsRegex, ignoredLab
 ) models.Labels {
 	// empty keep lists means keep everything by default
 	keepAll := len(keptLabels) == 0 && len(keptLabelsRegex) == 0
-	labels := models.Labels{}
+	// if we keep everything and there's nothing to strip then simply return source labels as-is
+	if keepAll && len(ignoredLabels) == 0 && len(ignoredLabelsRegex) == 0 {
+		return sourceLabels
+	}
+	labels := make(models.Labels, 0, len(sourceLabels))
 	var inKeep, inStrip bool
 	for _, label := range sourceLabels {
 		// is explicitly marked to be kept
@@ -60,7 +64,7 @@ func StripReceivers(keptReceivers, ignoredReceivers []string, keptReceiversRegex
 func StripAnnotations(keptAnnotations, ignoredAnnotations []string, sourceAnnotations models.Annotations) models.Annotations {
 	// empty keep list means keep everything by default
 	keepAll := len(keptAnnotations) == 0
-	annotations := models.Annotations{}
+	annotations := make(models.Annotations, 0, len(sourceAnnotations))
 	for _, annotation := range sourceAnnotations {
 		// is explicitly marked to be kept
 		inKeep := slices.StringInSlice(keptAnnotations, annotation.Name)
