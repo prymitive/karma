@@ -11,6 +11,7 @@ import (
 	"net/http/httptest"
 	"os"
 	"regexp"
+	"slices"
 	"sort"
 	"strconv"
 	"strings"
@@ -25,7 +26,6 @@ import (
 	"github.com/prymitive/karma/internal/mock"
 	"github.com/prymitive/karma/internal/models"
 	"github.com/prymitive/karma/internal/regex"
-	"github.com/prymitive/karma/internal/slices"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/google/go-cmp/cmp"
@@ -634,7 +634,7 @@ func TestValidateAllAlerts(t *testing.T) {
 			}
 			for _, ag := range ur.Grids[0].AlertGroups {
 				for _, a := range ag.Alerts {
-					if !slices.StringInSlice(models.AlertStateList, a.State) {
+					if !slices.Contains(models.AlertStateList, a.State) {
 						t.Errorf("Invalid alert status '%s', not in %v", a.State, models.AlertStateList)
 					}
 					if len(a.Alertmanager) == 0 {

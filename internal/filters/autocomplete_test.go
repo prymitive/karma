@@ -134,7 +134,7 @@ func TestBuildAutocomplete(t *testing.T) {
 	for _, acTest := range acTests {
 		result := []string{}
 		for _, hint := range filters.BuildAutocomplete(acTest.Alerts) {
-			result = append(result, hint.Value)
+			result = append(result, hint.Value.Value())
 		}
 
 		sort.Strings(result)

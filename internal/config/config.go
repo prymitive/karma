@@ -7,11 +7,11 @@ import (
 	"fmt"
 	"os"
 	"regexp"
+	"slices"
 	"strings"
 	"time"
 
 	"github.com/prymitive/karma/internal/regex"
-	"github.com/prymitive/karma/internal/slices"
 	"github.com/prymitive/karma/internal/uri"
 
 	"github.com/knadh/koanf"
@@ -352,7 +352,7 @@ func (config *configSchema) Read(flags *pflag.FlagSet) (string, error) {
 		config.Authentication.Enabled = true
 	}
 
-	if !slices.StringInSlice([]string{"omit", "include", "same-origin"}, config.Alertmanager.CORS.Credentials) {
+	if !slices.Contains([]string{"omit", "include", "same-origin"}, config.Alertmanager.CORS.Credentials) {
 		return "", fmt.Errorf("invalid alertmanager.cors.credentials value '%s', allowed options: omit, inclue, same-origin", config.Alertmanager.CORS.Credentials)
 	}
 
@@ -366,7 +366,7 @@ func (config *configSchema) Read(flags *pflag.FlagSet) (string, error) {
 		if s.CORS.Credentials == "" {
 			config.Alertmanager.Servers[i].CORS.Credentials = config.Alertmanager.CORS.Credentials
 		}
-		if !slices.StringInSlice([]string{"omit", "include", "same-origin"}, config.Alertmanager.Servers[i].CORS.Credentials) {
+		if !slices.Contains([]string{"omit", "include", "same-origin"}, config.Alertmanager.Servers[i].CORS.Credentials) {
 			return "", fmt.Errorf("invalid cors.credentials value '%s' for alertmanager '%s', allowed options: omit, inclue, same-origin", config.Alertmanager.Servers[i].CORS.Credentials, s.Name)
 		}
 	}
@@ -434,15 +434,15 @@ func (config *configSchema) Read(flags *pflag.FlagSet) (string, error) {
 		}
 	}
 
-	if !slices.StringInSlice([]string{"disabled", "startsAt", "label"}, config.Grid.Sorting.Order) {
+	if !slices.Contains([]string{"disabled", "startsAt", "label"}, config.Grid.Sorting.Order) {
 		return "", fmt.Errorf("invalid grid.sorting.order value '%s', allowed options: disabled, startsAt, label", config.Grid.Sorting.Order)
 	}
 
-	if !slices.StringInSlice([]string{"expanded", "collapsed", "collapsedOnMobile"}, config.UI.CollapseGroups) {
+	if !slices.Contains([]string{"expanded", "collapsed", "collapsedOnMobile"}, config.UI.CollapseGroups) {
 		return "", fmt.Errorf("invalid ui.collapseGroups value '%s', allowed options: expanded, collapsed, collapsedOnMobile", config.UI.CollapseGroups)
 	}
 
-	if !slices.StringInSlice([]string{"light", "dark", "auto"}, config.UI.Theme) {
+	if !slices.Contains([]string{"light", "dark", "auto"}, config.UI.Theme) {
 		return "", fmt.Errorf("invalid ui.theme value '%s', allowed options: light, dark, auto", config.UI.Theme)
 	}
 

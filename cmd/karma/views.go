@@ -9,6 +9,7 @@ import (
 	"io"
 	"net/http"
 	"runtime"
+	"slices"
 	"sort"
 	"strings"
 	"time"
@@ -21,7 +22,7 @@ import (
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/filters"
 	"github.com/prymitive/karma/internal/models"
-	"github.com/prymitive/karma/internal/slices"
+	sliceutils "github.com/prymitive/karma/internal/slices"
 	"github.com/prymitive/karma/internal/transform"
 
 	"github.com/rs/zerolog/log"
@@ -536,10 +537,10 @@ func labelsSettings(grids []models.APIGrid, store models.LabelsSettings) {
 
 func labelSettings(name string, store models.LabelsSettings) {
 	var isStatic, isValueOnly bool
-	if slices.StringInSlice(config.Config.Labels.Color.Static, name) {
+	if slices.Contains(config.Config.Labels.Color.Static, name) {
 		isStatic = true
 	}
-	if slices.StringInSlice(config.Config.Labels.ValueOnly, name) || slices.MatchesAnyRegex(name, config.Config.Labels.CompiledValueOnlyRegex) {
+	if slices.Contains(config.Config.Labels.ValueOnly, name) || sliceutils.MatchesAnyRegex(name, config.Config.Labels.CompiledValueOnlyRegex) {
 		isValueOnly = true
 	}
 	if isStatic || isValueOnly {
@@ -577,12 +578,12 @@ func autocomplete(w http.ResponseWriter, r *http.Request) {
 	dedupedAutocomplete := alertmanager.DedupAutocomplete()
 
 	for _, hint := range dedupedAutocomplete {
-		if strings.HasPrefix(strings.ToLower(hint.Value), strings.ToLower(term)) {
-			acData = append(acData, hint.Value)
+		if strings.HasPrefix(strings.ToLower(hint.Value.Value()), strings.ToLower(term)) {
+			acData = append(acData, hint.Value.Value())
 		} else {
 			for _, token := range hint.Tokens {
-				if strings.HasPrefix(strings.ToLower(token), strings.ToLower(term)) {
-					acData = append(acData, hint.Value)
+				if strings.HasPrefix(strings.ToLower(token.Value()), strings.ToLower(term)) {
+					acData = append(acData, hint.Value.Value())
 				}
 			}
 		}
@@ -630,7 +631,7 @@ func silences(w http.ResponseWriter, r *http.Request) {
 		upstreams := getUpstreams()
 		for _, u := range upstreams.Instances {
 			if strings.ToLower(u.Name) == searchTerm || strings.ToLower(u.Cluster) == searchTerm {
-				if !slices.StringInSlice(clusters, u.Cluster) {
+				if !slices.Contains(clusters, u.Cluster) {
 					clusters = append(clusters, strings.ToLower(u.Cluster))
 				}
 			}
@@ -648,7 +649,7 @@ func silences(w http.ResponseWriter, r *http.Request) {
 				isMatch = true
 			case "@cluster="+strings.ToLower(silence.Cluster) == searchTerm:
 				isMatch = true
-			case slices.StringInSlice(clusters, strings.ToLower(silence.Cluster)):
+			case slices.Contains(clusters, strings.ToLower(silence.Cluster)):
 				isMatch = true
 			case strings.Contains(strings.ToLower(silence.Silence.Comment), searchTerm):
 				isMatch = true

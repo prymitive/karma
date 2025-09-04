@@ -2,11 +2,12 @@ package transform
 
 import (
 	"regexp"
+	"slices"
 	"sort"
 	"strings"
 
 	"github.com/prymitive/karma/internal/models"
-	"github.com/prymitive/karma/internal/slices"
+	sliceutils "github.com/prymitive/karma/internal/slices"
 )
 
 // StripLables allows filtering out some labels from alerts
@@ -25,9 +26,9 @@ func StripLables(keptLabels, ignoredLabels []string, keptLabelsRegex, ignoredLab
 	var inKeep, inStrip bool
 	for _, label := range sourceLabels {
 		// is explicitly marked to be kept
-		inKeep = slices.StringInSlice(keptLabels, label.Name) || slices.MatchesAnyRegex(label.Name, keptLabelsRegex)
+		inKeep = slices.Contains(keptLabels, label.Name) || sliceutils.MatchesAnyRegex(label.Name, keptLabelsRegex)
 		// is explicitly marked to be stripped
-		inStrip = slices.StringInSlice(ignoredLabels, label.Name) || slices.MatchesAnyRegex(label.Name, ignoredLabelsRegex)
+		inStrip = slices.Contains(ignoredLabels, label.Name) || sliceutils.MatchesAnyRegex(label.Name, ignoredLabelsRegex)
 		if (keepAll || inKeep) && !inStrip {
 			l := models.Label{
 				Name: label.Name,
@@ -48,9 +49,9 @@ func StripReceivers(keptReceivers, ignoredReceivers []string, keptReceiversRegex
 	// empty keep lists means keep everything by default
 	keepAll := len(keptReceivers) == 0 && len(keptReceiversRegex) == 0
 	// is explicitly marked to be kept
-	inKeep := slices.StringInSlice(keptReceivers, alertReceiver) || slices.MatchesAnyRegex(alertReceiver, keptReceiversRegex)
+	inKeep := slices.Contains(keptReceivers, alertReceiver) || sliceutils.MatchesAnyRegex(alertReceiver, keptReceiversRegex)
 	// is explicitly marked to be stripped
-	inStrip := slices.StringInSlice(ignoredReceivers, alertReceiver) || slices.MatchesAnyRegex(alertReceiver, ignoredReceiversRegex)
+	inStrip := slices.Contains(ignoredReceivers, alertReceiver) || sliceutils.MatchesAnyRegex(alertReceiver, ignoredReceiversRegex)
 
 	if (keepAll || inKeep) && !inStrip {
 		return false
@@ -67,9 +68,9 @@ func StripAnnotations(keptAnnotations, ignoredAnnotations []string, sourceAnnota
 	annotations := make(models.Annotations, 0, len(sourceAnnotations))
 	for _, annotation := range sourceAnnotations {
 		// is explicitly marked to be kept
-		inKeep := slices.StringInSlice(keptAnnotations, annotation.Name)
+		inKeep := slices.Contains(keptAnnotations, annotation.Name)
 		// is explicitly marked to be stripped
-		inStrip := slices.StringInSlice(ignoredAnnotations, annotation.Name)
+		inStrip := slices.Contains(ignoredAnnotations, annotation.Name)
 		if (keepAll || inKeep) && !inStrip {
 			annotations = append(annotations, annotation)
 		}

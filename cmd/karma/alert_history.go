@@ -9,6 +9,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"slices"
 	"sort"
 	"strings"
 	"sync"
@@ -24,7 +25,6 @@ import (
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/mapper"
-	"github.com/prymitive/karma/internal/slices"
 	uriUtil "github.com/prymitive/karma/internal/uri"
 )
 
@@ -338,7 +338,7 @@ func countAlerts(uri string, timeout time.Duration, transport http.RoundTripper,
 
 	lv := model.LabelSet{}
 	for k, v := range labels {
-		if slices.StringInSlice(names, k) {
+		if slices.Contains(names, k) {
 			lv[model.LabelName(k)] = model.LabelValue(v)
 		}
 	}

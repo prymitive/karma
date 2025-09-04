@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"math"
+	"slices"
 	"sort"
 
 	"github.com/fvbommel/sortorder"
@@ -12,7 +13,6 @@ import (
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/filters"
 	"github.com/prymitive/karma/internal/models"
-	"github.com/prymitive/karma/internal/slices"
 	"github.com/prymitive/karma/internal/uri"
 )
 
@@ -299,7 +299,7 @@ func autoGridLabel(dedupedAlerts []models.AlertGroup) string {
 
 	candidates := map[string]int{}
 	for key, vals := range labelToAlertCount {
-		if slices.StringInSlice(config.Config.Grid.Auto.Ignore, key) {
+		if slices.Contains(config.Config.Grid.Auto.Ignore, key) {
 			continue
 		}
 		var total int

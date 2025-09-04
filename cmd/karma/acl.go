@@ -4,12 +4,12 @@ import (
 	"errors"
 	"fmt"
 	"regexp"
+	"slices"
 
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/models"
 	"github.com/prymitive/karma/internal/regex"
-	"github.com/prymitive/karma/internal/slices"
 )
 
 const (
@@ -114,7 +114,7 @@ type silenceACL struct {
 func (acl *silenceACL) isAllowed(amName string, silence *models.Silence, groups []string) (bool, error) {
 	groupMatch := len(acl.Scope.Groups) == 0
 	for _, aclGroup := range acl.Scope.Groups {
-		if slices.StringInSlice(groups, aclGroup) {
+		if slices.Contains(groups, aclGroup) {
 			groupMatch = true
 			break
 		}
@@ -172,7 +172,7 @@ func newSilenceACLFromConfig(cfg config.SilenceACLRule) (*silenceACL, error) {
 		Matchers: aclMatchers{},
 	}
 
-	if !slices.StringInSlice(allACLActions, acl.Action) {
+	if !slices.Contains(allACLActions, acl.Action) {
 		return nil, fmt.Errorf("silence ACL rule requires 'action' to be one of %v, got %q", allACLActions, acl.Action)
 	}
 
