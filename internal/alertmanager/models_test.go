@@ -18,9 +18,9 @@ type uriTest struct {
 	name        string
 	rawURI      string
 	extURI      string
-	proxy       bool
 	internalURI string
 	publicURI   string
+	proxy       bool
 }
 
 var uriTests = []uriTest{
@@ -153,8 +153,8 @@ func TestAlertmanagerSilenceByID(t *testing.T) {
 func TestAlertmanagerInternalURI(t *testing.T) {
 	type testCaseT struct {
 		prefix string
-		proxy  bool
 		uri    string
+		proxy  bool
 	}
 	tests := []testCaseT{
 		{
@@ -260,9 +260,9 @@ func TestExpiredSilences(t *testing.T) {
 	p15 := now.Add(15 * time.Minute)
 	p15b, _ := p15.MarshalJSON()
 
-	httpmock.RegisterResponder("GET", fmt.Sprintf("%s/metrics", uri),
+	httpmock.RegisterResponder("GET", uri+"/metrics",
 		httpmock.NewStringResponder(200, "alertmanager_build_info{version=\"0.22.1\"} 1\n"))
-	httpmock.RegisterResponder("GET", fmt.Sprintf("%s/api/v2/silences", uri),
+	httpmock.RegisterResponder("GET", uri+"/api/v2/silences",
 		httpmock.NewStringResponder(200, fmt.Sprintf(`[
 {
   "id": "b2396f57-c2c3-4225-958f-70ba933a5d81",
@@ -325,7 +325,7 @@ func TestExpiredSilences(t *testing.T) {
 			string(m15b), string(m15b), string(m5b),
 			string(m15b), string(m15b), string(m5b),
 			string(m25b), string(m25b), string(m15b))))
-	httpmock.RegisterResponder("GET", fmt.Sprintf("%s/api/v2/alerts/groups", uri),
+	httpmock.RegisterResponder("GET", uri+"/api/v2/alerts/groups",
 		httpmock.NewStringResponder(200, fmt.Sprintf(`[{
   "alerts": [
     {

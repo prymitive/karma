@@ -103,11 +103,12 @@ func DedupAlerts() []models.AlertGroup {
 			// calculate final alert state based on the most important value found
 			// in the list of states from all instances
 			alertLFP := alert.LabelsFingerprint()
-			if slices.StringInSlice(alertStates[alertLFP], models.AlertStateActive) {
+			switch {
+			case slices.StringInSlice(alertStates[alertLFP], models.AlertStateActive):
 				alert.State = models.AlertStateActive
-			} else if slices.StringInSlice(alertStates[alertLFP], models.AlertStateSuppressed) {
+			case slices.StringInSlice(alertStates[alertLFP], models.AlertStateSuppressed):
 				alert.State = models.AlertStateSuppressed
-			} else {
+			default:
 				alert.State = models.AlertStateUnprocessed
 			}
 			// sort Alertmanager instances for every alert

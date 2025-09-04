@@ -9,8 +9,8 @@ import (
 
 func TestSilenceIsMatch(t *testing.T) {
 	type testCaseT struct {
-		silence models.Silence
 		labels  map[string]string
+		silence models.Silence
 		isMatch bool
 	}
 

@@ -3,8 +3,8 @@ package intern
 import "sync"
 
 type Interner struct {
-	mu   sync.RWMutex
 	data map[string]string
+	mu   sync.RWMutex
 }
 
 func New() *Interner {

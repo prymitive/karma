@@ -3,6 +3,7 @@ package filters_test
 import (
 	"fmt"
 	"sort"
+	"strconv"
 	"testing"
 
 	"github.com/prymitive/karma/internal/filters"
@@ -153,7 +154,7 @@ func BenchmarkAutocomplete(b *testing.B) {
 			State: models.AlertStateActive,
 			Labels: models.Labels{
 				{Name: "foo", Value: fmt.Sprintf("xxx%d", i)},
-				{Name: "number", Value: fmt.Sprintf("%d", i)},
+				{Name: "number", Value: strconv.Itoa(i)},
 			},
 			Receiver: fmt.Sprintf("receiver-%d", i%1000),
 			Alertmanager: []models.AlertmanagerInstance{

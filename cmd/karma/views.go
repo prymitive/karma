@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/base64"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -222,7 +223,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	cacheKey := fmt.Sprintf("%x", structhash.Sha1(request, 1))
+	cacheKey := hex.EncodeToString(structhash.Sha1(request, 1))
 
 	data, found := apiCache.Get(cacheKey)
 	if found {
@@ -642,17 +643,18 @@ func silences(w http.ResponseWriter, r *http.Request) {
 		}
 		if searchTerm != "" {
 			isMatch := false
-			if strings.ToLower(silence.Silence.ID) == searchTerm {
+			switch {
+			case strings.ToLower(silence.Silence.ID) == searchTerm:
 				isMatch = true
-			} else if fmt.Sprintf("@cluster=%s", strings.ToLower(silence.Cluster)) == searchTerm {
+			case "@cluster="+strings.ToLower(silence.Cluster) == searchTerm:
 				isMatch = true
-			} else if slices.StringInSlice(clusters, strings.ToLower(silence.Cluster)) {
+			case slices.StringInSlice(clusters, strings.ToLower(silence.Cluster)):
 				isMatch = true
-			} else if strings.Contains(strings.ToLower(silence.Silence.Comment), searchTerm) {
+			case strings.Contains(strings.ToLower(silence.Silence.Comment), searchTerm):
 				isMatch = true
-			} else if strings.Contains(strings.ToLower(silence.Silence.CreatedBy), searchTerm) {
+			case strings.Contains(strings.ToLower(silence.Silence.CreatedBy), searchTerm):
 				isMatch = true
-			} else {
+			default:
 				for _, match := range silence.Silence.Matchers {
 					eq := "="
 					if match.IsRegex {
@@ -754,7 +756,7 @@ func alertList(w http.ResponseWriter, r *http.Request) {
 			for _, l := range alert.Labels {
 				labels[l.Name] = l.Value
 			}
-			h := fmt.Sprintf("%x", structhash.Sha1(labels, 1))
+			h := hex.EncodeToString(structhash.Sha1(labels, 1))
 			labelMap[h] = labels
 		}
 	}

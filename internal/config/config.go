@@ -3,6 +3,7 @@ package config
 import (
 	"bufio"
 	"bytes"
+	"errors"
 	"fmt"
 	"os"
 	"regexp"
@@ -254,7 +255,7 @@ func readEnvVariables(k *koanf.Koanf) {
 		case "UI_COLLAPSEGROUPS":
 			return "ui.collapseGroups"
 		default:
-			return strings.Replace(strings.ToLower(s), "_", ".", -1)
+			return strings.ReplaceAll(strings.ToLower(s), "_", ".")
 		}
 	}), nil)
 }
@@ -305,13 +306,13 @@ func (config *configSchema) Read(flags *pflag.FlagSet) (string, error) {
 	}
 
 	if configFileUsed != "" {
-		if err := validateConfigFile(configFileUsed); err != nil {
+		if err = validateConfigFile(configFileUsed); err != nil {
 			return "", fmt.Errorf("failed to parse configuration file %q: %w", configFileUsed, err)
 		}
 	}
 
 	if config.Authentication.Header.Name != "" && len(config.Authentication.BasicAuth.Users) > 0 {
-		return "", fmt.Errorf("both authentication.basicAuth.users and authentication.header.name is set, only one can be enabled")
+		return "", errors.New("both authentication.basicAuth.users and authentication.header.name is set, only one can be enabled")
 	}
 
 	if config.Authentication.Header.GroupValueSeparator == "" {
@@ -324,10 +325,10 @@ func (config *configSchema) Read(flags *pflag.FlagSet) (string, error) {
 			return "", fmt.Errorf("invalid regex for authentication.header.value_re: %w", err)
 		}
 		if config.Authentication.Header.Name == "" {
-			return "", fmt.Errorf("authentication.header.name is required when authentication.header.value_re is set")
+			return "", errors.New("authentication.header.name is required when authentication.header.value_re is set")
 		}
 	} else if config.Authentication.Header.Name != "" {
-		return "", fmt.Errorf("authentication.header.value_re is required when authentication.header.name is set")
+		return "", errors.New("authentication.header.value_re is required when authentication.header.name is set")
 	}
 	if config.Authentication.Header.GroupValueRegex != "" {
 		_, err = regex.CompileAnchored(config.Authentication.Header.GroupValueRegex)
@@ -335,15 +336,15 @@ func (config *configSchema) Read(flags *pflag.FlagSet) (string, error) {
 			return "", fmt.Errorf("invalid regex for authentication.header.group_value_re: %w", err)
 		}
 		if config.Authentication.Header.GroupName == "" {
-			return "", fmt.Errorf("authentication.header.group_name is required when authentication.header.group_value_re is set")
+			return "", errors.New("authentication.header.group_name is required when authentication.header.group_value_re is set")
 		}
 	} else if config.Authentication.Header.GroupName != "" {
-		return "", fmt.Errorf("authentication.header.group_value_re is required when authentication.header.group_name is set")
+		return "", errors.New("authentication.header.group_value_re is required when authentication.header.group_name is set")
 	}
 
 	for _, u := range config.Authentication.BasicAuth.Users {
 		if u.Username == "" || u.Password == "" {
-			return "", fmt.Errorf("authentication.basicAuth.users require both username and password to be set")
+			return "", errors.New("authentication.basicAuth.users require both username and password to be set")
 		}
 	}
 
@@ -372,10 +373,10 @@ func (config *configSchema) Read(flags *pflag.FlagSet) (string, error) {
 
 	for _, authGroup := range config.Authorization.Groups {
 		if authGroup.Name == "" {
-			return "", fmt.Errorf("'name' is required for every authorization group")
+			return "", errors.New("'name' is required for every authorization group")
 		}
 		if len(authGroup.Members) == 0 {
-			return "", fmt.Errorf("'members' is required for every authorization group")
+			return "", errors.New("'members' is required for every authorization group")
 		}
 	}
 
@@ -450,15 +451,15 @@ func (config *configSchema) Read(flags *pflag.FlagSet) (string, error) {
 	}
 
 	if config.Listen.TLS.Cert != "" && config.Listen.TLS.Key == "" {
-		return "", fmt.Errorf("listen.tls.key must be set when listen.tls.cert is set")
+		return "", errors.New("listen.tls.key must be set when listen.tls.cert is set")
 	}
 
 	if config.Listen.TLS.Key != "" && config.Listen.TLS.Cert == "" {
-		return "", fmt.Errorf("listen.tls.cert must be set when listen.tls.key is set")
+		return "", errors.New("listen.tls.cert must be set when listen.tls.key is set")
 	}
 
 	if config.History.Workers < 1 {
-		return "", fmt.Errorf("history.workers must be >= 1")
+		return "", errors.New("history.workers must be >= 1")
 	}
 	for i := 0; i < len(config.History.Rewrite); i++ {
 		config.History.Rewrite[i].SourceRegex, err = regex.CompileAnchored(config.History.Rewrite[i].Source)

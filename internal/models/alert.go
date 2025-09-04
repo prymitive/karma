@@ -123,23 +123,18 @@ func (ls Labels) Set(name, value string) Labels {
 //     it's pulled out of annotation map and returned under links field,
 //     karma UI used this to show links differently than other annotations
 type Alert struct {
-	Annotations Annotations `json:"annotations"`
-	Labels      Labels      `json:"labels"`
-	StartsAt    time.Time   `json:"startsAt"`
-	State       string      `json:"state"`
-	// those are not exposed in JSON, Alertmanager specific value will be in kept
-	// in the Alertmanager slice
-	// skip those when generating alert fingerprint too
-	Fingerprint  string   `json:"-"`
-	GeneratorURL string   `json:"-"`
-	SilencedBy   []string `json:"-"`
-	InhibitedBy  []string `json:"-"`
-	// karma fields
+	StartsAt     time.Time `json:"startsAt"`
+	State        string    `json:"state"`
+	Fingerprint  string    `json:"-"`
+	GeneratorURL string    `json:"-"`
+	Receiver     string    `json:"receiver"`
+	LabelsFP     string    `json:"id"`
+	contentFP    string
+	Annotations  Annotations            `json:"annotations"`
+	Labels       Labels                 `json:"labels"`
+	SilencedBy   []string               `json:"-"`
+	InhibitedBy  []string               `json:"-"`
 	Alertmanager []AlertmanagerInstance `json:"alertmanager"`
-	Receiver     string                 `json:"receiver"`
-	// fingerprints are precomputed for speed
-	LabelsFP  string `json:"id"`
-	contentFP string
 }
 
 var seps = []byte{'\xff'}
@@ -153,7 +148,7 @@ func (a *Alert) UpdateFingerprints() {
 		_, _ = h.WriteString(l.Value)
 		_, _ = h.Write(seps)
 	}
-	a.LabelsFP = fmt.Sprintf("%x", h.Sum64())
+	a.LabelsFP = strconv.FormatUint(h.Sum64(), 16)
 
 	h.Reset()
 	for _, a := range a.Annotations {
@@ -200,7 +195,7 @@ func (a *Alert) UpdateFingerprints() {
 		}
 	}
 	_, _ = h.WriteString(a.Receiver)
-	a.contentFP = fmt.Sprintf("%x", h.Sum64())
+	a.contentFP = strconv.FormatUint(h.Sum64(), 16)
 }
 
 // LabelsFingerprint is a checksum computed only from labels which should be

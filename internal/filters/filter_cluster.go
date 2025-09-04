@@ -45,7 +45,7 @@ func alertmanagerClusterAutocomplete(name string, operators []string, alerts []m
 			for _, operator := range operators {
 				switch operator {
 				case equalOperator, notEqualOperator:
-					token := fmt.Sprintf("%s%s%s", name, operator, am.Cluster)
+					token := name + operator + am.Cluster
 					hint := makeAC(
 						token,
 						[]string{

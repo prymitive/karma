@@ -8,12 +8,12 @@ import (
 )
 
 type SilenceMatcher struct {
+	IsRegex    *bool  `yaml:"isRegex"`
+	IsEqual    *bool  `yaml:"isEqual"`
 	Name       string `yaml:"name"`
 	NameRegex  string `yaml:"name_re"`
 	Value      string `yaml:"value"`
 	ValueRegex string `yaml:"value_re"`
-	IsRegex    *bool  `yaml:"isRegex"`
-	IsEqual    *bool  `yaml:"isEqual"`
 }
 
 type SilenceACLMatchersConfig struct {
@@ -21,12 +21,12 @@ type SilenceACLMatchersConfig struct {
 }
 
 type SilenceFilters struct {
+	IsRegex    *bool  `yaml:"isRegex,omitempty"`
+	IsEqual    *bool  `yaml:"isEqual,omitempty"`
 	Name       string `yaml:"name,omitempty"`
 	NameRegex  string `yaml:"name_re,omitempty"`
 	Value      string `yaml:"value,omitempty"`
 	ValueRegex string `yaml:"value_re,omitempty"`
-	IsRegex    *bool  `yaml:"isRegex,omitempty"`
-	IsEqual    *bool  `yaml:"isEqual,omitempty"`
 }
 
 type SilenceACLRuleScope struct {

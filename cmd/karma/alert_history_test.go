@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http/httptest"
 	"regexp"
+	"strconv"
 	"testing"
 	"time"
 
@@ -88,29 +89,29 @@ func generateIntSlice(val, inc, repeat int) []int {
 
 func TestAlertHistory(t *testing.T) {
 	type mock struct {
-		method    string
-		uri       *regexp.Regexp
 		matcher   httpmock.Matcher
+		uri       *regexp.Regexp
 		responder httpmock.Responder
+		method    string
 	}
 
 	type cfg struct {
-		enabled bool
+		rewrite []config.HistoryRewrite
 		timeout time.Duration
 		workers int
-		rewrite []config.HistoryRewrite
+		enabled bool
 	}
 
 	type historyQuery struct {
+		response AlertHistoryResponse
 		payload  []byte
 		code     int
-		response AlertHistoryResponse
 	}
 
 	type testCaseT struct {
 		mocks   []mock
-		config  cfg
 		queries []historyQuery
+		config  cfg
 	}
 
 	testCases := []testCaseT{
@@ -673,7 +674,7 @@ func TestAbsTime(t *testing.T) {
 	}
 
 	for i, tc := range testCases {
-		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
+		t.Run(strconv.Itoa(i), func(t *testing.T) {
 			d := absTimeDiff(tc.a, tc.b)
 			if diff := cmp.Diff(tc.diff, d); diff != "" {
 				t.Errorf("Incorrect absTimeDiff result (-want +got):\n%s", diff)
@@ -684,9 +685,9 @@ func TestAbsTime(t *testing.T) {
 
 func TestRewriteSource(t *testing.T) {
 	type testCaseT struct {
-		rules []config.HistoryRewrite
 		uri   string
 		out   string
+		rules []config.HistoryRewrite
 	}
 
 	testCases := []testCaseT{
@@ -736,7 +737,7 @@ func TestRewriteSource(t *testing.T) {
 	}
 
 	for i, tc := range testCases {
-		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
+		t.Run(strconv.Itoa(i), func(t *testing.T) {
 			uri, _ := rewriteSource(tc.rules, tc.uri)
 			if diff := cmp.Diff(tc.out, uri); diff != "" {
 				t.Errorf("Incorrect rewriteSource result (-want +got):\n%s", diff)

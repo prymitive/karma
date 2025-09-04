@@ -59,19 +59,19 @@ func ageAutocomplete(name string, operators []string, _ []models.Alert) []models
 	tokens := make([]models.Autocomplete, 0, len(operators)*2)
 	for _, operator := range operators {
 		tokens = append(tokens, makeAC(
-			fmt.Sprintf("%s%s10m", name, operator),
+			name+operator+"10m",
 			[]string{
 				name,
 				strings.TrimPrefix(name, "@"),
-				fmt.Sprintf("%s%s", name, operator),
+				name + operator,
 			},
 		))
 		tokens = append(tokens, makeAC(
-			fmt.Sprintf("%s%s1h", name, operator),
+			name+operator+"1h",
 			[]string{
 				name,
 				strings.TrimPrefix(name, "@"),
-				fmt.Sprintf("%s%s", name, operator),
+				name + operator,
 			},
 		))
 	}

@@ -211,7 +211,8 @@ func setupUpstreams() error {
 			if httpTransport == nil {
 				httpTransport = &http.Transport{}
 			}
-			proxyURL, err := url.Parse(s.ProxyURL)
+			var proxyURL *url.URL
+			proxyURL, err = url.Parse(s.ProxyURL)
 			if err != nil {
 				return fmt.Errorf("failed to parse provided proxy url %q: %w", s.ProxyURL, err)
 			}
@@ -377,12 +378,13 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*chi.Mux, *historyPoller, err
 		config.Config.LogValues()
 	}
 
-	linkDetectRules := []models.LinkDetectRule{}
+	linkDetectRules := make([]models.LinkDetectRule, 0, len(config.Config.Silences.Comments.LinkDetect.Rules))
+	var re *regexp.Regexp
 	for _, rule := range config.Config.Silences.Comments.LinkDetect.Rules {
 		if rule.Regex == "" || rule.URITemplate == "" {
 			return nil, nil, fmt.Errorf("invalid link detect rule, regex '%s' uriTemplate '%s'", rule.Regex, rule.URITemplate)
 		}
-		re, err := regexp.Compile(rule.Regex)
+		re, err = regexp.Compile(rule.Regex)
 		if err != nil {
 			return nil, nil, fmt.Errorf("invalid link detect rule '%s': %w", rule.Regex, err)
 		}
@@ -401,13 +403,15 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*chi.Mux, *historyPoller, err
 		log.Info().
 			Str("path", config.Config.Authorization.ACL.Silences).
 			Msg("Reading silence ACL config file")
-		aclConfig, err := config.ReadSilenceACLConfig(config.Config.Authorization.ACL.Silences)
+		var aclConfig *config.SilencesACLSchema
+		aclConfig, err = config.ReadSilenceACLConfig(config.Config.Authorization.ACL.Silences)
 		if err != nil {
 			return nil, nil, err
 		}
 
+		var acl *silenceACL
 		for i, cfg := range aclConfig.Rules {
-			acl, err := newSilenceACLFromConfig(cfg)
+			acl, err = newSilenceACLFromConfig(cfg)
 			if err != nil {
 				return nil, nil, fmt.Errorf("invalid silence ACL rule at position %d: %w", i, err)
 			}

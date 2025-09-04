@@ -1,8 +1,8 @@
 package models
 
 import (
-	"fmt"
 	"io"
+	"strconv"
 	"time"
 
 	"github.com/cespare/xxhash/v2"
@@ -34,14 +34,14 @@ func (a AlertList) Less(i, j int) bool {
 // There is a hash computed from all alerts, it's used by UI to quickly tell
 // if there was any change in a group and it needs to refresh it
 type AlertGroup struct {
-	Receiver          string         `json:"receiver"`
-	Labels            Labels         `json:"labels"`
-	Alerts            AlertList      `json:"alerts"`
-	ID                string         `json:"id"`
-	Hash              string         `json:"-"`
+	LatestStartsAt    time.Time      `json:"-"`
 	AlertmanagerCount map[string]int `json:"alertmanagerCount"`
 	StateCount        map[string]int `json:"stateCount"`
-	LatestStartsAt    time.Time      `json:"-"`
+	Receiver          string         `json:"receiver"`
+	ID                string         `json:"id"`
+	Hash              string         `json:"-"`
+	Labels            Labels         `json:"labels"`
+	Alerts            AlertList      `json:"alerts"`
 }
 
 // LabelsFingerprint is a checksum of this AlertGroup labels and the receiver
@@ -56,7 +56,7 @@ func (ag AlertGroup) LabelsFingerprint() string {
 		_, _ = h.WriteString(l.Value)
 		_, _ = h.Write(seps)
 	}
-	return fmt.Sprintf("%x", h.Sum64())
+	return strconv.FormatUint(h.Sum64(), 16)
 }
 
 // ContentFingerprint is a checksum of all alerts in the group
@@ -65,7 +65,7 @@ func (ag AlertGroup) ContentFingerprint() string {
 	for _, alert := range ag.Alerts {
 		_, _ = io.WriteString(h, alert.ContentFingerprint())
 	}
-	return fmt.Sprintf("%x", h.Sum64())
+	return strconv.FormatUint(h.Sum64(), 16)
 }
 
 func (ag AlertGroup) FindLatestStartsAt() time.Time {

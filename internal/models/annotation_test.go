@@ -11,12 +11,12 @@ import (
 )
 
 type annotationMapsTestCase struct {
-	defaultHidden bool
 	annotationMap map[string]string
 	annotations   models.Annotations
 	visible       []string
 	hidden        []string
 	actions       []string
+	defaultHidden bool
 }
 
 var annotationMapsTestCases = []annotationMapsTestCase{

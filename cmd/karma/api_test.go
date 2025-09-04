@@ -19,11 +19,11 @@ import (
 )
 
 type groupTest struct {
-	labels     models.Labels
-	receiver   string
-	alerts     []models.Alert
-	id         string
 	stateCount map[string]int
+	receiver   string
+	id         string
+	labels     models.Labels
+	alerts     []models.Alert
 }
 
 var groupTests = []groupTest{
@@ -852,13 +852,13 @@ func TestVerifyAllGroups(t *testing.T) {
 }
 
 type sortTest struct {
-	defaultSortReverse bool
-	filter             []string
 	sortOrder          string
 	sortLabel          string
-	sortReverse        bool
 	expectedLabel      string
+	filter             []string
 	expectedValues     []string
+	defaultSortReverse bool
+	sortReverse        bool
 }
 
 var sortTests = []sortTest{

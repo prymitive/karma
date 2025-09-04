@@ -1,34 +1,50 @@
+version: "2"
 run:
-  timeout: 5m
-
-output:
-  sort-results: true
-
+  tests: true
 linters:
+  enable:
+    - contextcheck
+    - copyloopvar
+    - errorlint
+    - exhaustive
+    - exptostd
+    - gocritic
+    - importas
+    - misspell
+    - nakedret
+    - nilnesserr
+    - perfsprint
+    - prealloc
+    - predeclared
+    - promlinter
+    - revive
+    - testifylint
+    - unconvert
+    - usetesting
+  settings:
+    govet:
+      enable-all: true
+      disable:
+        - fieldalignment
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - std-error-handling
+    rules:
+      - linters:
+          - revive
+        path: ^internal/parser/utils/
+        text: "var-naming: avoid meaningless package names"
+issues:
+  max-same-issues: 0
+formatters:
   enable:
     - gofumpt
     - goimports
-    - revive
-    - misspell
-    - promlinter
-    - errorlint
-    - predeclared
-    - exhaustive
-    - importas
-    - nakedret
-    - prealloc
-    - unconvert
-    - testifylint
-    - copyloopvar
-    - exptostd
-    - nilnesserr
-    - usetesting
-
-issues:
-  max-same-issues: 0
-
-linters-settings:
-  goimports:
-    local-prefixes: github.com/prymitive/karma
-  gofumpt:
-    extra-rules: true
+  settings:
+    gofumpt:
+      extra-rules: true
+    goimports:
+      local-prefixes:
+        - github.com/prymitive/karma

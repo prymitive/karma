@@ -45,7 +45,7 @@ func alertmanagerInstanceAutocomplete(name string, operators []string, alerts []
 			for _, operator := range operators {
 				switch operator {
 				case equalOperator, notEqualOperator:
-					token := fmt.Sprintf("%s%s%s", name, operator, am.Name)
+					token := name + operator + am.Name
 					hint := makeAC(
 						token,
 						[]string{

@@ -2,7 +2,7 @@ package slices
 
 import (
 	"crypto/sha1"
-	"fmt"
+	"encoding/hex"
 	"regexp"
 )
 
@@ -33,7 +33,7 @@ func StringSliceToSHA1(stringArray []string) (string, error) {
 		_, _ = h.Write([]byte(s))
 		_, _ = h.Write([]byte("\n"))
 	}
-	return fmt.Sprintf("%x", h.Sum(nil)), nil
+	return hex.EncodeToString(h.Sum(nil)), nil
 }
 
 func StringSliceDiff(slice1, slice2 []string) ([]string, []string) {

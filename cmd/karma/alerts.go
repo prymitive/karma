@@ -155,7 +155,7 @@ func getGroupLabel(group *models.APIAlertGroup, label string) string {
 }
 
 func sortByStartsAt(i, j int, groups []models.APIAlertGroup, sortReverse bool) bool {
-	if groups[i].LatestStartsAt == groups[j].LatestStartsAt {
+	if groups[i].LatestStartsAt.Equal(groups[j].LatestStartsAt) {
 		return groups[i].ID > groups[j].ID
 	}
 	if sortReverse {

@@ -15,11 +15,11 @@ import (
 )
 
 type authHeaderTest struct {
+	headers          map[string]string
 	alertmanagerURI  string
 	alertmanagerHost string
 	authUser         string
 	authPass         string
-	headers          map[string]string
 }
 
 var authHeaderTests = []authHeaderTest{
@@ -70,7 +70,7 @@ func TestAuthHeader(t *testing.T) {
 
 			am, err := alertmanager.NewAlertmanager(
 				"cluster",
-				fmt.Sprintf("testAuthHeader/%s", version),
+				"testAuthHeader/"+version,
 				testCase.alertmanagerURI,
 				alertmanager.WithRequestTimeout(time.Second*5),
 				alertmanager.WithHTTPHeaders(testCase.headers),

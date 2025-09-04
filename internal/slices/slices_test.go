@@ -9,8 +9,8 @@ import (
 )
 
 type stringSliceTest struct {
-	array []string
 	value string
+	array []string
 	found bool
 }
 

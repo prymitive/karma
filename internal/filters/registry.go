@@ -30,11 +30,11 @@ var matcherConfig = map[string]matcherT{
 }
 
 type filterConfig struct {
-	Label              string
 	LabelRe            *regexp.Regexp
-	SupportedOperators []string
 	Factory            newFilterFactory
 	Autocomplete       autocompleteFactory
+	Label              string
+	SupportedOperators []string
 }
 
 // AllFilters contains the mapping of all filters along with operators they

@@ -10,10 +10,10 @@ import (
 )
 
 type colorTest struct {
-	uniqueLabels []string
 	customLabels config.CustomLabelColors
 	labels       map[string]string
 	colors       map[string]string
+	uniqueLabels []string
 }
 
 var colorTests = []colorTest{

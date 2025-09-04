@@ -25,10 +25,10 @@ type FilterT interface {
 
 type alertFilter struct {
 	FilterT
-	Matched              string
 	Matcher              matcherT
-	RawText              string
 	Value                any
+	Matched              string
+	RawText              string
 	Hits                 int
 	IsValid              bool
 	IsAlertmanagerFilter bool

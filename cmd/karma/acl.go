@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"regexp"
 
@@ -20,12 +21,12 @@ const (
 var allACLActions = []string{aclActionAllow, aclActionBlock, aclActionRequireMatcher}
 
 type silenceFilter struct {
-	Name       string
 	NameRegex  *regexp.Regexp
-	Value      string
 	ValueRegex *regexp.Regexp
 	IsRegex    *bool
 	IsEqual    *bool
+	Name       string
+	Value      string
 }
 
 func (sf *silenceFilter) isMatch(silence *models.Silence) bool {
@@ -63,12 +64,12 @@ func (sf *silenceFilter) isMatch(silence *models.Silence) bool {
 }
 
 type silenceMatcher struct {
-	Name       string
 	NameRegex  *regexp.Regexp
-	Value      string
 	ValueRegex *regexp.Regexp
 	IsRegex    *bool
 	IsEqual    *bool
+	Name       string
+	Value      string
 }
 
 func (sm *silenceMatcher) isMatch(m models.SilenceMatcher) bool {
@@ -176,7 +177,7 @@ func newSilenceACLFromConfig(cfg config.SilenceACLRule) (*silenceACL, error) {
 	}
 
 	if acl.Reason == "" {
-		return nil, fmt.Errorf("silence ACL rule requires 'reason' to be set")
+		return nil, errors.New("silence ACL rule requires 'reason' to be set")
 	}
 
 	for _, groupName := range cfg.Scope.Groups {
@@ -207,17 +208,17 @@ func newSilenceACLFromConfig(cfg config.SilenceACLRule) (*silenceACL, error) {
 
 	for _, filter := range cfg.Scope.Filters {
 		if filter.Name == "" && filter.NameRegex == "" {
-			return nil, fmt.Errorf("silence ACL rule filter requires 'name' or 'name_re' to be set")
+			return nil, errors.New("silence ACL rule filter requires 'name' or 'name_re' to be set")
 		}
 		if filter.Name != "" && filter.NameRegex != "" {
-			return nil, fmt.Errorf("silence ACL rule filter can only have 'name' or 'name_re' set, not both")
+			return nil, errors.New("silence ACL rule filter can only have 'name' or 'name_re' set, not both")
 		}
 
 		if filter.Value == "" && filter.ValueRegex == "" {
-			return nil, fmt.Errorf("silence ACL rule filter requires 'value' or 'value_re' to be set")
+			return nil, errors.New("silence ACL rule filter requires 'value' or 'value_re' to be set")
 		}
 		if filter.Value != "" && filter.ValueRegex != "" {
-			return nil, fmt.Errorf("silence ACL rule filter can only have 'value' or 'value_re' set, not both")
+			return nil, errors.New("silence ACL rule filter can only have 'value' or 'value_re' set, not both")
 		}
 
 		f := silenceFilter{
@@ -249,17 +250,17 @@ func newSilenceACLFromConfig(cfg config.SilenceACLRule) (*silenceACL, error) {
 	if acl.Action == aclActionRequireMatcher {
 		for _, matcherConfig := range cfg.Matchers.Required {
 			if matcherConfig.Name == "" && matcherConfig.NameRegex == "" {
-				return nil, fmt.Errorf("silence ACL rule matcher requires 'name' or 'name_re' to be set")
+				return nil, errors.New("silence ACL rule matcher requires 'name' or 'name_re' to be set")
 			}
 			if matcherConfig.Name != "" && matcherConfig.NameRegex != "" {
-				return nil, fmt.Errorf("silence ACL rule matcher can only have 'name' or 'name_re' set, not both")
+				return nil, errors.New("silence ACL rule matcher can only have 'name' or 'name_re' set, not both")
 			}
 
 			if matcherConfig.Value == "" && matcherConfig.ValueRegex == "" {
-				return nil, fmt.Errorf("silence ACL rule matcher requires 'value' or 'value_re' to be set")
+				return nil, errors.New("silence ACL rule matcher requires 'value' or 'value_re' to be set")
 			}
 			if matcherConfig.Value != "" && matcherConfig.ValueRegex != "" {
-				return nil, fmt.Errorf("silence ACL rule matcher can only have 'value' or 'value_re' set, not both")
+				return nil, errors.New("silence ACL rule matcher can only have 'value' or 'value_re' set, not both")
 			}
 
 			m := silenceMatcher{

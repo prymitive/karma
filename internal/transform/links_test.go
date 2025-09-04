@@ -10,9 +10,9 @@ import (
 )
 
 type linkTest struct {
-	silence models.Silence
 	text    string
 	uri     string
+	silence models.Silence
 }
 
 var linkRules = []config.LinkDetectRules{

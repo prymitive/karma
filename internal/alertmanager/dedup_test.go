@@ -21,7 +21,7 @@ func init() {
 	httpmock.Activate()
 
 	for _, version := range mock.ListAllMocks() {
-		name := fmt.Sprintf("dedup-mock-%s", version)
+		name := "dedup-mock-" + version
 		uri := fmt.Sprintf("http://%s.localhost", version)
 		am, err := alertmanager.NewAlertmanager("cluster", name, uri, alertmanager.WithRequestTimeout(time.Second))
 		if err != nil {
@@ -32,9 +32,9 @@ func init() {
 			panic(fmt.Sprintf("Failed to register Alertmanager instance %s: %s", am.Name, err))
 		}
 
-		mock.RegisterURL(fmt.Sprintf("%s/metrics", uri), version, "metrics")
-		mock.RegisterURL(fmt.Sprintf("%s/api/v2/silences", uri), version, "api/v2/silences")
-		mock.RegisterURL(fmt.Sprintf("%s/api/v2/alerts/groups", uri), version, "api/v2/alerts/groups")
+		mock.RegisterURL(uri+"/metrics", version, "metrics")
+		mock.RegisterURL(uri+"/api/v2/silences", version, "api/v2/silences")
+		mock.RegisterURL(uri+"/api/v2/alerts/groups", version, "api/v2/alerts/groups")
 	}
 }
 
@@ -187,11 +187,11 @@ func TestClearData(t *testing.T) {
 	defer httpmock.DeactivateAndReset()
 
 	for _, version := range mock.ListAllMocks() {
-		name := fmt.Sprintf("clear-data-mock-%s", version)
-		uri := fmt.Sprintf("http://localhost/clear/%s", version)
+		name := "clear-data-mock-" + version
+		uri := "http://localhost/clear/" + version
 		am, _ := alertmanager.NewAlertmanager("cluster", name, uri, alertmanager.WithRequestTimeout(time.Second))
 
-		mock.RegisterURL(fmt.Sprintf("%s/metrics", uri), version, "metrics")
+		mock.RegisterURL(uri+"/metrics", version, "metrics")
 		_ = am.Pull(intern.New())
 		if am.Version() == "" {
 			t.Errorf("[%s] Got empty version string", am.Name)
@@ -209,7 +209,7 @@ func TestClearData(t *testing.T) {
 			t.Errorf("[%s] Get %d known labels", am.Name, len(am.KnownLabels()))
 		}
 
-		mock.RegisterURL(fmt.Sprintf("%s/api/v2/silences", uri), version, "api/v2/silences")
+		mock.RegisterURL(uri+"/api/v2/silences", version, "api/v2/silences")
 		_ = am.Pull(intern.New())
 		if am.Version() == "" {
 			t.Errorf("[%s] Got empty version string: %s", am.Name, am.Version())
@@ -227,7 +227,7 @@ func TestClearData(t *testing.T) {
 			t.Errorf("[%s] Get %d known labels", am.Name, len(am.KnownLabels()))
 		}
 
-		mock.RegisterURL(fmt.Sprintf("%s/api/v2/alerts/groups", uri), version, "api/v2/alerts/groups")
+		mock.RegisterURL(uri+"/api/v2/alerts/groups", version, "api/v2/alerts/groups")
 		_ = am.Pull(intern.New())
 		if am.Version() == "" {
 			t.Errorf("[%s] Got empty version string", am.Name)

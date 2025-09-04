@@ -64,11 +64,11 @@ func inhibitedAutocomplete(name string, _ []string, _ []models.Alert) []models.A
 	tokens := map[string]*models.Autocomplete{}
 
 	for _, val := range []string{trueValue, falseValue} {
-		token := fmt.Sprintf("%s%s%s", name, equalOperator, val)
+		token := name + equalOperator + val
 		hint := makeAC(token, []string{
 			name,
 			strings.TrimPrefix(name, "@"),
-			fmt.Sprintf("%s%s", name, equalOperator),
+			name + equalOperator,
 			val,
 		})
 		tokens[token] = &hint

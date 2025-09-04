@@ -54,7 +54,7 @@ func limitAutocomplete(name string, operators []string, _ []models.Alert) []mode
 			[]string{
 				name,
 				strings.TrimPrefix(name, "@"),
-				fmt.Sprintf("%s%s", name, operator),
+				name + operator,
 			},
 		))
 		tokens = append(tokens, makeAC(
@@ -62,7 +62,7 @@ func limitAutocomplete(name string, operators []string, _ []models.Alert) []mode
 			[]string{
 				name,
 				strings.TrimPrefix(name, "@"),
-				fmt.Sprintf("%s%s", name, operator),
+				name + operator,
 			},
 		))
 	}

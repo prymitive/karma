@@ -63,11 +63,11 @@ func silenceAuthorAutocomplete(name string, operators []string, alerts []models.
 					silence, found := am.Silences[silenceID]
 					if found {
 						for _, operator := range operators {
-							token := fmt.Sprintf("%s%s%s", name, operator, silence.CreatedBy)
+							token := name + operator + silence.CreatedBy
 							hint := makeAC(token, []string{
 								name,
 								strings.TrimPrefix(name, "@"),
-								fmt.Sprintf("%s%s", name, operator),
+								name + operator,
 								silence.CreatedBy,
 							})
 							tokens[token] = &hint
