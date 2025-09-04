@@ -155,7 +155,7 @@ func httpServer(ts *testscript.TestScript, _ bool, args []string) {
 			case <-sCtx.Done():
 				ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 				defer cancel()
-				_ = server.Shutdown(ctx)
+				_ = server.Shutdown(ctx) // nolint: contextcheck
 				ts.Fatalf("http server %s running for too long, forcing a shutdown: %s", name, sCtx.Err())
 			case <-sChan:
 				return
@@ -211,8 +211,8 @@ func httpServer(ts *testscript.TestScript, _ bool, args []string) {
 }
 
 type httpMock struct {
-	pattern string
 	handler func(http.ResponseWriter, *http.Request)
+	pattern string
 }
 
 type httpMocks struct {

@@ -35,7 +35,7 @@ func receiverAutocomplete(name string, operators []string, alerts []models.Alert
 			for _, operator := range operators {
 				switch operator {
 				case equalOperator, notEqualOperator:
-					token := fmt.Sprintf("%s%s%s", name, operator, alert.Receiver)
+					token := name + operator + alert.Receiver
 					hint := makeAC(
 						token,
 						[]string{
@@ -49,7 +49,7 @@ func receiverAutocomplete(name string, operators []string, alerts []models.Alert
 					substrings := strings.Split(alert.Receiver, " ")
 					if len(substrings) > 1 {
 						for _, substring := range substrings {
-							token := fmt.Sprintf("%s%s%s", name, operator, substring)
+							token := name + operator + substring
 							hint := makeAC(
 								token,
 								[]string{

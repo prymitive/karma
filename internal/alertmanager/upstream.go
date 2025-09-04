@@ -93,7 +93,7 @@ func GetAlertmanagers() []*Alertmanager {
 	for _, am := range upstreams {
 		ams = append(ams, am)
 	}
-	sort.Slice(ams[:], func(i, j int) bool {
+	sort.Slice(ams, func(i, j int) bool {
 		return ams[i].Name < ams[j].Name
 	})
 	return ams

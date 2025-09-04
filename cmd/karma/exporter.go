@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -52,12 +51,12 @@ func promMiddleware(next http.Handler) http.Handler {
 		ww := middleware.NewWrapResponseWriter(w, r.ProtoMajor)
 		next.ServeHTTP(ww, r)
 
-		status := fmt.Sprintf("%d", ww.Status())
+		status := strconv.Itoa(ww.Status())
 		method := r.Method
 
 		rctx := chi.RouteContext(r.Context())
 		routePattern := strings.Join(rctx.RoutePatterns, "")
-		routePattern = strings.Replace(routePattern, "/*/", "/", -1)
+		routePattern = strings.ReplaceAll(routePattern, "/*/", "/")
 		if routePattern == "" {
 			routePattern = "middleware"
 		}

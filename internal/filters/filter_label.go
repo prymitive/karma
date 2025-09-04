@@ -36,12 +36,12 @@ func labelAutocomplete(_ string, operators []string, alerts []models.Alert) []mo
 			for _, operator := range operators {
 				switch operator {
 				case equalOperator, notEqualOperator:
-					token := fmt.Sprintf("%s%s%s", l.Name, operator, l.Value)
+					token := l.Name + operator + l.Value
 					hint := makeAC(
 						token,
 						[]string{
 							l.Name,
-							fmt.Sprintf("%s%s", l.Name, operator),
+							l.Name + operator,
 							l.Value,
 						},
 					)
@@ -50,12 +50,12 @@ func labelAutocomplete(_ string, operators []string, alerts []models.Alert) []mo
 					substrings := strings.Split(l.Value, " ")
 					if len(substrings) > 1 {
 						for _, substring := range substrings {
-							token := fmt.Sprintf("%s%s%s", l.Name, operator, substring)
+							token := l.Name + operator + substring
 							hint := makeAC(
 								token,
 								[]string{
 									l.Name,
-									fmt.Sprintf("%s%s", l.Name, operator),
+									l.Name + operator,
 									l.Value,
 									substring,
 								},
@@ -65,12 +65,12 @@ func labelAutocomplete(_ string, operators []string, alerts []models.Alert) []mo
 					}
 				case moreThanOperator, lessThanOperator:
 					if _, err := strconv.Atoi(l.Value); err == nil {
-						token := fmt.Sprintf("%s%s%s", l.Name, operator, l.Value)
+						token := l.Name + operator + l.Value
 						hint := makeAC(
 							token,
 							[]string{
 								l.Name,
-								fmt.Sprintf("%s%s", l.Name, operator),
+								l.Name + operator,
 								l.Value,
 							},
 						)

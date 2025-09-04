@@ -26,8 +26,8 @@ const (
 )
 
 type alertmanagerMetrics struct {
-	Cycles float64
 	Errors map[string]float64
+	Cycles float64
 }
 
 type HealthCheck struct {
@@ -38,36 +38,36 @@ type HealthCheck struct {
 // Alertmanager represents Alertmanager upstream instance
 // nolint: maligned
 type Alertmanager struct {
-	URI            string        `json:"uri"`
-	ExternalURI    string        `json:"-"`
-	RequestTimeout time.Duration `json:"timeout"`
-	Cluster        string        `json:"cluster"`
-	Name           string        `json:"name"`
-	// whenever this instance should be proxied
-	ProxyRequests bool `json:"proxyRequests"`
-	ReadOnly      bool `json:"readonly"`
 	// reader instances are specific to URI scheme we collect from
 	reader uri.Reader
 	// implements how we fetch requests from the Alertmanager, we don't set it
 	// by default so it's nil and http.DefaultTransport is used
 	HTTPTransport http.RoundTripper `json:"-"`
-	// lock protects data access while updating
-	lock sync.RWMutex
-	// fields for storing pulled data
-	alertGroups      []models.AlertGroup
-	silences         map[string]models.Silence
-	colors           models.LabelsColorMap
-	autocomplete     []models.Autocomplete
-	knownLabels      []string
+	// metrics tracked per alertmanager instance
+	Metrics  alertmanagerMetrics
+	silences map[string]models.Silence
+	colors   models.LabelsColorMap
+	// headers to send with each AlertManager request
+	HTTPHeaders      map[string]string
+	healthchecks     map[string]HealthCheck
+	URI              string `json:"uri"`
+	ExternalURI      string `json:"-"`
+	Cluster          string `json:"cluster"`
+	Name             string `json:"name"`
 	lastError        string
 	lastVersionProbe string
-	// metrics tracked per alertmanager instance
-	Metrics alertmanagerMetrics
-	// headers to send with each AlertManager request
-	HTTPHeaders map[string]string
 	// CORS credentials
-	CORSCredentials     string `json:"corsCredentials"`
-	healthchecks        map[string]HealthCheck
+	CORSCredentials string `json:"corsCredentials"`
+	// fields for storing pulled data
+	alertGroups    []models.AlertGroup
+	autocomplete   []models.Autocomplete
+	knownLabels    []string
+	RequestTimeout time.Duration `json:"timeout"`
+	// lock protects data access while updating
+	lock sync.RWMutex
+	// whenever this instance should be proxied
+	ProxyRequests       bool `json:"proxyRequests"`
+	ReadOnly            bool `json:"readonly"`
 	healthchecksVisible bool
 }
 
@@ -154,7 +154,7 @@ func (am *Alertmanager) pullSilences(version string, si *intern.Interner) error 
 // InternalURI is the URI of this Alertmanager that will be used for all request made by the UI
 func (am *Alertmanager) InternalURI() string {
 	if am.ProxyRequests {
-		return fmt.Sprintf("./proxy/alertmanager/%s", url.PathEscape(am.Name))
+		return "./proxy/alertmanager/" + url.PathEscape(am.Name)
 	}
 
 	// strip all user/pass information, fetch() doesn't support it anyway

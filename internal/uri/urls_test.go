@@ -112,8 +112,8 @@ func TestSanitizedURI(t *testing.T) {
 func TestHeadersForBasicAuth(t *testing.T) {
 	type headersTest struct {
 		uri   string
-		isSet bool
 		value string
+		isSet bool
 	}
 	testCases := []headersTest{
 		{

@@ -54,11 +54,11 @@ func silenceIDAutocomplete(name string, operators []string, alerts []models.Aler
 		for _, am := range alert.Alertmanager {
 			for _, silenceID := range am.SilencedBy {
 				for _, operator := range operators {
-					token := fmt.Sprintf("%s%s%s", name, operator, silenceID)
+					token := name + operator + silenceID
 					hint := makeAC(token, []string{
 						name,
 						strings.TrimPrefix(name, "@"),
-						fmt.Sprintf("%s%s", name, operator),
+						name + operator,
 						silenceID,
 					})
 					tokens[token] = &hint

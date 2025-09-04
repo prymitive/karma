@@ -200,11 +200,11 @@ func getCompiledRegex(regexes []string, t *testing.T) []*regexp.Regexp {
 }
 
 type stripReceiverTest struct {
+	receiver string
 	strip    []string
 	keep     []string
 	stripRe  []string
 	keepRe   []string
-	receiver string
 	stripped bool
 }
 

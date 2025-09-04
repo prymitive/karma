@@ -30,7 +30,7 @@ benchmark-compare-go: $(GOBIN)/benchstat
 	@$(GOBIN)/benchstat main.txt new.txt
 
 $(GOBIN)/golangci-lint: tools/golangci-lint/go.mod tools/golangci-lint/go.sum
-	go install -modfile=tools/golangci-lint/go.mod github.com/golangci/golangci-lint/cmd/golangci-lint
+	go install -modfile=tools/golangci-lint/go.mod github.com/golangci/golangci-lint/v2/cmd/golangci-lint
 .PHONY: lint-go
 lint-go: $(GOBIN)/golangci-lint
 	$(ENV) golangci-lint run -v

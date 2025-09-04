@@ -69,9 +69,9 @@ func TestAlertListSort(t *testing.T) {
 }
 
 type agFPTest struct {
-	name     string            // name of the test
-	ag       models.AlertGroup // alert group data
-	fpChange bool              // true if fingerprint should change vs previous run
+	name     string
+	ag       models.AlertGroup
+	fpChange bool
 }
 
 var agFPTests = []agFPTest{
@@ -195,8 +195,8 @@ func TestFingerprint(t *testing.T) {
 }
 
 type findLatestStartsAtTest struct {
-	alerts           []models.Alert
 	expectedStartsAt time.Time
+	alerts           []models.Alert
 }
 
 var findLatestStartsAtTests = []findLatestStartsAtTest{

@@ -13,9 +13,9 @@ type customizationAssetsTest struct {
 	customJS  string
 	customCSS string
 	path      string
-	code      int
 	body      string
 	mime      string
+	code      int
 }
 
 func TestCustomizationAssets(t *testing.T) {
@@ -120,8 +120,8 @@ func TestAssetFallbackMIME(t *testing.T) {
 func TestStaticFiles(t *testing.T) {
 	type staticFileTestCase struct {
 		path string
-		code int
 		mime string
+		code int
 	}
 
 	staticFileTests := []staticFileTestCase{
@@ -181,8 +181,8 @@ func TestStaticFiles(t *testing.T) {
 func TestStaticFilesPrefix(t *testing.T) {
 	type staticFileTestCase struct {
 		path string
-		code int
 		mime string
+		code int
 	}
 
 	staticFilePrefixTests := []staticFileTestCase{

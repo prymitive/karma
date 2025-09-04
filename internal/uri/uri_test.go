@@ -18,16 +18,16 @@ import (
 )
 
 type httpTransportTest struct {
-	name                  string
-	timeout               time.Duration
 	tlsConfig             *tls.Config
+	headers               map[string]string
+	responseHeaders       map[string]string
+	name                  string
+	responseBody          []byte
+	timeout               time.Duration
+	responseCode          int
+	responseContentLength int64
 	useTLS                bool
 	failed                bool
-	headers               map[string]string
-	responseCode          int
-	responseBody          []byte
-	responseContentLength int64
-	responseHeaders       map[string]string
 }
 
 var httpTransportTests = []httpTransportTest{

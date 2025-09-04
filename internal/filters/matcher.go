@@ -2,7 +2,6 @@ package filters
 
 import (
 	"errors"
-	"fmt"
 	"regexp"
 	"strconv"
 
@@ -120,6 +119,6 @@ func newMatcher(matchType string) (matcherT, error) {
 	if m, found := matcherConfig[matchType]; found {
 		return m, nil
 	}
-	e := fmt.Sprintf("%s not matched with any know match type", matchType)
+	e := matchType + " not matched with any know match type"
 	return nil, errors.New(e)
 }

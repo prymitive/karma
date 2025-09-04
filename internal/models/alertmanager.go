@@ -25,18 +25,16 @@ type AlertmanagerInstance struct {
 
 // AlertmanagerAPIStatus describes the Alertmanager instance overall health
 type AlertmanagerAPIStatus struct {
-	Name string `json:"name"`
-	// this is the Alertmanager URI used for all requests made by the UI
-	URI string `json:"uri"`
-	// this is the Alertmanager URI used for links in the browser
-	PublicURI       string            `json:"publicURI"`
-	ReadOnly        bool              `json:"readonly"`
 	Headers         map[string]string `json:"headers"`
+	Name            string            `json:"name"`
+	URI             string            `json:"uri"`
+	PublicURI       string            `json:"publicURI"`
 	CORSCredentials string            `json:"corsCredentials"`
 	Error           string            `json:"error"`
 	Version         string            `json:"version"`
 	Cluster         string            `json:"cluster"`
 	ClusterMembers  []string          `json:"clusterMembers"`
+	ReadOnly        bool              `json:"readonly"`
 }
 
 // AlertmanagerAPICounters returns number of Alertmanager instances in each
@@ -49,7 +47,7 @@ type AlertmanagerAPICounters struct {
 
 // AlertmanagerAPISummary describes the Alertmanager instance overall health
 type AlertmanagerAPISummary struct {
-	Counters  AlertmanagerAPICounters `json:"counters"`
-	Instances []AlertmanagerAPIStatus `json:"instances"`
 	Clusters  map[string][]string     `json:"clusters"`
+	Instances []AlertmanagerAPIStatus `json:"instances"`
+	Counters  AlertmanagerAPICounters `json:"counters"`
 }

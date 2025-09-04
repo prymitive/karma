@@ -1,6 +1,36 @@
 /* snapshot: SharedMaps */
 {
+  "allLabels": {
+    "active": {
+      "alertname": [
+        "FakeAlert"
+      ],
+      "instance": [
+        "2"
+      ],
+      "job": [
+        "node_exporter"
+      ]
+    },
+    "suppressed": {
+      "alertname": [
+        "FakeAlert"
+      ],
+      "instance": [
+        "1",
+        "3"
+      ],
+      "job": [
+        "blackbox",
+        "node_exporter"
+      ]
+    },
+    "unprocessed": {}
+  },
+  "alertmanagerCount": null,
+  "stateCount": null,
   "receiver": "",
+  "id": "",
   "labels": [
     {
       "name": "alertname",
@@ -9,6 +39,10 @@
   ],
   "alerts": [
     {
+      "startsAt": "0001-01-01T00:00:00Z",
+      "state": "suppressed",
+      "receiver": "",
+      "id": "",
       "annotations": [
         {
           "name": "foo",
@@ -28,8 +62,6 @@
           "value": "1"
         }
       ],
-      "startsAt": "0001-01-01T00:00:00Z",
-      "state": "suppressed",
       "alertmanager": [
         {
           "fingerprint": "1",
@@ -57,11 +89,13 @@
           ],
           "inhibitedBy": null
         }
-      ],
-      "receiver": "",
-      "id": ""
+      ]
     },
     {
+      "startsAt": "0001-01-01T00:00:00Z",
+      "state": "active",
+      "receiver": "",
+      "id": "",
       "annotations": [],
       "labels": [
         {
@@ -73,8 +107,6 @@
           "value": "2"
         }
       ],
-      "startsAt": "0001-01-01T00:00:00Z",
-      "state": "active",
       "alertmanager": [
         {
           "fingerprint": "1",
@@ -102,11 +134,13 @@
           ],
           "inhibitedBy": null
         }
-      ],
-      "receiver": "",
-      "id": ""
+      ]
     },
     {
+      "startsAt": "0001-01-01T00:00:00Z",
+      "state": "suppressed",
+      "receiver": "",
+      "id": "",
       "annotations": [],
       "labels": [
         {
@@ -122,8 +156,6 @@
           "value": "ignore"
         }
       ],
-      "startsAt": "0001-01-01T00:00:00Z",
-      "state": "suppressed",
       "alertmanager": [
         {
           "fingerprint": "1",
@@ -151,15 +183,9 @@
           ],
           "inhibitedBy": null
         }
-      ],
-      "receiver": "",
-      "id": ""
+      ]
     }
   ],
-  "id": "",
-  "alertmanagerCount": null,
-  "stateCount": null,
-  "totalAlerts": 0,
   "shared": {
     "annotations": [
       {
@@ -187,31 +213,5 @@
       "fakeCluster"
     ]
   },
-  "allLabels": {
-    "active": {
-      "alertname": [
-        "FakeAlert"
-      ],
-      "instance": [
-        "2"
-      ],
-      "job": [
-        "node_exporter"
-      ]
-    },
-    "suppressed": {
-      "alertname": [
-        "FakeAlert"
-      ],
-      "instance": [
-        "1",
-        "3"
-      ],
-      "job": [
-        "blackbox",
-        "node_exporter"
-      ]
-    },
-    "unprocessed": {}
-  }
+  "totalAlerts": 0
 }

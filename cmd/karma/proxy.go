@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"net/url"
+	"strconv"
 	"strings"
 
 	"github.com/go-chi/chi/v5"
@@ -157,7 +158,7 @@ func handlePostRequest(alertmanager *alertmanager.Alertmanager, h http.Handler) 
 
 			r.Body = io.NopCloser(bytes.NewBuffer(newBody))
 			r.ContentLength = int64(len(newBody))
-			r.Header.Set("Content-Length", fmt.Sprintf("%d", r.ContentLength))
+			r.Header.Set("Content-Length", strconv.FormatInt(r.ContentLength, 10))
 		} else {
 			r.Body = io.NopCloser(bytes.NewBuffer(body))
 		}

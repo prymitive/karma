@@ -12,6 +12,7 @@ import (
 	"os"
 	"regexp"
 	"sort"
+	"strconv"
 	"strings"
 	"testing"
 
@@ -125,8 +126,8 @@ func TestIndex(t *testing.T) {
 	type testCaseT struct {
 		prefix   string
 		request  string
-		status   int
 		redirect string
+		status   int
 	}
 
 	testCases := []testCaseT{
@@ -398,8 +399,8 @@ func TestGrids(t *testing.T) {
 		alertGroupCount int
 	}
 	type testCaseT struct {
-		request models.AlertsRequest
 		grids   []testCaseGridT
+		request models.AlertsRequest
 	}
 	testCases := []testCaseT{
 		{
@@ -810,7 +811,7 @@ func TestAutocomplete(t *testing.T) {
 			}
 
 			for _, acTest := range acTests {
-				url := fmt.Sprintf("/autocomplete.json?term=%s", acTest.Term)
+				url := "/autocomplete.json?term=" + acTest.Term
 				req := httptest.NewRequest("GET", url, nil)
 				resp := httptest.NewRecorder()
 				r.ServeHTTP(resp, req)
@@ -859,7 +860,7 @@ func TestGzipMiddleware(t *testing.T) {
 			}
 
 			bs := h.Get("Content-Length")
-			if fmt.Sprint(resp.Body.Len()) != bs {
+			if strconv.Itoa(resp.Body.Len()) != bs {
 				t.Errorf("Invalid 'Content-Length' in response for '%s', body size was %d but header value was '%s'", path, resp.Body.Len(), bs)
 			}
 		}
@@ -887,7 +888,7 @@ func TestGzipMiddlewareWithoutAcceptEncoding(t *testing.T) {
 
 			bs := h.Get("Content-Length")
 			// if we got Content-Length then compare it with body size
-			if bs != "" && fmt.Sprint(resp.Body.Len()) != bs {
+			if bs != "" && strconv.Itoa(resp.Body.Len()) != bs {
 				t.Errorf("Invalid 'Content-Length' in response for '%s', body size was %d but header value was '%s'", path, resp.Body.Len(), bs)
 			}
 		}
@@ -1066,9 +1067,9 @@ func TestSilences(t *testing.T) {
 
 func TestCORS(t *testing.T) {
 	type corsTestCase struct {
-		allowedOrigins []string
 		requestOrigin  string
 		result         string
+		allowedOrigins []string
 	}
 	corsTestCases := []corsTestCase{
 		{
@@ -1169,19 +1170,19 @@ func TestEmptySettings(t *testing.T) {
 
 func TestAuthentication(t *testing.T) {
 	type authTest struct {
-		name                     string
-		headerName               string
+		requestHeaders           map[string]string
+		requestBasicAuthPassword string
 		headerRe                 string
 		groupName                string
 		groupRe                  string
 		groupSeparator           string
-		basicAuthUsers           []config.AuthenticationUser
-		requestHeaders           map[string]string
+		headerName               string
 		requestBasicAuthUser     string
-		requestBasicAuthPassword string
-		responseCode             int
+		name                     string
 		responseUsername         string
+		basicAuthUsers           []config.AuthenticationUser
 		responseGroups           []string
+		responseCode             int
 	}
 
 	authTests := []authTest{
@@ -1881,10 +1882,10 @@ func TestDecompressResponseReadError(t *testing.T) {
 
 func TestAutoGrid(t *testing.T) {
 	type testCaseT struct {
-		request   models.AlertsRequest
 		gridLabel string
 		ignore    []string
 		order     []string
+		request   models.AlertsRequest
 	}
 
 	testCases := []testCaseT{
@@ -2063,9 +2064,9 @@ func TestAutoGrid(t *testing.T) {
 
 func TestGridLimit(t *testing.T) {
 	type testCaseT struct {
-		groupLimit int
-		request    models.AlertsRequest
 		groups     map[string][]int
+		request    models.AlertsRequest
+		groupLimit int
 	}
 	testCases := []testCaseT{
 		{
@@ -2640,10 +2641,10 @@ func TestCounters(t *testing.T) {
 
 func TestLabelSettings(t *testing.T) {
 	type testCaseT struct {
+		labels      models.LabelsSettings
 		static      []string
 		valueOnly   []string
 		valueOnlyRe []*regexp.Regexp
-		labels      models.LabelsSettings
 	}
 
 	testCases := []testCaseT{
@@ -2760,7 +2761,7 @@ func TestLabelSettings(t *testing.T) {
 		config.Config.Labels.Color.Static = tc.static
 		config.Config.Labels.ValueOnly = tc.valueOnly
 		config.Config.Labels.CompiledValueOnlyRegex = tc.valueOnlyRe
-		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
+		t.Run(strconv.Itoa(i), func(t *testing.T) {
 			r := testRouter()
 			setupRouter(r, nil)
 			for i := 1; i <= 3; i++ {

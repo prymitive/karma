@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"crypto/sha1"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -28,8 +29,8 @@ import (
 )
 
 type AlertHistoryPayload struct {
-	Sources []string          `json:"sources"`
 	Labels  map[string]string `json:"labels"`
+	Sources []string          `json:"sources"`
 }
 
 type OffsetSample struct {
@@ -73,7 +74,7 @@ func alertHistory(historyPoller *historyPoller, w http.ResponseWriter, r *http.R
 
 	var e string
 	if len(errors) > 0 {
-		e = fmt.Sprintf("One or more errors occurred when querying Prometheus API: %s", strings.Join(errors, ", "))
+		e = "One or more errors occurred when querying Prometheus API: " + strings.Join(errors, ", ")
 	}
 	resp := AlertHistoryResponse{
 		Error:   e,
@@ -103,19 +104,19 @@ func alertHistory(historyPoller *historyPoller, w http.ResponseWriter, r *http.R
 }
 
 type historyQueryResult struct {
-	values []OffsetSample
 	err    error
+	values []OffsetSample
 }
 
 type historyJob struct {
-	uri    string
 	labels map[string]string
 	result chan<- historyQueryResult
+	uri    string
 }
 
 type cachedOffsets struct {
-	values    []OffsetSample
 	timestamp time.Time
+	values    []OffsetSample
 }
 
 type knownBadUpstream struct {
@@ -125,9 +126,9 @@ type knownBadUpstream struct {
 
 type historyPoller struct {
 	queue        chan historyJob
-	queryTimeout time.Duration
 	knownBad     *lru.Cache[string, *knownBadUpstream]
 	cache        *lru.Cache[string, *cachedOffsets]
+	queryTimeout time.Duration
 	isRunning    atomic.Bool
 }
 
@@ -252,7 +253,7 @@ func hashQuery(uri string, labels map[string]string) string {
 	}
 	sort.Strings(kvs)
 	_, _ = io.WriteString(hasher, strings.Join(kvs, "\n"))
-	return fmt.Sprintf("%x", hasher.Sum(nil))
+	return hex.EncodeToString(hasher.Sum(nil))
 }
 
 func rewriteSource(rules []config.HistoryRewrite, uri string) (string, map[string]string) {
