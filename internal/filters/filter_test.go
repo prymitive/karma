@@ -2,6 +2,7 @@ package filters_test
 
 import (
 	"encoding/json"
+	"slices"
 	"strings"
 	"testing"
 	"time"
@@ -9,7 +10,6 @@ import (
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/filters"
 	"github.com/prymitive/karma/internal/models"
-	"github.com/prymitive/karma/internal/slices"
 
 	"github.com/rs/zerolog"
 )
@@ -903,7 +903,7 @@ func TestFilters(t *testing.T) {
 				t.Errorf("[%s] GetIsValid() returned %#v while %#v was expected", ft.Expression, f.GetIsValid(), ft.IsValid)
 			}
 			if f.GetIsValid() {
-				isAlertmanagerFilter := slices.StringInSlice(
+				isAlertmanagerFilter := slices.Contains(
 					[]string{"@age", "@alertmanager", "@cluster", "@inhibited", "@inhibited_by", "@state", "@silenced_by", "@silence_ticket", "@silence_author", "@fingerprint"},
 					f.GetName())
 				if isAlertmanagerFilter != f.GetIsAlertmanagerFilter() {

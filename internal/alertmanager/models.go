@@ -7,6 +7,7 @@ import (
 	"sort"
 	"sync"
 	"time"
+	"unique"
 
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/filters"
@@ -239,7 +240,7 @@ func (am *Alertmanager) pullAlerts(version string, si *intern.Interner) error {
 
 	dedupedGroups := make([]models.AlertGroup, 0, len(uniqueGroups))
 	colors := models.LabelsColorMap{}
-	autocompleteMap := map[string]*models.Autocomplete{}
+	autocompleteMap := map[unique.Handle[string]]*models.Autocomplete{}
 
 	log.Info().
 		Str("alertmanager", am.Name).

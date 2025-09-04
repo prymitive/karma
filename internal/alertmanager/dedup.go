@@ -1,12 +1,13 @@
 package alertmanager
 
 import (
+	"slices"
 	"sort"
 	"time"
+	"unique"
 
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/models"
-	"github.com/prymitive/karma/internal/slices"
 	"github.com/prymitive/karma/internal/transform"
 
 	"github.com/rs/zerolog/log"
@@ -104,9 +105,9 @@ func DedupAlerts() []models.AlertGroup {
 			// in the list of states from all instances
 			alertLFP := alert.LabelsFingerprint()
 			switch {
-			case slices.StringInSlice(alertStates[alertLFP], models.AlertStateActive):
+			case slices.Contains(alertStates[alertLFP], models.AlertStateActive):
 				alert.State = models.AlertStateActive
-			case slices.StringInSlice(alertStates[alertLFP], models.AlertStateSuppressed):
+			case slices.Contains(alertStates[alertLFP], models.AlertStateSuppressed):
 				alert.State = models.AlertStateSuppressed
 			default:
 				alert.State = models.AlertStateUnprocessed
@@ -187,7 +188,7 @@ func DedupColors() models.LabelsColorMap {
 // DedupAutocomplete returns a list of autocomplete hints merged from all
 // Alertmanager upstreams
 func DedupAutocomplete() []models.Autocomplete {
-	uniqueAutocomplete := map[string]*models.Autocomplete{}
+	uniqueAutocomplete := map[unique.Handle[string]]*models.Autocomplete{}
 
 	upstreams := GetAlertmanagers()
 
@@ -197,7 +198,7 @@ func DedupAutocomplete() []models.Autocomplete {
 			h, found := uniqueAutocomplete[hint.Value]
 			if found {
 				for _, token := range hint.Tokens {
-					if !slices.StringInSlice(h.Tokens, token) {
+					if !slices.Contains(h.Tokens, token) {
 						h.Tokens = append(h.Tokens, token)
 					}
 				}

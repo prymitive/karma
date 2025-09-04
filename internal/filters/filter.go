@@ -3,10 +3,10 @@ package filters
 import (
 	"fmt"
 	"regexp"
+	"slices"
 	"strings"
 
 	"github.com/prymitive/karma/internal/models"
-	"github.com/prymitive/karma/internal/slices"
 )
 
 // FilterT provides methods for interacting with alert filters
@@ -124,7 +124,7 @@ func NewFilter(expression string) FilterT {
 			// filter name doesn't match, keep searching
 			continue
 		}
-		if !slices.StringInSlice(fc.SupportedOperators, operator) {
+		if !slices.Contains(fc.SupportedOperators, operator) {
 			return &invalid
 		}
 		// we validate operator above, no need to re-check

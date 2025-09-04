@@ -5,10 +5,10 @@ import (
 	"image/color"
 	"io"
 	"math/rand"
+	"slices"
 
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/models"
-	"github.com/prymitive/karma/internal/slices"
 
 	"github.com/prymitive/randomcolor"
 	"github.com/rs/zerolog/log"
@@ -84,7 +84,7 @@ func ColorLabel(colorStore models.LabelsColorMap, key, val string) {
 	}
 
 	// if no custom color is found then generate unique colors if needed
-	if slices.StringInSlice(config.Config.Labels.Color.Unique, key) {
+	if slices.Contains(config.Config.Labels.Color.Unique, key) {
 		if _, found := colorStore[key]; !found {
 			colorStore[key] = make(map[string]models.LabelColors)
 		}

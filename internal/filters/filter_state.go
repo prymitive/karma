@@ -2,10 +2,10 @@ package filters
 
 import (
 	"fmt"
+	"slices"
 	"strings"
 
 	"github.com/prymitive/karma/internal/models"
-	"github.com/prymitive/karma/internal/slices"
 )
 
 type stateFilter struct {
@@ -20,7 +20,7 @@ func (filter *stateFilter) init(name string, matcher *matcherT, rawText string, 
 	filter.RawText = rawText
 	filter.IsValid = isValid
 	filter.Value = value
-	if !slices.StringInSlice(models.AlertStateList, value) {
+	if !slices.Contains(models.AlertStateList, value) {
 		filter.IsValid = false
 	}
 }

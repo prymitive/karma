@@ -3,11 +3,11 @@ package main
 import (
 	"context"
 	"net/http"
+	"slices"
 	"strings"
 
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/regex"
-	"github.com/prymitive/karma/internal/slices"
 )
 
 type authUserKey string
@@ -15,7 +15,7 @@ type authUserKey string
 func userGroups(username string) []string {
 	groups := []string{}
 	for _, authGroup := range config.Config.Authorization.Groups {
-		if slices.StringInSlice(authGroup.Members, username) {
+		if slices.Contains(authGroup.Members, username) {
 			groups = append(groups, authGroup.Name)
 		}
 	}
@@ -39,7 +39,7 @@ func groupsFromHeaders(r *http.Request, groupName, groupValueRegex, groupValueSe
 func headerAuth(name, valueRegex, groupName, groupValueRegex, groupValueSeparator string, allowBypass []string) func(next http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			if slices.StringInSlice(allowBypass, r.URL.Path) {
+			if slices.Contains(allowBypass, r.URL.Path) {
 				next.ServeHTTP(w, r)
 				return
 			}
@@ -92,7 +92,7 @@ func getGroupsFromContext(r *http.Request) []string {
 func basicAuth(creds map[string]string, groupName, groupValueRegex, groupValueSeparator string, allowBypass []string) func(next http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			if slices.StringInSlice(allowBypass, r.URL.Path) {
+			if slices.Contains(allowBypass, r.URL.Path) {
 				next.ServeHTTP(w, r)
 				return
 			}

@@ -3,12 +3,12 @@ package models
 import (
 	"fmt"
 	"net/url"
+	"slices"
 	"sort"
 	"strings"
+	"unique"
 
 	"github.com/fvbommel/sortorder"
-
-	"github.com/prymitive/karma/internal/slices"
 )
 
 // Filter holds returned data on any filter passed by the user as part of the query
@@ -153,7 +153,7 @@ func (ag *APIAlertGroup) dedupLabels() {
 func (ag *APIAlertGroup) removeGroupingLabels(dropNames []string) {
 	newGroupLabels := Labels{}
 	for _, l := range ag.Labels {
-		if slices.StringInSlice(dropNames, l.Name) {
+		if slices.Contains(dropNames, l.Name) {
 			continue
 		}
 		newGroupLabels = newGroupLabels.Add(l)
@@ -163,7 +163,7 @@ func (ag *APIAlertGroup) removeGroupingLabels(dropNames []string) {
 	for i, alert := range ag.Alerts {
 		newAlertLabels := Labels{}
 		for _, l := range alert.Labels {
-			if slices.StringInSlice(dropNames, l.Name) {
+			if slices.Contains(dropNames, l.Name) {
 				// skip all labels from the drop list
 				continue
 			}
@@ -202,7 +202,7 @@ func (ag *APIAlertGroup) dedupAnnotations() {
 		for _, annotation := range alert.Annotations {
 			key := fmt.Sprintf("%s\n%s", annotation.Name, annotation.Value)
 			if annotationCount[key] == totalAlerts {
-				if !slices.StringInSlice(sharedKeys, key) {
+				if !slices.Contains(sharedKeys, key) {
 					sharedAnnotations = append(sharedAnnotations, annotation)
 					sharedKeys = append(sharedKeys, key)
 				}
@@ -225,7 +225,7 @@ func (ag *APIAlertGroup) dedupSilences() {
 		// process each cluster only once, rather than each alertmanager instance
 		clusters := []string{}
 		for _, am := range alert.Alertmanager {
-			if slices.StringInSlice(clusters, am.Cluster) {
+			if slices.Contains(clusters, am.Cluster) {
 				continue
 			}
 			clusters = append(clusters, am.Cluster)
@@ -349,7 +349,7 @@ func (ag *APIAlertGroup) populateAllLabels() {
 			if _, ok := ag.AllLabels[alert.State][l.Name]; !ok {
 				ag.AllLabels[alert.State][l.Name] = []string{}
 			}
-			if !slices.StringInSlice(ag.AllLabels[alert.State][l.Name], l.Value) {
+			if !slices.Contains(ag.AllLabels[alert.State][l.Name], l.Value) {
 				ag.AllLabels[alert.State][l.Name] = append(ag.AllLabels[alert.State][l.Name], l.Value)
 			}
 		}
@@ -482,8 +482,8 @@ type AlertsResponse struct {
 // Autocomplete is the structure of autocomplete object for filter hints
 // this is internal representation, not what's returned to the user
 type Autocomplete struct {
-	Value  string   `json:"value"`
-	Tokens []string `json:"tokens"`
+	Value  unique.Handle[string]   `json:"value"`
+	Tokens []unique.Handle[string] `json:"tokens"`
 }
 
 type Counters struct {

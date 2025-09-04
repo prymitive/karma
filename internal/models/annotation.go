@@ -2,13 +2,13 @@ package models
 
 import (
 	"net/url"
+	"slices"
 	"sort"
 	"strings"
 
 	"github.com/fvbommel/sortorder"
 
 	"github.com/prymitive/karma/internal/config"
-	"github.com/prymitive/karma/internal/slices"
 )
 
 // Annotation extends Alertmanager scheme of key:value with additional data
@@ -90,7 +90,7 @@ func isLink(s string) bool {
 	if err != nil {
 		return false
 	}
-	if slices.StringInSlice(linkSchemes, u.Scheme) {
+	if slices.Contains(linkSchemes, u.Scheme) {
 		// parses with url.Parse and scheme is in the list of supported schemes
 		return true
 	}
@@ -98,11 +98,11 @@ func isLink(s string) bool {
 }
 
 func isVisible(name string) bool {
-	if slices.StringInSlice(config.Config.Annotations.Visible, name) {
+	if slices.Contains(config.Config.Annotations.Visible, name) {
 		// annotation was explicitly marked as visible
 		return true
 	}
-	if slices.StringInSlice(config.Config.Annotations.Hidden, name) {
+	if slices.Contains(config.Config.Annotations.Hidden, name) {
 		// annotation was explicitly marked as hidden
 		return false
 	}
@@ -115,5 +115,5 @@ func isVisible(name string) bool {
 }
 
 func isAction(name string) bool {
-	return slices.StringInSlice(config.Config.Annotations.Actions, name)
+	return slices.Contains(config.Config.Annotations.Actions, name)
 }
