@@ -6,8 +6,6 @@ import { CSSTransition } from "react-transition-group";
 
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircle } from "@fortawesome/free-solid-svg-icons/faCircle";
-import { faTimes } from "@fortawesome/free-solid-svg-icons/faTimes";
 
 import { ThemeContext } from "Components/Theme";
 
@@ -16,7 +14,8 @@ const Toast: FC<{
   iconClass: string;
   message: ReactNode;
   hasClose: boolean;
-}> = ({ icon, iconClass, message, hasClose }) => {
+  onClose?: () => void;
+}> = ({ icon, iconClass, message, hasClose, onClose }) => {
   const [isOpen, setIsOpen] = useState(true);
 
   useEffect(() => {
@@ -30,27 +29,24 @@ const Toast: FC<{
   if (!isOpen) return null;
 
   return (
-    <div className="m-1 bg-toast text-white rounded shadow">
-      <div className="d-flex flex-row p-1">
-        <div className="flex-shrink-0 flex-grow-0 align-self-center fa-stack fa-2x">
-          <FontAwesomeIcon
-            icon={faCircle}
-            className={`fa-stack-2x ${iconClass}`}
-          />
-          <FontAwesomeIcon icon={icon} className="fa-stack-1x text-white" />
-        </div>
-        <div className="flex-shrink-1 flex-grow-1 align-self-center ms-1 me-3 text-break text-wrap">
-          {message}
-        </div>
+    <div
+      className={`m-2 alert alert-${iconClass === "text-danger" ? "danger" : iconClass === "text-success" ? "success" : "warning"} alert-dismissible shadow`}
+      style={{ minWidth: "350px", maxWidth: "450px" }}
+    >
+      <div className="d-flex align-items-start">
+        <FontAwesomeIcon icon={icon} className="me-2 mt-1" />
+        <div className="flex-grow-1">{message}</div>
         {hasClose ? (
-          <div className="flex-shrink-0 flex-grow-0 align-self-top">
-            <span
-              className="badge components-label cursor-pointer with-click with-click-dark"
-              onClick={() => setIsOpen(false)}
-            >
-              <FontAwesomeIcon icon={faTimes} />
-            </span>
-          </div>
+          <button
+            type="button"
+            className="btn-close"
+            onClick={() => {
+              setIsOpen(false);
+              if (onClose) {
+                onClose();
+              }
+            }}
+          ></button>
         ) : null}
       </div>
     </div>

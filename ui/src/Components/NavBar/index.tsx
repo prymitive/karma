@@ -17,6 +17,7 @@ import { OverviewModal } from "Components/OverviewModal";
 import { MainModal } from "Components/MainModal";
 import SilenceModal from "Components/SilenceModal";
 import AppToasts from "Components/Toast/AppToasts";
+import { NotificationBadge } from "Components/NotificationBadge";
 import { ThemeContext } from "Components/Theme";
 import { Fetcher } from "Components/Fetcher";
 import { FilterInput } from "./FilterInput";
@@ -135,6 +136,7 @@ const NavBar: FC<{
           {alertStore.info.timestamp !== "" &&
           alertStore.data.upstreams.instances.length === 0 ? null : (
             <ul className="navbar-nav flex-wrap flex-shrink-1 ms-1">
+              <NotificationBadge />
               <AppToasts alertStore={alertStore} />
               <SilenceModal
                 alertStore={alertStore}

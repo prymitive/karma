@@ -155,6 +155,10 @@ interface AlertStoreDataT {
   setReceivers: (r: string[]) => void;
   setColors: (c: APIAlertsResponseColorsT) => void;
   readonly upstreamsWithErrors: APIAlertmanagerUpstreamT[];
+  readonly upstreamsWithWarnings: APIAlertmanagerUpstreamT[];
+  readonly upstreamsWithCriticalErrors: APIAlertmanagerUpstreamT[];
+  readonly clustersWithErrors: string[];
+  readonly clustersWithWarnings: string[];
 }
 
 interface AlertStoreInfoT {
@@ -380,12 +384,90 @@ class AlertStore {
             (upstream) => upstream.error !== "",
           );
         },
+        get upstreamsWithWarnings(): APIAlertmanagerUpstreamT[] {
+          // Get upstreams with errors where at least one other upstream in the same cluster is healthy
+          return this.upstreams.instances.filter((upstream) => {
+            if (upstream.error === "") return false;
+
+            // Check if there are other healthy instances in the same cluster
+            const clusterInstances = this.upstreams.instances.filter(
+              (u) => u.cluster === upstream.cluster,
+            );
+            const healthyInCluster = clusterInstances.filter(
+              (u) => u.error === "",
+            );
+
+            return healthyInCluster.length > 0;
+          });
+        },
+        get upstreamsWithCriticalErrors(): APIAlertmanagerUpstreamT[] {
+          // Get upstreams with errors where ALL instances in the cluster are failing
+          return this.upstreams.instances.filter((upstream) => {
+            if (upstream.error === "") return false;
+
+            // Check if ALL instances in the cluster are failing
+            const clusterInstances = this.upstreams.instances.filter(
+              (u) => u.cluster === upstream.cluster,
+            );
+            const healthyInCluster = clusterInstances.filter(
+              (u) => u.error === "",
+            );
+
+            return healthyInCluster.length === 0;
+          });
+        },
+        get clustersWithErrors(): string[] {
+          // Get unique cluster names that have ALL instances failing
+          const failingClusters = new Set<string>();
+
+          Object.keys(this.upstreams.clusters).forEach((cluster) => {
+            const clusterInstances = this.upstreams.instances.filter(
+              (u) => u.cluster === cluster,
+            );
+            const healthyInCluster = clusterInstances.filter(
+              (u) => u.error === "",
+            );
+
+            if (clusterInstances.length > 0 && healthyInCluster.length === 0) {
+              failingClusters.add(cluster);
+            }
+          });
+
+          return Array.from(failingClusters);
+        },
+        get clustersWithWarnings(): string[] {
+          // Get unique cluster names that have some (but not all) instances failing
+          const warningClusters = new Set<string>();
+
+          Object.keys(this.upstreams.clusters).forEach((cluster) => {
+            const clusterInstances = this.upstreams.instances.filter(
+              (u) => u.cluster === cluster,
+            );
+            const failingInCluster = clusterInstances.filter(
+              (u) => u.error !== "",
+            );
+            const healthyInCluster = clusterInstances.filter(
+              (u) => u.error === "",
+            );
+
+            if (failingInCluster.length > 0 && healthyInCluster.length > 0) {
+              warningClusters.add(cluster);
+            }
+          });
+
+          return Array.from(warningClusters);
+        },
       },
       {
         gridPadding: computed,
         readOnlyAlertmanagers: computed,
         readWriteAlertmanagers: computed,
         clustersWithoutReadOnly: computed,
+        upstreamsWithErrors: computed,
+        upstreamsWithWarnings: computed,
+        upstreamsWithCriticalErrors: computed,
+        clustersWithErrors: computed,
+        clustersWithWarnings: computed,
         setGrids: action.bound,
         setUpstreams: action.bound,
         setClusters: action.bound,

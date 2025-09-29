@@ -1,38 +1,44 @@
-import { useState, useEffect, FC } from "react";
+import { useEffect } from "react";
 
 import { autorun } from "mobx";
 
+import type { AlertStore } from "Stores/AlertStore";
+import { notificationStore } from "Stores/NotificationStore";
+
 import Favico from "favico.js";
 
-import type { AlertStore } from "Stores/AlertStore";
-
-const FaviconBadge: FC<{
-  alertStore: AlertStore;
-}> = ({ alertStore }) => {
-  const [favico] = useState(
-    new Favico({
+const FaviconBadge = ({ alertStore }: { alertStore: AlertStore }) => {
+  useEffect(() => {
+    const favico = new Favico({
       animation: "none",
-      position: "down",
-      bgColor: "#e74c3c",
-      textColor: "#fff",
-    }),
-  );
+    });
 
-  useEffect(
-    () =>
+    const dispose = autorun(() =>
       autorun(() => {
-        favico.badge(
-          alertStore.data.upstreamsWithErrors.length > 0
-            ? "!"
-            : alertStore.status.error === null
-              ? alertStore.info.totalAlerts
-              : "?",
-        );
+        // Priority: critical notifications > network errors > alert count
+        const criticalCount = notificationStore.errorCount;
+        const warningCount = notificationStore.warningCount;
+
+        let badge;
+        if (criticalCount > 0) {
+          badge = "!";
+        } else if (warningCount > 0) {
+          badge = "⚠";
+        } else if (alertStore.status.error !== null) {
+          badge = "?";
+        } else {
+          badge = alertStore.info.totalAlerts;
+        }
+
+        favico.badge(badge);
       }),
-    [], // eslint-disable-line react-hooks/exhaustive-deps
-  );
+    );
+
+    return dispose;
+  }, [alertStore]);
 
   return null;
 };
 
+export { FaviconBadge };
 export default FaviconBadge;

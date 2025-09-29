@@ -3,6 +3,7 @@ import { mount } from "enzyme";
 import Favico from "favico.js";
 
 import { AlertStore } from "Stores/AlertStore";
+import { notificationStore } from "Stores/NotificationStore";
 import FaviconBadge from ".";
 
 let alertStore: AlertStore;
@@ -10,6 +11,11 @@ let alertStore: AlertStore;
 beforeEach(() => {
   alertStore = new AlertStore([]);
   Favico.badge.mockClear();
+  // Clear all notifications
+  notificationStore.activeNotifications.forEach((n) =>
+    notificationStore.dismissNotification(n.id),
+  );
+  notificationStore.clearDismissed();
 });
 
 const MountedFaviconBadge = () => {
@@ -42,26 +48,31 @@ describe("<FaviconBadge />", () => {
     expect(Favico.badge).toHaveBeenCalledWith("?");
   });
 
-  it("badge is ! when there are alertmanager upstreams with errors", () => {
-    alertStore.data.setUpstreams({
-      counters: { total: 1, healthy: 1, failed: 0 },
-      clusters: { default: ["default"] },
-      instances: [
-        {
-          name: "default",
-          uri: "http://localhost",
-          publicURI: "http://example.com",
-          readonly: false,
-          headers: { foo: "bar" },
-          corsCredentials: "include",
-          error: 'Healthcheck filter "DeadMansSwitch" didn\'t match any alerts',
-          version: "0.24.0",
-          cluster: "default",
-          clusterMembers: ["default"],
-        },
-      ],
+  it("badge is ! when there are error notifications", () => {
+    // Add an error notification
+    notificationStore.addNotification({
+      type: "error",
+      title: "Test Error",
+      message: "Test error message",
+      source: "alertmanager",
+      sourceId: "test-error",
     });
+
     MountedFaviconBadge();
     expect(Favico.badge).toHaveBeenCalledWith("!");
+  });
+
+  it("badge is ⚠ when there are warning notifications", () => {
+    // Add a warning notification
+    notificationStore.addNotification({
+      type: "warning",
+      title: "Test Warning",
+      message: "Test warning message",
+      source: "alertmanager",
+      sourceId: "test-warning",
+    });
+
+    MountedFaviconBadge();
+    expect(Favico.badge).toHaveBeenCalledWith("⚠");
   });
 });

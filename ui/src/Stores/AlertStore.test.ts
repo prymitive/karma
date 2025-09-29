@@ -180,6 +180,653 @@ describe("AlertStore.data", () => {
       default: ["am1", "am2", "am3"],
     });
   });
+
+  it("upstreamsWithErrors returns only upstreams with errors", () => {
+    const store = new AlertStore([]);
+    store.data.setUpstreams({
+      counters: { total: 3, healthy: 2, failed: 1 },
+      clusters: { cluster1: ["healthy1", "error1"], cluster2: ["healthy2"] },
+      instances: [
+        {
+          name: "healthy1",
+          uri: "http://localhost:8080",
+          publicURI: "http://example.com:8080",
+          readonly: false,
+          headers: {},
+          corsCredentials: "include",
+          error: "",
+          version: "0.24.0",
+          cluster: "cluster1",
+          clusterMembers: ["healthy1", "error1"],
+        },
+        {
+          name: "error1",
+          uri: "http://localhost:8081",
+          publicURI: "http://example.com:8081",
+          readonly: false,
+          headers: {},
+          corsCredentials: "include",
+          error: "Connection failed",
+          version: "0.24.0",
+          cluster: "cluster1",
+          clusterMembers: ["healthy1", "error1"],
+        },
+        {
+          name: "healthy2",
+          uri: "http://localhost:8082",
+          publicURI: "http://example.com:8082",
+          readonly: false,
+          headers: {},
+          corsCredentials: "include",
+          error: "",
+          version: "0.24.0",
+          cluster: "cluster2",
+          clusterMembers: ["healthy2"],
+        },
+      ],
+    });
+
+    const upstreamsWithErrors = store.data.upstreamsWithErrors;
+    expect(upstreamsWithErrors).toHaveLength(1);
+    expect(upstreamsWithErrors[0].name).toBe("error1");
+    expect(upstreamsWithErrors[0].error).toBe("Connection failed");
+  });
+
+  it("upstreamsWithErrors returns empty array when no errors", () => {
+    const store = new AlertStore([]);
+    store.data.setUpstreams({
+      counters: { total: 2, healthy: 2, failed: 0 },
+      clusters: { cluster1: ["healthy1", "healthy2"] },
+      instances: [
+        {
+          name: "healthy1",
+          uri: "http://localhost:8080",
+          publicURI: "http://example.com:8080",
+          readonly: false,
+          headers: {},
+          corsCredentials: "include",
+          error: "",
+          version: "0.24.0",
+          cluster: "cluster1",
+          clusterMembers: ["healthy1", "healthy2"],
+        },
+        {
+          name: "healthy2",
+          uri: "http://localhost:8081",
+          publicURI: "http://example.com:8081",
+          readonly: false,
+          headers: {},
+          corsCredentials: "include",
+          error: "",
+          version: "0.24.0",
+          cluster: "cluster1",
+          clusterMembers: ["healthy1", "healthy2"],
+        },
+      ],
+    });
+
+    expect(store.data.upstreamsWithErrors).toHaveLength(0);
+  });
+
+  it("upstreamsWithWarnings returns upstreams with errors where cluster has healthy instances", () => {
+    const store = new AlertStore([]);
+    store.data.setUpstreams({
+      counters: { total: 4, healthy: 2, failed: 2 },
+      clusters: {
+        cluster1: ["healthy1", "error1"],
+        cluster2: ["error2", "error3"],
+      },
+      instances: [
+        {
+          name: "healthy1",
+          uri: "http://localhost:8080",
+          publicURI: "http://example.com:8080",
+          readonly: false,
+          headers: {},
+          corsCredentials: "include",
+          error: "",
+          version: "0.24.0",
+          cluster: "cluster1",
+          clusterMembers: ["healthy1", "error1"],
+        },
+        {
+          name: "error1",
+          uri: "http://localhost:8081",
+          publicURI: "http://example.com:8081",
+          readonly: false,
+          headers: {},
+          corsCredentials: "include",
+          error: "Warning: Slow connection",
+          version: "0.24.0",
+          cluster: "cluster1",
+          clusterMembers: ["healthy1", "error1"],
+        },
+        {
+          name: "error2",
+          uri: "http://localhost:8082",
+          publicURI: "http://example.com:8082",
+          readonly: false,
+          headers: {},
+          corsCredentials: "include",
+          error: "Critical: All down",
+          version: "0.24.0",
+          cluster: "cluster2",
+          clusterMembers: ["error2", "error3"],
+        },
+        {
+          name: "error3",
+          uri: "http://localhost:8083",
+          publicURI: "http://example.com:8083",
+          readonly: false,
+          headers: {},
+          corsCredentials: "include",
+          error: "Critical: All down",
+          version: "0.24.0",
+          cluster: "cluster2",
+          clusterMembers: ["error2", "error3"],
+        },
+      ],
+    });
+
+    const upstreamsWithWarnings = store.data.upstreamsWithWarnings;
+    expect(upstreamsWithWarnings).toHaveLength(1);
+    expect(upstreamsWithWarnings[0].name).toBe("error1");
+    expect(upstreamsWithWarnings[0].error).toBe("Warning: Slow connection");
+  });
+
+  it("upstreamsWithCriticalErrors returns upstreams with errors where all cluster instances are failing", () => {
+    const store = new AlertStore([]);
+    store.data.setUpstreams({
+      counters: { total: 4, healthy: 1, failed: 3 },
+      clusters: {
+        cluster1: ["healthy1", "error1"],
+        cluster2: ["error2", "error3"],
+      },
+      instances: [
+        {
+          name: "healthy1",
+          uri: "http://localhost:8080",
+          publicURI: "http://example.com:8080",
+          readonly: false,
+          headers: {},
+          corsCredentials: "include",
+          error: "",
+          version: "0.24.0",
+          cluster: "cluster1",
+          clusterMembers: ["healthy1", "error1"],
+        },
+        {
+          name: "error1",
+          uri: "http://localhost:8081",
+          publicURI: "http://example.com:8081",
+          readonly: false,
+          headers: {},
+          corsCredentials: "include",
+          error: "Warning: Slow connection",
+          version: "0.24.0",
+          cluster: "cluster1",
+          clusterMembers: ["healthy1", "error1"],
+        },
+        {
+          name: "error2",
+          uri: "http://localhost:8082",
+          publicURI: "http://example.com:8082",
+          readonly: false,
+          headers: {},
+          corsCredentials: "include",
+          error: "Critical: All down",
+          version: "0.24.0",
+          cluster: "cluster2",
+          clusterMembers: ["error2", "error3"],
+        },
+        {
+          name: "error3",
+          uri: "http://localhost:8083",
+          publicURI: "http://example.com:8083",
+          readonly: false,
+          headers: {},
+          corsCredentials: "include",
+          error: "Critical: All down",
+          version: "0.24.0",
+          cluster: "cluster2",
+          clusterMembers: ["error2", "error3"],
+        },
+      ],
+    });
+
+    const upstreamsWithCriticalErrors = store.data.upstreamsWithCriticalErrors;
+    expect(upstreamsWithCriticalErrors).toHaveLength(2);
+    expect(upstreamsWithCriticalErrors.map((u) => u.name)).toEqual([
+      "error2",
+      "error3",
+    ]);
+    expect(
+      upstreamsWithCriticalErrors.every(
+        (u) => u.error === "Critical: All down",
+      ),
+    ).toBe(true);
+  });
+
+  it("upstream error methods handle empty instances array", () => {
+    const store = new AlertStore([]);
+    store.data.setUpstreams({
+      counters: { total: 0, healthy: 0, failed: 0 },
+      clusters: {},
+      instances: [],
+    });
+
+    expect(store.data.upstreamsWithErrors).toHaveLength(0);
+    expect(store.data.upstreamsWithWarnings).toHaveLength(0);
+    expect(store.data.upstreamsWithCriticalErrors).toHaveLength(0);
+  });
+
+  it("readOnlyAlertmanagers returns only readonly instances", () => {
+    const store = new AlertStore([]);
+    store.data.setUpstreams({
+      counters: { total: 3, healthy: 3, failed: 0 },
+      clusters: { cluster1: ["readonly1", "writable1", "readonly2"] },
+      instances: [
+        {
+          name: "readonly1",
+          uri: "http://localhost:8080",
+          publicURI: "http://example.com:8080",
+          readonly: true,
+          headers: {},
+          corsCredentials: "include",
+          error: "",
+          version: "0.24.0",
+          cluster: "cluster1",
+          clusterMembers: ["readonly1", "writable1", "readonly2"],
+        },
+        {
+          name: "writable1",
+          uri: "http://localhost:8081",
+          publicURI: "http://example.com:8081",
+          readonly: false,
+          headers: {},
+          corsCredentials: "include",
+          error: "",
+          version: "0.24.0",
+          cluster: "cluster1",
+          clusterMembers: ["readonly1", "writable1", "readonly2"],
+        },
+        {
+          name: "readonly2",
+          uri: "http://localhost:8082",
+          publicURI: "http://example.com:8082",
+          readonly: true,
+          headers: {},
+          corsCredentials: "include",
+          error: "",
+          version: "0.24.0",
+          cluster: "cluster1",
+          clusterMembers: ["readonly1", "writable1", "readonly2"],
+        },
+      ],
+    });
+
+    const readOnlyAms = store.data.readOnlyAlertmanagers;
+    expect(readOnlyAms).toHaveLength(2);
+    expect(readOnlyAms.map((am) => am.name)).toEqual([
+      "readonly1",
+      "readonly2",
+    ]);
+    expect(readOnlyAms.every((am) => am.readonly === true)).toBe(true);
+  });
+
+  it("readWriteAlertmanagers returns only writable instances with filtered cluster members", () => {
+    const store = new AlertStore([]);
+    store.data.setUpstreams({
+      counters: { total: 3, healthy: 3, failed: 0 },
+      clusters: { cluster1: ["readonly1", "writable1", "readonly2"] },
+      instances: [
+        {
+          name: "readonly1",
+          uri: "http://localhost:8080",
+          publicURI: "http://example.com:8080",
+          readonly: true,
+          headers: {},
+          corsCredentials: "include",
+          error: "",
+          version: "0.24.0",
+          cluster: "cluster1",
+          clusterMembers: ["readonly1", "writable1", "readonly2"],
+        },
+        {
+          name: "writable1",
+          uri: "http://localhost:8081",
+          publicURI: "http://example.com:8081",
+          readonly: false,
+          headers: {},
+          corsCredentials: "include",
+          error: "",
+          version: "0.24.0",
+          cluster: "cluster1",
+          clusterMembers: ["readonly1", "writable1", "readonly2"],
+        },
+        {
+          name: "readonly2",
+          uri: "http://localhost:8082",
+          publicURI: "http://example.com:8082",
+          readonly: true,
+          headers: {},
+          corsCredentials: "include",
+          error: "",
+          version: "0.24.0",
+          cluster: "cluster1",
+          clusterMembers: ["readonly1", "writable1", "readonly2"],
+        },
+      ],
+    });
+
+    const readWriteAms = store.data.readWriteAlertmanagers;
+    expect(readWriteAms).toHaveLength(1);
+    expect(readWriteAms[0].name).toBe("writable1");
+    expect(readWriteAms[0].readonly).toBe(false);
+    // Cluster members should be filtered to exclude readonly instances
+    expect(readWriteAms[0].clusterMembers).toEqual(["writable1"]);
+  });
+
+  it("clustersWithErrors returns clusters where all instances are failing", () => {
+    const store = new AlertStore([]);
+    store.data.setUpstreams({
+      counters: { total: 5, healthy: 2, failed: 3 },
+      clusters: {
+        healthy: ["h1", "h2"],
+        critical: ["c1", "c2"],
+        mixed: ["m1", "m2"],
+      },
+      instances: [
+        {
+          name: "h1",
+          uri: "http://localhost:8080",
+          publicURI: "http://example.com:8080",
+          readonly: false,
+          headers: {},
+          corsCredentials: "include",
+          error: "",
+          version: "0.24.0",
+          cluster: "healthy",
+          clusterMembers: ["h1", "h2"],
+        },
+        {
+          name: "h2",
+          uri: "http://localhost:8081",
+          publicURI: "http://example.com:8081",
+          readonly: false,
+          headers: {},
+          corsCredentials: "include",
+          error: "",
+          version: "0.24.0",
+          cluster: "healthy",
+          clusterMembers: ["h1", "h2"],
+        },
+        {
+          name: "c1",
+          uri: "http://localhost:8082",
+          publicURI: "http://example.com:8082",
+          readonly: false,
+          headers: {},
+          corsCredentials: "include",
+          error: "Critical failure",
+          version: "0.24.0",
+          cluster: "critical",
+          clusterMembers: ["c1", "c2"],
+        },
+        {
+          name: "c2",
+          uri: "http://localhost:8083",
+          publicURI: "http://example.com:8083",
+          readonly: false,
+          headers: {},
+          corsCredentials: "include",
+          error: "Critical failure",
+          version: "0.24.0",
+          cluster: "critical",
+          clusterMembers: ["c1", "c2"],
+        },
+        {
+          name: "m1",
+          uri: "http://localhost:8084",
+          publicURI: "http://example.com:8084",
+          readonly: false,
+          headers: {},
+          corsCredentials: "include",
+          error: "",
+          version: "0.24.0",
+          cluster: "mixed",
+          clusterMembers: ["m1", "m2"],
+        },
+      ],
+    });
+
+    const clustersWithErrors = store.data.clustersWithErrors;
+    expect(clustersWithErrors).toEqual(["critical"]);
+  });
+
+  it("clustersWithWarnings returns clusters with partial failures", () => {
+    const store = new AlertStore([]);
+    store.data.setUpstreams({
+      counters: { total: 5, healthy: 3, failed: 2 },
+      clusters: {
+        healthy: ["h1", "h2"],
+        critical: ["c1", "c2"],
+        mixed: ["m1", "m2"],
+      },
+      instances: [
+        {
+          name: "h1",
+          uri: "http://localhost:8080",
+          publicURI: "http://example.com:8080",
+          readonly: false,
+          headers: {},
+          corsCredentials: "include",
+          error: "",
+          version: "0.24.0",
+          cluster: "healthy",
+          clusterMembers: ["h1", "h2"],
+        },
+        {
+          name: "h2",
+          uri: "http://localhost:8081",
+          publicURI: "http://example.com:8081",
+          readonly: false,
+          headers: {},
+          corsCredentials: "include",
+          error: "",
+          version: "0.24.0",
+          cluster: "healthy",
+          clusterMembers: ["h1", "h2"],
+        },
+        {
+          name: "c1",
+          uri: "http://localhost:8082",
+          publicURI: "http://example.com:8082",
+          readonly: false,
+          headers: {},
+          corsCredentials: "include",
+          error: "Critical failure",
+          version: "0.24.0",
+          cluster: "critical",
+          clusterMembers: ["c1", "c2"],
+        },
+        {
+          name: "c2",
+          uri: "http://localhost:8083",
+          publicURI: "http://example.com:8083",
+          readonly: false,
+          headers: {},
+          corsCredentials: "include",
+          error: "Critical failure",
+          version: "0.24.0",
+          cluster: "critical",
+          clusterMembers: ["c1", "c2"],
+        },
+        {
+          name: "m1",
+          uri: "http://localhost:8084",
+          publicURI: "http://example.com:8084",
+          readonly: false,
+          headers: {},
+          corsCredentials: "include",
+          error: "",
+          version: "0.24.0",
+          cluster: "mixed",
+          clusterMembers: ["m1", "m2"],
+        },
+        {
+          name: "m2",
+          uri: "http://localhost:8085",
+          publicURI: "http://example.com:8085",
+          readonly: false,
+          headers: {},
+          corsCredentials: "include",
+          error: "Partial failure",
+          version: "0.24.0",
+          cluster: "mixed",
+          clusterMembers: ["m1", "m2"],
+        },
+      ],
+    });
+
+    const clustersWithWarnings = store.data.clustersWithWarnings;
+    expect(clustersWithWarnings).toEqual(["mixed"]);
+  });
+
+  it("getAlertmanagerByName returns correct instance", () => {
+    const store = new AlertStore([]);
+    store.data.setUpstreams({
+      counters: { total: 2, healthy: 2, failed: 0 },
+      clusters: { cluster1: ["am1", "am2"] },
+      instances: [
+        {
+          name: "am1",
+          uri: "http://localhost:8080",
+          publicURI: "http://example.com:8080",
+          readonly: false,
+          headers: {},
+          corsCredentials: "include",
+          error: "",
+          version: "0.24.0",
+          cluster: "cluster1",
+          clusterMembers: ["am1", "am2"],
+        },
+        {
+          name: "am2",
+          uri: "http://localhost:8081",
+          publicURI: "http://example.com:8081",
+          readonly: true,
+          headers: {},
+          corsCredentials: "include",
+          error: "",
+          version: "0.24.0",
+          cluster: "cluster1",
+          clusterMembers: ["am1", "am2"],
+        },
+      ],
+    });
+
+    const foundAm = store.data.getAlertmanagerByName("am2");
+    expect(foundAm).toBeDefined();
+    expect(foundAm?.name).toBe("am2");
+    expect(foundAm?.readonly).toBe(true);
+
+    const notFoundAm = store.data.getAlertmanagerByName("nonexistent");
+    expect(notFoundAm).toBeUndefined();
+  });
+
+  it("isReadOnlyAlertmanager correctly identifies readonly instances", () => {
+    const store = new AlertStore([]);
+    store.data.setUpstreams({
+      counters: { total: 2, healthy: 2, failed: 0 },
+      clusters: { cluster1: ["readonly", "writable"] },
+      instances: [
+        {
+          name: "readonly",
+          uri: "http://localhost:8080",
+          publicURI: "http://example.com:8080",
+          readonly: true,
+          headers: {},
+          corsCredentials: "include",
+          error: "",
+          version: "0.24.0",
+          cluster: "cluster1",
+          clusterMembers: ["readonly", "writable"],
+        },
+        {
+          name: "writable",
+          uri: "http://localhost:8081",
+          publicURI: "http://example.com:8081",
+          readonly: false,
+          headers: {},
+          corsCredentials: "include",
+          error: "",
+          version: "0.24.0",
+          cluster: "cluster1",
+          clusterMembers: ["readonly", "writable"],
+        },
+      ],
+    });
+
+    expect(store.data.isReadOnlyAlertmanager("readonly")).toBe(true);
+    expect(store.data.isReadOnlyAlertmanager("writable")).toBe(false);
+    expect(store.data.isReadOnlyAlertmanager("nonexistent")).toBe(false);
+  });
+
+  it("gridPadding returns 5 when there are labeled grids, 0 otherwise", () => {
+    const store = new AlertStore([]);
+    expect(store.data.gridPadding).toBe(0);
+
+    store.data.setGrids([
+      {
+        labelName: "",
+        labelValue: "",
+        alertGroups: [],
+        totalGroups: 0,
+        stateCount: { unprocessed: 0, active: 0, suppressed: 0 },
+      },
+    ]);
+    expect(store.data.gridPadding).toBe(0);
+
+    store.data.setGrids([
+      {
+        labelName: "cluster",
+        labelValue: "prod",
+        alertGroups: [],
+        totalGroups: 0,
+        stateCount: { unprocessed: 0, active: 0, suppressed: 0 },
+      },
+    ]);
+    expect(store.data.gridPadding).toBe(5);
+  });
+
+  it("getColorData returns color data for labels", () => {
+    const store = new AlertStore([]);
+    store.data.setColors({
+      severity: {
+        critical: { brightness: 1, background: "#FF0000" },
+        warning: { brightness: 0.5, background: "#FFA500" },
+      },
+    });
+
+    const criticalColor = store.data.getColorData("severity", "critical");
+    expect(criticalColor).toEqual({
+      brightness: 1,
+      background: "#FF0000",
+    });
+
+    const warningColor = store.data.getColorData("severity", "warning");
+    expect(warningColor).toEqual({
+      brightness: 0.5,
+      background: "#FFA500",
+    });
+
+    const unknownColor = store.data.getColorData("unknown", "value");
+    expect(unknownColor).toBeUndefined();
+
+    const unknownValue = store.data.getColorData("severity", "unknown");
+    expect(unknownValue).toBeUndefined();
+  });
 });
 
 describe("AlertStore.status", () => {

@@ -32,7 +32,7 @@ describe("<Toast />", () => {
     );
     expect(toDiffableHtml(tree.html())).toMatch(/fake error/);
 
-    tree.find("span.badge.cursor-pointer").simulate("click");
+    tree.find("button.btn-close").simulate("click");
     expect(toDiffableHtml(tree.html())).not.toMatch(/fake error/);
   });
 
@@ -47,7 +47,7 @@ describe("<Toast />", () => {
     );
     expect(toDiffableHtml(tree.html())).toMatch(/fake error/);
 
-    tree.find("span.badge.cursor-pointer").simulate("click");
+    tree.find("button.btn-close").simulate("click");
     expect(toDiffableHtml(tree.html())).not.toMatch(/fake error/);
 
     const e = new CustomEvent("showNotifications");
@@ -67,7 +67,7 @@ describe("<Toast />", () => {
         hasClose={true}
       />,
     );
-    expect(toDiffableHtml(tree.html())).toMatch(/fa-xmark/);
+    expect(toDiffableHtml(tree.html())).toMatch(/btn-close/);
   });
 
   it("doesn't render close icon when hasClose=false", () => {
@@ -79,10 +79,32 @@ describe("<Toast />", () => {
         hasClose={false}
       />,
     );
-    expect(toDiffableHtml(tree.html())).not.toMatch(/fa-xmark/);
+    expect(toDiffableHtml(tree.html())).not.toMatch(/btn-close/);
   });
 
-  it("unmounts cleanly", () => {
+  it("calls onClose callback when close icon is clicked", () => {
+    const mockOnClose = jest.fn();
+    const tree = mount(
+      <Toast
+        icon={faExclamation}
+        iconClass="text-danger"
+        message="fake error"
+        hasClose
+        onClose={mockOnClose}
+      />,
+    );
+
+    // Verify onClose hasn't been called yet
+    expect(mockOnClose).not.toHaveBeenCalled();
+
+    // Click the close button
+    tree.find("button.btn-close").simulate("click");
+
+    // Verify onClose was called exactly once
+    expect(mockOnClose).toHaveBeenCalledTimes(1);
+  });
+
+  it("doesn't call onClose when no callback is provided", () => {
     const tree = mount(
       <Toast
         icon={faExclamation}
@@ -91,6 +113,71 @@ describe("<Toast />", () => {
         hasClose
       />,
     );
-    tree.unmount();
+
+    // Should not throw any errors when clicking without onClose callback
+    expect(() => {
+      tree.find("button.btn-close").simulate("click");
+    }).not.toThrow();
+    // Toast should still hide
+    expect(toDiffableHtml(tree.html())).not.toMatch(/fake error/);
+  });
+
+  it("unmounts cleanly", () => {
+    const wrapper = mount(
+      <Toast
+        icon={faExclamation}
+        iconClass="text-danger"
+        message="Test"
+        hasClose
+      />,
+    );
+    wrapper.unmount();
+    // Test passes if no errors are thrown during unmount
+  });
+
+  it("applies correct alert class based on iconClass", () => {
+    // Test danger class
+    const dangerWrapper = mount(
+      <Toast
+        icon={faExclamation}
+        iconClass="text-danger"
+        message="Test"
+        hasClose
+      />,
+    );
+    expect(dangerWrapper.find(".alert-danger")).toHaveLength(1);
+
+    // Test success class
+    const successWrapper = mount(
+      <Toast
+        icon={faExclamation}
+        iconClass="text-success"
+        message="Test"
+        hasClose
+      />,
+    );
+    expect(successWrapper.find(".alert-success")).toHaveLength(1);
+
+    // Test warning class (default)
+    const warningWrapper = mount(
+      <Toast
+        icon={faExclamation}
+        iconClass="text-warning"
+        message="Test"
+        hasClose
+      />,
+    );
+    expect(warningWrapper.find(".alert-warning")).toHaveLength(1);
+
+    // Test default when no specific iconClass
+    const defaultWrapper = mount(
+      <Toast
+        icon={faExclamation}
+        iconClass="text-info"
+        message="Test"
+        hasClose
+      />,
+    );
+    expect(defaultWrapper.find(".alert-warning")).toHaveLength(1);
   });
 });
