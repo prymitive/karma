@@ -10,11 +10,26 @@ import (
 
 type labelFilter struct {
 	alertFilter
+	value string
+}
+
+func (filter *labelFilter) init(name string, matcher *matcherT, rawText string, isValid bool, value string) {
+	filter.Matched = name
+	if matcher != nil {
+		filter.Matcher = *matcher
+	}
+	filter.RawText = rawText
+	filter.IsValid = isValid
+	filter.value = value
+}
+
+func (filter *labelFilter) GetValue() string {
+	return filter.value
 }
 
 func (filter *labelFilter) Match(alert *models.Alert, _ int) bool {
 	if filter.IsValid {
-		isMatch := filter.Matcher.Compare(alert.Labels.GetValue(filter.Matched), filter.Value)
+		isMatch := filter.Matcher.Compare(alert.Labels.GetValue(filter.Matched), filter.value)
 		if isMatch {
 			filter.Hits++
 		}
@@ -36,27 +51,27 @@ func labelAutocomplete(_ string, operators []string, alerts []models.Alert) []mo
 			for _, operator := range operators {
 				switch operator {
 				case equalOperator, notEqualOperator:
-					token := l.Name + operator + l.Value
+					token := l.Name.Value() + operator + l.Value.Value()
 					hint := makeAC(
 						token,
 						[]string{
-							l.Name,
-							l.Name + operator,
-							l.Value,
+							l.Name.Value(),
+							l.Name.Value() + operator,
+							l.Value.Value(),
 						},
 					)
 					tokens[token] = &hint
 				case regexpOperator, negativeRegexOperator:
-					substrings := strings.Split(l.Value, " ")
+					substrings := strings.Split(l.Value.Value(), " ")
 					if len(substrings) > 1 {
 						for _, substring := range substrings {
-							token := l.Name + operator + substring
+							token := l.Name.Value() + operator + substring
 							hint := makeAC(
 								token,
 								[]string{
-									l.Name,
-									l.Name + operator,
-									l.Value,
+									l.Name.Value(),
+									l.Name.Value() + operator,
+									l.Value.Value(),
 									substring,
 								},
 							)
@@ -64,14 +79,14 @@ func labelAutocomplete(_ string, operators []string, alerts []models.Alert) []mo
 						}
 					}
 				case moreThanOperator, lessThanOperator:
-					if _, err := strconv.Atoi(l.Value); err == nil {
-						token := l.Name + operator + l.Value
+					if _, err := strconv.Atoi(l.Value.Value()); err == nil {
+						token := l.Name.Value() + operator + l.Value.Value()
 						hint := makeAC(
 							token,
 							[]string{
-								l.Name,
-								l.Name + operator,
-								l.Value,
+								l.Name.Value(),
+								l.Name.Value() + operator,
+								l.Value.Value(),
 							},
 						)
 						tokens[token] = &hint

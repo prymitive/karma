@@ -12,6 +12,7 @@ import (
 	"slices"
 	"sort"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/cnf/structhash"
@@ -27,6 +28,13 @@ import (
 
 	"github.com/rs/zerolog/log"
 )
+
+var gzipWriterPool = sync.Pool{
+	New: func() any {
+		w, _ := gzip.NewWriterLevel(io.Discard, 3)
+		return w
+	},
+}
 
 func noCache(w http.ResponseWriter) {
 	w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
@@ -69,8 +77,10 @@ func compressResponse(data []byte, gz io.WriteCloser) ([]byte, error) {
 	var b bytes.Buffer
 
 	if gz == nil {
-		// this only fails if we pass unsupported level (3 is valid)
-		gz, _ = gzip.NewWriterLevel(&b, 3)
+		w := gzipWriterPool.Get().(*gzip.Writer)
+		w.Reset(&b)
+		defer gzipWriterPool.Put(w)
+		gz = w
 	}
 
 	_, err := gz.Write(data)
@@ -248,7 +258,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 	grids := map[string]models.APIGrid{}
 	colors := models.LabelsColorMap{}
 	silences := map[string]map[string]models.Silence{}
-	allReceivers := map[string]bool{}
+	allReceivers := map[models.UniqueString]struct{}{}
 
 	dedupedAlerts := alertmanager.DedupAlerts()
 	dedupedColors := alertmanager.DedupColors()
@@ -262,7 +272,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var matches int
-	labelMap := map[string]struct{}{}
+	labelMap := map[models.UniqueString]struct{}{}
 	for _, ag := range filtered {
 		perGridAlertGroup := map[string]*models.AlertGroup{}
 
@@ -274,24 +284,24 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 				labelMap[l.Name] = struct{}{}
 			}
 
-			allReceivers[alert.Receiver] = true
+			allReceivers[alert.Receiver] = struct{}{}
 
 			matches++
 
-			alertGridLabelValues := map[string]bool{}
+			alertGridLabelValues := map[string]struct{}{}
 			switch gridLabel {
 			case "@receiver":
-				alertGridLabelValues[alert.Receiver] = true
+				alertGridLabelValues[alert.Receiver.Value()] = struct{}{}
 			case "@alertmanager":
 				for _, am := range alert.Alertmanager {
-					alertGridLabelValues[am.Name] = true
+					alertGridLabelValues[am.Name] = struct{}{}
 				}
 			case "@cluster":
 				for _, am := range alert.Alertmanager {
-					alertGridLabelValues[am.Cluster] = true
+					alertGridLabelValues[am.Cluster] = struct{}{}
 				}
 			default:
-				alertGridLabelValues[alert.Labels.GetValue(gridLabel)] = true
+				alertGridLabelValues[alert.Labels.GetValue(gridLabel)] = struct{}{}
 			}
 
 			for alertGridLabelValue := range alertGridLabelValues {
@@ -313,7 +323,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 						StateCount:        map[string]int{},
 					}
 					for _, s := range models.AlertStateList {
-						agCopy.StateCount[s] = 0
+						agCopy.StateCount[s.Value()] = 0
 					}
 					perGridAlertGroup[alertGridLabelValue] = agCopy
 				}
@@ -349,11 +359,11 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 				agCopy.Alerts = append(agCopy.Alerts, alert)
 
 				if ck, foundKey := dedupedColors["@receiver"]; foundKey {
-					if cv, foundVal := ck[alert.Receiver]; foundVal {
+					if cv, foundVal := ck[alert.Receiver.Value()]; foundVal {
 						if _, found := colors["@receiver"]; !found {
 							colors["@receiver"] = map[string]models.LabelColors{}
 						}
-						colors["@receiver"][alert.Receiver] = cv
+						colors["@receiver"][alert.Receiver.Value()] = cv
 					}
 				}
 
@@ -379,7 +389,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 					}
 				}
 
-				agCopy.StateCount[alert.State]++
+				agCopy.StateCount[alert.State.Value()]++
 
 				for _, am := range alert.Alertmanager {
 					if _, found := agCopy.AlertmanagerCount[am.Name]; !found {
@@ -390,12 +400,12 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 				}
 
 				for _, l := range alert.Labels {
-					if keyMap, foundKey := dedupedColors[l.Name]; foundKey {
-						if color, foundColor := keyMap[l.Value]; foundColor {
-							if _, found := colors[l.Name]; !found {
-								colors[l.Name] = map[string]models.LabelColors{}
+					if keyMap, foundKey := dedupedColors[l.Name.Value()]; foundKey {
+						if color, foundColor := keyMap[l.Value.Value()]; foundColor {
+							if _, found := colors[l.Name.Value()]; !found {
+								colors[l.Name.Value()] = map[string]models.LabelColors{}
 							}
-							colors[l.Name][l.Value] = color
+							colors[l.Name.Value()][l.Value.Value()] = color
 						}
 					}
 				}
@@ -445,7 +455,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 						StateCount:  map[string]int{},
 					}
 					for _, s := range models.AlertStateList {
-						grid.StateCount[s] = 0
+						grid.StateCount[s.Value()] = 0
 					}
 					grids[gridLabelValue] = grid
 				}
@@ -486,13 +496,13 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 
 	receivers := []string{}
 	for k := range allReceivers {
-		receivers = append(receivers, k)
+		receivers = append(receivers, k.Value())
 	}
 	sort.Strings(receivers)
 
 	resp.LabelNames = make([]string, 0, len(labelMap))
 	for label := range labelMap {
-		resp.LabelNames = append(resp.LabelNames, label)
+		resp.LabelNames = append(resp.LabelNames, label.Value())
 	}
 	sort.Strings(resp.LabelNames)
 
@@ -524,11 +534,11 @@ func labelsSettings(grids []models.APIGrid, store models.LabelsSettings) {
 		labelSettings(grid.LabelName, store)
 		for _, ag := range grid.AlertGroups {
 			for _, label := range ag.Labels {
-				labelSettings(label.Name, store)
+				labelSettings(label.Name.Value(), store)
 			}
 			for _, alert := range ag.Alerts {
 				for _, label := range alert.Labels {
-					labelSettings(label.Name, store)
+					labelSettings(label.Name.Value(), store)
 				}
 			}
 		}
@@ -661,9 +671,9 @@ func silences(w http.ResponseWriter, r *http.Request) {
 					if match.IsRegex {
 						eq = "=~"
 					}
-					if searchTerm == fmt.Sprintf("%s%s\"%s\"", strings.ToLower(match.Name), eq, strings.ToLower(match.Value)) {
+					if searchTerm == fmt.Sprintf("%s%s\"%s\"", strings.ToLower(match.Name.Value()), eq, strings.ToLower(match.Value)) {
 						isMatch = true
-					} else if strings.Contains(strings.ToLower(fmt.Sprintf("%s%s%s", match.Name, eq, match.Value)), searchTerm) {
+					} else if strings.Contains(strings.ToLower(fmt.Sprintf("%s%s%s", match.Name.Value(), eq, match.Value)), searchTerm) {
 						isMatch = true
 					}
 				}
@@ -755,7 +765,7 @@ func alertList(w http.ResponseWriter, r *http.Request) {
 		for _, alert := range ag.Alerts {
 			labels := ag.Labels.Map()
 			for _, l := range alert.Labels {
-				labels[l.Name] = l.Value
+				labels[l.Name.Value()] = l.Value.Value()
 			}
 			h := hex.EncodeToString(structhash.Sha1(labels, 1))
 			labelMap[h] = labels
@@ -837,6 +847,13 @@ func counters(w http.ResponseWriter, r *http.Request) {
 	upstreams := getUpstreams()
 	counters := map[string]map[string]int{}
 
+	countLabel := func(key, val string) {
+		if _, found := counters[key]; !found {
+			counters[key] = make(map[string]int)
+		}
+		counters[key][val]++
+	}
+
 	var total int
 	for _, ag := range filtered {
 		total += len(ag.Alerts)
@@ -853,13 +870,13 @@ func counters(w http.ResponseWriter, r *http.Request) {
 					clusters[am.Cluster] = struct{}{}
 				}
 				for cluster := range clusters {
-					countLabel(counters, "@cluster", cluster)
+					countLabel("@cluster", cluster)
 				}
 			}
-			countLabel(counters, "@state", alert.State)
-			countLabel(counters, "@receiver", alert.Receiver)
+			countLabel("@state", alert.State.Value())
+			countLabel("@receiver", alert.Receiver.Value())
 			for _, l := range alert.Labels {
-				countLabel(counters, l.Name, l.Value)
+				countLabel(l.Name.Value(), l.Value.Value())
 			}
 		}
 	}

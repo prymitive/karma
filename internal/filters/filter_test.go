@@ -40,41 +40,55 @@ var tests = []filterTest{
 	{
 		Expression: "@state=active",
 		IsValid:    true,
-		Alert:      models.Alert{},
-		IsMatch:    false,
+		Alert: models.Alert{
+			State: models.AlertStateUnprocessed,
+		},
+		IsMatch: false,
 	},
 	{
 		Expression: "@state=active ",
 		IsValid:    true,
-		Alert:      models.Alert{},
-		IsMatch:    false,
+		Alert: models.Alert{
+			State: models.AlertStateSuppressed,
+		},
+		IsMatch: false,
 	},
 	{
-		Expression:          "@state=active ",
-		IsValid:             true,
-		Alert:               models.Alert{State: "active"},
+		Expression: "@state=active ",
+		IsValid:    true,
+		Alert: models.Alert{
+			State: models.AlertStateActive,
+		},
 		IsMatch:             true,
 		IsAlertmanagerMatch: true,
 	},
 	{
-		Expression:          "@state!=active",
-		IsValid:             true,
-		Alert:               models.Alert{},
+		Expression: "@state!=active",
+		IsValid:    true,
+		Alert: models.Alert{
+			State: models.AlertStateUnprocessed,
+		},
 		IsMatch:             true,
 		IsAlertmanagerMatch: true,
 	},
 	{
-		Expression:          "@state=suppressed",
-		IsValid:             true,
-		Alert:               models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
+		Expression: "@state=suppressed",
+		IsValid:    true,
+		Alert: models.Alert{
+			State:      models.AlertStateSuppressed,
+			SilencedBy: []string{"1"},
+		},
 		IsMatch:             true,
 		IsAlertmanagerMatch: true,
 	},
 	{
 		Expression: "@state!=suppressed",
 		IsValid:    true,
-		Alert:      models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
-		IsMatch:    false,
+		Alert: models.Alert{
+			State:      models.AlertStateSuppressed,
+			SilencedBy: []string{"1"},
+		},
+		IsMatch: false,
 	},
 	{
 		Expression: "@state=xx",
@@ -97,23 +111,31 @@ var tests = []filterTest{
 		IsValid:    false,
 	},
 	{
-		Expression:          "@state=suppressed",
-		IsValid:             true,
-		Alert:               models.Alert{State: "suppressed", InhibitedBy: []string{"999"}},
+		Expression: "@state=suppressed",
+		IsValid:    true,
+		Alert: models.Alert{
+			State:       models.AlertStateSuppressed,
+			InhibitedBy: []string{"999"},
+		},
 		IsMatch:             true,
 		IsAlertmanagerMatch: true,
 	},
 	{
 		Expression: "@state=suppressed",
 		IsValid:    true,
-		Alert:      models.Alert{State: "active"},
-		IsMatch:    false,
+		Alert: models.Alert{
+			State: models.AlertStateActive,
+		},
+		IsMatch: false,
 	},
 	{
 		Expression: "@state!=suppressed",
 		IsValid:    true,
-		Alert:      models.Alert{State: "suppressed", InhibitedBy: []string{"999"}},
-		IsMatch:    false,
+		Alert: models.Alert{
+			State:       models.AlertStateSuppressed,
+			InhibitedBy: []string{"999"},
+		},
+		IsMatch: false,
 	},
 	{
 		Expression: "@state==active",
@@ -153,25 +175,31 @@ var tests = []filterTest{
 		IsValid:    false,
 	},
 	{
-		Expression:          "@fingerprint=123",
-		IsValid:             true,
-		Alert:               models.Alert{},
+		Expression: "@fingerprint=123",
+		IsValid:    true,
+		Alert: models.Alert{
+			State: models.AlertStateActive,
+		},
 		IsMatch:             false,
 		IsAlertmanagerMatch: true,
 	},
 	{
-		Expression:          "@fingerprint!=123",
-		IsValid:             true,
-		Alert:               models.Alert{},
+		Expression: "@fingerprint!=123",
+		IsValid:    true,
+		Alert: models.Alert{
+			State: models.AlertStateActive,
+		},
 		IsMatch:             true,
 		IsAlertmanagerMatch: true,
 	},
 	{
 		Expression: "@fingerprint=1234",
 		IsValid:    true,
-		Alert:      models.Alert{},
+		Alert: models.Alert{
+			State: models.AlertStateActive,
+		},
 		Alertmanagers: []models.AlertmanagerInstance{
-			{Fingerprint: "1234"},
+			{Fingerprint: "1234", State: models.AlertStateActive},
 		},
 		IsMatch:             true,
 		IsAlertmanagerMatch: true,
@@ -179,14 +207,18 @@ var tests = []filterTest{
 	{
 		Expression: "@fingerprint=~123",
 		IsValid:    false,
-		Alert:      models.Alert{},
+		Alert: models.Alert{
+			State: models.AlertStateActive,
+		},
 	},
 	{
 		Expression: "@fingerprint=abc",
 		IsValid:    true,
-		Alert:      models.Alert{},
+		Alert: models.Alert{
+			State: models.AlertStateActive,
+		},
 		Alertmanagers: []models.AlertmanagerInstance{
-			{Fingerprint: "12345"},
+			{Fingerprint: "12345", State: models.AlertStateActive},
 		},
 		IsMatch:             false,
 		IsAlertmanagerMatch: false,
@@ -194,9 +226,11 @@ var tests = []filterTest{
 	{
 		Expression: "@fingerprint!=1a1",
 		IsValid:    true,
-		Alert:      models.Alert{},
+		Alert: models.Alert{
+			State: models.AlertStateActive,
+		},
 		Alertmanagers: []models.AlertmanagerInstance{
-			{Fingerprint: "1a1"},
+			{Fingerprint: "1a1", State: models.AlertStateActive},
 		},
 		IsMatch:             false,
 		IsAlertmanagerMatch: false,
@@ -204,9 +238,11 @@ var tests = []filterTest{
 	{
 		Expression: "@fingerprint!=cde",
 		IsValid:    true,
-		Alert:      models.Alert{},
+		Alert: models.Alert{
+			State: models.AlertStateActive,
+		},
 		Alertmanagers: []models.AlertmanagerInstance{
-			{Fingerprint: "abc"},
+			{Fingerprint: "abc", State: models.AlertStateActive},
 		},
 		IsMatch:             true,
 		IsAlertmanagerMatch: true,
@@ -215,39 +251,55 @@ var tests = []filterTest{
 	{
 		Expression: "@silenced_by=abcdef",
 		IsValid:    true,
-		Alert:      models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
-		IsMatch:    false,
+		Alert: models.Alert{
+			State:      models.AlertStateSuppressed,
+			SilencedBy: []string{"1"},
+		},
+		IsMatch: false,
 	},
 	{
 		Expression: "@silenced_by=abcdef",
 		IsValid:    true,
-		Alert:      models.Alert{State: "active"},
-		IsMatch:    false,
+		Alert: models.Alert{
+			State: models.AlertStateActive,
+		},
+		IsMatch: false,
 	},
 	{
-		Expression:          "@silenced_by=abcdef",
-		IsValid:             true,
-		Alert:               models.Alert{State: "active", SilencedBy: []string{"abcdef"}},
+		Expression: "@silenced_by=abcdef",
+		IsValid:    true,
+		Alert: models.Alert{
+			State:      models.AlertStateActive,
+			SilencedBy: []string{"abcdef"},
+		},
 		IsMatch:             true,
 		IsAlertmanagerMatch: true,
 	},
 	{
 		Expression: "@silenced_by=abcdef",
 		IsValid:    true,
-		Alert:      models.Alert{State: "unprocessed"},
-		IsMatch:    false,
+		Alert: models.Alert{
+			State: models.AlertStateUnprocessed,
+		},
+		IsMatch: false,
 	},
 	{
-		Expression:          "@silenced_by=abcdef",
-		IsValid:             true,
-		Alert:               models.Alert{State: "unprocessed", SilencedBy: []string{"abcdef"}},
+		Expression: "@silenced_by=abcdef",
+		IsValid:    true,
+		Alert: models.Alert{
+			State:      models.AlertStateUnprocessed,
+			SilencedBy: []string{"abcdef"},
+		},
 		IsMatch:             true,
 		IsAlertmanagerMatch: true,
 	},
 	{
-		Expression:          "@silenced_by=abcdef",
-		IsValid:             true,
-		Alert:               models.Alert{State: "suppressed", SilencedBy: []string{"abcdef"}},
+		Expression: "@silenced_by=abcdef",
+		IsValid:    true,
+		Alert: models.Alert{
+			State:      models.AlertStateSuppressed,
+			SilencedBy: []string{"abcdef"},
+		},
 		Silence:             models.Silence{ID: "abcdef"},
 		IsMatch:             true,
 		IsAlertmanagerMatch: true,
@@ -255,13 +307,19 @@ var tests = []filterTest{
 	{
 		Expression: "@silenced_by!=abcdef",
 		IsValid:    true,
-		Alert:      models.Alert{State: "suppressed", SilencedBy: []string{"abcdef"}},
-		IsMatch:    false,
+		Alert: models.Alert{
+			State:      models.AlertStateSuppressed,
+			SilencedBy: []string{"abcdef"},
+		},
+		IsMatch: false,
 	},
 	{
-		Expression:          "@silenced_by!=abcdef",
-		IsValid:             true,
-		Alert:               models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
+		Expression: "@silenced_by!=abcdef",
+		IsValid:    true,
+		Alert: models.Alert{
+			State:      models.AlertStateSuppressed,
+			SilencedBy: []string{"1"},
+		},
 		Silence:             models.Silence{ID: "1"},
 		IsMatch:             true,
 		IsAlertmanagerMatch: true,
@@ -269,28 +327,40 @@ var tests = []filterTest{
 	{
 		Expression: "@silenced_by=~cde",
 		IsValid:    false,
-		Alert:      models.Alert{State: "suppressed", SilencedBy: []string{"abcdef"}},
+		Alert: models.Alert{
+			State:      models.AlertStateSuppressed,
+			SilencedBy: []string{"abcdef"},
+		},
 	},
 	{
 		Expression: "@silenced_by!~abc",
 		IsValid:    false,
-		Alert:      models.Alert{State: "suppressed", SilencedBy: []string{"zwd"}},
+		Alert: models.Alert{
+			State:      models.AlertStateSuppressed,
+			SilencedBy: []string{"zwd"},
+		},
 	},
 
 	{
 		Expression: "@inhibited=abcdef",
 		IsValid:    false,
-		Alert:      models.Alert{State: "suppressed"},
+		Alert: models.Alert{
+			State: models.AlertStateSuppressed,
+		},
 	},
 	{
 		Expression: "@inhibited=true",
 		IsValid:    true,
-		Alert:      models.Alert{State: "suppressed"},
+		Alert: models.Alert{
+			State: models.AlertStateSuppressed,
+		},
 	},
 	{
-		Expression:          "@inhibited=false",
-		IsValid:             true,
-		Alert:               models.Alert{State: "suppressed"},
+		Expression: "@inhibited=false",
+		IsValid:    true,
+		Alert: models.Alert{
+			State: models.AlertStateSuppressed,
+		},
 		IsMatch:             true,
 		IsAlertmanagerMatch: true,
 	},
@@ -298,7 +368,7 @@ var tests = []filterTest{
 		Expression: "@inhibited=true",
 		IsValid:    true,
 		Alert: models.Alert{
-			State:       "suppressed",
+			State:       models.AlertStateSuppressed,
 			InhibitedBy: []string{"1"},
 		},
 		IsMatch:             true,
@@ -308,7 +378,7 @@ var tests = []filterTest{
 		Expression: "@inhibited=false",
 		IsValid:    true,
 		Alert: models.Alert{
-			State:       "suppressed",
+			State:       models.AlertStateSuppressed,
 			InhibitedBy: []string{"1"},
 		},
 	},
@@ -317,7 +387,7 @@ var tests = []filterTest{
 		Expression: "@inhibited_by=abcdef",
 		IsValid:    true,
 		Alert: models.Alert{
-			State:       "suppressed",
+			State:       models.AlertStateSuppressed,
 			InhibitedBy: []string{"1"},
 		},
 		IsMatch: false,
@@ -325,30 +395,16 @@ var tests = []filterTest{
 	{
 		Expression: "@inhibited_by=abcdef",
 		IsValid:    true,
-		Alert:      models.Alert{State: "active"},
-		IsMatch:    false,
-	},
-	{
-		Expression: "@inhibited_by=abcdef",
-		IsValid:    true,
 		Alert: models.Alert{
-			State:       "active",
-			InhibitedBy: []string{"abcdef"},
+			State: models.AlertStateActive,
 		},
-		IsMatch:             true,
-		IsAlertmanagerMatch: true,
-	},
-	{
-		Expression: "@inhibited_by=abcdef",
-		IsValid:    true,
-		Alert:      models.Alert{State: "unprocessed"},
-		IsMatch:    false,
+		IsMatch: false,
 	},
 	{
 		Expression: "@inhibited_by=abcdef",
 		IsValid:    true,
 		Alert: models.Alert{
-			State:       "unprocessed",
+			State:       models.AlertStateActive,
 			InhibitedBy: []string{"abcdef"},
 		},
 		IsMatch:             true,
@@ -358,7 +414,25 @@ var tests = []filterTest{
 		Expression: "@inhibited_by=abcdef",
 		IsValid:    true,
 		Alert: models.Alert{
-			State:       "suppressed",
+			State: models.AlertStateUnprocessed,
+		},
+		IsMatch: false,
+	},
+	{
+		Expression: "@inhibited_by=abcdef",
+		IsValid:    true,
+		Alert: models.Alert{
+			State:       models.AlertStateUnprocessed,
+			InhibitedBy: []string{"abcdef"},
+		},
+		IsMatch:             true,
+		IsAlertmanagerMatch: true,
+	},
+	{
+		Expression: "@inhibited_by=abcdef",
+		IsValid:    true,
+		Alert: models.Alert{
+			State:       models.AlertStateSuppressed,
 			InhibitedBy: []string{"abcdef"},
 		},
 		IsMatch:             true,
@@ -368,7 +442,7 @@ var tests = []filterTest{
 		Expression: "@inhibited_by!=abcdef",
 		IsValid:    true,
 		Alert: models.Alert{
-			State:       "suppressed",
+			State:       models.AlertStateSuppressed,
 			InhibitedBy: []string{"abcdef"},
 		},
 		IsMatch: false,
@@ -377,7 +451,7 @@ var tests = []filterTest{
 		Expression: "@inhibited_by!=abcdef",
 		IsValid:    true,
 		Alert: models.Alert{
-			State:       "suppressed",
+			State:       models.AlertStateSuppressed,
 			InhibitedBy: []string{"1"},
 		},
 		Silence:             models.Silence{ID: "1"},
@@ -387,40 +461,55 @@ var tests = []filterTest{
 	{
 		Expression: "@inhibited_by=~cde",
 		IsValid:    false,
-		Alert:      models.Alert{State: "suppressed"},
+		Alert: models.Alert{
+			State: models.AlertStateSuppressed,
+		},
 	},
 	{
 		Expression: "@inhibited_by!~abc",
 		IsValid:    false,
-		Alert:      models.Alert{State: "suppressed"},
+		Alert: models.Alert{
+			State: models.AlertStateSuppressed,
+		},
 	},
 
 	{
-		Expression:          "@silence_ticket=1",
-		IsValid:             true,
-		Alert:               models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
+		Expression: "@silence_ticket=1",
+		IsValid:    true,
+		Alert: models.Alert{
+			State:      models.AlertStateSuppressed,
+			SilencedBy: []string{"1"},
+		},
 		Silence:             models.Silence{ID: "1", TicketID: "1"},
 		IsMatch:             true,
 		IsAlertmanagerMatch: true,
 	},
 	{
-		Expression:          "@silence_ticket=1",
-		IsValid:             true,
-		Alert:               models.Alert{State: "active", SilencedBy: []string{}},
+		Expression: "@silence_ticket=1",
+		IsValid:    true,
+		Alert: models.Alert{
+			State: models.AlertStateActive, SilencedBy: []string{},
+		},
 		IsMatch:             false,
 		IsAlertmanagerMatch: true,
 	},
 	{
 		Expression: "@silence_ticket=2",
 		IsValid:    true,
-		Alert:      models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
-		Silence:    models.Silence{ID: "1"},
-		IsMatch:    false,
+		Alert: models.Alert{
+			State:      models.AlertStateSuppressed,
+			SilencedBy: []string{"1"},
+		},
+		Silence: models.Silence{ID: "1"},
+		IsMatch: false,
 	},
 	{
-		Expression:          "@silence_ticket!=3",
-		IsValid:             true,
-		Alert:               models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
+		Expression: "@silence_ticket!=3",
+		IsValid:    true,
+		Alert: models.Alert{
+			State:      models.AlertStateSuppressed,
+			SilencedBy: []string{"1"},
+		},
 		Silence:             models.Silence{ID: "1", TicketID: "x"},
 		IsMatch:             true,
 		IsAlertmanagerMatch: true,
@@ -428,22 +517,31 @@ var tests = []filterTest{
 	{
 		Expression: "@silence_ticket!=4",
 		IsValid:    true,
-		Alert:      models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
-		Silence:    models.Silence{ID: "1", TicketID: "4"},
-		IsMatch:    false,
+		Alert: models.Alert{
+			State:      models.AlertStateSuppressed,
+			SilencedBy: []string{"1"},
+		},
+		Silence: models.Silence{ID: "1", TicketID: "4"},
+		IsMatch: false,
 	},
 	{
-		Expression:          "@silence_ticket!=5",
-		IsValid:             true,
-		Alert:               models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
+		Expression: "@silence_ticket!=5",
+		IsValid:    true,
+		Alert: models.Alert{
+			State:      models.AlertStateSuppressed,
+			SilencedBy: []string{"1"},
+		},
 		Silence:             models.Silence{ID: "1"},
 		IsMatch:             true,
 		IsAlertmanagerMatch: true,
 	},
 	{
-		Expression:          "@silence_ticket=~abc",
-		IsValid:             true,
-		Alert:               models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
+		Expression: "@silence_ticket=~abc",
+		IsValid:    true,
+		Alert: models.Alert{
+			State:      models.AlertStateSuppressed,
+			SilencedBy: []string{"1"},
+		},
 		Silence:             models.Silence{ID: "1", TicketID: "xxabcxx"},
 		IsMatch:             true,
 		IsAlertmanagerMatch: true,
@@ -451,36 +549,51 @@ var tests = []filterTest{
 	{
 		Expression: "@silence_ticket=~abc",
 		IsValid:    true,
-		Alert:      models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
-		Silence:    models.Silence{ID: "1", TicketID: "xxx"},
-		IsMatch:    false,
+		Alert: models.Alert{
+			State:      models.AlertStateSuppressed,
+			SilencedBy: []string{"1"},
+		},
+		Silence: models.Silence{ID: "1", TicketID: "xxx"},
+		IsMatch: false,
 	},
 	{
 		Expression: "@silence_ticket=~",
 		IsValid:    false,
-		Alert:      models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
-		Silence:    models.Silence{ID: "1", TicketID: "xxx"},
-		IsMatch:    false,
+		Alert: models.Alert{
+			State:      models.AlertStateSuppressed,
+			SilencedBy: []string{"1"},
+		},
+		Silence: models.Silence{ID: "1", TicketID: "xxx"},
+		IsMatch: false,
 	},
 	{
 		Expression: "@silence_ticket~=",
 		IsValid:    false,
-		Alert:      models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
-		Silence:    models.Silence{ID: "1", TicketID: "xxx"},
-		IsMatch:    false,
+		Alert: models.Alert{
+			State:      models.AlertStateSuppressed,
+			SilencedBy: []string{"1"},
+		},
+		Silence: models.Silence{ID: "1", TicketID: "xxx"},
+		IsMatch: false,
 	},
 	{
 		Expression: "@silence_ticket~=1",
 		IsValid:    false,
-		Alert:      models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
-		Silence:    models.Silence{ID: "1", TicketID: "xxx"},
-		IsMatch:    false,
+		Alert: models.Alert{
+			State:      models.AlertStateSuppressed,
+			SilencedBy: []string{"1"},
+		},
+		Silence: models.Silence{ID: "1", TicketID: "xxx"},
+		IsMatch: false,
 	},
 
 	{
-		Expression:          "@silence_author=john",
-		IsValid:             true,
-		Alert:               models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
+		Expression: "@silence_author=john",
+		IsValid:    true,
+		Alert: models.Alert{
+			State:      models.AlertStateSuppressed,
+			SilencedBy: []string{"1"},
+		},
 		Silence:             models.Silence{ID: "1", CreatedBy: "john"},
 		IsMatch:             true,
 		IsAlertmanagerMatch: true,
@@ -488,20 +601,28 @@ var tests = []filterTest{
 	{
 		Expression: "@silence_author=john",
 		IsValid:    true,
-		Alert:      models.Alert{State: "active", SilencedBy: []string{}},
-		IsMatch:    false,
+		Alert: models.Alert{
+			State: models.AlertStateActive, SilencedBy: []string{},
+		},
+		IsMatch: false,
 	},
 	{
 		Expression: "@silence_author=john",
 		IsValid:    true,
-		Alert:      models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
-		Silence:    models.Silence{ID: "1", CreatedBy: "bob"},
-		IsMatch:    false,
+		Alert: models.Alert{
+			State:      models.AlertStateSuppressed,
+			SilencedBy: []string{"1"},
+		},
+		Silence: models.Silence{ID: "1", CreatedBy: "bob"},
+		IsMatch: false,
 	},
 	{
-		Expression:          "@silence_author!=john",
-		IsValid:             true,
-		Alert:               models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
+		Expression: "@silence_author!=john",
+		IsValid:    true,
+		Alert: models.Alert{
+			State:      models.AlertStateSuppressed,
+			SilencedBy: []string{"1"},
+		},
 		Silence:             models.Silence{ID: "1", CreatedBy: "bob"},
 		IsMatch:             true,
 		IsAlertmanagerMatch: true,
@@ -509,14 +630,20 @@ var tests = []filterTest{
 	{
 		Expression: "@silence_author!=john",
 		IsValid:    true,
-		Alert:      models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
-		Silence:    models.Silence{ID: "1", CreatedBy: "john"},
-		IsMatch:    false,
+		Alert: models.Alert{
+			State:      models.AlertStateSuppressed,
+			SilencedBy: []string{"1"},
+		},
+		Silence: models.Silence{ID: "1", CreatedBy: "john"},
+		IsMatch: false,
 	},
 	{
-		Expression:          "@silence_author!=john",
-		IsValid:             true,
-		Alert:               models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
+		Expression: "@silence_author!=john",
+		IsValid:    true,
+		Alert: models.Alert{
+			State:      models.AlertStateSuppressed,
+			SilencedBy: []string{"1"},
+		},
 		Silence:             models.Silence{ID: "1"},
 		IsMatch:             true,
 		IsAlertmanagerMatch: true,
@@ -524,23 +651,32 @@ var tests = []filterTest{
 	{
 		Expression: "@silence_author=~",
 		IsValid:    false,
-		Alert:      models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
-		Silence:    models.Silence{ID: "1"},
-		IsMatch:    false,
+		Alert: models.Alert{
+			State:      models.AlertStateSuppressed,
+			SilencedBy: []string{"1"},
+		},
+		Silence: models.Silence{ID: "1"},
+		IsMatch: false,
 	},
 	{
 		Expression: "@silence_author===x",
 		IsValid:    false,
-		Alert:      models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
-		Silence:    models.Silence{ID: "1"},
-		IsMatch:    false,
+		Alert: models.Alert{
+			State:      models.AlertStateSuppressed,
+			SilencedBy: []string{"1"},
+		},
+		Silence: models.Silence{ID: "1"},
+		IsMatch: false,
 	},
 	{
 		Expression: "@silence_author=!!xxx",
 		IsValid:    false,
-		Alert:      models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
-		Silence:    models.Silence{ID: "1"},
-		IsMatch:    false,
+		Alert: models.Alert{
+			State:      models.AlertStateSuppressed,
+			SilencedBy: []string{"1"},
+		},
+		Silence: models.Silence{ID: "1"},
+		IsMatch: false,
 	},
 
 	{
@@ -609,80 +745,82 @@ var tests = []filterTest{
 	{
 		Expression: "node=vps1",
 		IsValid:    true,
-		Alert:      models.Alert{Labels: models.Labels{{Name: "node", Value: "vps1"}}},
+		Alert:      models.Alert{Labels: models.Labels{{Name: models.NewUniqueString("node"), Value: models.NewUniqueString("vps1")}}},
 		IsMatch:    true,
 	},
 	{
 		Expression: "node=vps1",
 		IsValid:    true,
-		Alert:      models.Alert{},
+		Alert: models.Alert{
+			State: models.AlertStateActive,
+		},
+		IsMatch: false,
+	},
+	{
+		Expression: "node!=vps1",
+		IsValid:    true,
+		Alert:      models.Alert{Labels: models.Labels{{Name: models.NewUniqueString("node"), Value: models.NewUniqueString("vps1")}}},
 		IsMatch:    false,
 	},
 	{
 		Expression: "node!=vps1",
 		IsValid:    true,
-		Alert:      models.Alert{Labels: models.Labels{{Name: "node", Value: "vps1"}}},
-		IsMatch:    false,
-	},
-	{
-		Expression: "node!=vps1",
-		IsValid:    true,
-		Alert:      models.Alert{Labels: models.Labels{{Name: "node", Value: "vps2"}}},
+		Alert:      models.Alert{Labels: models.Labels{{Name: models.NewUniqueString("node"), Value: models.NewUniqueString("vps2")}}},
 		IsMatch:    true,
 	},
 	{
 		Expression: "node=~vps",
 		IsValid:    true,
-		Alert:      models.Alert{Labels: models.Labels{{Name: "node", Value: "vps1"}}},
+		Alert:      models.Alert{Labels: models.Labels{{Name: models.NewUniqueString("node"), Value: models.NewUniqueString("vps1")}}},
 		IsMatch:    true,
 	},
 	{
 		Expression: "node!~vps",
 		IsValid:    true,
-		Alert:      models.Alert{Labels: models.Labels{{Name: "node", Value: "vps1"}}},
+		Alert:      models.Alert{Labels: models.Labels{{Name: models.NewUniqueString("node"), Value: models.NewUniqueString("vps1")}}},
 		IsMatch:    false,
 	},
 	{
 		Expression: "node!~abc",
 		IsValid:    true,
-		Alert:      models.Alert{Labels: models.Labels{{Name: "node", Value: "vps1"}}},
+		Alert:      models.Alert{Labels: models.Labels{{Name: models.NewUniqueString("node"), Value: models.NewUniqueString("vps1")}}},
 		IsMatch:    true,
 	},
 	{
 		Expression: "node!~",
 		IsValid:    false,
-		Alert:      models.Alert{Labels: models.Labels{{Name: "node", Value: "vps1"}}},
+		Alert:      models.Alert{Labels: models.Labels{{Name: models.NewUniqueString("node"), Value: models.NewUniqueString("vps1")}}},
 		IsMatch:    false,
 	},
 	{
 		Expression: "node=",
 		IsValid:    false,
-		Alert:      models.Alert{Labels: models.Labels{{Name: "node", Value: "vps1"}}},
+		Alert:      models.Alert{Labels: models.Labels{{Name: models.NewUniqueString("node"), Value: models.NewUniqueString("vps1")}}},
 		IsMatch:    false,
 	},
 	{
 		Expression: "node===",
 		IsValid:    false,
-		Alert:      models.Alert{Labels: models.Labels{{Name: "node", Value: "vps1"}}},
+		Alert:      models.Alert{Labels: models.Labels{{Name: models.NewUniqueString("node"), Value: models.NewUniqueString("vps1")}}},
 		IsMatch:    false,
 	},
 
 	{
 		Expression: "abc",
 		IsValid:    true,
-		Alert:      models.Alert{Labels: models.Labels{{Name: "key", Value: "abc"}}},
+		Alert:      models.Alert{Labels: models.Labels{{Name: models.NewUniqueString("key"), Value: models.NewUniqueString("abc")}}},
 		IsMatch:    true,
 	},
 	{
 		Expression: "abc",
 		IsValid:    true,
-		Alert:      models.Alert{Labels: models.Labels{{Name: "key", Value: "XXXabcx"}}},
+		Alert:      models.Alert{Labels: models.Labels{{Name: models.NewUniqueString("key"), Value: models.NewUniqueString("XXXabcx")}}},
 		IsMatch:    true,
 	},
 	{
 		Expression: "abc",
 		IsValid:    true,
-		Alert:      models.Alert{Labels: models.Labels{{Name: "abc", Value: "xxxab"}}},
+		Alert:      models.Alert{Labels: models.Labels{{Name: models.NewUniqueString("abc"), Value: models.NewUniqueString("xxxab")}}},
 		IsMatch:    false,
 	},
 	{
@@ -690,7 +828,7 @@ var tests = []filterTest{
 		IsValid:    true,
 		Alert: models.Alert{
 			Annotations: models.Annotations{
-				models.Annotation{Name: "key", Value: "abc"},
+				models.Annotation{Name: models.NewUniqueString("key"), Value: models.NewUniqueString("abc")},
 			},
 		},
 		IsMatch: true,
@@ -700,7 +838,7 @@ var tests = []filterTest{
 		IsValid:    true,
 		Alert: models.Alert{
 			Annotations: models.Annotations{
-				models.Annotation{Name: "key", Value: "ccc abc"},
+				models.Annotation{Name: models.NewUniqueString("key"), Value: models.NewUniqueString("ccc abc")},
 			},
 		},
 		IsMatch: true,
@@ -710,7 +848,7 @@ var tests = []filterTest{
 		IsValid:    true,
 		Alert: models.Alert{
 			Annotations: models.Annotations{
-				models.Annotation{Name: "abc", Value: "zzz"},
+				models.Annotation{Name: models.NewUniqueString("abc"), Value: models.NewUniqueString("zzz")},
 			},
 		},
 		IsMatch: false,
@@ -718,36 +856,50 @@ var tests = []filterTest{
 	{
 		Expression: "abc",
 		IsValid:    true,
-		Alert:      models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
-		Silence:    models.Silence{ID: "1", Comment: "abc"},
-		IsMatch:    true,
+		Alert: models.Alert{
+			State:      models.AlertStateSuppressed,
+			SilencedBy: []string{"1"},
+		},
+		Silence: models.Silence{ID: "1", Comment: "abc"},
+		IsMatch: true,
 	},
 	{
 		Expression: "abc",
 		IsValid:    true,
-		Alert:      models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
-		Silence:    models.Silence{ID: "1", Comment: "abcxxx"},
-		IsMatch:    true,
+		Alert: models.Alert{
+			State:      models.AlertStateSuppressed,
+			SilencedBy: []string{"1"},
+		},
+		Silence: models.Silence{ID: "1", Comment: "abcxxx"},
+		IsMatch: true,
 	},
 	{
 		Expression: "abc",
 		IsValid:    true,
-		Alert:      models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
-		Silence:    models.Silence{ID: "1", Comment: "ABCD"},
-		IsMatch:    true,
+		Alert: models.Alert{
+			State:      models.AlertStateSuppressed,
+			SilencedBy: []string{"1"},
+		},
+		Silence: models.Silence{ID: "1", Comment: "ABCD"},
+		IsMatch: true,
 	},
 	{
 		Expression: "abc",
 		IsValid:    true,
-		Alert:      models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
-		Silence:    models.Silence{ID: "1", Comment: "xzc"},
-		IsMatch:    false,
+		Alert: models.Alert{
+			State:      models.AlertStateSuppressed,
+			SilencedBy: []string{"1"},
+		},
+		Silence: models.Silence{ID: "1", Comment: "xzc"},
+		IsMatch: false,
 	},
 	{
 		Expression: "abc",
 		IsValid:    true,
-		Alert:      models.Alert{},
-		IsMatch:    false,
+		Alert: models.Alert{
+			State: models.AlertStateActive,
+		},
+		IsMatch: false,
 	},
 	{
 		Expression: "^abb[****].*****",
@@ -770,42 +922,54 @@ var tests = []filterTest{
 		IsValid:    false,
 	},
 	{
-		Expression:          "@alertmanager=test",
-		IsValid:             true,
-		Alert:               models.Alert{},
+		Expression: "@alertmanager=test",
+		IsValid:    true,
+		Alert: models.Alert{
+			State: models.AlertStateActive,
+		},
 		IsMatch:             true,
 		IsAlertmanagerMatch: true,
 	},
 	{
 		Expression: "@alertmanager=abc",
 		IsValid:    true,
-		Alert:      models.Alert{},
-		IsMatch:    false,
+		Alert: models.Alert{
+			State: models.AlertStateActive,
+		},
+		IsMatch: false,
 	},
 	{
-		Expression:          "@alertmanager=~tes",
-		IsValid:             true,
-		Alert:               models.Alert{},
+		Expression: "@alertmanager=~tes",
+		IsValid:    true,
+		Alert: models.Alert{
+			State: models.AlertStateActive,
+		},
 		IsMatch:             true,
 		IsAlertmanagerMatch: true,
 	},
 	{
 		Expression: "@alertmanager=~000",
 		IsValid:    true,
-		Alert:      models.Alert{},
-		IsMatch:    false,
+		Alert: models.Alert{
+			State: models.AlertStateActive,
+		},
+		IsMatch: false,
 	},
 	{
-		Expression:          "@alertmanager!=tes",
-		IsValid:             true,
-		Alert:               models.Alert{},
+		Expression: "@alertmanager!=tes",
+		IsValid:    true,
+		Alert: models.Alert{
+			State: models.AlertStateActive,
+		},
 		IsMatch:             true,
 		IsAlertmanagerMatch: true,
 	},
 	{
-		Expression:          "@alertmanager!~abc",
-		IsValid:             true,
-		Alert:               models.Alert{},
+		Expression: "@alertmanager!~abc",
+		IsValid:    true,
+		Alert: models.Alert{
+			State: models.AlertStateActive,
+		},
 		IsMatch:             true,
 		IsAlertmanagerMatch: true,
 	},
@@ -813,21 +977,23 @@ var tests = []filterTest{
 		Expression: "@receiver=by-name",
 		IsValid:    true,
 		Alert: models.Alert{
-			Receiver: "by-name",
+			Receiver: models.NewUniqueString("by-name"),
 		},
 		IsMatch: true,
 	},
 	{
 		Expression: "@cluster=foo",
 		IsValid:    true,
-		Alert:      models.Alert{},
-		IsMatch:    false,
+		Alert: models.Alert{
+			State: models.AlertStateActive,
+		},
+		IsMatch: false,
 	},
 	{
 		Expression: "@cluster=HA",
 		IsValid:    true,
 		Alert: models.Alert{
-			Receiver: "by-name",
+			Receiver: models.NewUniqueString("by-name"),
 		},
 		IsMatch:             true,
 		IsAlertmanagerMatch: true,
@@ -836,7 +1002,7 @@ var tests = []filterTest{
 		Expression: "@cluster!=foo",
 		IsValid:    true,
 		Alert: models.Alert{
-			Receiver: "by-name",
+			Receiver: models.NewUniqueString("by-name"),
 		},
 		IsMatch:             true,
 		IsAlertmanagerMatch: true,
@@ -849,7 +1015,7 @@ var tests = []filterTest{
 		Expression: "@receiver=by-name",
 		IsValid:    true,
 		Alert: models.Alert{
-			Receiver: "by-not-name",
+			Receiver: models.NewUniqueString("by-not-name"),
 		},
 		IsMatch: false,
 	},
@@ -857,7 +1023,7 @@ var tests = []filterTest{
 		Expression: "@receiver=~name",
 		IsValid:    true,
 		Alert: models.Alert{
-			Receiver: "by-not-name",
+			Receiver: models.NewUniqueString("by-not-name"),
 		},
 		IsMatch: true,
 	},
@@ -1035,9 +1201,6 @@ func TestLimitFilter(t *testing.T) {
 			}
 			if f.GetHits() != ft.Hits {
 				t.Errorf("[%s] GetHits() returned %#v hits, expected %d", ft.Expression, f.GetHits(), ft.Hits)
-			}
-			if f.GetValue() != ft.Value {
-				t.Errorf("[%s] GetValue() returned %#v hits, expected %q", ft.Expression, f.GetValue(), ft.Value)
 			}
 		} else {
 			func() {

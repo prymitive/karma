@@ -23,7 +23,7 @@ func TestSilenceIsMatch(t *testing.T) {
 		{
 			silence: models.Silence{
 				Matchers: []models.SilenceMatcher{
-					{Name: "job", Value: "foo", IsRegex: false, IsEqual: true},
+					models.NewSilenceMatcher("job", "foo", false, true),
 				},
 			},
 			labels:  map[string]string{},
@@ -32,7 +32,7 @@ func TestSilenceIsMatch(t *testing.T) {
 		{
 			silence: models.Silence{
 				Matchers: []models.SilenceMatcher{
-					{Name: "job", Value: "foo", IsRegex: false, IsEqual: true},
+					models.NewSilenceMatcher("job", "foo", false, true),
 				},
 			},
 			labels:  map[string]string{"job": "foo"},
@@ -41,7 +41,7 @@ func TestSilenceIsMatch(t *testing.T) {
 		{
 			silence: models.Silence{
 				Matchers: []models.SilenceMatcher{
-					{Name: "job", Value: "foo", IsRegex: false, IsEqual: true},
+					models.NewSilenceMatcher("job", "foo", false, true),
 				},
 			},
 			labels:  map[string]string{"job": "bar"},
@@ -50,7 +50,7 @@ func TestSilenceIsMatch(t *testing.T) {
 		{
 			silence: models.Silence{
 				Matchers: []models.SilenceMatcher{
-					{Name: "job", Value: "foo", IsRegex: false, IsEqual: false},
+					models.NewSilenceMatcher("job", "foo", false, false),
 				},
 			},
 			labels:  map[string]string{"job": "bar"},
@@ -59,8 +59,8 @@ func TestSilenceIsMatch(t *testing.T) {
 		{
 			silence: models.Silence{
 				Matchers: []models.SilenceMatcher{
-					{Name: "job", Value: "foo", IsRegex: false, IsEqual: true},
-					{Name: "instance", Value: "foo", IsRegex: false, IsEqual: true},
+					models.NewSilenceMatcher("job", "foo", false, true),
+					models.NewSilenceMatcher("instance", "foo", false, true),
 				},
 			},
 			labels:  map[string]string{"job": "bar"},
@@ -69,8 +69,8 @@ func TestSilenceIsMatch(t *testing.T) {
 		{
 			silence: models.Silence{
 				Matchers: []models.SilenceMatcher{
-					{Name: "job", Value: "foo", IsRegex: false, IsEqual: true},
-					{Name: "instance", Value: "foo", IsRegex: false, IsEqual: true},
+					models.NewSilenceMatcher("job", "foo", false, true),
+					models.NewSilenceMatcher("instance", "foo", false, true),
 				},
 			},
 			labels:  map[string]string{"job": "bar", "instance": "bar"},
@@ -79,8 +79,8 @@ func TestSilenceIsMatch(t *testing.T) {
 		{
 			silence: models.Silence{
 				Matchers: []models.SilenceMatcher{
-					{Name: "job", Value: "foo", IsRegex: false, IsEqual: true},
-					{Name: "instance", Value: "foo", IsRegex: false, IsEqual: true},
+					models.NewSilenceMatcher("job", "foo", false, true),
+					models.NewSilenceMatcher("instance", "foo", false, true),
 				},
 			},
 			labels:  map[string]string{"job": "foo", "instance": "foo"},
@@ -89,8 +89,8 @@ func TestSilenceIsMatch(t *testing.T) {
 		{
 			silence: models.Silence{
 				Matchers: []models.SilenceMatcher{
-					{Name: "job", Value: "foo", IsRegex: false, IsEqual: true},
-					{Name: "instance", Value: "foo", IsRegex: false, IsEqual: false},
+					models.NewSilenceMatcher("job", "foo", false, true),
+					models.NewSilenceMatcher("instance", "foo", false, false),
 				},
 			},
 			labels:  map[string]string{"job": "bar"},
@@ -99,8 +99,8 @@ func TestSilenceIsMatch(t *testing.T) {
 		{
 			silence: models.Silence{
 				Matchers: []models.SilenceMatcher{
-					{Name: "job", Value: "foo", IsRegex: false, IsEqual: true},
-					{Name: "instance", Value: "f.*", IsRegex: true, IsEqual: false},
+					models.NewSilenceMatcher("job", "foo", false, true),
+					models.NewSilenceMatcher("instance", "f.*", true, false),
 				},
 			},
 			labels:  map[string]string{"job": "bar", "instance": "fa"},
@@ -109,8 +109,8 @@ func TestSilenceIsMatch(t *testing.T) {
 		{
 			silence: models.Silence{
 				Matchers: []models.SilenceMatcher{
-					{Name: "job", Value: "foo", IsRegex: false, IsEqual: false},
-					{Name: "instance", Value: "f.*", IsRegex: true, IsEqual: true},
+					models.NewSilenceMatcher("job", "foo", false, false),
+					models.NewSilenceMatcher("instance", "f.*", true, true),
 				},
 			},
 			labels:  map[string]string{"job": "bar", "instance": "fa"},

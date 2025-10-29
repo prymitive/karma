@@ -9,11 +9,26 @@ import (
 
 type receiverFilter struct {
 	alertFilter
+	value string
+}
+
+func (filter *receiverFilter) init(name string, matcher *matcherT, rawText string, isValid bool, value string) {
+	filter.Matched = name
+	if matcher != nil {
+		filter.Matcher = *matcher
+	}
+	filter.RawText = rawText
+	filter.IsValid = isValid
+	filter.value = value
+}
+
+func (filter *receiverFilter) GetValue() string {
+	return filter.value
 }
 
 func (filter *receiverFilter) Match(alert *models.Alert, _ int) bool {
 	if filter.IsValid {
-		isMatch := filter.Matcher.Compare(alert.Receiver, filter.Value)
+		isMatch := filter.Matcher.Compare(alert.Receiver.Value(), filter.value)
 		if isMatch {
 			filter.Hits++
 		}
@@ -31,11 +46,11 @@ func newreceiverFilter() FilterT {
 func receiverAutocomplete(name string, operators []string, alerts []models.Alert) []models.Autocomplete {
 	tokens := map[string]*models.Autocomplete{}
 	for _, alert := range alerts {
-		if alert.Receiver != "" {
+		if alert.Receiver.Value() != "" {
 			for _, operator := range operators {
 				switch operator {
 				case equalOperator, notEqualOperator:
-					token := name + operator + alert.Receiver
+					token := name + operator + alert.Receiver.Value()
 					hint := makeAC(
 						token,
 						[]string{
@@ -46,7 +61,7 @@ func receiverAutocomplete(name string, operators []string, alerts []models.Alert
 					)
 					tokens[token] = &hint
 				case regexpOperator, negativeRegexOperator:
-					substrings := strings.Split(alert.Receiver, " ")
+					substrings := strings.Split(alert.Receiver.Value(), " ")
 					if len(substrings) > 1 {
 						for _, substring := range substrings {
 							token := name + operator + substring

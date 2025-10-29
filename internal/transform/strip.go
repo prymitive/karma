@@ -26,15 +26,15 @@ func StripLables(keptLabels, ignoredLabels []string, keptLabelsRegex, ignoredLab
 	var inKeep, inStrip bool
 	for _, label := range sourceLabels {
 		// is explicitly marked to be kept
-		inKeep = slices.Contains(keptLabels, label.Name) || sliceutils.MatchesAnyRegex(label.Name, keptLabelsRegex)
+		inKeep = slices.Contains(keptLabels, label.Name.Value()) || sliceutils.MatchesAnyRegex(label.Name.Value(), keptLabelsRegex)
 		// is explicitly marked to be stripped
-		inStrip = slices.Contains(ignoredLabels, label.Name) || sliceutils.MatchesAnyRegex(label.Name, ignoredLabelsRegex)
+		inStrip = slices.Contains(ignoredLabels, label.Name.Value()) || sliceutils.MatchesAnyRegex(label.Name.Value(), ignoredLabelsRegex)
 		if (keepAll || inKeep) && !inStrip {
 			l := models.Label{
 				Name: label.Name,
 				// strip leading and trailing space in label value
 				// this is to normalize values in case space is added by Alertmanager rules
-				Value: strings.TrimSpace(label.Value),
+				Value: models.NewUniqueString(strings.TrimSpace(label.Value.Value())),
 			}
 			labels = labels.Add(l)
 		}
@@ -68,9 +68,9 @@ func StripAnnotations(keptAnnotations, ignoredAnnotations []string, sourceAnnota
 	annotations := make(models.Annotations, 0, len(sourceAnnotations))
 	for _, annotation := range sourceAnnotations {
 		// is explicitly marked to be kept
-		inKeep := slices.Contains(keptAnnotations, annotation.Name)
+		inKeep := slices.Contains(keptAnnotations, annotation.Name.Value())
 		// is explicitly marked to be stripped
-		inStrip := slices.Contains(ignoredAnnotations, annotation.Name)
+		inStrip := slices.Contains(ignoredAnnotations, annotation.Name.Value())
 		if (keepAll || inKeep) && !inStrip {
 			annotations = append(annotations, annotation)
 		}

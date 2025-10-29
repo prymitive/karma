@@ -9,6 +9,21 @@ import (
 
 type silenceAuthorFilter struct {
 	alertFilter
+	value string
+}
+
+func (filter *silenceAuthorFilter) init(name string, matcher *matcherT, rawText string, isValid bool, value string) {
+	filter.Matched = name
+	if matcher != nil {
+		filter.Matcher = *matcher
+	}
+	filter.RawText = rawText
+	filter.IsValid = isValid
+	filter.value = value
+}
+
+func (filter *silenceAuthorFilter) GetValue() string {
+	return filter.value
 }
 
 func (filter *silenceAuthorFilter) Match(alert *models.Alert, _ int) bool {
@@ -18,7 +33,7 @@ func (filter *silenceAuthorFilter) Match(alert *models.Alert, _ int) bool {
 			for _, silenceID := range am.SilencedBy {
 				silence, found := am.Silences[silenceID]
 				if found {
-					m := filter.Matcher.Compare(silence.CreatedBy, filter.Value)
+					m := filter.Matcher.Compare(silence.CreatedBy, filter.value)
 					if m {
 						isMatch = m
 					}
@@ -39,7 +54,7 @@ func (filter *silenceAuthorFilter) MatchAlertmanager(am *models.AlertmanagerInst
 	for _, silenceID := range am.SilencedBy {
 		silence, found := am.Silences[silenceID]
 		if found {
-			m := filter.Matcher.Compare(silence.CreatedBy, filter.Value)
+			m := filter.Matcher.Compare(silence.CreatedBy, filter.value)
 			if m {
 				isMatch = m
 			}

@@ -6,7 +6,6 @@ import (
 	"slices"
 	"sort"
 	"strings"
-	"unique"
 
 	"github.com/fvbommel/sortorder"
 )
@@ -122,7 +121,7 @@ func (ag *APIAlertGroup) dedupLabels() {
 
 	for _, alert := range ag.Alerts {
 		for _, l := range alert.Labels {
-			key := fmt.Sprintf("%s\n%s", l.Name, l.Value)
+			key := fmt.Sprintf("%s\n%s", l.Name.Value(), l.Value.Value())
 			_, found := labelCounts[key]
 			if found {
 				labelCounts[key]++
@@ -137,7 +136,7 @@ func (ag *APIAlertGroup) dedupLabels() {
 	for i, alert := range ag.Alerts {
 		newAlertLabels := Labels{}
 		for _, l := range alert.Labels {
-			key := fmt.Sprintf("%s\n%s", l.Name, l.Value)
+			key := fmt.Sprintf("%s\n%s", l.Name.Value(), l.Value.Value())
 			if labelCounts[key] == totalAlerts {
 				sharedLabels = sharedLabels.Add(l)
 			} else {
@@ -153,7 +152,7 @@ func (ag *APIAlertGroup) dedupLabels() {
 func (ag *APIAlertGroup) removeGroupingLabels(dropNames []string) {
 	newGroupLabels := Labels{}
 	for _, l := range ag.Labels {
-		if slices.Contains(dropNames, l.Name) {
+		if slices.Contains(dropNames, l.Name.Value()) {
 			continue
 		}
 		newGroupLabels = newGroupLabels.Add(l)
@@ -163,11 +162,11 @@ func (ag *APIAlertGroup) removeGroupingLabels(dropNames []string) {
 	for i, alert := range ag.Alerts {
 		newAlertLabels := Labels{}
 		for _, l := range alert.Labels {
-			if slices.Contains(dropNames, l.Name) {
+			if slices.Contains(dropNames, l.Name.Value()) {
 				// skip all labels from the drop list
 				continue
 			}
-			if v := ag.Labels.Get(l.Name); v != nil {
+			if v := ag.Labels.Get(l.Name.Value()); v != nil {
 				// skip all labels that are used for grouping
 				continue
 			}
@@ -184,7 +183,7 @@ func (ag *APIAlertGroup) dedupAnnotations() {
 
 	for _, alert := range ag.Alerts {
 		for _, annotation := range alert.Annotations {
-			key := fmt.Sprintf("%s\n%s", annotation.Name, annotation.Value)
+			key := fmt.Sprintf("%s\n%s", annotation.Name.Value(), annotation.Value.Value())
 			_, found := annotationCount[key]
 			if found {
 				annotationCount[key]++
@@ -200,7 +199,7 @@ func (ag *APIAlertGroup) dedupAnnotations() {
 	for i, alert := range ag.Alerts {
 		newAlertAnnotations := Annotations{}
 		for _, annotation := range alert.Annotations {
-			key := fmt.Sprintf("%s\n%s", annotation.Name, annotation.Value)
+			key := fmt.Sprintf("%s\n%s", annotation.Name.Value(), annotation.Value.Value())
 			if annotationCount[key] == totalAlerts {
 				if !slices.Contains(sharedKeys, key) {
 					sharedAnnotations = append(sharedAnnotations, annotation)
@@ -318,12 +317,12 @@ func (ag *APIAlertGroup) dedupClusters() {
 
 func (ag *APIAlertGroup) populateAllLabels() {
 	ag.AllLabels = map[string]map[string][]string{
-		AlertStateActive:      {},
-		AlertStateSuppressed:  {},
-		AlertStateUnprocessed: {},
+		AlertStateActive.Value():      {},
+		AlertStateSuppressed.Value():  {},
+		AlertStateUnprocessed.Value(): {},
 	}
 
-	labels := map[string]int{}
+	labels := map[UniqueString]int{}
 	for _, alert := range ag.Alerts {
 		for _, l := range alert.Labels {
 			if _, ok := labels[l.Name]; !ok {
@@ -333,7 +332,7 @@ func (ag *APIAlertGroup) populateAllLabels() {
 		}
 	}
 
-	labelNames := map[string]struct{}{}
+	labelNames := map[UniqueString]struct{}{}
 	totalAlerts := len(ag.Alerts)
 	for k, totalValues := range labels {
 		if totalValues == totalAlerts {
@@ -346,11 +345,11 @@ func (ag *APIAlertGroup) populateAllLabels() {
 			if _, ok := labelNames[l.Name]; !ok {
 				continue
 			}
-			if _, ok := ag.AllLabels[alert.State][l.Name]; !ok {
-				ag.AllLabels[alert.State][l.Name] = []string{}
+			if _, ok := ag.AllLabels[alert.State.Value()][l.Name.Value()]; !ok {
+				ag.AllLabels[alert.State.Value()][l.Name.Value()] = []string{}
 			}
-			if !slices.Contains(ag.AllLabels[alert.State][l.Name], l.Value) {
-				ag.AllLabels[alert.State][l.Name] = append(ag.AllLabels[alert.State][l.Name], l.Value)
+			if !slices.Contains(ag.AllLabels[alert.State.Value()][l.Name.Value()], l.Value.Value()) {
+				ag.AllLabels[alert.State.Value()][l.Name.Value()] = append(ag.AllLabels[alert.State.Value()][l.Name.Value()], l.Value.Value())
 			}
 		}
 	}
@@ -482,8 +481,8 @@ type AlertsResponse struct {
 // Autocomplete is the structure of autocomplete object for filter hints
 // this is internal representation, not what's returned to the user
 type Autocomplete struct {
-	Value  unique.Handle[string]   `json:"value"`
-	Tokens []unique.Handle[string] `json:"tokens"`
+	Value  UniqueString   `json:"value"`
+	Tokens []UniqueString `json:"tokens"`
 }
 
 type Counters struct {

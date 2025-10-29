@@ -9,6 +9,7 @@ import (
 
 type fuzzyFilter struct {
 	alertFilter
+	value *regexp.Regexp
 }
 
 func (filter *fuzzyFilter) init(name string, matcher *matcherT, rawText string, isValid bool, value string) {
@@ -18,23 +19,27 @@ func (filter *fuzzyFilter) init(name string, matcher *matcherT, rawText string, 
 	}
 	filter.RawText = rawText
 	filter.IsValid = isValid
-	filter.Value = value
-	if _, err := regexp.Compile(value); err != nil {
+	var err error
+	if filter.value, err = regexp.Compile("(?i)" + value); err != nil {
 		filter.IsValid = false
 	}
+}
+
+func (filter *fuzzyFilter) GetValue() string {
+	return fmt.Sprintf("%v", filter.value)
 }
 
 func (filter *fuzzyFilter) Match(alert *models.Alert, _ int) bool {
 	if filter.IsValid {
 		for _, val := range alert.Annotations {
-			if filter.Matcher.Compare(val.Value, filter.Value) {
+			if filter.value.MatchString(val.Value.Value()) {
 				filter.Hits++
 				return true
 			}
 		}
 
 		for _, l := range alert.Labels {
-			if filter.Matcher.Compare(l.Value, filter.Value) {
+			if filter.value.MatchString(l.Value.Value()) {
 				filter.Hits++
 				return true
 			}
@@ -44,8 +49,7 @@ func (filter *fuzzyFilter) Match(alert *models.Alert, _ int) bool {
 			for _, am := range alert.Alertmanager {
 				silence, found := am.Silences[silenceID]
 				if found {
-					m := filter.Matcher.Compare(silence.Comment, filter.Value)
-					if m {
+					if filter.value.MatchString(silence.Comment) {
 						filter.Hits++
 						return true
 					}

@@ -9,6 +9,21 @@ import (
 
 type silenceTicketFilter struct {
 	alertFilter
+	value string
+}
+
+func (filter *silenceTicketFilter) init(name string, matcher *matcherT, rawText string, isValid bool, value string) {
+	filter.Matched = name
+	if matcher != nil {
+		filter.Matcher = *matcher
+	}
+	filter.RawText = rawText
+	filter.IsValid = isValid
+	filter.value = value
+}
+
+func (filter *silenceTicketFilter) GetValue() string {
+	return filter.value
 }
 
 func (filter *silenceTicketFilter) Match(alert *models.Alert, _ int) bool {
@@ -18,7 +33,7 @@ func (filter *silenceTicketFilter) Match(alert *models.Alert, _ int) bool {
 			for _, silenceID := range am.SilencedBy {
 				silence, found := am.Silences[silenceID]
 				if found {
-					m := filter.Matcher.Compare(silence.TicketID, filter.Value)
+					m := filter.Matcher.Compare(silence.TicketID, filter.value)
 					if m {
 						isMatch = m
 					}
@@ -39,7 +54,7 @@ func (filter *silenceTicketFilter) MatchAlertmanager(am *models.AlertmanagerInst
 	for _, silenceID := range am.SilencedBy {
 		silence, found := am.Silences[silenceID]
 		if found {
-			m := filter.Matcher.Compare(silence.TicketID, filter.Value)
+			m := filter.Matcher.Compare(silence.TicketID, filter.value)
 			if m {
 				isMatch = m
 			}

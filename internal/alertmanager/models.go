@@ -7,11 +7,9 @@ import (
 	"sort"
 	"sync"
 	"time"
-	"unique"
 
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/filters"
-	"github.com/prymitive/karma/internal/intern"
 	"github.com/prymitive/karma/internal/mapper"
 	"github.com/prymitive/karma/internal/models"
 	"github.com/prymitive/karma/internal/transform"
@@ -116,7 +114,7 @@ func (am *Alertmanager) clearData() {
 	am.lock.Unlock()
 }
 
-func (am *Alertmanager) pullSilences(version string, si *intern.Interner) error {
+func (am *Alertmanager) pullSilences(version string) error {
 	mapper, err := mapper.GetSilenceMapper(version)
 	if err != nil {
 		return err
@@ -125,7 +123,7 @@ func (am *Alertmanager) pullSilences(version string, si *intern.Interner) error 
 	var silences []models.Silence
 
 	start := time.Now()
-	silences, err = mapper.Collect(si, am.URI, am.HTTPHeaders, am.RequestTimeout, am.HTTPTransport)
+	silences, err = mapper.Collect(am.URI, am.HTTPHeaders, am.RequestTimeout, am.HTTPTransport)
 	if err != nil {
 		return err
 	}
@@ -172,7 +170,7 @@ func (am *Alertmanager) PublicURI() string {
 	return am.URI
 }
 
-func (am *Alertmanager) pullAlerts(version string, si *intern.Interner) error {
+func (am *Alertmanager) pullAlerts(version string) error {
 	mapper, err := mapper.GetAlertMapper(version)
 	if err != nil {
 		return err
@@ -191,7 +189,7 @@ func (am *Alertmanager) pullAlerts(version string, si *intern.Interner) error {
 	var groups []models.AlertGroup
 
 	start := time.Now()
-	groups, err = mapper.Collect(si, am.URI, am.HTTPHeaders, am.RequestTimeout, am.HTTPTransport)
+	groups, err = mapper.Collect(am.URI, am.HTTPHeaders, am.RequestTimeout, am.HTTPTransport)
 	if err != nil {
 		return err
 	}
@@ -207,7 +205,7 @@ func (am *Alertmanager) pullAlerts(version string, si *intern.Interner) error {
 		Msg("Deduplicating alert groups")
 	uniqueGroups := map[string]models.AlertGroup{}
 	uniqueAlerts := map[string]map[string]models.Alert{}
-	knownLabelsMap := map[string]bool{}
+	knownLabelsMap := map[models.UniqueString]struct{}{}
 	for _, ag := range groups {
 		agID := ag.LabelsFingerprint()
 		if _, found := uniqueGroups[agID]; !found {
@@ -226,7 +224,7 @@ func (am *Alertmanager) pullAlerts(version string, si *intern.Interner) error {
 				uniqueAlerts[agID][alertCFP] = alert
 			}
 			for _, l := range alert.Labels {
-				knownLabelsMap[l.Name] = true
+				knownLabelsMap[l.Name] = struct{}{}
 			}
 
 			if name, hc := am.IsHealthCheckAlert(&alert); hc != nil {
@@ -240,7 +238,8 @@ func (am *Alertmanager) pullAlerts(version string, si *intern.Interner) error {
 
 	dedupedGroups := make([]models.AlertGroup, 0, len(uniqueGroups))
 	colors := models.LabelsColorMap{}
-	autocompleteMap := map[unique.Handle[string]]*models.Autocomplete{}
+	autocompleteMap := map[models.UniqueString]*models.Autocomplete{}
+	expiredSilences := am.ExpiredSilences()
 
 	log.Info().
 		Str("alertmanager", am.Name).
@@ -258,9 +257,12 @@ func (am *Alertmanager) pullAlerts(version string, si *intern.Interner) error {
 			}
 			if config.Config.Silences.Expired > 0 &&
 				alert.State == models.AlertStateActive {
-				for _, silence := range am.ExpiredSilences(alert.Labels.Map()) {
-					silences[silence.ID] = silence
-					alert.SilencedBy = append(alert.SilencedBy, silence.ID)
+				alertLabels := alert.Labels.Map()
+				for _, silence := range expiredSilences {
+					if silence.IsMatch(alertLabels) {
+						silences[silence.ID] = silence
+						alert.SilencedBy = append(alert.SilencedBy, silence.ID)
+					}
 				}
 			}
 
@@ -290,13 +292,13 @@ func (am *Alertmanager) pullAlerts(version string, si *intern.Interner) error {
 				},
 			}
 
-			transform.ColorLabel(colors, "@receiver", alert.Receiver)
+			transform.ColorLabel(colors, "@receiver", alert.Receiver.Value())
 			for _, am := range alert.Alertmanager {
 				transform.ColorLabel(colors, "@alertmanager", am.Name)
 				transform.ColorLabel(colors, "@cluster", am.Cluster)
 			}
 			for _, l := range alert.Labels {
-				transform.ColorLabel(colors, l.Name, l.Value)
+				transform.ColorLabel(colors, l.Name.Value(), l.Value.Value())
 			}
 
 			alert.UpdateFingerprints()
@@ -327,7 +329,7 @@ func (am *Alertmanager) pullAlerts(version string, si *intern.Interner) error {
 
 	knownLabels := make([]string, 0, len(knownLabelsMap))
 	for key := range knownLabelsMap {
-		knownLabels = append(knownLabels, key)
+		knownLabels = append(knownLabels, key.Value())
 	}
 
 	am.lock.Lock()
@@ -342,7 +344,7 @@ func (am *Alertmanager) pullAlerts(version string, si *intern.Interner) error {
 }
 
 // Pull data from upstream Alertmanager instance
-func (am *Alertmanager) Pull(si *intern.Interner) error {
+func (am *Alertmanager) Pull() error {
 	am.Metrics.Cycles++
 
 	version := am.probeVersion()
@@ -358,7 +360,7 @@ func (am *Alertmanager) Pull(si *intern.Interner) error {
 		return err
 	}
 
-	err = am.pullSilences(version, si)
+	err = am.pullSilences(version)
 	if err != nil {
 		am.clearData()
 		am.setError(err.Error())
@@ -366,7 +368,7 @@ func (am *Alertmanager) Pull(si *intern.Interner) error {
 		return err
 	}
 
-	err = am.pullAlerts(version, si)
+	err = am.pullAlerts(version)
 	if err != nil {
 		am.clearData()
 		am.setError(err.Error())
@@ -421,14 +423,14 @@ func (am *Alertmanager) SilenceByID(id string) (models.Silence, error) {
 	return s, nil
 }
 
-func (am *Alertmanager) ExpiredSilences(labels map[string]string) (silences []*models.Silence) {
+func (am *Alertmanager) ExpiredSilences() (silences []*models.Silence) {
 	am.lock.RLock()
 	defer am.lock.RUnlock()
 
 	now := time.Now()
 	maxExpired := now.Add(-config.Config.Silences.Expired)
 	for _, silence := range am.silences {
-		if silence.EndsAt.Before(now) && !silence.EndsAt.Before(maxExpired) && silence.IsMatch(labels) {
+		if silence.EndsAt.Before(now) && !silence.EndsAt.Before(maxExpired) {
 			silence := silence
 			silences = append(silences, &silence)
 		}

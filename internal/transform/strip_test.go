@@ -27,13 +27,13 @@ var stripLabelTests = []stripLabelTest{
 		stripRegex: []string{},
 		keepRegex:  []string{},
 		before: models.Labels{
-			{Name: "host", Value: "localhost"},
-			{Name: "env", Value: "production"},
-			{Name: "level", Value: "info"},
+			{Name: models.NewUniqueString("host"), Value: models.NewUniqueString("localhost")},
+			{Name: models.NewUniqueString("env"), Value: models.NewUniqueString("production")},
+			{Name: models.NewUniqueString("level"), Value: models.NewUniqueString("info")},
 		},
 		after: models.Labels{
-			{Name: "host", Value: "localhost"},
-			{Name: "level", Value: "info"},
+			{Name: models.NewUniqueString("host"), Value: models.NewUniqueString("localhost")},
+			{Name: models.NewUniqueString("level"), Value: models.NewUniqueString("info")},
 		},
 	},
 	{
@@ -42,14 +42,14 @@ var stripLabelTests = []stripLabelTest{
 		stripRegex: []string{},
 		keepRegex:  []string{},
 		before: models.Labels{
-			{Name: "host", Value: "localhost"},
-			{Name: "env", Value: "production"},
-			{Name: "level", Value: "info"},
+			{Name: models.NewUniqueString("host"), Value: models.NewUniqueString("localhost")},
+			{Name: models.NewUniqueString("env"), Value: models.NewUniqueString("production")},
+			{Name: models.NewUniqueString("level"), Value: models.NewUniqueString("info")},
 		},
 		after: models.Labels{
-			{Name: "env", Value: "production"},
-			{Name: "host", Value: "localhost"},
-			{Name: "level", Value: "info"},
+			{Name: models.NewUniqueString("env"), Value: models.NewUniqueString("production")},
+			{Name: models.NewUniqueString("host"), Value: models.NewUniqueString("localhost")},
+			{Name: models.NewUniqueString("level"), Value: models.NewUniqueString("info")},
 		},
 	},
 	{
@@ -58,14 +58,14 @@ var stripLabelTests = []stripLabelTest{
 		stripRegex: []string{},
 		keepRegex:  []string{},
 		before: models.Labels{
-			{Name: "env", Value: "production"},
-			{Name: "host", Value: "localhost"},
-			{Name: "level", Value: "info"},
+			{Name: models.NewUniqueString("env"), Value: models.NewUniqueString("production")},
+			{Name: models.NewUniqueString("host"), Value: models.NewUniqueString("localhost")},
+			{Name: models.NewUniqueString("level"), Value: models.NewUniqueString("info")},
 		},
 		after: models.Labels{
-			{Name: "env", Value: "production"},
-			{Name: "host", Value: "localhost"},
-			{Name: "level", Value: "info"},
+			{Name: models.NewUniqueString("env"), Value: models.NewUniqueString("production")},
+			{Name: models.NewUniqueString("host"), Value: models.NewUniqueString("localhost")},
+			{Name: models.NewUniqueString("level"), Value: models.NewUniqueString("info")},
 		},
 	},
 	{
@@ -74,7 +74,7 @@ var stripLabelTests = []stripLabelTest{
 		stripRegex: []string{},
 		keepRegex:  []string{},
 		before: models.Labels{
-			{Name: "host", Value: "localhost"},
+			{Name: models.NewUniqueString("host"), Value: models.NewUniqueString("localhost")},
 		},
 		after: models.Labels{},
 	},
@@ -84,12 +84,12 @@ var stripLabelTests = []stripLabelTest{
 		stripRegex: []string{},
 		keepRegex:  []string{},
 		before: models.Labels{
-			{Name: "host", Value: "localhost"},
-			{Name: "env", Value: "production"},
-			{Name: "level", Value: "info"},
+			{Name: models.NewUniqueString("host"), Value: models.NewUniqueString("localhost")},
+			{Name: models.NewUniqueString("env"), Value: models.NewUniqueString("production")},
+			{Name: models.NewUniqueString("level"), Value: models.NewUniqueString("info")},
 		},
 		after: models.Labels{
-			{Name: "env", Value: "production"},
+			{Name: models.NewUniqueString("env"), Value: models.NewUniqueString("production")},
 		},
 	},
 	{
@@ -98,12 +98,12 @@ var stripLabelTests = []stripLabelTest{
 		stripRegex: []string{},
 		keepRegex:  []string{},
 		before: models.Labels{
-			{Name: "host", Value: "localhost"},
-			{Name: "env", Value: "production"},
-			{Name: "level", Value: "info"},
+			{Name: models.NewUniqueString("host"), Value: models.NewUniqueString("localhost")},
+			{Name: models.NewUniqueString("env"), Value: models.NewUniqueString("production")},
+			{Name: models.NewUniqueString("level"), Value: models.NewUniqueString("info")},
 		},
 		after: models.Labels{
-			{Name: "host", Value: "localhost"},
+			{Name: models.NewUniqueString("host"), Value: models.NewUniqueString("localhost")},
 		},
 	},
 	{
@@ -112,8 +112,8 @@ var stripLabelTests = []stripLabelTest{
 		stripRegex: []string{},
 		keepRegex:  []string{},
 		before: models.Labels{
-			{Name: "host", Value: "localhost"},
-			{Name: "level", Value: "info"},
+			{Name: models.NewUniqueString("host"), Value: models.NewUniqueString("localhost")},
+			{Name: models.NewUniqueString("level"), Value: models.NewUniqueString("info")},
 		},
 		after: models.Labels{},
 	},
@@ -123,12 +123,12 @@ var stripLabelTests = []stripLabelTest{
 		stripRegex: []string{".*e.*"},
 		keepRegex:  []string{},
 		before: models.Labels{
-			{Name: "host", Value: "localhost"},
-			{Name: "env", Value: "production"},
-			{Name: "level", Value: "info"},
+			{Name: models.NewUniqueString("host"), Value: models.NewUniqueString("localhost")},
+			{Name: models.NewUniqueString("env"), Value: models.NewUniqueString("production")},
+			{Name: models.NewUniqueString("level"), Value: models.NewUniqueString("info")},
 		},
 		after: models.Labels{
-			{Name: "host", Value: "localhost"},
+			{Name: models.NewUniqueString("host"), Value: models.NewUniqueString("localhost")},
 		},
 	},
 	{
@@ -137,13 +137,13 @@ var stripLabelTests = []stripLabelTest{
 		stripRegex: []string{},
 		keepRegex:  []string{".*e.*"},
 		before: models.Labels{
-			{Name: "host", Value: "localhost"},
-			{Name: "env", Value: "production"},
-			{Name: "level", Value: "info"},
+			{Name: models.NewUniqueString("host"), Value: models.NewUniqueString("localhost")},
+			{Name: models.NewUniqueString("env"), Value: models.NewUniqueString("production")},
+			{Name: models.NewUniqueString("level"), Value: models.NewUniqueString("info")},
 		},
 		after: models.Labels{
-			{Name: "env", Value: "production"},
-			{Name: "level", Value: "info"},
+			{Name: models.NewUniqueString("env"), Value: models.NewUniqueString("production")},
+			{Name: models.NewUniqueString("level"), Value: models.NewUniqueString("info")},
 		},
 	},
 	{
@@ -152,12 +152,12 @@ var stripLabelTests = []stripLabelTest{
 		stripRegex: []string{".*el"},
 		keepRegex:  []string{},
 		before: models.Labels{
-			{Name: "host", Value: "localhost"},
-			{Name: "env", Value: "production"},
-			{Name: "level", Value: "info"},
+			{Name: models.NewUniqueString("host"), Value: models.NewUniqueString("localhost")},
+			{Name: models.NewUniqueString("env"), Value: models.NewUniqueString("production")},
+			{Name: models.NewUniqueString("level"), Value: models.NewUniqueString("info")},
 		},
 		after: models.Labels{
-			{Name: "env", Value: "production"},
+			{Name: models.NewUniqueString("env"), Value: models.NewUniqueString("production")},
 		},
 	},
 	{
@@ -166,12 +166,12 @@ var stripLabelTests = []stripLabelTest{
 		stripRegex: []string{},
 		keepRegex:  []string{".*e.*"},
 		before: models.Labels{
-			{Name: "host", Value: "localhost"},
-			{Name: "env", Value: "production"},
-			{Name: "level", Value: "info"},
+			{Name: models.NewUniqueString("host"), Value: models.NewUniqueString("localhost")},
+			{Name: models.NewUniqueString("env"), Value: models.NewUniqueString("production")},
+			{Name: models.NewUniqueString("level"), Value: models.NewUniqueString("info")},
 		},
 		after: models.Labels{
-			{Name: "env", Value: "production"},
+			{Name: models.NewUniqueString("env"), Value: models.NewUniqueString("production")},
 		},
 	},
 }
@@ -310,17 +310,17 @@ var stripAnnotationTests = []stripAnnotationTest{
 		strip: []string{},
 		keep:  []string{},
 		before: models.Annotations{
-			models.Annotation{Name: "foo", Value: "bar"},
+			models.Annotation{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("bar")},
 		},
 		after: models.Annotations{
-			models.Annotation{Name: "foo", Value: "bar"},
+			models.Annotation{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("bar")},
 		},
 	},
 	{
 		strip: []string{"foo"},
 		keep:  []string{},
 		before: models.Annotations{
-			models.Annotation{Name: "foo", Value: "bar"},
+			models.Annotation{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("bar")},
 		},
 		after: models.Annotations{},
 	},
@@ -328,32 +328,32 @@ var stripAnnotationTests = []stripAnnotationTest{
 		strip: []string{"foo"},
 		keep:  []string{},
 		before: models.Annotations{
-			models.Annotation{Name: "foo", Value: "bar"},
-			models.Annotation{Name: "boo", Value: "baz"},
+			models.Annotation{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("bar")},
+			models.Annotation{Name: models.NewUniqueString("boo"), Value: models.NewUniqueString("baz")},
 		},
 		after: models.Annotations{
-			models.Annotation{Name: "boo", Value: "baz"},
+			models.Annotation{Name: models.NewUniqueString("boo"), Value: models.NewUniqueString("baz")},
 		},
 	},
 	{
 		strip: []string{},
 		keep:  []string{"foo"},
 		before: models.Annotations{
-			models.Annotation{Name: "foo", Value: "bar"},
+			models.Annotation{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("bar")},
 		},
 		after: models.Annotations{
-			models.Annotation{Name: "foo", Value: "bar"},
+			models.Annotation{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("bar")},
 		},
 	},
 	{
 		strip: []string{},
 		keep:  []string{"foo"},
 		before: models.Annotations{
-			models.Annotation{Name: "foo", Value: "bar"},
-			models.Annotation{Name: "boo", Value: "baz"},
+			models.Annotation{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("bar")},
+			models.Annotation{Name: models.NewUniqueString("boo"), Value: models.NewUniqueString("baz")},
 		},
 		after: models.Annotations{
-			models.Annotation{Name: "foo", Value: "bar"},
+			models.Annotation{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("bar")},
 		},
 	},
 }

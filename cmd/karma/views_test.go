@@ -22,7 +22,6 @@ import (
 
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
-	"github.com/prymitive/karma/internal/intern"
 	"github.com/prymitive/karma/internal/mock"
 	"github.com/prymitive/karma/internal/models"
 	"github.com/prymitive/karma/internal/regex"
@@ -36,6 +35,10 @@ import (
 )
 
 var upstreamSetup = false
+
+var cmpUnique = cmp.Comparer(func(x, y models.UniqueString) bool {
+	return cmp.Equal(x.Value(), y.Value())
+})
 
 type setenvFunc func(key, val string)
 
@@ -635,7 +638,7 @@ func TestValidateAllAlerts(t *testing.T) {
 			for _, ag := range ur.Grids[0].AlertGroups {
 				for _, a := range ag.Alerts {
 					if !slices.Contains(models.AlertStateList, a.State) {
-						t.Errorf("Invalid alert status '%s', not in %v", a.State, models.AlertStateList)
+						t.Errorf("Invalid alert status '%s', not in %v", a.State.Value(), models.AlertStateList)
 					}
 					if len(a.Alertmanager) == 0 {
 						t.Errorf("Alertmanager instance list is empty, %v", a)
@@ -1057,7 +1060,7 @@ func TestSilences(t *testing.T) {
 					results = append(results, silence.Silence.Comment)
 				}
 				sort.Strings(results) // can't rely on API order since it's sorted based on timestamps, resort
-				if diff := cmp.Diff(testCase.results, results); diff != "" {
+				if diff := cmp.Diff(testCase.results, results, cmpUnique); diff != "" {
 					t.Errorf("Wrong silences returned for '%s' (-want +got):\n%s", uri, diff)
 				}
 			}
@@ -1163,7 +1166,7 @@ func TestEmptySettings(t *testing.T) {
 		Labels:         models.LabelsSettings{},
 	}
 
-	if diff := cmp.Diff(expectedSettings, ur.Settings); diff != "" {
+	if diff := cmp.Diff(expectedSettings, ur.Settings, cmpUnique); diff != "" {
 		t.Errorf("Wrong settings returned (-want +got):\n%s", diff)
 	}
 }
@@ -1502,7 +1505,7 @@ func TestAuthentication(t *testing.T) {
 					if ur.Authentication.Username != testCase.responseUsername {
 						t.Errorf("Got Authentication.Username=%s, expected %s", ur.Authentication.Username, testCase.responseUsername)
 					}
-					if diff := cmp.Diff(ur.Authentication.Groups, testCase.responseGroups); diff != "" {
+					if diff := cmp.Diff(ur.Authentication.Groups, testCase.responseGroups, cmpUnique); diff != "" {
 						t.Errorf("Incorrect groups list (-want +got):\n%s", diff)
 						break
 					}
@@ -1658,7 +1661,7 @@ func TestHealthcheckAlerts(t *testing.T) {
 					return
 				}
 
-				_ = am.Pull(intern.New())
+				_ = am.Pull()
 				hasError := am.Error() != ""
 				if hasError != testCase.hasError {
 					t.Errorf("error=%q expected=%v", am.Error(), testCase.hasError)
@@ -2252,85 +2255,85 @@ func TestAlertList(t *testing.T) {
 			alerts: AlertList{
 				Alerts: []models.Labels{
 					{
-						{Name: "alertname", Value: "Free_Disk_Space_Too_Low"},
-						{Name: "cluster", Value: "staging"},
-						{Name: "disk", Value: "sda"},
-						{Name: "instance", Value: "server5"},
-						{Name: "job", Value: "node_exporter"},
+						{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("Free_Disk_Space_Too_Low")},
+						{Name: models.NewUniqueString("cluster"), Value: models.NewUniqueString("staging")},
+						{Name: models.NewUniqueString("disk"), Value: models.NewUniqueString("sda")},
+						{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("server5")},
+						{Name: models.NewUniqueString("job"), Value: models.NewUniqueString("node_exporter")},
 					},
 					{
-						{Name: "alertname", Value: "HTTP_Probe_Failed"},
-						{Name: "cluster", Value: "dev"},
-						{Name: "instance", Value: "web1"},
-						{Name: "job", Value: "node_exporter"},
+						{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("HTTP_Probe_Failed")},
+						{Name: models.NewUniqueString("cluster"), Value: models.NewUniqueString("dev")},
+						{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("web1")},
+						{Name: models.NewUniqueString("job"), Value: models.NewUniqueString("node_exporter")},
 					},
 					{
-						{Name: "alertname", Value: "HTTP_Probe_Failed"},
-						{Name: "cluster", Value: "dev"},
-						{Name: "instance", Value: "web2"},
-						{Name: "job", Value: "node_exporter"},
+						{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("HTTP_Probe_Failed")},
+						{Name: models.NewUniqueString("cluster"), Value: models.NewUniqueString("dev")},
+						{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("web2")},
+						{Name: models.NewUniqueString("job"), Value: models.NewUniqueString("node_exporter")},
 					},
 					{
-						{Name: "alertname", Value: "Host_Down"},
-						{Name: "cluster", Value: "dev"},
-						{Name: "instance", Value: "server6"},
-						{Name: "ip", Value: "127.0.0.6"},
-						{Name: "job", Value: "node_ping"},
+						{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("Host_Down")},
+						{Name: models.NewUniqueString("cluster"), Value: models.NewUniqueString("dev")},
+						{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("server6")},
+						{Name: models.NewUniqueString("ip"), Value: models.NewUniqueString("127.0.0.6")},
+						{Name: models.NewUniqueString("job"), Value: models.NewUniqueString("node_ping")},
 					},
 					{
-						{Name: "alertname", Value: "Host_Down"},
-						{Name: "cluster", Value: "dev"},
-						{Name: "instance", Value: "server7"},
-						{Name: "ip", Value: "127.0.0.7"},
-						{Name: "job", Value: "node_ping"},
+						{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("Host_Down")},
+						{Name: models.NewUniqueString("cluster"), Value: models.NewUniqueString("dev")},
+						{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("server7")},
+						{Name: models.NewUniqueString("ip"), Value: models.NewUniqueString("127.0.0.7")},
+						{Name: models.NewUniqueString("job"), Value: models.NewUniqueString("node_ping")},
 					},
 					{
-						{Name: "alertname", Value: "Host_Down"},
-						{Name: "cluster", Value: "dev"},
-						{Name: "instance", Value: "server8"},
-						{Name: "ip", Value: "127.0.0.8"},
-						{Name: "job", Value: "node_ping"},
+						{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("Host_Down")},
+						{Name: models.NewUniqueString("cluster"), Value: models.NewUniqueString("dev")},
+						{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("server8")},
+						{Name: models.NewUniqueString("ip"), Value: models.NewUniqueString("127.0.0.8")},
+						{Name: models.NewUniqueString("job"), Value: models.NewUniqueString("node_ping")},
 					},
 					{
-						{Name: "alertname", Value: "Host_Down"},
-						{Name: "cluster", Value: "prod"},
-						{Name: "instance", Value: "server1"},
-						{Name: "ip", Value: "127.0.0.1"},
-						{Name: "job", Value: "node_ping"},
+						{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("Host_Down")},
+						{Name: models.NewUniqueString("cluster"), Value: models.NewUniqueString("prod")},
+						{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("server1")},
+						{Name: models.NewUniqueString("ip"), Value: models.NewUniqueString("127.0.0.1")},
+						{Name: models.NewUniqueString("job"), Value: models.NewUniqueString("node_ping")},
 					},
 					{
-						{Name: "alertname", Value: "Host_Down"},
-						{Name: "cluster", Value: "prod"},
-						{Name: "instance", Value: "server2"},
-						{Name: "ip", Value: "127.0.0.2"},
-						{Name: "job", Value: "node_ping"},
+						{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("Host_Down")},
+						{Name: models.NewUniqueString("cluster"), Value: models.NewUniqueString("prod")},
+						{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("server2")},
+						{Name: models.NewUniqueString("ip"), Value: models.NewUniqueString("127.0.0.2")},
+						{Name: models.NewUniqueString("job"), Value: models.NewUniqueString("node_ping")},
 					},
 					{
-						{Name: "alertname", Value: "Host_Down"},
-						{Name: "cluster", Value: "staging"},
-						{Name: "instance", Value: "server3"},
-						{Name: "ip", Value: "127.0.0.3"},
-						{Name: "job", Value: "node_ping"},
+						{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("Host_Down")},
+						{Name: models.NewUniqueString("cluster"), Value: models.NewUniqueString("staging")},
+						{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("server3")},
+						{Name: models.NewUniqueString("ip"), Value: models.NewUniqueString("127.0.0.3")},
+						{Name: models.NewUniqueString("job"), Value: models.NewUniqueString("node_ping")},
 					},
 					{
-						{Name: "alertname", Value: "Host_Down"},
-						{Name: "cluster", Value: "staging"},
-						{Name: "instance", Value: "server4"},
-						{Name: "ip", Value: "127.0.0.4"},
-						{Name: "job", Value: "node_ping"},
+						{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("Host_Down")},
+						{Name: models.NewUniqueString("cluster"), Value: models.NewUniqueString("staging")},
+						{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("server4")},
+						{Name: models.NewUniqueString("ip"), Value: models.NewUniqueString("127.0.0.4")},
+						{Name: models.NewUniqueString("job"), Value: models.NewUniqueString("node_ping")},
 					},
 					{
-						{Name: "alertname", Value: "Host_Down"},
-						{Name: "cluster", Value: "staging"},
-						{Name: "instance", Value: "server5"},
-						{Name: "ip", Value: "127.0.0.5"},
-						{Name: "job", Value: "node_ping"},
+						{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("Host_Down")},
+						{Name: models.NewUniqueString("cluster"), Value: models.NewUniqueString("staging")},
+						{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("server5")},
+						{Name: models.NewUniqueString("ip"), Value: models.NewUniqueString("127.0.0.5")},
+						{Name: models.NewUniqueString("job"), Value: models.NewUniqueString("node_ping")},
 					},
 					{
-						{Name: "alertname", Value: "Memory_Usage_Too_High"},
-						{Name: "cluster", Value: "prod"},
-						{Name: "instance", Value: "server2"},
-						{Name: "job", Value: "node_exporter"},
+						{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("Memory_Usage_Too_High")},
+						{Name: models.NewUniqueString("cluster"), Value: models.NewUniqueString("prod")},
+						{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("server2")},
+						{Name: models.NewUniqueString("job"), Value: models.NewUniqueString("node_exporter")},
 					},
 				},
 			},
@@ -2340,11 +2343,11 @@ func TestAlertList(t *testing.T) {
 			alerts: AlertList{
 				Alerts: []models.Labels{
 					{
-						{Name: "alertname", Value: "Free_Disk_Space_Too_Low"},
-						{Name: "cluster", Value: "staging"},
-						{Name: "disk", Value: "sda"},
-						{Name: "instance", Value: "server5"},
-						{Name: "job", Value: "node_exporter"},
+						{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("Free_Disk_Space_Too_Low")},
+						{Name: models.NewUniqueString("cluster"), Value: models.NewUniqueString("staging")},
+						{Name: models.NewUniqueString("disk"), Value: models.NewUniqueString("sda")},
+						{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("server5")},
+						{Name: models.NewUniqueString("job"), Value: models.NewUniqueString("node_exporter")},
 					},
 				},
 			},
@@ -2354,16 +2357,16 @@ func TestAlertList(t *testing.T) {
 			alerts: AlertList{
 				Alerts: []models.Labels{
 					{
-						{Name: "alertname", Value: "HTTP_Probe_Failed"},
-						{Name: "cluster", Value: "dev"},
-						{Name: "instance", Value: "web1"},
-						{Name: "job", Value: "node_exporter"},
+						{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("HTTP_Probe_Failed")},
+						{Name: models.NewUniqueString("cluster"), Value: models.NewUniqueString("dev")},
+						{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("web1")},
+						{Name: models.NewUniqueString("job"), Value: models.NewUniqueString("node_exporter")},
 					},
 					{
-						{Name: "alertname", Value: "HTTP_Probe_Failed"},
-						{Name: "cluster", Value: "dev"},
-						{Name: "instance", Value: "web2"},
-						{Name: "job", Value: "node_exporter"},
+						{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("HTTP_Probe_Failed")},
+						{Name: models.NewUniqueString("cluster"), Value: models.NewUniqueString("dev")},
+						{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("web2")},
+						{Name: models.NewUniqueString("job"), Value: models.NewUniqueString("node_exporter")},
 					},
 				},
 			},
@@ -2373,17 +2376,17 @@ func TestAlertList(t *testing.T) {
 			alerts: AlertList{
 				Alerts: []models.Labels{
 					{
-						{Name: "alertname", Value: "Host_Down"},
-						{Name: "cluster", Value: "prod"},
-						{Name: "instance", Value: "server2"},
-						{Name: "ip", Value: "127.0.0.2"},
-						{Name: "job", Value: "node_ping"},
+						{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("Host_Down")},
+						{Name: models.NewUniqueString("cluster"), Value: models.NewUniqueString("prod")},
+						{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("server2")},
+						{Name: models.NewUniqueString("ip"), Value: models.NewUniqueString("127.0.0.2")},
+						{Name: models.NewUniqueString("job"), Value: models.NewUniqueString("node_ping")},
 					},
 					{
-						{Name: "alertname", Value: "Memory_Usage_Too_High"},
-						{Name: "cluster", Value: "prod"},
-						{Name: "instance", Value: "server2"},
-						{Name: "job", Value: "node_exporter"},
+						{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("Memory_Usage_Too_High")},
+						{Name: models.NewUniqueString("cluster"), Value: models.NewUniqueString("prod")},
+						{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("server2")},
+						{Name: models.NewUniqueString("job"), Value: models.NewUniqueString("node_exporter")},
 					},
 				},
 			},
@@ -2393,18 +2396,18 @@ func TestAlertList(t *testing.T) {
 			alerts: AlertList{
 				Alerts: []models.Labels{
 					{
-						{Name: "alertname", Value: "Host_Down"},
-						{Name: "cluster", Value: "prod"},
-						{Name: "instance", Value: "server1"},
-						{Name: "ip", Value: "127.0.0.1"},
-						{Name: "job", Value: "node_ping"},
+						{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("Host_Down")},
+						{Name: models.NewUniqueString("cluster"), Value: models.NewUniqueString("prod")},
+						{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("server1")},
+						{Name: models.NewUniqueString("ip"), Value: models.NewUniqueString("127.0.0.1")},
+						{Name: models.NewUniqueString("job"), Value: models.NewUniqueString("node_ping")},
 					},
 					{
-						{Name: "alertname", Value: "Host_Down"},
-						{Name: "cluster", Value: "prod"},
-						{Name: "instance", Value: "server2"},
-						{Name: "ip", Value: "127.0.0.2"},
-						{Name: "job", Value: "node_ping"},
+						{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("Host_Down")},
+						{Name: models.NewUniqueString("cluster"), Value: models.NewUniqueString("prod")},
+						{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("server2")},
+						{Name: models.NewUniqueString("ip"), Value: models.NewUniqueString("127.0.0.2")},
+						{Name: models.NewUniqueString("job"), Value: models.NewUniqueString("node_ping")},
 					},
 				},
 			},
@@ -2439,7 +2442,7 @@ func TestAlertList(t *testing.T) {
 					if err != nil {
 						t.Errorf("Failed to unmarshal response: %s", err)
 					}
-					if diff := cmp.Diff(tc.alerts, ur); diff != "" {
+					if diff := cmp.Diff(tc.alerts, ur, cmpUnique); diff != "" {
 						t.Errorf("Wrong alert list returned (-want +got):\n%s", diff)
 					}
 				}
@@ -2460,76 +2463,76 @@ func TestSortSliceOfLabels(t *testing.T) {
 	testCases := []testCaseT{
 		{
 			labels: []models.Labels{
-				{{Name: "alertname", Value: "alert2"}},
-				{{Name: "alertname", Value: "alert1"}},
+				{{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("alert2")}},
+				{{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("alert1")}},
 			},
 			sortKeys: []string{},
 			fallback: "",
 			output: []models.Labels{
-				{{Name: "alertname", Value: "alert2"}},
-				{{Name: "alertname", Value: "alert1"}},
+				{{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("alert2")}},
+				{{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("alert1")}},
 			},
 		},
 		{
 			labels: []models.Labels{
-				{{Name: "alertname", Value: "alert2"}},
-				{{Name: "alertname", Value: "alert1"}},
+				{{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("alert2")}},
+				{{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("alert1")}},
 			},
 			sortKeys: []string{"alertname"},
 			fallback: "alertname",
 			output: []models.Labels{
-				{{Name: "alertname", Value: "alert1"}},
-				{{Name: "alertname", Value: "alert2"}},
+				{{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("alert1")}},
+				{{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("alert2")}},
 			},
 		},
 		{
 			labels: []models.Labels{
-				{{Name: "alertname", Value: "alert2"}},
-				{{Name: "alertname", Value: "alert1"}},
+				{{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("alert2")}},
+				{{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("alert1")}},
 			},
 			sortKeys: []string{},
 			fallback: "alertname",
 			output: []models.Labels{
-				{{Name: "alertname", Value: "alert1"}},
-				{{Name: "alertname", Value: "alert2"}},
+				{{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("alert1")}},
+				{{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("alert2")}},
 			},
 		},
 		{
 			labels: []models.Labels{
-				{{Name: "alertname", Value: "alert2"}},
-				{{Name: "alertname", Value: "alert1"}},
+				{{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("alert2")}},
+				{{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("alert1")}},
 			},
 			sortKeys: []string{"foo"},
 			fallback: "alertname",
 			output: []models.Labels{
-				{{Name: "alertname", Value: "alert1"}},
-				{{Name: "alertname", Value: "alert2"}},
+				{{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("alert1")}},
+				{{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("alert2")}},
 			},
 		},
 		{
 			labels: []models.Labels{
-				{{Name: "alertname", Value: "alert1"}},
-				{{Name: "alertname", Value: "alert1"}},
+				{{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("alert1")}},
+				{{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("alert1")}},
 			},
 			sortKeys: []string{"alertname"},
 			fallback: "alertname",
 			output: []models.Labels{
-				{{Name: "alertname", Value: "alert1"}},
-				{{Name: "alertname", Value: "alert1"}},
+				{{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("alert1")}},
+				{{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("alert1")}},
 			},
 		},
 		{
 			labels: []models.Labels{
-				{{Name: "alertname", Value: "alert2"}, {Name: "job", Value: "a"}},
-				{{Name: "alertname", Value: "alert1"}},
-				{{Name: "alertname", Value: "alert3"}, {Name: "job", Value: "b"}},
+				{{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("alert2")}, {Name: models.NewUniqueString("job"), Value: models.NewUniqueString("a")}},
+				{{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("alert1")}},
+				{{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("alert3")}, {Name: models.NewUniqueString("job"), Value: models.NewUniqueString("b")}},
 			},
 			sortKeys: []string{"job"},
 			fallback: "alertname",
 			output: []models.Labels{
-				{{Name: "alertname", Value: "alert2"}, {Name: "job", Value: "a"}},
-				{{Name: "alertname", Value: "alert3"}, {Name: "job", Value: "b"}},
-				{{Name: "alertname", Value: "alert1"}},
+				{{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("alert2")}, {Name: models.NewUniqueString("job"), Value: models.NewUniqueString("a")}},
+				{{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("alert3")}, {Name: models.NewUniqueString("job"), Value: models.NewUniqueString("b")}},
+				{{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("alert1")}},
 			},
 		},
 	}
@@ -2537,7 +2540,7 @@ func TestSortSliceOfLabels(t *testing.T) {
 	for i, tc := range testCases {
 		t.Run(fmt.Sprintf("%d:%v", i, tc.sortKeys), func(t *testing.T) {
 			sortSliceOfLabels(tc.labels, tc.sortKeys, tc.fallback)
-			if diff := cmp.Diff(tc.output, tc.labels); diff != "" {
+			if diff := cmp.Diff(tc.output, tc.labels, cmpUnique); diff != "" {
 				t.Errorf("Wrong labels order after sorting (-want +got):\n%s", diff)
 			}
 		})
@@ -2780,7 +2783,7 @@ func TestLabelSettings(t *testing.T) {
 					t.Error("TotalAlerts=0")
 					t.FailNow()
 				}
-				if diff := cmp.Diff(tc.labels, ur.Settings.Labels); diff != "" {
+				if diff := cmp.Diff(tc.labels, ur.Settings.Labels, cmpUnique); diff != "" {
 					t.Errorf("Wrong labels returned (-want +got):\n%s", diff)
 				}
 			}

@@ -6,6 +6,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 
 	"github.com/prymitive/karma/internal/alertmanager"
+	"github.com/prymitive/karma/internal/models"
 )
 
 type karmaCollector struct {
@@ -99,9 +100,9 @@ func (c *karmaCollector) Collect(ch chan<- prometheus.Metric) {
 		}
 
 		// receiver name -> count
-		groupsByReceiver := map[string]float64{}
+		groupsByReceiver := map[models.UniqueString]float64{}
 		// receiver name -> state -> count
-		alertsByReceiverByState := map[string]map[string]float64{}
+		alertsByReceiverByState := map[models.UniqueString]map[models.UniqueString]float64{}
 
 		// iterate all alert groups this instance stores
 		for _, group := range am.Alerts() {
@@ -114,10 +115,10 @@ func (c *karmaCollector) Collect(ch chan<- prometheus.Metric) {
 			// count all alerts per receiver & state
 			for _, alert := range group.Alerts {
 				if _, found := alertsByReceiverByState[alert.Receiver]; !found {
-					alertsByReceiverByState[alert.Receiver] = map[string]float64{
-						"unprocessed": 0,
-						"active":      0,
-						"suppressed":  0,
+					alertsByReceiverByState[alert.Receiver] = map[models.UniqueString]float64{
+						models.NewUniqueString("unprocessed"): 0,
+						models.NewUniqueString("active"):      0,
+						models.NewUniqueString("suppressed"):  0,
 					}
 				}
 				alertsByReceiverByState[alert.Receiver][alert.State]++
@@ -131,7 +132,7 @@ func (c *karmaCollector) Collect(ch chan<- prometheus.Metric) {
 				prometheus.GaugeValue,
 				count,
 				am.Name,
-				reciver,
+				reciver.Value(),
 			)
 		}
 		for reciver, byState := range alertsByReceiverByState {
@@ -141,8 +142,8 @@ func (c *karmaCollector) Collect(ch chan<- prometheus.Metric) {
 					prometheus.GaugeValue,
 					count,
 					am.Name,
-					state,
-					reciver,
+					state.Value(),
+					reciver.Value(),
 				)
 			}
 		}

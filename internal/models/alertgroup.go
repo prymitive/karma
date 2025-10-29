@@ -37,7 +37,7 @@ type AlertGroup struct {
 	LatestStartsAt    time.Time      `json:"-"`
 	AlertmanagerCount map[string]int `json:"alertmanagerCount"`
 	StateCount        map[string]int `json:"stateCount"`
-	Receiver          string         `json:"receiver"`
+	Receiver          UniqueString   `json:"receiver"`
 	ID                string         `json:"id"`
 	Hash              string         `json:"-"`
 	Labels            Labels         `json:"labels"`
@@ -48,12 +48,12 @@ type AlertGroup struct {
 // it should be unique for each AlertGroup
 func (ag AlertGroup) LabelsFingerprint() string {
 	h := xxhash.New()
-	_, _ = h.WriteString(ag.Receiver)
+	_, _ = h.WriteString(ag.Receiver.Value())
 	_, _ = h.Write(seps)
 	for _, l := range ag.Labels {
-		_, _ = h.WriteString(l.Name)
+		_, _ = h.WriteString(l.Name.Value())
 		_, _ = h.Write(seps)
-		_, _ = h.WriteString(l.Value)
+		_, _ = h.WriteString(l.Value.Value())
 		_, _ = h.Write(seps)
 	}
 	return strconv.FormatUint(h.Sum64(), 16)

@@ -14,29 +14,32 @@ import (
 func TestDedupSharedMaps(t *testing.T) {
 	ag := models.APIAlertGroup{
 		AlertGroup: models.AlertGroup{
+			Receiver: models.NewUniqueString("default"),
 			Labels: models.Labels{
-				{Name: "alertname", Value: "FakeAlert"},
+				{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("FakeAlert")},
 			},
 			Alerts: models.AlertList{
 				models.Alert{
-					State: models.AlertStateSuppressed,
+					Receiver: models.NewUniqueString("default"),
+					State:    models.AlertStateSuppressed,
 					Annotations: models.Annotations{
 						models.Annotation{
-							Name:  "summary",
-							Value: "this is summary",
+							Name:  models.NewUniqueString("summary"),
+							Value: models.NewUniqueString("this is summary"),
 						},
 						models.Annotation{
-							Name:  "foo",
-							Value: "bar",
+							Name:  models.NewUniqueString("foo"),
+							Value: models.NewUniqueString("bar"),
 						},
 					},
 					Labels: models.Labels{
-						{Name: "alertname", Value: "FakeAlert"},
-						{Name: "job", Value: "node_exporter"},
-						{Name: "instance", Value: "1"},
+						{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("FakeAlert")},
+						{Name: models.NewUniqueString("job"), Value: models.NewUniqueString("node_exporter")},
+						{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("1")},
 					},
 					Alertmanager: []models.AlertmanagerInstance{
 						{
+							State:       models.AlertStateSuppressed,
 							Fingerprint: "1",
 							Name:        "am1",
 							Cluster:     "fakeCluster",
@@ -44,6 +47,7 @@ func TestDedupSharedMaps(t *testing.T) {
 							Source:      "https://prom.example.com/graph?foo",
 						},
 						{
+							State:       models.AlertStateSuppressed,
 							Fingerprint: "2",
 							Name:        "am2",
 							Cluster:     "fakeCluster",
@@ -53,20 +57,22 @@ func TestDedupSharedMaps(t *testing.T) {
 					},
 				},
 				models.Alert{
-					State: models.AlertStateActive,
+					Receiver: models.NewUniqueString("default"),
+					State:    models.AlertStateActive,
 					Annotations: models.Annotations{
 						models.Annotation{
-							Name:  "summary",
-							Value: "this is summary",
+							Name:  models.NewUniqueString("summary"),
+							Value: models.NewUniqueString("this is summary"),
 						},
 					},
 					Labels: models.Labels{
-						{Name: "alertname", Value: "FakeAlert"},
-						{Name: "job", Value: "node_exporter"},
-						{Name: "instance", Value: "2"},
+						{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("FakeAlert")},
+						{Name: models.NewUniqueString("job"), Value: models.NewUniqueString("node_exporter")},
+						{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("2")},
 					},
 					Alertmanager: []models.AlertmanagerInstance{
 						{
+							State:       models.AlertStateActive,
 							Fingerprint: "1",
 							Name:        "am1",
 							Cluster:     "fakeCluster",
@@ -74,6 +80,7 @@ func TestDedupSharedMaps(t *testing.T) {
 							Source:      "https://am.example.com",
 						},
 						{
+							State:       models.AlertStateActive,
 							Fingerprint: "1",
 							Name:        "am2",
 							Cluster:     "fakeCluster",
@@ -83,21 +90,23 @@ func TestDedupSharedMaps(t *testing.T) {
 					},
 				},
 				models.Alert{
-					State: models.AlertStateSuppressed,
+					Receiver: models.NewUniqueString("default"),
+					State:    models.AlertStateSuppressed,
 					Annotations: models.Annotations{
 						models.Annotation{
-							Name:  "summary",
-							Value: "this is summary",
+							Name:  models.NewUniqueString("summary"),
+							Value: models.NewUniqueString("this is summary"),
 						},
 					},
 					Labels: models.Labels{
-						{Name: "alertname", Value: "FakeAlert"},
-						{Name: "job", Value: "blackbox"},
-						{Name: "instance", Value: "3"},
-						{Name: "extra", Value: "ignore"},
+						{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("FakeAlert")},
+						{Name: models.NewUniqueString("job"), Value: models.NewUniqueString("blackbox")},
+						{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("3")},
+						{Name: models.NewUniqueString("extra"), Value: models.NewUniqueString("ignore")},
 					},
 					Alertmanager: []models.AlertmanagerInstance{
 						{
+							State:       models.AlertStateSuppressed,
 							Fingerprint: "1",
 							Name:        "am1",
 							Cluster:     "fakeCluster",
@@ -105,6 +114,7 @@ func TestDedupSharedMaps(t *testing.T) {
 							Source:      "https://am.example.com/graph",
 						},
 						{
+							State:       models.AlertStateSuppressed,
 							Fingerprint: "1",
 							Name:        "am2",
 							Cluster:     "fakeCluster",
@@ -129,13 +139,13 @@ func TestDedupSharedMapsSingleGroup(t *testing.T) {
 				models.Alert{
 					State: models.AlertStateActive,
 					Labels: models.Labels{
-						{Name: "foo", Value: "bar"},
+						{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("bar")},
 					},
 				},
 				models.Alert{
 					State: models.AlertStateUnprocessed,
 					Labels: models.Labels{
-						{Name: "foo", Value: "bar"},
+						{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("bar")},
 					},
 				},
 			},

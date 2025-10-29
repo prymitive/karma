@@ -1,10 +1,10 @@
 package models
 
 import (
-	"fmt"
+	"encoding/json"
 	"strconv"
-	"strings"
 	"time"
+	"unique"
 
 	"github.com/cespare/xxhash/v2"
 	"github.com/fvbommel/sortorder"
@@ -14,44 +14,53 @@ import (
 
 // AlertStateUnprocessed means that Alertmanager notify didn't yet process it
 // and AM doesn't know if alert is active or suppressed
-const AlertStateUnprocessed = "unprocessed"
+var AlertStateUnprocessed = NewUniqueString("unprocessed")
 
 // AlertStateActive is the state in which we know that the alert should fire
-const AlertStateActive = "active"
+var AlertStateActive = NewUniqueString("active")
 
 // AlertStateSuppressed means that we know that alert is silenced or inhibited
-const AlertStateSuppressed = "suppressed"
+var AlertStateSuppressed = NewUniqueString("suppressed")
 
 // AlertStateList exports all alert states so other packages can get this list
-var AlertStateList = []string{
+var AlertStateList = []UniqueString{
 	AlertStateUnprocessed,
 	AlertStateActive,
 	AlertStateSuppressed,
 }
 
-type Label struct {
-	Name  string `json:"name"`
-	Value string `json:"value"`
+type UniqueString struct {
+	unique.Handle[string]
 }
 
-func (l Label) String() string {
-	return fmt.Sprintf("%s=\"%s\"", l.Name, l.Value)
+func NewUniqueString(s string) UniqueString {
+	return UniqueString{Handle: unique.Make(s)}
+}
+
+func (us *UniqueString) MarshalJSON() ([]byte, error) {
+	return json.Marshal(us.Value())
+}
+
+func (us *UniqueString) UnmarshalJSON(data []byte) error {
+	var s string
+	if err := json.Unmarshal(data, &s); err != nil {
+		return err
+	}
+	us.Handle = unique.Make(s)
+	return nil
+}
+
+type Label struct {
+	Name  UniqueString `json:"name"`
+	Value UniqueString `json:"value"`
 }
 
 type Labels []Label
 
-func (ls Labels) String() string {
-	s := make([]string, 0, len(ls))
-	for _, l := range ls {
-		s = append(s, l.String())
-	}
-	return strings.Join(s, ",")
-}
-
 func (ls Labels) Map() map[string]string {
 	m := make(map[string]string, len(ls))
 	for _, l := range ls {
-		m[l.Name] = l.Value
+		m[l.Name.Value()] = l.Value.Value()
 	}
 	return m
 }
@@ -67,9 +76,9 @@ func (ls Labels) Swap(i, j int) {
 func (ls Labels) Less(i, j int) bool {
 	ai, aj := -1, -1
 	for index, name := range config.Config.Labels.Order {
-		if ls[i].Name == name {
+		if ls[i].Name.Value() == name {
 			ai = index
-		} else if ls[j].Name == name {
+		} else if ls[j].Name.Value() == name {
 			aj = index
 		}
 		if ai >= 0 && aj >= 0 {
@@ -79,16 +88,16 @@ func (ls Labels) Less(i, j int) bool {
 	if ai != aj {
 		return aj < ai
 	}
-	if ls[i].Name == ls[j].Name {
-		return sortorder.NaturalLess(ls[i].Value, ls[j].Value)
+	if ls[i].Name.Value() == ls[j].Name.Value() {
+		return sortorder.NaturalLess(ls[i].Value.Value(), ls[j].Value.Value())
 	}
-	return sortorder.NaturalLess(ls[i].Name, ls[j].Name)
+	return sortorder.NaturalLess(ls[i].Name.Value(), ls[j].Name.Value())
 }
 
 func (ls Labels) Get(name string) *Label {
-	for _, l := range ls {
-		if l.Name == name {
-			return &l
+	for i, l := range ls {
+		if l.Name.Value() == name {
+			return &ls[i]
 		}
 	}
 	return nil
@@ -96,15 +105,15 @@ func (ls Labels) Get(name string) *Label {
 
 func (ls Labels) GetValue(name string) string {
 	for _, l := range ls {
-		if l.Name == name {
-			return l.Value
+		if l.Name.Value() == name {
+			return l.Value.Value()
 		}
 	}
 	return ""
 }
 
 func (ls Labels) Add(l Label) Labels {
-	if ls.Get(l.Name) != nil {
+	if ls.Get(l.Name.Value()) != nil {
 		return ls
 	}
 	return append(ls, l)
@@ -114,7 +123,7 @@ func (ls Labels) Set(name, value string) Labels {
 	if ls.Get(name) != nil {
 		return ls
 	}
-	return append(ls, Label{Name: name, Value: value})
+	return append(ls, Label{Name: NewUniqueString(name), Value: NewUniqueString(value)})
 }
 
 // Alert is vanilla alert + some additional attributes
@@ -123,12 +132,12 @@ func (ls Labels) Set(name, value string) Labels {
 //     it's pulled out of annotation map and returned under links field,
 //     karma UI used this to show links differently than other annotations
 type Alert struct {
-	StartsAt     time.Time `json:"startsAt"`
-	State        string    `json:"state"`
-	Fingerprint  string    `json:"-"`
-	GeneratorURL string    `json:"-"`
-	Receiver     string    `json:"receiver"`
-	LabelsFP     string    `json:"id"`
+	StartsAt     time.Time    `json:"startsAt"`
+	State        UniqueString `json:"state"`
+	Fingerprint  string       `json:"-"`
+	GeneratorURL string       `json:"-"`
+	Receiver     UniqueString `json:"receiver"`
+	LabelsFP     string       `json:"id"`
 	contentFP    string
 	Annotations  Annotations            `json:"annotations"`
 	Labels       Labels                 `json:"labels"`
@@ -143,18 +152,18 @@ var seps = []byte{'\xff'}
 func (a *Alert) UpdateFingerprints() {
 	h := xxhash.New()
 	for _, l := range a.Labels {
-		_, _ = h.WriteString(l.Name)
+		_, _ = h.WriteString(l.Name.Value())
 		_, _ = h.Write(seps)
-		_, _ = h.WriteString(l.Value)
+		_, _ = h.WriteString(l.Value.Value())
 		_, _ = h.Write(seps)
 	}
 	a.LabelsFP = strconv.FormatUint(h.Sum64(), 16)
 
 	h.Reset()
 	for _, a := range a.Annotations {
-		_, _ = h.WriteString(a.Name)
+		_, _ = h.WriteString(a.Name.Value())
 		_, _ = h.Write(seps)
-		_, _ = h.WriteString(a.Value)
+		_, _ = h.WriteString(a.Value.Value())
 		_, _ = h.Write(seps)
 		_, _ = h.WriteString(strconv.FormatBool(a.IsAction))
 		_, _ = h.Write(seps)
@@ -165,13 +174,13 @@ func (a *Alert) UpdateFingerprints() {
 
 	}
 	for _, l := range a.Labels {
-		_, _ = h.WriteString(l.Name)
+		_, _ = h.WriteString(l.Name.Value())
 		_, _ = h.Write(seps)
-		_, _ = h.WriteString(l.Value)
+		_, _ = h.WriteString(l.Value.Value())
 		_, _ = h.Write(seps)
 	}
 	_, _ = h.WriteString(a.StartsAt.Format(time.RFC3339))
-	_, _ = h.WriteString(a.State)
+	_, _ = h.WriteString(a.State.Value())
 	for _, am := range a.Alertmanager {
 		_, _ = h.WriteString(am.Fingerprint)
 		_, _ = h.Write(seps)
@@ -179,7 +188,7 @@ func (a *Alert) UpdateFingerprints() {
 		_, _ = h.Write(seps)
 		_, _ = h.WriteString(am.Cluster)
 		_, _ = h.Write(seps)
-		_, _ = h.WriteString(am.State)
+		_, _ = h.WriteString(am.State.Value())
 		_, _ = h.Write(seps)
 		_, _ = h.WriteString(am.StartsAt.Format(time.RFC3339))
 		_, _ = h.Write(seps)
@@ -194,7 +203,7 @@ func (a *Alert) UpdateFingerprints() {
 			_, _ = h.Write(seps)
 		}
 	}
-	_, _ = h.WriteString(a.Receiver)
+	_, _ = h.WriteString(a.Receiver.Value())
 	a.contentFP = strconv.FormatUint(h.Sum64(), 16)
 }
 

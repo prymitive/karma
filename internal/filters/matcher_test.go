@@ -1,6 +1,7 @@
 package filters
 
 import (
+	"regexp"
 	"testing"
 	"time"
 )
@@ -102,11 +103,10 @@ func TestRegexpMatcher(t *testing.T) {
 		{"5", "^[0-9]+", true, true},
 		{"xb", "abc", true, false},
 		{"13", "12", true, false},
-		{"xx", "^[-xxx****", false, false},
 	}
 	for _, mt := range tests {
 		m := regexpMatcher{}
-		if result := m.Compare(mt.ValA, mt.ValB); result != mt.Expacted {
+		if result := m.Compare(mt.ValA, regexp.MustCompile(mt.ValB.(string))); result != mt.Expacted {
 			t.Errorf("RegexpMatcher(%#v, %#v) returned %v when %v was expected", mt.ValA, mt.ValB, result, mt.Expacted)
 		}
 
@@ -122,11 +122,10 @@ func TestNegativeRegexpMatcher(t *testing.T) {
 		{"5", "^[0-9]+", true, false},
 		{"xb", "abc", true, true},
 		{"13", "12", true, true},
-		{"xx", "^[-xxx****", false, true},
 	}
 	for _, mt := range tests {
 		m := negativeRegexMatcher{}
-		if result := m.Compare(mt.ValA, mt.ValB); result != mt.Expacted {
+		if result := m.Compare(mt.ValA, regexp.MustCompile(mt.ValB.(string))); result != mt.Expacted {
 			t.Errorf("NegativeRegexMatcher(%#v, %#v) returned %v when %v was expected", mt.ValA, mt.ValB, result, mt.Expacted)
 		}
 

@@ -30,33 +30,24 @@ func TestAclSilenceMatcher(t *testing.T) {
 				Name:  "foo",
 				Value: "bar",
 			},
-			silenceMatcher: models.SilenceMatcher{
-				Name:  "foo",
-				Value: "bar",
-			},
-			isMatch: true,
+			silenceMatcher: models.NewSilenceMatcher("foo", "bar", false, false),
+			isMatch:        true,
 		},
 		{
 			requiredMatcher: silenceMatcher{
 				Name:  "foo",
 				Value: "bar",
 			},
-			silenceMatcher: models.SilenceMatcher{
-				Name:  "bar",
-				Value: "bar",
-			},
-			isMatch: false,
+			silenceMatcher: models.NewSilenceMatcher("bar", "bar", false, false),
+			isMatch:        false,
 		},
 		{
 			requiredMatcher: silenceMatcher{
 				Name:  "foo",
 				Value: "bar",
 			},
-			silenceMatcher: models.SilenceMatcher{
-				Name:  "foo",
-				Value: "foo",
-			},
-			isMatch: false,
+			silenceMatcher: models.NewSilenceMatcher("foo", "foo", false, false),
+			isMatch:        false,
 		},
 		{
 			requiredMatcher: silenceMatcher{
@@ -64,11 +55,8 @@ func TestAclSilenceMatcher(t *testing.T) {
 				Value:   "bar",
 				IsRegex: truePtr(),
 			},
-			silenceMatcher: models.SilenceMatcher{
-				Name:  "foo",
-				Value: "bar",
-			},
-			isMatch: false,
+			silenceMatcher: models.NewSilenceMatcher("foo", "bar", false, false),
+			isMatch:        false,
 		},
 		{
 			requiredMatcher: silenceMatcher{
@@ -76,12 +64,8 @@ func TestAclSilenceMatcher(t *testing.T) {
 				Value:   "bar",
 				IsRegex: falsePtr(),
 			},
-			silenceMatcher: models.SilenceMatcher{
-				Name:    "foo",
-				Value:   "bar",
-				IsRegex: true,
-			},
-			isMatch: false,
+			silenceMatcher: models.NewSilenceMatcher("foo", "bar", true, false),
+			isMatch:        false,
 		},
 		{
 			requiredMatcher: silenceMatcher{
@@ -89,12 +73,8 @@ func TestAclSilenceMatcher(t *testing.T) {
 				Value:   "bar",
 				IsRegex: falsePtr(),
 			},
-			silenceMatcher: models.SilenceMatcher{
-				Name:    "foo",
-				Value:   "bar",
-				IsRegex: false,
-			},
-			isMatch: true,
+			silenceMatcher: models.NewSilenceMatcher("foo", "bar", false, false),
+			isMatch:        true,
 		},
 		{
 			requiredMatcher: silenceMatcher{
@@ -102,12 +82,8 @@ func TestAclSilenceMatcher(t *testing.T) {
 				Value:   "bar",
 				IsRegex: truePtr(),
 			},
-			silenceMatcher: models.SilenceMatcher{
-				Name:    "foo",
-				Value:   "bar",
-				IsRegex: false,
-			},
-			isMatch: false,
+			silenceMatcher: models.NewSilenceMatcher("foo", "bar", false, false),
+			isMatch:        false,
 		},
 		{
 			requiredMatcher: silenceMatcher{
@@ -115,56 +91,40 @@ func TestAclSilenceMatcher(t *testing.T) {
 				Value:   "bar",
 				IsRegex: truePtr(),
 			},
-			silenceMatcher: models.SilenceMatcher{
-				Name:    "foo",
-				Value:   "bar",
-				IsRegex: true,
-			},
-			isMatch: true,
+			silenceMatcher: models.NewSilenceMatcher("foo", "bar", true, false),
+			isMatch:        true,
 		},
 		{
 			requiredMatcher: silenceMatcher{
 				NameRegex: regexp.MustCompile("^.+$"),
 				Value:     "bar",
 			},
-			silenceMatcher: models.SilenceMatcher{
-				Name:  "foo",
-				Value: "bar",
-			},
-			isMatch: true,
+			silenceMatcher: models.NewSilenceMatcher("foo", "bar", false, false),
+			isMatch:        true,
 		},
 		{
 			requiredMatcher: silenceMatcher{
 				NameRegex: regexp.MustCompile("^notfoo$"),
 				Value:     "bar",
 			},
-			silenceMatcher: models.SilenceMatcher{
-				Name:  "foo",
-				Value: "bar",
-			},
-			isMatch: false,
+			silenceMatcher: models.NewSilenceMatcher("foo", "bar", false, false),
+			isMatch:        false,
 		},
 		{
 			requiredMatcher: silenceMatcher{
 				NameRegex:  regexp.MustCompile("^.+$"),
 				ValueRegex: regexp.MustCompile("^.+$"),
 			},
-			silenceMatcher: models.SilenceMatcher{
-				Name:  "foo",
-				Value: "bar",
-			},
-			isMatch: true,
+			silenceMatcher: models.NewSilenceMatcher("foo", "bar", false, false),
+			isMatch:        true,
 		},
 		{
 			requiredMatcher: silenceMatcher{
 				NameRegex:  regexp.MustCompile("^.+$"),
 				ValueRegex: regexp.MustCompile("^bar.+$"),
 			},
-			silenceMatcher: models.SilenceMatcher{
-				Name:  "foo",
-				Value: "notbar",
-			},
-			isMatch: false,
+			silenceMatcher: models.NewSilenceMatcher("foo", "notbar", false, false),
+			isMatch:        false,
 		},
 		{
 			requiredMatcher: silenceMatcher{
@@ -172,12 +132,8 @@ func TestAclSilenceMatcher(t *testing.T) {
 				ValueRegex: regexp.MustCompile("^.+$"),
 				IsRegex:    truePtr(),
 			},
-			silenceMatcher: models.SilenceMatcher{
-				Name:    "foo",
-				Value:   "bar",
-				IsRegex: false,
-			},
-			isMatch: false,
+			silenceMatcher: models.NewSilenceMatcher("foo", "bar", false, false),
+			isMatch:        false,
 		},
 		{
 			requiredMatcher: silenceMatcher{
@@ -186,13 +142,8 @@ func TestAclSilenceMatcher(t *testing.T) {
 				IsRegex: truePtr(),
 				IsEqual: falsePtr(),
 			},
-			silenceMatcher: models.SilenceMatcher{
-				Name:    "foo",
-				Value:   "bar",
-				IsRegex: true,
-				IsEqual: false,
-			},
-			isMatch: true,
+			silenceMatcher: models.NewSilenceMatcher("foo", "bar", true, false),
+			isMatch:        true,
 		},
 		{
 			requiredMatcher: silenceMatcher{
@@ -201,13 +152,8 @@ func TestAclSilenceMatcher(t *testing.T) {
 				IsRegex: truePtr(),
 				IsEqual: truePtr(),
 			},
-			silenceMatcher: models.SilenceMatcher{
-				Name:    "foo",
-				Value:   "bar",
-				IsRegex: true,
-				IsEqual: true,
-			},
-			isMatch: true,
+			silenceMatcher: models.NewSilenceMatcher("foo", "bar", true, true),
+			isMatch:        true,
 		},
 		{
 			requiredMatcher: silenceMatcher{
@@ -215,12 +161,8 @@ func TestAclSilenceMatcher(t *testing.T) {
 				Value:   "bar",
 				IsEqual: falsePtr(),
 			},
-			silenceMatcher: models.SilenceMatcher{
-				Name:    "foo",
-				Value:   "bar",
-				IsEqual: true,
-			},
-			isMatch: false,
+			silenceMatcher: models.NewSilenceMatcher("foo", "bar", false, true),
+			isMatch:        false,
 		},
 		{
 			requiredMatcher: silenceMatcher{
@@ -228,12 +170,8 @@ func TestAclSilenceMatcher(t *testing.T) {
 				Value:   "bar",
 				IsEqual: truePtr(),
 			},
-			silenceMatcher: models.SilenceMatcher{
-				Name:    "foo",
-				Value:   "bar",
-				IsEqual: false,
-			},
-			isMatch: false,
+			silenceMatcher: models.NewSilenceMatcher("foo", "bar", false, false),
+			isMatch:        false,
 		},
 	}
 

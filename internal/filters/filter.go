@@ -26,22 +26,11 @@ type FilterT interface {
 type alertFilter struct {
 	FilterT
 	Matcher              matcherT
-	Value                any
 	Matched              string
 	RawText              string
 	Hits                 int
 	IsValid              bool
 	IsAlertmanagerFilter bool
-}
-
-func (filter *alertFilter) init(name string, matcher *matcherT, rawText string, isValid bool, value string) {
-	filter.Matched = name
-	if matcher != nil {
-		filter.Matcher = *matcher
-	}
-	filter.RawText = rawText
-	filter.IsValid = isValid
-	filter.Value = value
 }
 
 func (filter *alertFilter) GetRawText() string {
@@ -65,10 +54,6 @@ func (filter *alertFilter) GetMatcher() string {
 		return ""
 	}
 	return filter.Matcher.GetOperator()
-}
-
-func (filter *alertFilter) GetValue() string {
-	return fmt.Sprintf("%v", filter.Value)
 }
 
 func (filter *alertFilter) GetIsAlertmanagerFilter() bool {

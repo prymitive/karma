@@ -25,13 +25,6 @@ func getFiltersFromQuery(filterStrings []string) []filters.FilterT {
 	return matchFilters
 }
 
-func countLabel(countStore map[string]map[string]int, key, val string) {
-	if _, found := countStore[key]; !found {
-		countStore[key] = make(map[string]int)
-	}
-	countStore[key][val]++
-}
-
 func countersToLabelStats(counters map[string]map[string]int) models.LabelNameStatsList {
 	data := make(models.LabelNameStatsList, 0, len(counters))
 
@@ -143,13 +136,13 @@ func resolveLabelValue(name, value string) string {
 
 func getGroupLabel(group *models.APIAlertGroup, label string) string {
 	if v := group.Labels.Get(label); v != nil {
-		return resolveLabelValue(label, v.Value)
+		return resolveLabelValue(label, v.Value.Value())
 	}
 	if v := group.Shared.Labels.Get(label); v != nil {
-		return resolveLabelValue(label, v.Value)
+		return resolveLabelValue(label, v.Value.Value())
 	}
 	if v := group.Alerts[0].Labels.Get(label); v != nil {
-		return resolveLabelValue(label, v.Value)
+		return resolveLabelValue(label, v.Value.Value())
 	}
 	return ""
 }
@@ -280,7 +273,7 @@ func isPreferredLabel(label, other string) bool {
 func autoGridLabel(dedupedAlerts []models.AlertGroup) string {
 	alertGroupsCount := len(dedupedAlerts)
 	var alertsCount int
-	labelToAlertCount := map[string]map[string]int{}
+	labelToAlertCount := map[models.UniqueString]map[string]int{}
 	for _, ag := range dedupedAlerts {
 		alertsCount += ag.Alerts.Len()
 		for _, alert := range ag.Alerts {
@@ -288,10 +281,10 @@ func autoGridLabel(dedupedAlerts []models.AlertGroup) string {
 				if _, ok := labelToAlertCount[l.Name]; !ok {
 					labelToAlertCount[l.Name] = map[string]int{}
 				}
-				if _, ok := labelToAlertCount[l.Name][l.Value]; !ok {
-					labelToAlertCount[l.Name][l.Value] = 0
+				if _, ok := labelToAlertCount[l.Name][l.Value.Value()]; !ok {
+					labelToAlertCount[l.Name][l.Value.Value()] = 0
 				}
-				labelToAlertCount[l.Name][l.Value]++
+				labelToAlertCount[l.Name][l.Value.Value()]++
 			}
 		}
 	}
@@ -299,7 +292,7 @@ func autoGridLabel(dedupedAlerts []models.AlertGroup) string {
 
 	candidates := map[string]int{}
 	for key, vals := range labelToAlertCount {
-		if slices.Contains(config.Config.Grid.Auto.Ignore, key) {
+		if slices.Contains(config.Config.Grid.Auto.Ignore, key.Value()) {
 			continue
 		}
 		var total int
@@ -308,11 +301,11 @@ func autoGridLabel(dedupedAlerts []models.AlertGroup) string {
 			total += cnt
 			uniqueValues[val] = struct{}{}
 		}
-		log.Debug().Str("label", key).Int("alerts", total).Msg("Number of alerts per label")
+		log.Debug().Str("label", key.Value()).Int("alerts", total).Msg("Number of alerts per label")
 		if total < alertsCount {
 			continue
 		}
-		candidates[key] = len(uniqueValues)
+		candidates[key.Value()] = len(uniqueValues)
 	}
 
 	var lastLabel string
@@ -344,7 +337,7 @@ func filterAlerts(dedupedAlerts []models.AlertGroup, fl []filters.FilterT) (filt
 			StateCount:        map[string]int{},
 		}
 		for _, s := range models.AlertStateList {
-			agCopy.StateCount[s] = 0
+			agCopy.StateCount[s.Value()] = 0
 		}
 		for _, alert := range ag.Alerts {
 			var hadMismatch bool
@@ -359,11 +352,11 @@ func filterAlerts(dedupedAlerts []models.AlertGroup, fl []filters.FilterT) (filt
 				continue
 			}
 
-			blockedAMs := map[string]bool{}
+			blockedAMs := map[string]struct{}{}
 			for _, am := range alert.Alertmanager {
 				for _, filter := range fl {
 					if filter.GetIsValid() && filter.GetIsAlertmanagerFilter() && !filter.MatchAlertmanager(&am) {
-						blockedAMs[am.Name] = true
+						blockedAMs[am.Name] = struct{}{}
 					}
 				}
 			}
@@ -383,7 +376,7 @@ func filterAlerts(dedupedAlerts []models.AlertGroup, fl []filters.FilterT) (filt
 
 			matches++
 			agCopy.Alerts = append(agCopy.Alerts, alert)
-			agCopy.StateCount[alert.State]++
+			agCopy.StateCount[alert.State.Value()]++
 		}
 		if agCopy.Alerts.Len() > 0 {
 			filteredAlerts = append(filteredAlerts, agCopy)
@@ -393,15 +386,15 @@ func filterAlerts(dedupedAlerts []models.AlertGroup, fl []filters.FilterT) (filt
 	return filteredAlerts
 }
 
-func newStateCount() map[string]int {
-	stateCount := map[string]int{}
+func newStateCount() map[models.UniqueString]int {
+	stateCount := map[models.UniqueString]int{}
 	for _, s := range models.AlertStateList {
 		stateCount[s] = 0
 	}
 	return stateCount
 }
 
-func stateFromStateCount(stateCount map[string]int) string {
+func stateFromStateCount(stateCount map[models.UniqueString]int) models.UniqueString {
 	if stateCount[models.AlertStateActive] > 0 {
 		return models.AlertStateActive
 	}

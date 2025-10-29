@@ -1,26 +1,41 @@
 package models
 
 import (
+	"regexp"
 	"time"
 
 	"github.com/prymitive/karma/internal/regex"
 )
 
 type SilenceMatcher struct {
-	Name    string `json:"name"`
-	Value   string `json:"value"`
-	IsRegex bool   `json:"isRegex"`
-	IsEqual bool   `json:"isEqual"`
+	Name    UniqueString `json:"name"`
+	Value   string       `json:"value"`
+	IsRegex bool         `json:"isRegex"`
+	IsEqual bool         `json:"isEqual"`
+	re      *regexp.Regexp
+}
+
+func NewSilenceMatcher(name, value string, isRegexp, isEqual bool) SilenceMatcher {
+	sm := SilenceMatcher{
+		Name:    NewUniqueString(name),
+		Value:   value,
+		IsRegex: isRegexp,
+		IsEqual: isEqual,
+	}
+	if sm.IsRegex {
+		sm.re = regex.MustCompileAnchored(sm.Value)
+	}
+	return sm
 }
 
 func (sm SilenceMatcher) IsMatch(labels map[string]string) bool {
-	v, ok := labels[sm.Name]
+	v, ok := labels[sm.Name.Value()]
 	if !ok {
 		return !sm.IsEqual
 	}
 
 	if sm.IsRegex {
-		return sm.IsEqual == regex.MustCompileAnchored(sm.Value).MatchString(v)
+		return sm.IsEqual == sm.re.MatchString(v)
 	}
 	return sm.IsEqual == (sm.Value == v)
 }

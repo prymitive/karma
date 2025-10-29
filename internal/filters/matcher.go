@@ -50,19 +50,14 @@ func (matcher *moreThanMatcher) Compare(valA, valB any) bool {
 		return false
 	}
 
-	if intA, ok := valA.(int); ok {
-		if intB, ok := valB.(int); ok {
-			return intA > intB
-		}
+	intA, okA := castToInt(valA)
+	intB, okB := castToInt(valB)
+
+	if okA && okB {
+		return intA > intB
 	}
 
-	if atoiA, err := strconv.Atoi(valA.(string)); err == nil {
-		if atoiB, err := strconv.Atoi(valB.(string)); err == nil {
-			return atoiA > atoiB
-		}
-	}
-
-	return valA.(string) > valB.(string)
+	return castToString(valA) > castToString(valB)
 }
 
 type lessThanMatcher struct {
@@ -74,19 +69,14 @@ func (matcher *lessThanMatcher) Compare(valA, valB any) bool {
 		return false
 	}
 
-	if intA, ok := valA.(int); ok {
-		if intB, ok := valB.(int); ok {
-			return intA < intB
-		}
+	intA, okA := castToInt(valA)
+	intB, okB := castToInt(valB)
+
+	if okA && okB {
+		return intA < intB
 	}
 
-	if atoiA, err := strconv.Atoi(valA.(string)); err == nil {
-		if atoiB, err := strconv.Atoi(valB.(string)); err == nil {
-			return atoiA < atoiB
-		}
-	}
-
-	return valA.(string) < valB.(string)
+	return castToString(valA) < castToString(valB)
 }
 
 type regexpMatcher struct {
@@ -94,16 +84,24 @@ type regexpMatcher struct {
 }
 
 func (matcher *regexpMatcher) Compare(valA, valB any) bool {
-	r, found := matchCache.Get(valB.(string))
-	if !found {
-		var err error
-		r, err = regexp.Compile("(?i)" + valB.(string))
-		if err != nil {
-			return false
+	var (
+		re  *regexp.Regexp
+		err error
+		ok  bool
+	)
+	switch v := valB.(type) {
+	case *regexp.Regexp:
+		re = v
+	case string:
+		re, ok = matchCache.Get(v)
+		if !ok {
+			if re, err = regexp.Compile("(?i)" + v); err != nil {
+				return false
+			}
+			matchCache.Add(v, re)
 		}
-		matchCache.Add(valB.(string), r)
 	}
-	return r.MatchString(valA.(string))
+	return re.MatchString(castToString(valA))
 }
 
 type negativeRegexMatcher struct {
@@ -111,8 +109,24 @@ type negativeRegexMatcher struct {
 }
 
 func (matcher *negativeRegexMatcher) Compare(valA, valB any) bool {
-	r := regexpMatcher{}
-	return !r.Compare(valA, valB)
+	var (
+		re  *regexp.Regexp
+		err error
+		ok  bool
+	)
+	switch v := valB.(type) {
+	case *regexp.Regexp:
+		re = v
+	case string:
+		re, ok = matchCache.Get(v)
+		if !ok {
+			if re, err = regexp.Compile("(?i)" + v); err != nil {
+				return false
+			}
+			matchCache.Add(v, re)
+		}
+	}
+	return !re.MatchString(castToString(valA))
 }
 
 func newMatcher(matchType string) (matcherT, error) {
@@ -121,4 +135,25 @@ func newMatcher(matchType string) (matcherT, error) {
 	}
 	e := matchType + " not matched with any know match type"
 	return nil, errors.New(e)
+}
+
+func castToInt(val any) (int, bool) {
+	switch v := val.(type) {
+	case int:
+		return v, true
+	case string:
+		if atoiA, err := strconv.Atoi(v); err == nil {
+			return atoiA, true
+		}
+	}
+	return 0, false
+}
+
+func castToString(val any) string {
+	switch v := val.(type) {
+	case string:
+		return v
+	default:
+		return val.(string)
+	}
 }
