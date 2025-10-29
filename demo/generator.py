@@ -50,9 +50,9 @@ def jsonPostRequest(uri, data):
     req = urllib.request.Request(uri)
     req.add_header("Content-Type", "application/json")
     try:
-        response = urllib.request.urlopen(req, json.dumps(data).encode("utf8"))
+        urllib.request.urlopen(req, json.dumps(data).encode("utf8"))
     except Exception as e:
-        print("Request to '%s' failed: %s" % (uri, e))
+        print("Request to '%s' failed: %s -> %s" % (uri, e, e.read().decode()))
 
 
 def addSilence(matchers, startsAt, endsAt, createdBy, comment):
@@ -310,16 +310,14 @@ class SilencedAlert(AlertGenerator):
         ]
 
     def silences(self):
-        now = datetime.datetime.now(datetime.UTC).replace(microsecond=0)
+        now = datetime.datetime.now(tz=datetime.UTC).replace(microsecond=0)
         return [
             (
                 [newMatcher("alertname", self.name, False)],
-                "{}Z".format(now.isoformat()),
-                "{}Z".format(
-                    (
-                        now + datetime.timedelta(minutes=random.randint(1, 60))
-                    ).isoformat()
-                ),
+                now.isoformat(),
+                (
+                    now + datetime.timedelta(minutes=random.randint(1, 60))
+                ).isoformat(),
                 "me@example.com",
                 "This alert is always silenced and the silence comment is very "
                 "long to test the UI. Lorem ipsum dolor sit amet, consectetur "
@@ -356,7 +354,7 @@ class MixedAlerts(AlertGenerator):
         ]
 
     def silences(self):
-        now = datetime.datetime.now(datetime.UTC).replace(microsecond=0)
+        now = datetime.datetime.now(tz=datetime.UTC).replace(microsecond=0)
         return [
             (
                 [
@@ -364,12 +362,10 @@ class MixedAlerts(AlertGenerator):
                     newMatcher("instance", "server(1|3|5|7)", True),
                     newMatcher("cluster", "dev", False, isEqual=False),
                 ],
-                "{}Z".format(now.isoformat()),
-                "{}Z".format(
-                    (
-                        now + datetime.timedelta(minutes=random.randint(1, 30))
-                    ).isoformat()
-                ),
+                now.isoformat(),
+                (
+                    now + datetime.timedelta(minutes=random.randint(1, 30))
+                ).isoformat(),
                 "me@example.com",
                 "Silence '{}''".format(self.name),
             )
@@ -475,12 +471,12 @@ class SilencedAlertWithJiraLink(AlertGenerator):
         ]
 
     def silences(self):
-        now = datetime.datetime.now(datetime.UTC).replace(microsecond=0)
+        now = datetime.datetime.now(tz=datetime.UTC).replace(microsecond=0)
         return [
             (
                 [newMatcher("alertname", self.name, False)],
-                "{}Z".format(now.isoformat()),
-                "{}Z".format((now + datetime.timedelta(minutes=30)).isoformat()),
+                now.isoformat(),
+                (now + datetime.timedelta(minutes=30)).isoformat(),
                 "me@example.com",
                 "This text - DEVOPS-123 - should be a link to the Jira ticket",
             )
@@ -514,12 +510,10 @@ class PaginationTest(AlertGenerator):
                     newMatcher("alertname", self.name, False),
                     newMatcher("instance", "server{}".format(i), True),
                 ],
-                "{}Z".format(now.isoformat()),
-                "{}Z".format(
-                    (
-                        now + datetime.timedelta(minutes=random.randint(1, 30))
-                    ).isoformat()
-                ),
+                now.isoformat(),
+                (
+                    now + datetime.timedelta(minutes=random.randint(1, 30))
+                ).isoformat(),
                 "me@example.com",
                 "DEVOPS-123 Pagination Test alert silenced with a long text "
                 "to see if it gets truncated properly. It only matches first "
@@ -604,8 +598,8 @@ class SometimesSilenced(AlertGenerator):
         return [
             (
                 [newMatcher("alertname", self.name, False)],
-                "{}Z".format(now.isoformat()),
-                "{}Z".format((now + datetime.timedelta(minutes=8)).isoformat()),
+                now.isoformat(),
+                (now + datetime.timedelta(minutes=8)).isoformat(),
                 "me@example.com",
                 "This alert is sometimes silenced",
             )
