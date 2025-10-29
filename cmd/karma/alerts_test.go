@@ -19,14 +19,17 @@ func TestSortByStartsAt(t *testing.T) {
 	}
 
 	g1 := models.AlertGroup{
+		Receiver:       models.NewUniqueString("default"),
 		ID:             "1",
 		LatestStartsAt: time.Date(2020, time.January, 1, 0, 0, 0, 1, time.UTC),
 	}
 	g2 := models.AlertGroup{
+		Receiver:       models.NewUniqueString("default"),
 		ID:             "2",
 		LatestStartsAt: time.Date(2020, time.January, 1, 0, 0, 0, 2, time.UTC),
 	}
 	g3 := models.AlertGroup{
+		Receiver:       models.NewUniqueString("default"),
 		ID:             "3",
 		LatestStartsAt: time.Date(2020, time.January, 1, 0, 0, 0, 3, time.UTC),
 	}

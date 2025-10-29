@@ -36,10 +36,10 @@ var acTests = []acTest{
 			{
 				State: models.AlertStateActive,
 				Labels: models.Labels{
-					{Name: "foo", Value: "bar"},
-					{Name: "number", Value: "1"},
+					{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("bar")},
+					{Name: models.NewUniqueString("number"), Value: models.NewUniqueString("1")},
 				},
-				Receiver: "default",
+				Receiver: models.NewUniqueString("default"),
 				Alertmanager: []models.AlertmanagerInstance{
 					{Cluster: "cluster", Name: "am1"},
 					{Cluster: "cluster", Name: "am2"},
@@ -48,10 +48,10 @@ var acTests = []acTest{
 			{
 				State: models.AlertStateSuppressed,
 				Labels: models.Labels{
-					{Name: "foo", Value: "bar baz"},
-					{Name: "number", Value: "5"},
+					{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("bar baz")},
+					{Name: models.NewUniqueString("number"), Value: models.NewUniqueString("5")},
 				},
-				Receiver: "not default",
+				Receiver: models.NewUniqueString("not default"),
 				Alertmanager: []models.AlertmanagerInstance{
 					{Cluster: "cluster", Name: "am1"},
 					{
@@ -153,10 +153,10 @@ func BenchmarkAutocomplete(b *testing.B) {
 		alerts = append(alerts, models.Alert{
 			State: models.AlertStateActive,
 			Labels: models.Labels{
-				{Name: "foo", Value: fmt.Sprintf("xxx%d", i)},
-				{Name: "number", Value: strconv.Itoa(i)},
+				{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString(fmt.Sprintf("xxx%d", i))},
+				{Name: models.NewUniqueString("number"), Value: models.NewUniqueString(strconv.Itoa(i))},
 			},
-			Receiver: fmt.Sprintf("receiver-%d", i%1000),
+			Receiver: models.NewUniqueString(fmt.Sprintf("receiver-%d", i%1000)),
 			Alertmanager: []models.AlertmanagerInstance{
 				{Cluster: "cluster", Name: "am1"},
 				{Cluster: "cluster", Name: "am2"},

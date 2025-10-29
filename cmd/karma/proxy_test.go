@@ -19,7 +19,6 @@ import (
 
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
-	"github.com/prymitive/karma/internal/intern"
 	"github.com/prymitive/karma/internal/mock"
 )
 
@@ -562,7 +561,7 @@ func TestProxyUserRewrite(t *testing.T) {
 				mock.RegisterURL("http://localhost/metrics", version, "metrics")
 				mock.RegisterURL("http://localhost/api/v2/silences", version, "api/v2/silences")
 				mock.RegisterURL("http://localhost/api/v2/alerts/groups", version, "api/v2/alerts/groups")
-				_ = am.Pull(intern.New())
+				_ = am.Pull()
 
 				httpmock.RegisterResponder("POST", "http://localhost/api/v2/silences", func(req *http.Request) (*http.Response, error) {
 					body, _ := io.ReadAll(req.Body)
@@ -1332,7 +1331,7 @@ func TestProxySilenceACL(t *testing.T) {
 				mock.RegisterURL("http://localhost/metrics", version, "metrics")
 				mock.RegisterURL("http://localhost/api/v2/silences", version, "api/v2/silences")
 				mock.RegisterURL("http://localhost/api/v2/alerts/groups", version, "api/v2/alerts/groups")
-				_ = am.Pull(intern.New())
+				_ = am.Pull()
 
 				httpmock.RegisterResponder("POST", "http://localhost/api/v2/silences", func(req *http.Request) (*http.Response, error) {
 					body, _ := io.ReadAll(req.Body)
@@ -1427,7 +1426,7 @@ func TestProxyRequestToUnsupportedAlertmanager(t *testing.T) {
 	httpmock.RegisterResponder("POST", "http://localhost/api/v2/silences", httpmock.NewStringResponder(200, "{}"))
 	httpmock.RegisterResponder("GET", "http://localhost/api/v2/silences", httpmock.NewStringResponder(200, "[]"))
 	httpmock.RegisterResponder("GET", "http://localhost/api/v2/alerts/groups", httpmock.NewStringResponder(200, "[]"))
-	_ = am.Pull(intern.New())
+	_ = am.Pull()
 
 	if ver := am.Version(); ver != "0.1.0" {
 		t.Errorf("Got wrong version: %q", ver)

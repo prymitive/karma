@@ -1,24 +1,22 @@
 package filters
 
 import (
-	"unique"
-
 	"github.com/prymitive/karma/internal/models"
 )
 
 type autocompleteFactory func(name string, operators []string, alerts []models.Alert) []models.Autocomplete
 
 func makeAC(value string, tokens []string) models.Autocomplete {
-	uTokens := make([]unique.Handle[string], 0, len(tokens))
+	uTokens := make([]models.UniqueString, 0, len(tokens))
 	for _, token := range tokens {
-		uTokens = append(uTokens, unique.Make(token))
+		uTokens = append(uTokens, models.NewUniqueString(token))
 	}
 
 	acHint := models.Autocomplete{
-		Value:  unique.Make(value),
+		Value:  models.NewUniqueString(value),
 		Tokens: uTokens,
 	}
-	acHint.Tokens = append(acHint.Tokens, unique.Make(value))
+	acHint.Tokens = append(acHint.Tokens, models.NewUniqueString(value))
 	return acHint
 }
 

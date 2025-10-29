@@ -9,7 +9,7 @@ type AlertmanagerInstance struct {
 	Name        string `json:"name"`
 	Cluster     string `json:"cluster"`
 	// per instance alert state
-	State string `json:"state"`
+	State UniqueString `json:"state"`
 	// timestamp collected from this instance, those on the alert itself
 	// will be calculated min/max values
 	StartsAt time.Time `json:"startsAt"`

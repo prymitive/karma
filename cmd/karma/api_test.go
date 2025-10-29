@@ -19,7 +19,7 @@ import (
 )
 
 type groupTest struct {
-	stateCount map[string]int
+	stateCount map[models.UniqueString]int
 	receiver   string
 	id         string
 	labels     models.Labels
@@ -30,19 +30,28 @@ var groupTests = []groupTest{
 	{
 		receiver: "by-name",
 		labels: models.Labels{
-			{Name: "alertname", Value: "Memory_Usage_Too_High"},
+			{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("Memory_Usage_Too_High")},
 		},
 		alerts: []models.Alert{
 			{
 				StartsAt: time.Date(2019, time.January, 10, 0, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{
-					models.Annotation{Visible: true, Name: "alert", Value: "Memory usage exceeding threshold"},
-					models.Annotation{Visible: true, Name: "dashboard", Value: "http://localhost/dashboard.html", IsLink: true},
+					models.Annotation{
+						Visible: true,
+						Name:    models.NewUniqueString("alert"),
+						Value:   models.NewUniqueString("Memory usage exceeding threshold"),
+					},
+					models.Annotation{
+						Visible: true,
+						Name:    models.NewUniqueString("dashboard"),
+						Value:   models.NewUniqueString("http://localhost/dashboard.html"),
+						IsLink:  true,
+					},
 				},
 				Labels: models.Labels{
-					{Name: "cluster", Value: "prod"},
-					{Name: "instance", Value: "server2"},
-					{Name: "job", Value: "node_exporter"},
+					{Name: models.NewUniqueString("cluster"), Value: models.NewUniqueString("prod")},
+					{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("server2")},
+					{Name: models.NewUniqueString("job"), Value: models.NewUniqueString("node_exporter")},
 				},
 				State: models.AlertStateActive,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -53,11 +62,11 @@ var groupTests = []groupTest{
 						SilencedBy: []string{},
 					},
 				},
-				Receiver: "by-name",
+				Receiver: models.NewUniqueString("by-name"),
 			},
 		},
 		id: "990fb0cdc86aae89",
-		stateCount: map[string]int{
+		stateCount: map[models.UniqueString]int{
 			models.AlertStateActive:      1,
 			models.AlertStateSuppressed:  0,
 			models.AlertStateUnprocessed: 0,
@@ -66,15 +75,24 @@ var groupTests = []groupTest{
 	{
 		receiver: "by-cluster-service",
 		labels: models.Labels{
-			{Name: "alertname", Value: "Memory_Usage_Too_High"},
-			{Name: "cluster", Value: "prod"},
+			{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("Memory_Usage_Too_High")},
+			{Name: models.NewUniqueString("cluster"), Value: models.NewUniqueString("prod")},
 		},
 		alerts: []models.Alert{
 			{
 				StartsAt: time.Date(2019, time.January, 10, 0, 0, 0, 1, time.UTC),
 				Annotations: models.Annotations{
-					models.Annotation{Visible: true, Name: "alert", Value: "Memory usage exceeding threshold"},
-					models.Annotation{Visible: true, Name: "dashboard", Value: "http://localhost/dashboard.html", IsLink: true},
+					models.Annotation{
+						Visible: true,
+						Name:    models.NewUniqueString("alert"),
+						Value:   models.NewUniqueString("Memory usage exceeding threshold"),
+					},
+					models.Annotation{
+						Visible: true,
+						Name:    models.NewUniqueString("dashboard"),
+						Value:   models.NewUniqueString("http://localhost/dashboard.html"),
+						IsLink:  true,
+					},
 				},
 				Alertmanager: []models.AlertmanagerInstance{
 					{
@@ -85,15 +103,15 @@ var groupTests = []groupTest{
 					},
 				},
 				Labels: models.Labels{
-					{Name: "instance", Value: "server2"},
-					{Name: "job", Value: "node_exporter"},
+					{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("server2")},
+					{Name: models.NewUniqueString("job"), Value: models.NewUniqueString("node_exporter")},
 				},
 				State:    models.AlertStateActive,
-				Receiver: "by-cluster-service",
+				Receiver: models.NewUniqueString("by-cluster-service"),
 			},
 		},
 		id: "6b15d34b0ed69d02",
-		stateCount: map[string]int{
+		stateCount: map[models.UniqueString]int{
 			models.AlertStateActive:      1,
 			models.AlertStateSuppressed:  0,
 			models.AlertStateUnprocessed: 0,
@@ -102,8 +120,8 @@ var groupTests = []groupTest{
 	{
 		receiver: "by-cluster-service",
 		labels: models.Labels{
-			{Name: "alertname", Value: "Host_Down"},
-			{Name: "cluster", Value: "staging"},
+			{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("Host_Down")},
+			{Name: models.NewUniqueString("cluster"), Value: models.NewUniqueString("staging")},
 		},
 		alerts: []models.Alert{
 			{
@@ -118,11 +136,11 @@ var groupTests = []groupTest{
 					},
 				},
 				Labels: models.Labels{
-					{Name: "instance", Value: "server3"},
-					{Name: "ip", Value: "127.0.0.3"},
+					{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("server3")},
+					{Name: models.NewUniqueString("ip"), Value: models.NewUniqueString("127.0.0.3")},
 				},
 				State:    models.AlertStateActive,
-				Receiver: "by-cluster-service",
+				Receiver: models.NewUniqueString("by-cluster-service"),
 			},
 			{
 				Annotations: models.Annotations{},
@@ -135,11 +153,11 @@ var groupTests = []groupTest{
 					},
 				},
 				Labels: models.Labels{
-					{Name: "instance", Value: "server4"},
-					{Name: "ip", Value: "127.0.0.4"},
+					{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("server4")},
+					{Name: models.NewUniqueString("ip"), Value: models.NewUniqueString("127.0.0.4")},
 				},
 				State:    models.AlertStateActive,
-				Receiver: "by-cluster-service",
+				Receiver: models.NewUniqueString("by-cluster-service"),
 			},
 			{
 				Annotations: models.Annotations{},
@@ -152,15 +170,15 @@ var groupTests = []groupTest{
 					},
 				},
 				Labels: models.Labels{
-					{Name: "instance", Value: "server5"},
-					{Name: "ip", Value: "127.0.0.5"},
+					{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("server5")},
+					{Name: models.NewUniqueString("ip"), Value: models.NewUniqueString("127.0.0.5")},
 				},
 				State:    models.AlertStateActive,
-				Receiver: "by-cluster-service",
+				Receiver: models.NewUniqueString("by-cluster-service"),
 			},
 		},
 		id: "f08998b6581752f4",
-		stateCount: map[string]int{
+		stateCount: map[models.UniqueString]int{
 			models.AlertStateActive:      3,
 			models.AlertStateSuppressed:  0,
 			models.AlertStateUnprocessed: 0,
@@ -169,8 +187,8 @@ var groupTests = []groupTest{
 	{
 		receiver: "by-cluster-service",
 		labels: models.Labels{
-			{Name: "alertname", Value: "Host_Down"},
-			{Name: "cluster", Value: "dev"},
+			{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("Host_Down")},
+			{Name: models.NewUniqueString("cluster"), Value: models.NewUniqueString("dev")},
 		},
 		alerts: []models.Alert{
 			{
@@ -185,11 +203,11 @@ var groupTests = []groupTest{
 					},
 				},
 				Labels: models.Labels{
-					{Name: "instance", Value: "server6"},
-					{Name: "ip", Value: "127.0.0.6"},
+					{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("server6")},
+					{Name: models.NewUniqueString("ip"), Value: models.NewUniqueString("127.0.0.6")},
 				},
 				State:    models.AlertStateSuppressed,
-				Receiver: "by-cluster-service",
+				Receiver: models.NewUniqueString("by-cluster-service"),
 			},
 			{
 				StartsAt:    time.Date(2019, time.January, 10, 0, 59, 0, 0, time.UTC),
@@ -203,11 +221,11 @@ var groupTests = []groupTest{
 					},
 				},
 				Labels: models.Labels{
-					{Name: "instance", Value: "server7"},
-					{Name: "ip", Value: "127.0.0.7"},
+					{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("server7")},
+					{Name: models.NewUniqueString("ip"), Value: models.NewUniqueString("127.0.0.7")},
 				},
 				State:    models.AlertStateSuppressed,
-				Receiver: "by-cluster-service",
+				Receiver: models.NewUniqueString("by-cluster-service"),
 			},
 			{
 				StartsAt:    time.Date(2019, time.January, 12, 0, 0, 0, 0, time.UTC),
@@ -221,15 +239,15 @@ var groupTests = []groupTest{
 					},
 				},
 				Labels: models.Labels{
-					{Name: "instance", Value: "server8"},
-					{Name: "ip", Value: "127.0.0.8"},
+					{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("server8")},
+					{Name: models.NewUniqueString("ip"), Value: models.NewUniqueString("127.0.0.8")},
 				},
 				State:    models.AlertStateSuppressed,
-				Receiver: "by-cluster-service",
+				Receiver: models.NewUniqueString("by-cluster-service"),
 			},
 		},
 		id: "97dba9e211f41cf6",
-		stateCount: map[string]int{
+		stateCount: map[models.UniqueString]int{
 			models.AlertStateActive:      0,
 			models.AlertStateSuppressed:  3,
 			models.AlertStateUnprocessed: 0,
@@ -238,18 +256,23 @@ var groupTests = []groupTest{
 	{
 		receiver: "by-name",
 		labels: models.Labels{
-			{Name: "alertname", Value: "Host_Down"},
+			{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("Host_Down")},
 		},
 		alerts: []models.Alert{
 			{
 				StartsAt: time.Date(2019, time.January, 1, 0, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{
-					models.Annotation{Visible: true, Name: "url", Value: "http://localhost/example.html", IsLink: true},
+					models.Annotation{
+						Visible: true,
+						Name:    models.NewUniqueString("url"),
+						Value:   models.NewUniqueString("http://localhost/example.html"),
+						IsLink:  true,
+					},
 				},
 				Labels: models.Labels{
-					{Name: "cluster", Value: "prod"},
-					{Name: "instance", Value: "server1"},
-					{Name: "ip", Value: "127.0.0.1"},
+					{Name: models.NewUniqueString("cluster"), Value: models.NewUniqueString("prod")},
+					{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("server1")},
+					{Name: models.NewUniqueString("ip"), Value: models.NewUniqueString("127.0.0.1")},
 				},
 				State: models.AlertStateActive,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -260,15 +283,15 @@ var groupTests = []groupTest{
 						SilencedBy: []string{},
 					},
 				},
-				Receiver: "by-name",
+				Receiver: models.NewUniqueString("by-name"),
 			},
 			{
 				StartsAt:    time.Date(2019, time.January, 1, 0, 1, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Labels: models.Labels{
-					{Name: "cluster", Value: "prod"},
-					{Name: "instance", Value: "server2"},
-					{Name: "ip", Value: "127.0.0.2"},
+					{Name: models.NewUniqueString("cluster"), Value: models.NewUniqueString("prod")},
+					{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("server2")},
+					{Name: models.NewUniqueString("ip"), Value: models.NewUniqueString("127.0.0.2")},
 				},
 				State: models.AlertStateActive,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -279,15 +302,15 @@ var groupTests = []groupTest{
 						SilencedBy: []string{},
 					},
 				},
-				Receiver: "by-name",
+				Receiver: models.NewUniqueString("by-name"),
 			},
 			{
 				StartsAt:    time.Date(2019, time.January, 1, 0, 1, 0, 1, time.UTC),
 				Annotations: models.Annotations{},
 				Labels: models.Labels{
-					{Name: "cluster", Value: "staging"},
-					{Name: "instance", Value: "server3"},
-					{Name: "ip", Value: "127.0.0.3"},
+					{Name: models.NewUniqueString("cluster"), Value: models.NewUniqueString("staging")},
+					{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("server3")},
+					{Name: models.NewUniqueString("ip"), Value: models.NewUniqueString("127.0.0.3")},
 				},
 				State: models.AlertStateActive,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -298,15 +321,15 @@ var groupTests = []groupTest{
 						SilencedBy: []string{},
 					},
 				},
-				Receiver: "by-name",
+				Receiver: models.NewUniqueString("by-name"),
 			},
 			{
 				StartsAt:    time.Date(2019, time.January, 1, 0, 0, 59, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Labels: models.Labels{
-					{Name: "cluster", Value: "staging"},
-					{Name: "instance", Value: "server4"},
-					{Name: "ip", Value: "127.0.0.4"},
+					{Name: models.NewUniqueString("cluster"), Value: models.NewUniqueString("staging")},
+					{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("server4")},
+					{Name: models.NewUniqueString("ip"), Value: models.NewUniqueString("127.0.0.4")},
 				},
 				State: models.AlertStateActive,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -317,15 +340,15 @@ var groupTests = []groupTest{
 						SilencedBy: []string{},
 					},
 				},
-				Receiver: "by-name",
+				Receiver: models.NewUniqueString("by-name"),
 			},
 			{
 				StartsAt:    time.Date(2019, time.January, 10, 0, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Labels: models.Labels{
-					{Name: "cluster", Value: "staging"},
-					{Name: "instance", Value: "server5"},
-					{Name: "ip", Value: "127.0.0.5"},
+					{Name: models.NewUniqueString("cluster"), Value: models.NewUniqueString("staging")},
+					{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("server5")},
+					{Name: models.NewUniqueString("ip"), Value: models.NewUniqueString("127.0.0.5")},
 				},
 				State: models.AlertStateActive,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -336,15 +359,15 @@ var groupTests = []groupTest{
 						SilencedBy: []string{},
 					},
 				},
-				Receiver: "by-name",
+				Receiver: models.NewUniqueString("by-name"),
 			},
 			{
 				StartsAt:    time.Date(2019, time.January, 10, 1, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Labels: models.Labels{
-					{Name: "cluster", Value: "dev"},
-					{Name: "instance", Value: "server6"},
-					{Name: "ip", Value: "127.0.0.6"},
+					{Name: models.NewUniqueString("cluster"), Value: models.NewUniqueString("dev")},
+					{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("server6")},
+					{Name: models.NewUniqueString("ip"), Value: models.NewUniqueString("127.0.0.6")},
 				},
 				State: models.AlertStateSuppressed,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -355,15 +378,15 @@ var groupTests = []groupTest{
 						SilencedBy: []string{"168f139d-77e4-41d6-afb5-8fe2cfd0cc9d"},
 					},
 				},
-				Receiver: "by-name",
+				Receiver: models.NewUniqueString("by-name"),
 			},
 			{
 				StartsAt:    time.Date(2019, time.January, 10, 0, 20, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Labels: models.Labels{
-					{Name: "cluster", Value: "dev"},
-					{Name: "instance", Value: "server7"},
-					{Name: "ip", Value: "127.0.0.7"},
+					{Name: models.NewUniqueString("cluster"), Value: models.NewUniqueString("dev")},
+					{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("server7")},
+					{Name: models.NewUniqueString("ip"), Value: models.NewUniqueString("127.0.0.7")},
 				},
 				State: models.AlertStateSuppressed,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -374,15 +397,15 @@ var groupTests = []groupTest{
 						SilencedBy: []string{"168f139d-77e4-41d6-afb5-8fe2cfd0cc9d", "378eaa69-097d-41c4-a8c2-fe6568c3abfc"},
 					},
 				},
-				Receiver: "by-name",
+				Receiver: models.NewUniqueString("by-name"),
 			},
 			{
 				StartsAt:    time.Date(2019, time.January, 10, 0, 21, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Labels: models.Labels{
-					{Name: "cluster", Value: "dev"},
-					{Name: "instance", Value: "server8"},
-					{Name: "ip", Value: "127.0.0.8"},
+					{Name: models.NewUniqueString("cluster"), Value: models.NewUniqueString("dev")},
+					{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("server8")},
+					{Name: models.NewUniqueString("ip"), Value: models.NewUniqueString("127.0.0.8")},
 				},
 				State: models.AlertStateSuppressed,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -393,11 +416,11 @@ var groupTests = []groupTest{
 						SilencedBy: []string{"168f139d-77e4-41d6-afb5-8fe2cfd0cc9d"},
 					},
 				},
-				Receiver: "by-name",
+				Receiver: models.NewUniqueString("by-name"),
 			},
 		},
 		id: "db6e3af075b36419",
-		stateCount: map[string]int{
+		stateCount: map[models.UniqueString]int{
 			models.AlertStateActive:      5,
 			models.AlertStateSuppressed:  3,
 			models.AlertStateUnprocessed: 0,
@@ -406,15 +429,24 @@ var groupTests = []groupTest{
 	{
 		receiver: "by-cluster-service",
 		labels: models.Labels{
-			{Name: "alertname", Value: "Free_Disk_Space_Too_Low"},
-			{Name: "cluster", Value: "staging"},
+			{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("Free_Disk_Space_Too_Low")},
+			{Name: models.NewUniqueString("cluster"), Value: models.NewUniqueString("staging")},
 		},
 		alerts: []models.Alert{
 			{
 				StartsAt: time.Date(2019, time.January, 10, 0, 19, 0, 0, time.UTC),
 				Annotations: models.Annotations{
-					models.Annotation{Visible: true, Name: "alert", Value: "Less than 10% disk space is free"},
-					models.Annotation{Visible: true, Name: "dashboard", Value: "http://localhost/dashboard.html", IsLink: true},
+					models.Annotation{
+						Visible: true,
+						Name:    models.NewUniqueString("alert"),
+						Value:   models.NewUniqueString("Less than 10% disk space is free"),
+					},
+					models.Annotation{
+						Visible: true,
+						Name:    models.NewUniqueString("dashboard"),
+						Value:   models.NewUniqueString("http://localhost/dashboard.html"),
+						IsLink:  true,
+					},
 				},
 				Alertmanager: []models.AlertmanagerInstance{
 					{
@@ -425,16 +457,16 @@ var groupTests = []groupTest{
 					},
 				},
 				Labels: models.Labels{
-					{Name: "disk", Value: "sda"},
-					{Name: "instance", Value: "server5"},
-					{Name: "job", Value: "node_exporter"},
+					{Name: models.NewUniqueString("disk"), Value: models.NewUniqueString("sda")},
+					{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("server5")},
+					{Name: models.NewUniqueString("job"), Value: models.NewUniqueString("node_exporter")},
 				},
 				State:    models.AlertStateActive,
-				Receiver: "by-cluster-service",
+				Receiver: models.NewUniqueString("by-cluster-service"),
 			},
 		},
 		id: "c8a1ec76d51e9d96",
-		stateCount: map[string]int{
+		stateCount: map[models.UniqueString]int{
 			models.AlertStateActive:      1,
 			models.AlertStateSuppressed:  0,
 			models.AlertStateUnprocessed: 0,
@@ -443,14 +475,19 @@ var groupTests = []groupTest{
 	{
 		receiver: "by-cluster-service",
 		labels: models.Labels{
-			{Name: "alertname", Value: "Host_Down"},
-			{Name: "cluster", Value: "prod"},
+			{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("Host_Down")},
+			{Name: models.NewUniqueString("cluster"), Value: models.NewUniqueString("prod")},
 		},
 		alerts: []models.Alert{
 			{
 				StartsAt: time.Date(2019, time.January, 12, 0, 19, 0, 0, time.UTC),
 				Annotations: models.Annotations{
-					models.Annotation{Visible: true, Name: "url", Value: "http://localhost/example.html", IsLink: true},
+					models.Annotation{
+						Visible: true,
+						Name:    models.NewUniqueString("url"),
+						Value:   models.NewUniqueString("http://localhost/example.html"),
+						IsLink:  true,
+					},
 				},
 				Alertmanager: []models.AlertmanagerInstance{
 					{
@@ -461,11 +498,11 @@ var groupTests = []groupTest{
 					},
 				},
 				Labels: models.Labels{
-					{Name: "instance", Value: "server1"},
-					{Name: "ip", Value: "127.0.0.1"},
+					{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("server1")},
+					{Name: models.NewUniqueString("ip"), Value: models.NewUniqueString("127.0.0.1")},
 				},
 				State:    models.AlertStateActive,
-				Receiver: "by-cluster-service",
+				Receiver: models.NewUniqueString("by-cluster-service"),
 			},
 			{
 				Annotations: models.Annotations{},
@@ -478,15 +515,15 @@ var groupTests = []groupTest{
 					},
 				},
 				Labels: models.Labels{
-					{Name: "instance", Value: "server2"},
-					{Name: "ip", Value: "127.0.0.2"},
+					{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("server2")},
+					{Name: models.NewUniqueString("ip"), Value: models.NewUniqueString("127.0.0.2")},
 				},
 				State:    models.AlertStateActive,
-				Receiver: "by-cluster-service",
+				Receiver: models.NewUniqueString("by-cluster-service"),
 			},
 		},
 		id: "922d04650baba3fe",
-		stateCount: map[string]int{
+		stateCount: map[models.UniqueString]int{
 			models.AlertStateActive:      2,
 			models.AlertStateSuppressed:  0,
 			models.AlertStateUnprocessed: 0,
@@ -495,14 +532,23 @@ var groupTests = []groupTest{
 	{
 		receiver: "by-name",
 		labels: models.Labels{
-			{Name: "alertname", Value: "HTTP_Probe_Failed"},
+			{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("HTTP_Probe_Failed")},
 		},
 		alerts: []models.Alert{
 			{
 				StartsAt: time.Date(2019, time.January, 14, 0, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{
-					models.Annotation{Visible: true, Name: "help", Value: "Example help annotation"},
-					models.Annotation{Visible: true, Name: "url", Value: "http://localhost/example.html", IsLink: true},
+					models.Annotation{
+						Visible: true,
+						Name:    models.NewUniqueString("help"),
+						Value:   models.NewUniqueString("Example help annotation"),
+					},
+					models.Annotation{
+						Visible: true,
+						Name:    models.NewUniqueString("url"),
+						Value:   models.NewUniqueString("http://localhost/example.html"),
+						IsLink:  true,
+					},
 				},
 				Alertmanager: []models.AlertmanagerInstance{
 					{
@@ -512,10 +558,10 @@ var groupTests = []groupTest{
 					},
 				},
 				Labels: models.Labels{
-					{Name: "instance", Value: "web1"},
+					{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("web1")},
 				},
 				State:    models.AlertStateSuppressed,
-				Receiver: "by-name",
+				Receiver: models.NewUniqueString("by-name"),
 			},
 			{
 				StartsAt:    time.Date(2019, time.January, 14, 0, 0, 0, 0, time.UTC),
@@ -529,14 +575,14 @@ var groupTests = []groupTest{
 					},
 				},
 				Labels: models.Labels{
-					{Name: "instance", Value: "web2"},
+					{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("web2")},
 				},
 				State:    models.AlertStateActive,
-				Receiver: "by-name",
+				Receiver: models.NewUniqueString("by-name"),
 			},
 		},
 		id: "69b99170489a6c64",
-		stateCount: map[string]int{
+		stateCount: map[models.UniqueString]int{
 			models.AlertStateActive:      1,
 			models.AlertStateSuppressed:  1,
 			models.AlertStateUnprocessed: 0,
@@ -545,14 +591,23 @@ var groupTests = []groupTest{
 	{
 		receiver: "by-name",
 		labels: models.Labels{
-			{Name: "alertname", Value: "Free_Disk_Space_Too_Low"},
+			{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("Free_Disk_Space_Too_Low")},
 		},
 		alerts: []models.Alert{
 			{
 				StartsAt: time.Date(2019, time.January, 15, 0, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{
-					models.Annotation{Visible: true, Name: "alert", Value: "Less than 10% disk space is free"},
-					models.Annotation{Visible: true, Name: "dashboard", Value: "http://localhost/dashboard.html", IsLink: true},
+					models.Annotation{
+						Visible: true,
+						Name:    models.NewUniqueString("alert"),
+						Value:   models.NewUniqueString("Less than 10% disk space is free"),
+					},
+					models.Annotation{
+						Visible: true,
+						Name:    models.NewUniqueString("dashboard"),
+						Value:   models.NewUniqueString("http://localhost/dashboard.html"),
+						IsLink:  true,
+					},
 				},
 				Alertmanager: []models.AlertmanagerInstance{
 					{
@@ -563,17 +618,17 @@ var groupTests = []groupTest{
 					},
 				},
 				Labels: models.Labels{
-					{Name: "cluster", Value: "staging"},
-					{Name: "disk", Value: "sda"},
-					{Name: "instance", Value: "server5"},
-					{Name: "job", Value: "node_exporter"},
+					{Name: models.NewUniqueString("cluster"), Value: models.NewUniqueString("staging")},
+					{Name: models.NewUniqueString("disk"), Value: models.NewUniqueString("sda")},
+					{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("server5")},
+					{Name: models.NewUniqueString("job"), Value: models.NewUniqueString("node_exporter")},
 				},
 				State:    models.AlertStateActive,
-				Receiver: "by-name",
+				Receiver: models.NewUniqueString("by-name"),
 			},
 		},
 		id: "37f9b50559e97fd0",
-		stateCount: map[string]int{
+		stateCount: map[models.UniqueString]int{
 			models.AlertStateActive:      1,
 			models.AlertStateSuppressed:  0,
 			models.AlertStateUnprocessed: 0,
@@ -582,15 +637,24 @@ var groupTests = []groupTest{
 	{
 		receiver: "by-cluster-service",
 		labels: models.Labels{
-			{Name: "alertname", Value: "HTTP_Probe_Failed"},
-			{Name: "cluster", Value: "dev"},
+			{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("HTTP_Probe_Failed")},
+			{Name: models.NewUniqueString("cluster"), Value: models.NewUniqueString("dev")},
 		},
 		alerts: []models.Alert{
 			{
 				StartsAt: time.Date(2019, time.January, 10, 20, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{
-					models.Annotation{Visible: true, Name: "help", Value: "Example help annotation"},
-					models.Annotation{Visible: true, Name: "url", Value: "http://localhost/example.html", IsLink: true},
+					models.Annotation{
+						Visible: true,
+						Name:    models.NewUniqueString("help"),
+						Value:   models.NewUniqueString("Example help annotation"),
+					},
+					models.Annotation{
+						Visible: true,
+						Name:    models.NewUniqueString("url"),
+						Value:   models.NewUniqueString("http://localhost/example.html"),
+						IsLink:  true,
+					},
 				},
 				Alertmanager: []models.AlertmanagerInstance{
 					{
@@ -601,10 +665,10 @@ var groupTests = []groupTest{
 					},
 				},
 				Labels: models.Labels{
-					{Name: "instance", Value: "web1"},
+					{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("web1")},
 				},
 				State:    models.AlertStateSuppressed,
-				Receiver: "by-cluster-service",
+				Receiver: models.NewUniqueString("by-cluster-service"),
 			},
 			{
 				StartsAt:    time.Date(2019, time.January, 10, 19, 0, 0, 0, time.UTC),
@@ -618,14 +682,14 @@ var groupTests = []groupTest{
 					},
 				},
 				Labels: models.Labels{
-					{Name: "instance", Value: "web2"},
+					{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("web2")},
 				},
 				State:    models.AlertStateActive,
-				Receiver: "by-cluster-service",
+				Receiver: models.NewUniqueString("by-cluster-service"),
 			},
 		},
 		id: "ca10a29d2e729cff",
-		stateCount: map[string]int{
+		stateCount: map[models.UniqueString]int{
 			models.AlertStateActive:      1,
 			models.AlertStateSuppressed:  1,
 			models.AlertStateUnprocessed: 0,
@@ -636,18 +700,18 @@ var groupTests = []groupTest{
 var filtersExpected = []models.Filter{}
 
 func compareAlertGroups(testCase groupTest, group models.APIAlertGroup) bool {
-	if testCase.receiver != group.Receiver {
+	if testCase.receiver != group.Receiver.Value() {
 		return false
 	}
 	if len(testCase.labels) != len(group.Labels) {
 		return false
 	}
 	for _, l := range testCase.labels {
-		v := group.Labels.Get(l.Name)
+		v := group.Labels.Get(l.Name.Value())
 		if v == nil {
 			return false
 		}
-		if l.Value != v.Value {
+		if l.Value.Value() != v.Value.Value() {
 			return false
 		}
 	}
@@ -662,11 +726,11 @@ func compareAlerts(expectedAlert, gotAlert models.Alert) bool {
 		return false
 	}
 	for _, l := range expectedAlert.Labels {
-		v := gotAlert.Labels.Get(l.Name)
+		v := gotAlert.Labels.Get(l.Name.Value())
 		if v == nil {
 			return false
 		}
-		if l.Value != v.Value {
+		if l.Value.Value() != v.Value.Value() {
 			return false
 		}
 	}
@@ -676,23 +740,23 @@ func compareAlerts(expectedAlert, gotAlert models.Alert) bool {
 func testAlert(version string, t *testing.T, expectedAlert, gotAlert models.Alert) {
 	if gotAlert.Receiver != expectedAlert.Receiver {
 		t.Errorf("[%s] Expected '%s' receiver but got '%s' on alert labels=%v",
-			version, expectedAlert.Receiver, gotAlert.Receiver, expectedAlert.Labels)
+			version, expectedAlert.Receiver.Value(), gotAlert.Receiver.Value(), expectedAlert.Labels)
 	}
 	if gotAlert.State != expectedAlert.State {
 		t.Errorf("[%s] Expected state '%s' but got '%s' on alert receiver='%s' labels=%v",
-			version, expectedAlert.State, gotAlert.State, gotAlert.Receiver, expectedAlert.Labels)
+			version, expectedAlert.State.Value(), gotAlert.State.Value(), gotAlert.Receiver.Value(), expectedAlert.Labels)
 	}
 	if !reflect.DeepEqual(gotAlert.Annotations, expectedAlert.Annotations) {
 		t.Errorf("[%s] Annotation mismatch on alert receiver='%s' labels=%v, expected %v but got %v",
-			version, expectedAlert.Receiver, expectedAlert.Labels, expectedAlert.Annotations, gotAlert.Annotations)
+			version, expectedAlert.Receiver.Value(), expectedAlert.Labels, expectedAlert.Annotations, gotAlert.Annotations)
 	}
 	if !reflect.DeepEqual(gotAlert.Labels, expectedAlert.Labels) {
 		t.Errorf("[%s] Labels mismatch on alert receiver='%s', expected labels=%v but got %v",
-			version, expectedAlert.Receiver, expectedAlert.Labels, gotAlert.Labels)
+			version, expectedAlert.Receiver.Value(), expectedAlert.Labels, gotAlert.Labels)
 	}
 	if len(gotAlert.Alertmanager) != len(expectedAlert.Alertmanager) {
 		t.Errorf("[%s] Expected %d alertmanager instances but got %d on alert receiver='%s' labels=%v",
-			version, len(expectedAlert.Alertmanager), len(gotAlert.Alertmanager), gotAlert.Receiver, expectedAlert.Labels)
+			version, len(expectedAlert.Alertmanager), len(gotAlert.Alertmanager), gotAlert.Receiver.Value(), expectedAlert.Labels)
 	}
 	for _, expectedAM := range expectedAlert.Alertmanager {
 		found := false
@@ -701,11 +765,11 @@ func testAlert(version string, t *testing.T, expectedAlert, gotAlert models.Aler
 				found = true
 				if gotAM.State != expectedAM.State {
 					t.Errorf("[%s] Expected alertmanager '%s' to have state '%s' but got '%s' on alert receiver='%s' labels=%v",
-						version, expectedAM.Name, expectedAM.State, gotAM.State, gotAlert.Receiver, expectedAlert.Labels)
+						version, expectedAM.Name, expectedAM.State.Value(), gotAM.State.Value(), gotAlert.Receiver.Value(), expectedAlert.Labels)
 				}
 				if gotAM.Source != expectedAM.Source {
 					t.Errorf("[%s] Expected alertmanager '%s' to have source '%s' but got '%s' on alert receiver='%s' labels=%v",
-						version, expectedAM.Name, expectedAM.Source, gotAM.Source, gotAlert.Receiver, expectedAlert.Labels)
+						version, expectedAM.Name, expectedAM.Source, gotAM.Source, gotAlert.Receiver.Value(), expectedAlert.Labels)
 				}
 				// multiple silences only work for >=0.6.1
 				versionRange, err := semver.NewConstraint(">=0.6.1")
@@ -715,7 +779,7 @@ func testAlert(version string, t *testing.T, expectedAlert, gotAlert models.Aler
 				if versionRange.Check(semver.MustParse(version)) {
 					if len(gotAM.Silences) != len(expectedAM.Silences) {
 						t.Errorf("[%s] Expected alertmanager '%s' to have %d silences but got %d on alert receiver='%s' labels=%v",
-							version, expectedAM.Name, len(expectedAM.Silences), len(gotAM.Silences), gotAlert.Receiver, expectedAlert.Labels)
+							version, expectedAM.Name, len(expectedAM.Silences), len(gotAM.Silences), gotAlert.Receiver.Value(), expectedAlert.Labels)
 					}
 					for _, es := range expectedAM.Silences {
 						foundSilence := false
@@ -729,7 +793,7 @@ func testAlert(version string, t *testing.T, expectedAlert, gotAlert models.Aler
 						}
 						if !foundSilence {
 							t.Errorf("[%s] Silence %v not found on alertmanager '%s' on alert receiver='%s' labels=%v",
-								version, es, expectedAM.Name, expectedAlert.Receiver, expectedAlert.Labels)
+								version, es, expectedAM.Name, expectedAlert.Receiver.Value(), expectedAlert.Labels)
 						}
 					}
 				}
@@ -738,7 +802,7 @@ func testAlert(version string, t *testing.T, expectedAlert, gotAlert models.Aler
 		}
 		if !found {
 			t.Errorf("[%s] Alertmanager instances '%s' not found on alert receiver='%s' labels=%v",
-				version, expectedAM.Name, gotAlert.Receiver, expectedAlert.Labels)
+				version, expectedAM.Name, gotAlert.Receiver.Value(), expectedAlert.Labels)
 		}
 	}
 }
@@ -749,11 +813,11 @@ func testAlertGroup(version string, t *testing.T, testCase groupTest, group mode
 			version, testCase.id, group.ID, group.Labels)
 	}
 	for key, val := range testCase.stateCount {
-		v, found := group.StateCount[key]
+		v, found := group.StateCount[key.Value()]
 		if !found {
-			t.Errorf("[%s] Expected group.StateCount[%s]=%d not found", version, key, val)
+			t.Errorf("[%s] Expected group.StateCount[%s]=%d not found", version, key.Value(), val)
 		} else if v != val {
-			t.Errorf("[%s] group.StateCount[%s] mismatch, expected %d but got %d", version, key, val, v)
+			t.Errorf("[%s] group.StateCount[%s] mismatch, expected %d but got %d", version, key.Value(), val, v)
 		}
 	}
 	if len(testCase.alerts) != len(group.Alerts) {
@@ -771,7 +835,7 @@ func testAlertGroup(version string, t *testing.T, testCase groupTest, group mode
 		}
 		if !alertFound {
 			t.Errorf("[%s] Expected alert receiver='%s' labels=%v not found in group: %v",
-				version, expectedAlert.Receiver, expectedAlert.Labels, group.Alerts)
+				version, expectedAlert.Receiver.Value(), expectedAlert.Labels, group.Alerts)
 		}
 	}
 }
@@ -1031,19 +1095,19 @@ func TestSortOrder(t *testing.T) {
 func verifyStrippedLabels(t *testing.T, labels models.Labels, keep, strip []string) {
 	for _, l := range strip {
 		if val := labels.Get(l); val != nil {
-			t.Errorf("Found stripped label %s=%s on %v", val.Name, val.Value, labels)
+			t.Errorf("Found stripped label %s=%s on %v", val.Name.Value(), val.Value.Value(), labels)
 		}
 	}
 	if len(keep) > 0 && len(strip) == 0 {
 		for _, ll := range labels {
 			ok := false
 			for _, l := range keep {
-				if ll.Name == l {
+				if ll.Name.Value() == l {
 					ok = true
 				}
 			}
 			if !ok {
-				t.Errorf("Found label %s=%s that's not on the keep list: %v", ll.Name, ll.Value, keep)
+				t.Errorf("Found label %s=%s that's not on the keep list: %v", ll.Name.Value(), ll.Value.Value(), keep)
 			}
 		}
 	}

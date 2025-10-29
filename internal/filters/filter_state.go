@@ -10,6 +10,7 @@ import (
 
 type stateFilter struct {
 	alertFilter
+	value string
 }
 
 func (filter *stateFilter) init(name string, matcher *matcherT, rawText string, isValid bool, value string) {
@@ -19,17 +20,21 @@ func (filter *stateFilter) init(name string, matcher *matcherT, rawText string, 
 	}
 	filter.RawText = rawText
 	filter.IsValid = isValid
-	filter.Value = value
-	if !slices.Contains(models.AlertStateList, value) {
+	filter.value = value
+	if !slices.Contains(models.AlertStateList, models.NewUniqueString(value)) {
 		filter.IsValid = false
 	}
+}
+
+func (filter *stateFilter) GetValue() string {
+	return filter.value
 }
 
 func (filter *stateFilter) Match(alert *models.Alert, _ int) bool {
 	if filter.IsValid {
 		var isMatch bool
 		for _, am := range alert.Alertmanager {
-			if filter.Matcher.Compare(am.State, filter.Value) {
+			if filter.Matcher.Compare(am.State.Value(), filter.value) {
 				isMatch = true
 			}
 		}
@@ -43,7 +48,7 @@ func (filter *stateFilter) Match(alert *models.Alert, _ int) bool {
 }
 
 func (filter *stateFilter) MatchAlertmanager(am *models.AlertmanagerInstance) bool {
-	return filter.Matcher.Compare(am.State, filter.Value)
+	return filter.Matcher.Compare(am.State.Value(), filter.value)
 }
 
 func newStateFilter() FilterT {
@@ -57,7 +62,7 @@ func stateAutocomplete(name string, operators []string, alerts []models.Alert) [
 	for _, operator := range operators {
 		for _, alert := range alerts {
 			tokens = append(tokens, makeAC(
-				name+operator+alert.State,
+				name+operator+alert.State.Value(),
 				[]string{
 					name,
 					strings.TrimPrefix(name, "@"),

@@ -2,6 +2,7 @@ package filters
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/prymitive/karma/internal/models"
@@ -14,6 +15,7 @@ const (
 
 type inhibitedFilter struct {
 	alertFilter
+	value bool
 }
 
 func (filter *inhibitedFilter) init(name string, matcher *matcherT, rawText string, isValid bool, value string) {
@@ -25,20 +27,23 @@ func (filter *inhibitedFilter) init(name string, matcher *matcherT, rawText stri
 	filter.IsValid = isValid
 	switch value {
 	case trueValue:
-		filter.Value = true
+		filter.value = true
 	case falseValue:
-		filter.Value = false
+		filter.value = false
 	default:
 		filter.IsValid = false
 	}
 }
 
+func (filter *inhibitedFilter) GetValue() string {
+	return strconv.FormatBool(filter.value)
+}
+
 func (filter *inhibitedFilter) Match(alert *models.Alert, _ int) (isMatch bool) {
 	if filter.IsValid {
 		for _, am := range alert.Alertmanager {
-			m := filter.Matcher.Compare(len(am.InhibitedBy) > 0, filter.Value)
-			if m {
-				isMatch = m
+			if len(am.InhibitedBy) > 0 == filter.value {
+				isMatch = true
 			}
 		}
 		if isMatch {
@@ -51,7 +56,7 @@ func (filter *inhibitedFilter) Match(alert *models.Alert, _ int) (isMatch bool) 
 }
 
 func (filter *inhibitedFilter) MatchAlertmanager(am *models.AlertmanagerInstance) bool {
-	return filter.Matcher.Compare(len(am.InhibitedBy) > 0, filter.Value)
+	return len(am.InhibitedBy) > 0 == filter.value
 }
 
 func newInhibitedFilter() FilterT {

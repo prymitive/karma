@@ -9,13 +9,28 @@ import (
 
 type alertmanagerClusterFilter struct {
 	alertFilter
+	value string
+}
+
+func (filter *alertmanagerClusterFilter) init(name string, matcher *matcherT, rawText string, isValid bool, value string) {
+	filter.Matched = name
+	if matcher != nil {
+		filter.Matcher = *matcher
+	}
+	filter.RawText = rawText
+	filter.IsValid = isValid
+	filter.value = value
+}
+
+func (filter *alertmanagerClusterFilter) GetValue() string {
+	return filter.value
 }
 
 func (filter *alertmanagerClusterFilter) Match(alert *models.Alert, _ int) bool {
 	if filter.IsValid {
 		var isMatch bool
 		for _, am := range alert.Alertmanager {
-			if filter.Matcher.Compare(am.Cluster, filter.Value) {
+			if filter.Matcher.Compare(am.Cluster, filter.value) {
 				isMatch = true
 			}
 		}
@@ -29,7 +44,7 @@ func (filter *alertmanagerClusterFilter) Match(alert *models.Alert, _ int) bool 
 }
 
 func (filter *alertmanagerClusterFilter) MatchAlertmanager(am *models.AlertmanagerInstance) bool {
-	return filter.Matcher.Compare(am.Cluster, filter.Value)
+	return filter.Matcher.Compare(am.Cluster, filter.value)
 }
 
 func newAlertmanagerClusterFilter() FilterT {

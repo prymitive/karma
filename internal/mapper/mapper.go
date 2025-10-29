@@ -6,7 +6,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/prymitive/karma/internal/intern"
 	"github.com/prymitive/karma/internal/models"
 )
 
@@ -23,13 +22,13 @@ type Mapper interface {
 // AlertMapper handles mapping of Alertmanager alert information to karma AlertGroup models
 type AlertMapper interface {
 	Mapper
-	Collect(*intern.Interner, string, map[string]string, time.Duration, http.RoundTripper) ([]models.AlertGroup, error)
+	Collect(string, map[string]string, time.Duration, http.RoundTripper) ([]models.AlertGroup, error)
 }
 
 // SilenceMapper handles mapping of Alertmanager silence information to karma Silence models
 type SilenceMapper interface {
 	Mapper
-	Collect(*intern.Interner, string, map[string]string, time.Duration, http.RoundTripper) ([]models.Silence, error)
+	Collect(string, map[string]string, time.Duration, http.RoundTripper) ([]models.Silence, error)
 	RewriteUsername([]byte, string) ([]byte, error)
 	Unmarshal([]byte) (*models.Silence, error)
 }

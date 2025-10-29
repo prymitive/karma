@@ -23,6 +23,7 @@ func TestLogConfig(t *testing.T) {
 	}
 
 	for val, level := range logLevels {
+		config.Config.Log.Format = "text"
 		config.Config.Log.Level = val
 		err := setupLogger()
 		if err != nil {
@@ -51,7 +52,7 @@ func TestMetrics(t *testing.T) {
 		"karma_alertmanager_errors_total",
 	} {
 		if !strings.Contains(body, s) {
-			t.Errorf("Metric '%s' missing from /metrics response", s)
+			t.Errorf("Metric '%s' missing from /metrics response:\n%s", s, body)
 		}
 	}
 }

@@ -29,7 +29,7 @@
   },
   "alertmanagerCount": null,
   "stateCount": null,
-  "receiver": "",
+  "receiver": {},
   "id": "",
   "labels": [
     {
@@ -41,7 +41,7 @@
     {
       "startsAt": "0001-01-01T00:00:00Z",
       "state": "suppressed",
-      "receiver": "",
+      "receiver": "default",
       "id": "",
       "annotations": [
         {
@@ -67,7 +67,7 @@
           "fingerprint": "1",
           "name": "am1",
           "cluster": "fakeCluster",
-          "state": "",
+          "state": "suppressed",
           "startsAt": "0001-01-01T00:00:00Z",
           "source": "https://prom.example.com/graph?foo",
           "silencedBy": [
@@ -80,7 +80,7 @@
           "fingerprint": "2",
           "name": "am2",
           "cluster": "fakeCluster",
-          "state": "",
+          "state": "suppressed",
           "startsAt": "0001-01-01T00:00:00Z",
           "source": "https://prom.example.com/subdir/graph?bar",
           "silencedBy": [
@@ -94,7 +94,7 @@
     {
       "startsAt": "0001-01-01T00:00:00Z",
       "state": "active",
-      "receiver": "",
+      "receiver": "default",
       "id": "",
       "annotations": [],
       "labels": [
@@ -112,7 +112,7 @@
           "fingerprint": "1",
           "name": "am1",
           "cluster": "fakeCluster",
-          "state": "",
+          "state": "active",
           "startsAt": "0001-01-01T00:00:00Z",
           "source": "https://am.example.com",
           "silencedBy": [
@@ -125,7 +125,7 @@
           "fingerprint": "1",
           "name": "am2",
           "cluster": "fakeCluster",
-          "state": "",
+          "state": "active",
           "startsAt": "0001-01-01T00:00:00Z",
           "source": "https://am.example.com",
           "silencedBy": [
@@ -139,7 +139,7 @@
     {
       "startsAt": "0001-01-01T00:00:00Z",
       "state": "suppressed",
-      "receiver": "",
+      "receiver": "default",
       "id": "",
       "annotations": [],
       "labels": [
@@ -161,7 +161,7 @@
           "fingerprint": "1",
           "name": "am1",
           "cluster": "fakeCluster",
-          "state": "",
+          "state": "suppressed",
           "startsAt": "0001-01-01T00:00:00Z",
           "source": "https://am.example.com/graph",
           "silencedBy": [
@@ -174,7 +174,7 @@
           "fingerprint": "1",
           "name": "am2",
           "cluster": "fakeCluster",
-          "state": "",
+          "state": "suppressed",
           "startsAt": "0001-01-01T00:00:00Z",
           "source": "https://am.example.com/graph",
           "silencedBy": [

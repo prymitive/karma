@@ -4,7 +4,6 @@ import (
 	"slices"
 	"sort"
 	"time"
-	"unique"
 
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/models"
@@ -30,7 +29,7 @@ func DedupAlerts() []models.AlertGroup {
 	}
 
 	dedupedGroups := []models.AlertGroup{}
-	alertStates := map[string][]string{}
+	alertStates := map[string][]models.UniqueString{}
 	for _, agList := range uniqueGroups {
 		alerts := map[string]models.Alert{}
 		for _, ag := range agList {
@@ -42,7 +41,7 @@ func DedupAlerts() []models.AlertGroup {
 					config.Config.Receivers.Strip,
 					config.Config.Receivers.CompiledKeepRegex,
 					config.Config.Receivers.CompiledStripRegex,
-					alert.Receiver,
+					alert.Receiver.Value(),
 				) {
 					continue
 				}
@@ -80,7 +79,7 @@ func DedupAlerts() []models.AlertGroup {
 				} else {
 					alerts[alertLFP] = alert
 					// seed alert state slice
-					alertStates[alertLFP] = []string{alert.State}
+					alertStates[alertLFP] = []models.UniqueString{alert.State}
 				}
 			}
 		}
@@ -188,7 +187,7 @@ func DedupColors() models.LabelsColorMap {
 // DedupAutocomplete returns a list of autocomplete hints merged from all
 // Alertmanager upstreams
 func DedupAutocomplete() []models.Autocomplete {
-	uniqueAutocomplete := map[unique.Handle[string]]*models.Autocomplete{}
+	uniqueAutocomplete := map[models.UniqueString]*models.Autocomplete{}
 
 	upstreams := GetAlertmanagers()
 
@@ -221,12 +220,12 @@ func DedupAutocomplete() []models.Autocomplete {
 
 // DedupKnownLabels returns a deduplicated slice of all known label names
 func DedupKnownLabels() []string {
-	dedupedLabels := map[string]bool{}
+	dedupedLabels := map[string]struct{}{}
 	upstreams := GetAlertmanagers()
 
 	for _, am := range upstreams {
 		for _, key := range am.KnownLabels() {
-			dedupedLabels[key] = true
+			dedupedLabels[key] = struct{}{}
 		}
 	}
 
@@ -239,14 +238,14 @@ func DedupKnownLabels() []string {
 
 // DedupKnownLabelValues returns a list of all known values for label $name
 func DedupKnownLabelValues(name string) []string {
-	dedupedValues := map[string]bool{}
+	dedupedValues := map[models.UniqueString]struct{}{}
 	upstreams := GetAlertmanagers()
 
 	for _, am := range upstreams {
 		for _, ag := range am.Alerts() {
 			for _, alert := range ag.Alerts {
 				if v := alert.Labels.Get(name); v != nil {
-					dedupedValues[v.Value] = true
+					dedupedValues[v.Value] = struct{}{}
 				}
 			}
 		}
@@ -254,7 +253,7 @@ func DedupKnownLabelValues(name string) []string {
 
 	flatValues := make([]string, 0, len(dedupedValues))
 	for key := range dedupedValues {
-		flatValues = append(flatValues, key)
+		flatValues = append(flatValues, key.Value())
 	}
 	return flatValues
 }

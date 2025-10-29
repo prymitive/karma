@@ -10,6 +10,7 @@ import (
 
 type limitFilter struct {
 	alertFilter
+	value int
 }
 
 func (filter *limitFilter) init(name string, matcher *matcherT, rawText string, isValid bool, value string) {
@@ -24,14 +25,18 @@ func (filter *limitFilter) init(name string, matcher *matcherT, rawText string, 
 		if err != nil || val < 1 {
 			filter.IsValid = false
 		} else {
-			filter.Value = val
+			filter.value = val
 		}
 	}
 }
 
+func (filter *limitFilter) GetValue() string {
+	return strconv.Itoa(filter.value)
+}
+
 func (filter *limitFilter) Match(_ *models.Alert, matches int) bool {
 	if filter.IsValid {
-		if matches < filter.Value.(int) {
+		if matches < filter.value {
 			return true
 		}
 		filter.Hits++

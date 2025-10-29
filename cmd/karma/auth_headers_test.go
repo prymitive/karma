@@ -10,7 +10,6 @@ import (
 	"github.com/jarcoal/httpmock"
 
 	"github.com/prymitive/karma/internal/alertmanager"
-	"github.com/prymitive/karma/internal/intern"
 	"github.com/prymitive/karma/internal/mock"
 )
 
@@ -118,7 +117,7 @@ func TestAuthHeader(t *testing.T) {
 					})
 			}
 
-			_ = am.Pull(intern.New())
+			_ = am.Pull()
 		}
 	}
 }

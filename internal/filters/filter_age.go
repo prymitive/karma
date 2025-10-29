@@ -10,6 +10,7 @@ import (
 
 type ageFilter struct {
 	alertFilter
+	value time.Duration
 }
 
 func (filter *ageFilter) init(name string, matcher *matcherT, rawText string, isValid bool, value string) {
@@ -25,15 +26,19 @@ func (filter *ageFilter) init(name string, matcher *matcherT, rawText string, is
 		filter.IsValid = false
 	}
 	if dur > 0 {
-		filter.Value = -dur
+		filter.value = -dur
 	} else {
-		filter.Value = dur
+		filter.value = dur
 	}
+}
+
+func (filter *ageFilter) GetValue() string {
+	return fmt.Sprintf("%v", filter.value)
 }
 
 func (filter *ageFilter) Match(alert *models.Alert, _ int) bool {
 	if filter.IsValid {
-		ts := time.Now().Add(filter.Value.(time.Duration))
+		ts := time.Now().Add(filter.value)
 		isMatch := filter.Matcher.Compare(int(ts.Unix()), int(alert.StartsAt.Unix()))
 		if isMatch {
 			filter.Hits++
@@ -45,7 +50,7 @@ func (filter *ageFilter) Match(alert *models.Alert, _ int) bool {
 }
 
 func (filter *ageFilter) MatchAlertmanager(am *models.AlertmanagerInstance) bool {
-	ts := time.Now().Add(filter.Value.(time.Duration))
+	ts := time.Now().Add(filter.value)
 	return filter.Matcher.Compare(int(ts.Unix()), int(am.StartsAt.Unix()))
 }
 

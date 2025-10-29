@@ -8,13 +8,28 @@ import (
 
 type fingerprintFilter struct {
 	alertFilter
+	value string
+}
+
+func (filter *fingerprintFilter) init(name string, matcher *matcherT, rawText string, isValid bool, value string) {
+	filter.Matched = name
+	if matcher != nil {
+		filter.Matcher = *matcher
+	}
+	filter.RawText = rawText
+	filter.IsValid = isValid
+	filter.value = value
+}
+
+func (filter *fingerprintFilter) GetValue() string {
+	return filter.value
 }
 
 func (filter *fingerprintFilter) Match(alert *models.Alert, _ int) bool {
 	if filter.IsValid {
 		var isMatch bool
 		for _, am := range alert.Alertmanager {
-			m := filter.Matcher.Compare(am.Fingerprint, filter.Value)
+			m := filter.Matcher.Compare(am.Fingerprint, filter.value)
 			if m {
 				isMatch = m
 			}
@@ -29,7 +44,7 @@ func (filter *fingerprintFilter) Match(alert *models.Alert, _ int) bool {
 }
 
 func (filter *fingerprintFilter) MatchAlertmanager(am *models.AlertmanagerInstance) bool {
-	return filter.Matcher.Compare(am.Fingerprint, filter.Value)
+	return filter.Matcher.Compare(am.Fingerprint, filter.value)
 }
 
 func newFingerprintFilter() FilterT {

@@ -9,7 +9,6 @@ import (
 
 	httptransport "github.com/go-openapi/runtime/client"
 
-	"github.com/prymitive/karma/internal/intern"
 	"github.com/prymitive/karma/internal/mapper"
 	"github.com/prymitive/karma/internal/mapper/v017/client"
 	"github.com/prymitive/karma/internal/mapper/v017/client/alertgroup"
@@ -40,7 +39,7 @@ func newClient(uri string, headers map[string]string, httpTransport http.RoundTr
 }
 
 // Alerts will fetch all alert groups from the API
-func groups(c *client.AlertmanagerAPI, timeout time.Duration, si *intern.Interner) ([]models.AlertGroup, error) {
+func groups(c *client.AlertmanagerAPI, timeout time.Duration) ([]models.AlertGroup, error) {
 	groups, err := c.Alertgroup.GetAlertGroups(alertgroup.NewGetAlertGroupsParamsWithTimeout(timeout))
 	if err != nil {
 		return []models.AlertGroup{}, err
@@ -51,28 +50,28 @@ func groups(c *client.AlertmanagerAPI, timeout time.Duration, si *intern.Interne
 	for _, group := range groups.Payload {
 		ls := make(models.Labels, 0, len(group.Labels))
 		for k, v := range group.Labels {
-			ls = ls.Set(si.String(k), si.String(v))
+			ls = ls.Set(k, v)
 		}
 		sort.Sort(ls)
 		g := models.AlertGroup{
-			Receiver: si.String(*group.Receiver.Name),
+			Receiver: models.NewUniqueString(*group.Receiver.Name),
 			Labels:   ls,
 			Alerts:   make(models.AlertList, 0, len(group.Alerts)),
 		}
 		for _, alert := range group.Alerts {
 			ls := make(models.Labels, 0, len(alert.Labels))
 			for k, v := range alert.Labels {
-				ls = ls.Set(si.String(k), si.String(v))
+				ls = ls.Set(k, v)
 			}
 			sort.Sort(ls)
 			a := models.Alert{
 				Fingerprint:  *alert.Fingerprint,
-				Receiver:     si.String(*group.Receiver.Name),
+				Receiver:     models.NewUniqueString(*group.Receiver.Name),
 				Annotations:  models.AnnotationsFromMap(alert.Annotations),
 				Labels:       ls,
 				StartsAt:     time.Time(*alert.StartsAt),
-				GeneratorURL: si.String(alert.GeneratorURL.String()),
-				State:        si.String(*alert.Status.State),
+				GeneratorURL: alert.GeneratorURL.String(),
+				State:        models.NewUniqueString(*alert.Status.State),
 				InhibitedBy:  alert.Status.InhibitedBy,
 				SilencedBy:   alert.Status.SilencedBy,
 			}
@@ -87,7 +86,7 @@ func groups(c *client.AlertmanagerAPI, timeout time.Duration, si *intern.Interne
 	return ret, nil
 }
 
-func silences(c *client.AlertmanagerAPI, timeout time.Duration, si *intern.Interner) ([]models.Silence, error) {
+func silences(c *client.AlertmanagerAPI, timeout time.Duration) ([]models.Silence, error) {
 	silences, err := c.Silence.GetSilences(silence.NewGetSilencesParamsWithTimeout(timeout))
 	if err != nil {
 		return []models.Silence{}, err
@@ -100,17 +99,11 @@ func silences(c *client.AlertmanagerAPI, timeout time.Duration, si *intern.Inter
 			ID:        *s.ID,
 			StartsAt:  time.Time(*s.StartsAt),
 			EndsAt:    time.Time(*s.EndsAt),
-			CreatedBy: si.String(*s.CreatedBy),
-			Comment:   si.String(*s.Comment),
+			CreatedBy: *s.CreatedBy, // FIXME unique
+			Comment:   *s.Comment,
 		}
 		for _, m := range s.Matchers {
-			sm := models.SilenceMatcher{
-				Name:    si.String(*m.Name),
-				Value:   si.String(*m.Value),
-				IsRegex: *m.IsRegex,
-				IsEqual: *m.IsEqual,
-			}
-			us.Matchers = append(us.Matchers, sm)
+			us.Matchers = append(us.Matchers, models.NewSilenceMatcher(*m.Name, *m.Value, *m.IsRegex, *m.IsEqual))
 		}
 		ret = append(ret, us)
 	}
@@ -151,13 +144,7 @@ func unmarshal(body []byte) (*models.Silence, error) {
 		} else {
 			isEqual = true
 		}
-		sm := models.SilenceMatcher{
-			Name:    *m.Name,
-			Value:   *m.Value,
-			IsRegex: *m.IsRegex,
-			IsEqual: isEqual,
-		}
-		us.Matchers = append(us.Matchers, sm)
+		us.Matchers = append(us.Matchers, models.NewSilenceMatcher(*m.Name, *m.Value, *m.IsRegex, isEqual))
 	}
 
 	return &us, nil
