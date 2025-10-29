@@ -1,22 +1,28 @@
-import { FC, ReactNode, useState, useCallback } from "react";
+import { FC, useState, useCallback } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStop } from "@fortawesome/free-solid-svg-icons/faStop";
 import { faSync } from "@fortawesome/free-solid-svg-icons/faSync";
 
 import type { AlertStore } from "Stores/AlertStore";
+import {
+  NotificationContent,
+  type NotificationContentProps,
+} from "Components/Notification/NotificationContent";
 
-const ToastMessage: FC<{
-  title: ReactNode;
-  message: ReactNode;
-}> = ({ title, message }) => {
+const ToastMessage: FC<NotificationContentProps> = ({
+  title,
+  message,
+  timestamp,
+  occurrenceCount,
+}) => {
   return (
-    <div>
-      <div>{title}</div>
-      <div>
-        <code>{message}</code>
-      </div>
-    </div>
+    <NotificationContent
+      title={title}
+      message={message}
+      timestamp={timestamp}
+      occurrenceCount={occurrenceCount}
+    />
   );
 };
 
@@ -39,7 +45,9 @@ const UpgradeToastMessage: FC<{
         New version available, updates are paused until this page auto reloads
       </div>
       <div>
-        <code>{alertStore.info.version}</code>
+        <code className="bg-secondary text-white px-1 rounded">
+          {alertStore.info.version}
+        </code>
       </div>
       <div className="d-flex flex-row-reverse">
         <button

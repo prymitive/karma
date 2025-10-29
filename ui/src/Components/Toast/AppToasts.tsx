@@ -2,30 +2,30 @@ import { FC, Fragment, useCallback } from "react";
 
 import { observer } from "mobx-react-lite";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons/faArrowUp";
-import { faExclamation } from "@fortawesome/free-solid-svg-icons/faExclamation";
-import { faInfoCircle } from "@fortawesome/free-solid-svg-icons/faInfoCircle";
+import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclamationCircle";
+import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons/faExclamationTriangle";
 
 import type { AlertStore } from "Stores/AlertStore";
-import { TooltipWrapper } from "Components/TooltipWrapper";
+import { notificationStore } from "Stores/NotificationStore";
 import { ToastContainer, Toast } from ".";
 import { ToastMessage, UpgradeToastMessage } from "./ToastMessages";
 
 const AppToasts: FC<{
   alertStore: AlertStore;
 }> = ({ alertStore }) => {
-  const show = useCallback(() => {
-    const e = new CustomEvent("showNotifications");
-    window.dispatchEvent(e);
+  const handleDismissNotification = useCallback((id: string) => {
+    notificationStore.dismissNotification(id, false);
   }, []);
 
   if (alertStore.info.upgradeNeeded) {
     return null;
   }
 
+  const activeNotifications = notificationStore.activeNotifications;
+
   if (
-    alertStore.data.upstreamsWithErrors.length === 0 &&
+    activeNotifications.length === 0 &&
     alertStore.info.upgradeReady === false
   ) {
     return null;
@@ -33,30 +33,28 @@ const AppToasts: FC<{
 
   return (
     <Fragment>
-      <li className="nav-item components-navbar-button ml-auto">
-        <TooltipWrapper title="Show all notifications">
-          <span
-            id="components-notifications"
-            className="nav-link cursor-pointer"
-            onClick={show}
-          >
-            <FontAwesomeIcon icon={faInfoCircle} fixedWidth />
-          </span>
-        </TooltipWrapper>
-      </li>
       <ToastContainer>
-        {alertStore.data.upstreamsWithErrors.map((upstream) => (
+        {activeNotifications.map((notification) => (
           <Toast
-            key={upstream.name}
-            icon={faExclamation}
-            iconClass="text-danger"
+            key={notification.id}
+            icon={
+              notification.type === "error"
+                ? faExclamationCircle
+                : faExclamationTriangle
+            }
+            iconClass={
+              notification.type === "error" ? "text-danger" : "text-warning"
+            }
             message={
               <ToastMessage
-                title={`Alertmanager ${upstream.name} raised an error`}
-                message={upstream.error}
+                title={notification.title}
+                message={notification.message}
+                timestamp={notification.timestamp}
+                occurrenceCount={notification.occurrenceCount}
               />
             }
             hasClose
+            onClose={() => handleDismissNotification(notification.id)}
           />
         ))}
         {alertStore.info.upgradeReady ? (

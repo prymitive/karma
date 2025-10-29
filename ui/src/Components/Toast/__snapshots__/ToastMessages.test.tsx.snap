@@ -2,16 +2,20 @@
 
 exports[`<ToastMessage /> matches snapshot 1`] = `
 "
-<div>
-  <div>
-    title string
+<div class="flex-grow-1">
+  <div class="d-flex align-items-center">
+    <h6 class="alert-heading mb-1 flex-grow-1">
+      title string
+    </h6>
   </div>
-  <div>
-    <code>
-      <div>
-        Div Message
-      </div>
-    </code>
+  <small class="mb-1 d-block">
+    [object Object]
+  </small>
+  <div
+    class="text-white-50"
+    style="font-size: 0.75rem;"
+  >
+    3 years ago
   </div>
 </div>
 "
@@ -24,7 +28,7 @@ exports[`<UpgradeToastMessage /> matches snapshot 1`] = `
     New version available, updates are paused until this page auto reloads
   </div>
   <div>
-    <code>
+    <code class="bg-secondary text-white px-1 rounded">
       1.2.3
     </code>
   </div>

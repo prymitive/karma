@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<NotificationContent /> matches snapshot with custom occurrenceCount 1`] = `ReactWrapper {}`;
+
+exports[`<NotificationContent /> matches snapshot with default occurrenceCount 1`] = `ReactWrapper {}`;

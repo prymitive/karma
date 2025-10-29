@@ -14,8 +14,14 @@ beforeEach(() => {
 
 describe("<ToastMessage />", () => {
   it("matches snapshot", () => {
+    const mockTimestamp = new Date("2023-01-01T12:00:00Z");
     const tree = mount(
-      <ToastMessage title="title string" message={<div>Div Message</div>} />,
+      <ToastMessage
+        title="title string"
+        message={<div>Div Message</div>}
+        timestamp={mockTimestamp}
+        occurrenceCount={1}
+      />,
     );
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });

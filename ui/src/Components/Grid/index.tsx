@@ -5,6 +5,7 @@ import { observer } from "mobx-react-lite";
 import type { AlertStore } from "Stores/AlertStore";
 import type { Settings } from "Stores/Settings";
 import type { SilenceFormStore } from "Stores/SilenceFormStore";
+import { useNotificationManager } from "Hooks/useNotificationManager";
 import AlertGrid from "./AlertGrid";
 import { FatalError } from "./FatalError";
 import { UpgradeNeeded } from "./UpgradeNeeded";
@@ -17,6 +18,9 @@ const Grid: FC<{
   silenceFormStore: SilenceFormStore;
   settingsStore: Settings;
 }> = ({ alertStore, settingsStore, silenceFormStore }) => {
+  // Initialize notification management
+  useNotificationManager(alertStore);
+
   return alertStore.info.upgradeNeeded ? (
     <UpgradeNeeded newVersion={alertStore.info.version} reloadAfter={3000} />
   ) : alertStore.info.reloadNeeded ? (
