@@ -6,7 +6,7 @@ RUN cd /src/ui && npm ci && touch node_modules/.install
 COPY ui /src/ui
 RUN make -C /src/ui build
 
-FROM golang:1.24.1-alpine AS go-builder
+FROM golang:1.25.3-alpine AS go-builder
 RUN apk add make git
 COPY Makefile /src/Makefile
 COPY make /src/make
