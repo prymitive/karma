@@ -376,9 +376,19 @@ class AlertStore {
           this.colors = c;
         },
         get upstreamsWithErrors(): APIAlertmanagerUpstreamT[] {
-          return this.upstreams.instances.filter(
-            (upstream) => upstream.error !== "",
-          );
+          const unhealthy: APIAlertmanagerUpstreamT[] = [];
+          for (const clusterID of Object.keys(this.upstreams.clusters)) {
+            const members = this.upstreams.instances.filter(
+              (upstream) => upstream.cluster === clusterID,
+            );
+            if (
+              members.length > 0 &&
+              members.filter((upstream) => upstream.error === "").length === 0
+            ) {
+              unhealthy.push(...members);
+            }
+          }
+          return unhealthy;
         },
       },
       {
