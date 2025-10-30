@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.122
+
+### Changed
+
+- Only show error messages about failing alertmanager instances if all instances
+  in given alertmanager cluster are failing.
+
 ## v0.121
 
 ### Added
