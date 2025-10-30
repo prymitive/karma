@@ -13,11 +13,11 @@ beforeEach(() => {
 
 const makeErrors = () => {
   alertStore.data.setUpstreams({
-    counters: { total: 3, healthy: 1, failed: 2 },
+    counters: { total: 3, healthy: 0, failed: 3 },
     instances: [
       {
         name: "am1",
-        cluster: "am",
+        cluster: "am1",
         clusterMembers: ["am1"],
         uri: "http://am1",
         publicURI: "http://am1",
@@ -29,7 +29,7 @@ const makeErrors = () => {
       },
       {
         name: "am2",
-        cluster: "am",
+        cluster: "am2",
         clusterMembers: ["am2"],
         uri: "file:///mock",
         publicURI: "file:///mock",
@@ -41,7 +41,7 @@ const makeErrors = () => {
       },
       {
         name: "am3",
-        cluster: "am",
+        cluster: "am3",
         clusterMembers: ["am3"],
         uri: "http://am3",
         publicURI: "http://am3",
@@ -70,6 +70,78 @@ describe("<AppToasts />", () => {
 
   it("renders upstream error toasts for each unhealthy upstream", () => {
     makeErrors();
+    const tree = mount(<AppToasts alertStore={alertStore} />);
+    expect(tree.find("Toast")).toHaveLength(2);
+    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+  });
+
+  it("doesn't render upstream error toasts if not all instances are down", () => {
+    alertStore.data.setUpstreams({
+      counters: { total: 2, healthy: 1, failed: 1 },
+      instances: [
+        {
+          name: "am1",
+          cluster: "am",
+          clusterMembers: ["am1", "am2"],
+          uri: "http://am1",
+          publicURI: "http://am1",
+          error: "error 1",
+          version: "0.24.0",
+          readonly: false,
+          corsCredentials: "include",
+          headers: {},
+        },
+        {
+          name: "am2",
+          cluster: "am",
+          clusterMembers: ["am1", "am2"],
+          uri: "file:///mock",
+          publicURI: "file:///mock",
+          error: "",
+          version: "0.24.0",
+          readonly: false,
+          corsCredentials: "include",
+          headers: {},
+        },
+      ],
+      clusters: { am: ["am1", "am2"] },
+    });
+    const tree = mount(<AppToasts alertStore={alertStore} />);
+    expect(tree.find("Toast")).toHaveLength(0);
+    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+  });
+
+  it("renders upstream error toasts if all instances are down", () => {
+    alertStore.data.setUpstreams({
+      counters: { total: 3, healthy: 0, failed: 3 },
+      instances: [
+        {
+          name: "am1",
+          cluster: "am",
+          clusterMembers: ["am1", "am2"],
+          uri: "http://am1",
+          publicURI: "http://am1",
+          error: "error 1",
+          version: "0.24.0",
+          readonly: false,
+          corsCredentials: "include",
+          headers: {},
+        },
+        {
+          name: "am2",
+          cluster: "am",
+          clusterMembers: ["am1", "am2"],
+          uri: "file:///mock",
+          publicURI: "file:///mock",
+          error: "error 2",
+          version: "0.24.0",
+          readonly: false,
+          corsCredentials: "include",
+          headers: {},
+        },
+      ],
+      clusters: { am: ["am1", "am2"] },
+    });
     const tree = mount(<AppToasts alertStore={alertStore} />);
     expect(tree.find("Toast")).toHaveLength(2);
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
