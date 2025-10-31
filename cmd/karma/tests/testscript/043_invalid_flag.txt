@@ -5,7 +5,6 @@ cmp stdout stdout.txt
 cmp stderr stderr.txt
 
 -- stderr.txt --
-unknown flag: --invalid.flag
 Usage of karma:
       --alertAcknowledgement.author string         Default silence author when acknowledging alerts with short lived silences (default "karma")
       --alertAcknowledgement.comment string        Comment used when acknowledging alerts with short lived silences (default "ACK! This alert was acknowledged using karma on %NOW%")
@@ -85,5 +84,5 @@ Usage of karma:
       --ui.refresh duration                        UI refresh interval (default 30s)
       --ui.theme string                            Default theme, 'light', 'dark' or 'auto' (follow browser preference) (default "auto")
       --version                                    Print version and exit
--- stdout.txt --
 unknown flag: --invalid.flag
+-- stdout.txt --

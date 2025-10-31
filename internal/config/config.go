@@ -24,7 +24,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/pflag"
 
-	yaml "gopkg.in/yaml.v3"
+	yaml "go.yaml.in/yaml/v3"
 )
 
 // Config will hold final configuration read from the file and flags
