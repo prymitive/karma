@@ -5,6 +5,7 @@ import (
 	"io"
 
 	"github.com/prometheus/common/expfmt"
+	"github.com/prometheus/common/model"
 )
 
 const (
@@ -14,7 +15,7 @@ const (
 
 // Detect alertmanager version by reading metrics it exposes
 func Detect(r io.Reader) (string, error) {
-	parser := expfmt.TextParser{}
+	parser := expfmt.NewTextParser(model.UTF8Validation)
 
 	metrics, err := parser.TextToMetricFamilies(r)
 	if err != nil {

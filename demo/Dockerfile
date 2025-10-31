@@ -1,4 +1,4 @@
-FROM node:23.5.0-alpine AS nodejs-builder
+FROM node:24.11.0-alpine AS nodejs-builder
 RUN mkdir -p /src/ui
 RUN apk add make git
 COPY ui/package.json ui/package-lock.json /src/ui/
@@ -26,7 +26,7 @@ FROM ghcr.io/prymitive/kthxbye:v0.16 AS kthxbye
 
 FROM prom/alertmanager:v0.27.0 AS alertmanager
 
-FROM alpine:3.21
+FROM alpine:3.22.2
 COPY --from=kthxbye /kthxbye /kthxbye
 COPY --from=alertmanager /bin/alertmanager /alertmanager
 RUN apk add supervisor python3 && rm  -rf /tmp/* /var/cache/apk/*
