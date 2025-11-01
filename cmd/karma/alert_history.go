@@ -309,8 +309,45 @@ func countAlerts(uri string, timeout time.Duration, transport http.RoundTripper,
 		return ret, err
 	}
 
+	// Parse the generator URL to extract the correct API base URL
+	// This handles cases where VictoriaMetrics and other systems provide
+	// generator URLs with UI paths that need to be converted to API paths
+	parsedURL, err := url.Parse(uri)
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse generator URL: %w", err)
+	}
+
+	// Construct the base URL for API calls
+	var baseURL string
+
+	// Handle VictoriaMetrics tenant structure: /select/{tenant_id}/vmui/ -> /select/{tenant_id}/prometheus/
+	if strings.Contains(parsedURL.Path, "/select/") && strings.Contains(parsedURL.Path, "/vmui") {
+		// Extract the tenant path part: /select/{tenant_id}/
+		pathParts := strings.Split(strings.Trim(parsedURL.Path, "/"), "/")
+		if len(pathParts) >= 2 && pathParts[0] == "select" {
+			tenantPath := fmt.Sprintf("/select/%s/prometheus", pathParts[1])
+			baseURL = fmt.Sprintf("%s://%s%s", parsedURL.Scheme, parsedURL.Host, tenantPath)
+		} else {
+			// Fallback to base URL if tenant parsing fails
+			baseURL = fmt.Sprintf("%s://%s", parsedURL.Scheme, parsedURL.Host)
+		}
+	} else {
+		// For standard Prometheus or other systems, preserve the original path for backward compatibility
+		// This handles cases like /prometheus/, /monitoring/prometheus/, etc.
+		basePath := parsedURL.Path
+		if basePath != "" && !strings.HasSuffix(basePath, "/") {
+			basePath += "/"
+		}
+		baseURL = fmt.Sprintf("%s://%s%s", parsedURL.Scheme, parsedURL.Host, strings.TrimSuffix(basePath, "/"))
+	}
+
+	log.Debug().
+		Str("originalURL", uri).
+		Str("baseURL", baseURL).
+		Msg("Extracted base URL from generator URL for API client")
+
 	client, err := api.NewClient(api.Config{
-		Address:      uri,
+		Address:      baseURL,
 		RoundTripper: transport,
 	})
 	if err != nil {
