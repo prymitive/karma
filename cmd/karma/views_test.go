@@ -1055,7 +1055,7 @@ func TestSilences(t *testing.T) {
 				if err != nil {
 					t.Errorf("Failed to unmarshal response: %s", err)
 				}
-				results := []string{}
+				results := make([]string, 0, len(ur))
 				for _, silence := range ur {
 					results = append(results, silence.Silence.Comment)
 				}
@@ -1711,7 +1711,7 @@ func TestAlertFilters(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		var filters []string
+		filters := make([]string, 0, len(tc.filters))
 		for _, f := range tc.filters {
 			filters = append(filters, "q="+f)
 		}

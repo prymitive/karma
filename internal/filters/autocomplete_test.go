@@ -132,7 +132,7 @@ var acTests = []acTest{
 
 func TestBuildAutocomplete(t *testing.T) {
 	for _, acTest := range acTests {
-		result := []string{}
+		result := make([]string, 0, len(acTest.Alerts))
 		for _, hint := range filters.BuildAutocomplete(acTest.Alerts) {
 			result = append(result, hint.Value.Value())
 		}

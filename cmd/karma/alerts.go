@@ -17,7 +17,7 @@ import (
 )
 
 func getFiltersFromQuery(filterStrings []string) []filters.FilterT {
-	matchFilters := []filters.FilterT{}
+	matchFilters := make([]filters.FilterT, 0, len(filterStrings))
 	for _, filterExpression := range filterStrings {
 		f := filters.NewFilter(filterExpression)
 		matchFilters = append(matchFilters, f)

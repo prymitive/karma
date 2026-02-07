@@ -143,7 +143,7 @@ func DedupSilences() []models.ManagedSilence {
 	}
 
 	now := time.Now()
-	dedupedSilences := []models.ManagedSilence{}
+	dedupedSilences := make([]models.ManagedSilence, 0, len(silenceByCluster))
 	for cluster, silenceMap := range silenceByCluster {
 		s := make([]models.ManagedSilence, 0, len(silenceMap))
 		for _, silence := range silenceMap {

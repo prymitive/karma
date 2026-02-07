@@ -48,7 +48,7 @@ func ListAllMocks() []string {
 
 // ListAllMockURIs returns a list of mock APIs as file:// URIs
 func ListAllMockURIs() []string {
-	uris := []string{}
+	uris := make([]string, 0, 10)
 	_, f, _, _ := runtime.Caller(0)
 	cwd := filepath.Dir(f)
 	for _, version := range ListAllMocks() {
