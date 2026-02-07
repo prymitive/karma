@@ -1,4 +1,4 @@
-FROM node:24.11.0-alpine AS nodejs-builder
+FROM node:24.13.0-alpine AS nodejs-builder
 RUN mkdir -p /src/ui
 COPY ui/package.json ui/package-lock.json /src/ui/
 RUN cd /src/ui && npm ci && touch node_modules/.install
@@ -6,7 +6,7 @@ RUN apk add make git
 COPY ui /src/ui
 RUN make -C /src/ui build
 
-FROM golang:1.25.3-alpine AS go-builder
+FROM golang:1.25.7-alpine AS go-builder
 RUN apk add make git
 COPY Makefile /src/Makefile
 COPY make /src/make

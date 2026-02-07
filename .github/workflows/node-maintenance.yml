@@ -1,33 +1,31 @@
-name: Go mod tidy
+name: Maintenance
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - go.mod
-      - go.sum
-      - tools/*/go.mod
-      - tools/*/go.sum
+  workflow_dispatch:
+  schedule:
+    - cron: "0 12 * * 2"
 
 jobs:
-  version-sync:
-    name: Run go mod tidy
-    runs-on: ubuntu-latest
+  npm-upgrades:
+    name: Regenerate package-lock.json
+    runs-on: macos-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v4
 
-      - name: Set up Go
-        uses: actions/setup-go@v5
+      - name: Set up Node JS
+        uses: actions/setup-node@v4
         with:
-          go-version: 1.25.7
-          cache: false
+          node-version: 23.5.0
 
-      - name: Run go mod tidy
-        run: |
-          go mod tidy
-          make tools-go-mod-tidy
+      - name: Regenerate package-lock.json
+        run: make -C ui npm-upgrade
+
+      - name: Rebuild react app
+        run: make -C ui build
+
+      - name: Update snapshots
+        run: make -C ui update-snapshots
 
       - name: Create Pull Request
         id: cpr
@@ -35,10 +33,10 @@ jobs:
         with:
           token: ${{ secrets.GH_REPO_TOKEN }}
           author: "Łukasz Mierzwa <l.mierzwa@gmail.com>"
-          commit-message: "fix(deps): run go mod tidy"
-          branch: go-mod-tidy
+          commit-message: "chore(ui): upgrade all 3rd party dependencies"
+          branch: npm-upgrades
           delete-branch: true
-          title: "fix(deps): run go mod tidy"
+          title: "chore(ui): upgrade all 3rd party dependencies"
 
       - name: Check outputs
         run: |
@@ -47,6 +45,6 @@ jobs:
 
       - name: Enable Pull Request Automerge
         if: steps.cpr.outputs.pull-request-operation == 'created'
-        run: gh pr merge --merge --auto go-mod-tidy
+        run: gh pr merge --merge --auto npm-upgrades
         env:
           GH_TOKEN: ${{ secrets.GH_REPO_TOKEN }}
