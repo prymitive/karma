@@ -16,7 +16,7 @@ jobs:
       - name: Set up Node JS
         uses: actions/setup-node@v4
         with:
-          node-version: 23.5.0
+          node-version: 24.13.0
 
       - name: Regenerate package-lock.json
         run: make -C ui npm-upgrade
