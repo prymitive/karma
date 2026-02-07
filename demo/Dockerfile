@@ -26,7 +26,7 @@ FROM ghcr.io/prymitive/kthxbye:v0.16 AS kthxbye
 
 FROM prom/alertmanager:v0.31.0 AS alertmanager
 
-FROM alpine:3.22.2
+FROM alpine:3.23.3
 COPY --from=kthxbye /kthxbye /kthxbye
 COPY --from=alertmanager /bin/alertmanager /alertmanager
 RUN apk add supervisor python3 && rm  -rf /tmp/* /var/cache/apk/*
