@@ -67,7 +67,7 @@ func generateHistoryPayload(p AlertHistoryPayload) []byte {
 
 func generateHistorySamples(values []int, offset time.Duration) []OffsetSample {
 	ts := time.Now()
-	os := []OffsetSample{}
+	os := make([]OffsetSample, 0, len(values))
 	for _, val := range values {
 		os = append(os, OffsetSample{
 			Timestamp: ts,

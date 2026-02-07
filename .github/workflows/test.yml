@@ -327,41 +327,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PULL_REQUEST_NUMBER: ${{ github.event.number }}
 
-  webpack-bundle-size:
-    name: Webpack bundle size compare
-    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.event.pull_request.base.repo.full_name
-    needs: stage-test-and-lint
-    runs-on: ubuntu-latest
-    permissions:
-      issues: write
-      pull-requests: write
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v6
-
-      - name: Get modified files
-        uses: dorny/paths-filter@v3.0.2
-        id: filter
-        with:
-          list-files: "shell"
-          filters: |
-            ui:
-              - 'ui/**/*'
-
-      - name: Set up Node JS
-        uses: actions/setup-node@v6
-        with:
-          node-version: 25.6.0
-          cache: "npm"
-          cache-dependency-path: "ui/package-lock.json"
-
-      - name: Diff bundle size
-        if: steps.filter.outputs.ui == 'true'
-        run: ./scripts/ci-diff-webpack.sh
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PULL_REQUEST_NUMBER: ${{ github.event.number }}
-
   cross-compile:
     name: Cross compile binaries
     needs: stage-test-and-lint

@@ -495,7 +495,7 @@ func (config *configSchema) LogValues() {
 	// make a copy of our config so we can edit it
 	cfg := *config
 
-	auth := []AuthenticationUser{}
+	auth := make([]AuthenticationUser, 0, len(cfg.Authentication.BasicAuth.Users))
 	for _, u := range cfg.Authentication.BasicAuth.Users {
 		uu := AuthenticationUser{
 			Username: u.Username,
@@ -506,7 +506,7 @@ func (config *configSchema) LogValues() {
 	cfg.Authentication.BasicAuth.Users = auth
 
 	// replace passwords in Alertmanager URIs with 'xxx'
-	servers := []AlertmanagerConfig{}
+	servers := make([]AlertmanagerConfig, 0, len(cfg.Alertmanager.Servers))
 	for _, s := range cfg.Alertmanager.Servers {
 		h := map[string]string{}
 		for key := range s.Headers {

@@ -16,7 +16,7 @@ updates:
         - "node"
       go:
         patterns:
-        - "go"
+        - "golang"
   - package-ecosystem: "gomod"
     directories:
     - "/"
@@ -42,4 +42,18 @@ updates:
       vite:
         patterns:
         - "vite"
+        - "vite-*"
+        - "@vitejs/*"
+      jest:
+        patterns:
+        - "jest"
+        - "jest-*"
+        - "*-jest"
+        - "*-jest-*"
+      testing-library:
+        patterns:
+          - "@testing-library/*"
+      eslint:
+        patterns:
+          - "eslint-*"
     open-pull-requests-limit: 10

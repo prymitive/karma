@@ -94,7 +94,7 @@ var linkTests = []linkTest{
 }
 
 func TestDetectTickets(t *testing.T) {
-	linkDetectRules := []models.LinkDetectRule{}
+	linkDetectRules := make([]models.LinkDetectRule, 0, len(linkRules))
 	for _, rule := range linkRules {
 		re, err := regexp.Compile(rule.Regex)
 		if err != nil {

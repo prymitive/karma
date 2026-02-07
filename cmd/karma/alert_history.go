@@ -247,7 +247,7 @@ func (hp *historyPoller) startWorker(wid int) {
 func hashQuery(uri string, labels map[string]string) string {
 	hasher := sha1.New()
 	_, _ = io.WriteString(hasher, uri)
-	kvs := make([]string, len(labels))
+	kvs := make([]string, 0, len(labels))
 	for k, v := range labels {
 		kvs = append(kvs, fmt.Sprintf("%s=%s", k, v))
 	}

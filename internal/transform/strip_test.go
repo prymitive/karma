@@ -188,7 +188,7 @@ func TestStripLables(t *testing.T) {
 }
 
 func getCompiledRegex(regexes []string, t *testing.T) []*regexp.Regexp {
-	compiledRegexes := []*regexp.Regexp{}
+	compiledRegexes := make([]*regexp.Regexp, 0, len(regexes))
 	for _, r := range regexes {
 		c, err := regex.CompileAnchored(r)
 		if err != nil {
