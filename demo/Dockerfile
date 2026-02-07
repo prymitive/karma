@@ -24,7 +24,7 @@ RUN CGO_ENABLED=0 make -C /src VERSION="${VERSION:-dev}" karma
 
 FROM ghcr.io/prymitive/kthxbye:v0.16 AS kthxbye
 
-FROM prom/alertmanager:v0.27.0 AS alertmanager
+FROM prom/alertmanager:v0.31.0 AS alertmanager
 
 FROM alpine:3.22.2
 COPY --from=kthxbye /kthxbye /kthxbye
