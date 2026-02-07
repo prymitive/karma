@@ -28,7 +28,7 @@ jobs:
       - name: Restore cache
         id: cache-go-modules
         if: github.event_name == 'pull_request'
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: ~/go/pkg/mod
           key: ${{ runner.os }}-${{ github.ref_name }}-go-modules-${{ hashFiles('**/go.sum') }}
@@ -68,7 +68,7 @@ jobs:
       - name: Restore cache
         id: cache-go-modules
         if: github.event_name == 'pull_request'
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: ~/go/pkg/mod
           key: ${{ runner.os }}-${{ github.ref_name }}-go-modules-${{ hashFiles('**/go.sum') }}
@@ -303,7 +303,7 @@ jobs:
           cache: false
 
       - name: Restore cache
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: |
             ~/.cache/go-build
@@ -380,7 +380,7 @@ jobs:
 
       - name: Cache Go
         if: github.event_name != 'pull_request'
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.cache/go-build
@@ -391,7 +391,7 @@ jobs:
 
       - name: Restore cache
         if: github.event_name == 'pull_request'
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: |
             ~/.cache/go-build
