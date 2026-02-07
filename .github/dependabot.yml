@@ -1,35 +1,29 @@
 version: 2
 updates:
   - package-ecosystem: "docker"
-    directory: "/"
+    directories:
+    - "/"
+    - "/demo"
+    - "/internal/mapper/v017"
     schedule:
       interval: "weekly"
-  - package-ecosystem: "docker"
-    directory: "/demo"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "docker"
-    directory: "/internal/mapper/v017"
-    schedule:
-      interval: "weekly"
+    groups:
+      debian:
+        patterns:
+        - "debian"
+      node:
+        patterns:
+        - "node"
+      go:
+        patterns:
+        - "go"
   - package-ecosystem: "gomod"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "gomod"
-    directory: "/tools/benchstat"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "gomod"
-    directory: "/tools/gofumpt"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "gomod"
-    directory: "/tools/goimports"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "gomod"
-    directory: "/tools/golangci-lint"
+    directories:
+    - "/"
+    - "/tools/benchstat"
+    - "/tools/gofumpt"
+    - "/tools/goimports"
+    - "/tools/golangci-lint"
     schedule:
       interval: "weekly"
   - package-ecosystem: "github-actions"
@@ -40,4 +34,12 @@ updates:
     directory: "/ui"
     schedule:
       interval: "weekly"
+    groups:
+      bootstrap:
+        patterns:
+        - "bootstrap"
+        - "bootswatch"
+      vite:
+        patterns:
+        - "vite"
     open-pull-requests-limit: 10
