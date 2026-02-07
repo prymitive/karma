@@ -22,7 +22,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: 1.25.3
+          go-version: 1.25.7
           cache: false
 
       - name: Restore cache
@@ -62,7 +62,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: 1.25.3
+          go-version: 1.25.7
           cache: false
 
       - name: Restore cache
@@ -100,7 +100,7 @@ jobs:
       - name: Set up Node JS
         uses: actions/setup-node@v4
         with:
-          node-version: 24.11.0
+          node-version: 24.13.0
           cache: "npm"
           cache-dependency-path: "ui/package-lock.json"
 
@@ -126,7 +126,7 @@ jobs:
       - name: Set up Node JS
         uses: actions/setup-node@v4
         with:
-          node-version: 24.11.0
+          node-version: 24.13.0
           cache: "npm"
           cache-dependency-path: "ui/package-lock.json"
 
@@ -143,7 +143,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: 1.25.3
+          go-version: 1.25.7
           cache: false
 
       - name: Format Go code
@@ -162,7 +162,7 @@ jobs:
       - name: Set up Node JS
         uses: actions/setup-node@v4
         with:
-          node-version: 24.11.0
+          node-version: 24.13.0
           cache: "npm"
           cache-dependency-path: "ui/package-lock.json"
 
@@ -195,7 +195,7 @@ jobs:
       - name: Set up Node JS
         uses: actions/setup-node@v4
         with:
-          node-version: 24.11.0
+          node-version: 24.13.0
           cache: "npm"
           cache-dependency-path: "ui/package-lock.json"
 
@@ -299,7 +299,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: 1.25.3
+          go-version: 1.25.7
           cache: false
 
       - name: Restore cache
@@ -351,7 +351,7 @@ jobs:
       - name: Set up Node JS
         uses: actions/setup-node@v4
         with:
-          node-version: 24.11.0
+          node-version: 24.13.0
           cache: "npm"
           cache-dependency-path: "ui/package-lock.json"
 
@@ -375,7 +375,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: 1.25.3
+          go-version: 1.25.7
           cache: false
 
       - name: Cache Go
@@ -403,7 +403,7 @@ jobs:
       - name: Set up Node JS
         uses: actions/setup-node@v4
         with:
-          node-version: 24.11.0
+          node-version: 24.13.0
           cache: "npm"
           cache-dependency-path: "ui/package-lock.json"
 
