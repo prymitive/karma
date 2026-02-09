@@ -147,7 +147,7 @@ func TestAlertHistory(t *testing.T) {
 					}),
 					code: 200,
 					response: AlertHistoryResponse{
-						Error:   `One or more errors occurred when querying Prometheus API: %gh&%ij: failed to create Prometheus API client: parse "%gh&%ij": invalid URL escape "%gh"`,
+						Error:   `One or more errors occurred when querying Prometheus API: %gh&%ij: failed to parse generator URL: parse "%gh&%ij": invalid URL escape "%gh"`,
 						Samples: generateHistorySamples(generateIntSlice(0, 0, 24), time.Hour),
 					},
 				},
