@@ -56,4 +56,7 @@ updates:
       eslint:
         patterns:
           - "eslint-*"
+      fontawesome:
+        patterns:
+          - "@fortawesome/*"
     open-pull-requests-limit: 10
