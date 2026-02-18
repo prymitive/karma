@@ -30,20 +30,20 @@ exports[`<FilterInput /> matches snapshot with no filters 1`] = `
           size="1"
           aria-activedescendant
           aria-autocomplete="list"
-          aria-controls="downshift-1-menu"
+          aria-controls="downshift-0-menu"
           aria-expanded="false"
-          aria-labelledby="downshift-1-label"
+          aria-labelledby="downshift-0-label"
           autocomplete="off"
-          id="downshift-1-input"
+          id="downshift-0-input"
           role="combobox"
           value
         >
       </div>
       <span
         class="dropdown"
-        id="downshift-1-menu"
+        id="downshift-0-menu"
         role="listbox"
-        aria-labelledby="downshift-1-label"
+        aria-labelledby="downshift-0-label"
       >
       </span>
     </div>
@@ -172,20 +172,20 @@ exports[`<FilterInput /> matches snapshot with some filters 1`] = `
           size="1"
           aria-activedescendant
           aria-autocomplete="list"
-          aria-controls="downshift-3-menu"
+          aria-controls="downshift-2-menu"
           aria-expanded="false"
-          aria-labelledby="downshift-3-label"
+          aria-labelledby="downshift-2-label"
           autocomplete="off"
-          id="downshift-3-input"
+          id="downshift-2-input"
           role="combobox"
           value
         >
       </div>
       <span
         class="dropdown"
-        id="downshift-3-menu"
+        id="downshift-2-menu"
         role="listbox"
-        aria-labelledby="downshift-3-label"
+        aria-labelledby="downshift-2-label"
       >
       </span>
     </div>
