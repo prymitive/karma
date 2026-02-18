@@ -20,6 +20,7 @@ jobs:
         uses: renovatebot/github-action@v46.1.1
         env:
           RENOVATE_REPOSITORIES: ${{ github.repository }}
+          RENOVATE_ALLOWED_POST_UPGRADE_COMMANDS: '["^bash -c .npm install && npm test -- -u.$"]'
         with:
           configurationFile: renovate.json
           token: ${{ secrets.GH_REPO_TOKEN }}

@@ -7,7 +7,6 @@
   "timezone": "UTC",
   "automerge": false,
   "platformAutomerge": false,
-  "allowedPostUpgradeCommands": ["^npm install && npm test -- -u$"],
   "packageRules": [
     {
       "description": "Require dashboard approval for major updates",
@@ -30,7 +29,7 @@
       "description": "Update snapshots after npm upgrades",
       "matchManagers": ["npm"],
       "postUpgradeTasks": {
-        "commands": ["npm install && npm test -- -u"],
+        "commands": ["bash -c 'npm install && npm test -- -u'"],
         "fileFilters": ["ui/src/**/__snapshots__/**"],
         "executionMode": "branch"
       }

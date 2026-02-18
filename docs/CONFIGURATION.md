@@ -142,7 +142,7 @@ authorization:
 
 - `acl:silences` - path to silence ACL configuration file, see
   [ACLs](/docs/ACLs.md) for details
-- `groups` - list of group definitons, each group must have a `name` and
+- `groups` - list of group definitions, each group must have a `name` and
   `members` list. `name` will be used in silence ACL rules, `members` list
   should contain list of user names as passed from authentication layer.
 
@@ -268,8 +268,8 @@ alertmanager:
 - `headers` - a map with a list of key: values which are header: value.
   These custom headers will be sent with every request to the alert manager
   instance.
-  **NOTE**: these headers are only sent for alertmanager requests, they are NOT set
-  on requests send to Prometheus server when querying alert history.
+  **NOTE**: these headers are only sent for alertmanager requests, they are NOT
+  set on requests send to Prometheus server when querying alert history.
   Please see `history:rewrite` section below if you want to set headers
   for Prometheus requests.
 - `cors:credentials` - sets the
@@ -289,8 +289,8 @@ alertmanager:
   will search for alerts matching defined filters and show an error if it doesn't
   match anything. This can be used with a [Dead man's switch](https://en.wikipedia.org/wiki/Dead_man%27s_switch)
   style alert to notify karma users that there's a problem with alerting pipeline.
-  Syntax for this option is a map where key is the name of the filter set (used in
-  the UI when showing errors) and the value is a list of filters.
+  Syntax for this option is a map where key is the name of the filter set (used
+  in the UI when showing errors) and the value is a list of filters.
 
   Example:
 
@@ -1081,7 +1081,8 @@ listen:
 - `prefix` - URL root for karma, you can use to if you wish to serve it from
   location other than `/`. This option is mostly useful when using karma behind
   reverse proxy with other services on the same IP but different URL root.
-- `tls:cert` - path to a TLS certificate, enables listening on HTTPS instead of HTTP,
+- `tls:cert` - path to a TLS certificate, enables listening on HTTPS instead of
+  plain HTTP.
 - `tls:key` - path to a TLS key, required when `tls.cert` is set
 - `cors:allowedOrigins` - List of origins a cross-domain request can be executed
   from. An empty list means all origins are allowed.
@@ -1226,7 +1227,8 @@ receivers:
   allowed.
 - `keep_re` - same as `keep` but accepts regular expression instead of static strings.
 - `strip` - list of receiver names that will not be shown in the UI.
-- `strip_re` - same as `strip` but accepts regular expression instead of static strings.
+- `strip_re` - same as `strip` but accepts regular expression instead of static
+  strings.
 
 Example where alerts that are routed to the `alertmanage2es` receiver are
 ignored by karma.
@@ -1296,7 +1298,7 @@ silenceForm:
 
 ## UI defaults
 
-`ui` section allows configuring default values for UI settings controled via the
+`ui` section allows configuring default values for UI settings controlled via the
 configuration modal. Those defaults can be overwritten by use via UI controls.
 
 Syntax:
