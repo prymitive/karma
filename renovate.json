@@ -9,13 +9,13 @@
     {
       "description": "Docker base images",
       "matchDatasources": ["docker"],
-      "matchPackagePatterns": ["^debian$", "^node$", "^golang$"],
+      "matchPackageNames": ["/^debian$/", "/^node$/", "/^golang$/"],
       "groupName": "docker-base-images"
     },
     {
       "description": "Bootstrap packages",
       "matchDatasources": ["npm"],
-      "matchPackagePatterns": ["^bootstrap$", "^bootswatch$"],
+      "matchPackageNames": ["/^bootstrap$/", "/^bootswatch$/"],
       "groupName": "bootstrap"
     },
     {
