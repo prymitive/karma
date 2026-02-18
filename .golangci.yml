@@ -36,6 +36,11 @@ linters:
           - revive
         path: ^internal/parser/utils/
         text: "var-naming: avoid meaningless package names"
+      - linters:
+          - revive
+        path: ^internal/slices/
+        text: "var-naming: avoid package names that conflict with Go standard library package names"
+
 issues:
   max-same-issues: 0
 formatters:
