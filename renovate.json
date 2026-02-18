@@ -29,7 +29,7 @@
       "description": "Update snapshots after npm upgrades",
       "matchManagers": ["npm"],
       "postUpgradeTasks": {
-        "commands": ["bash -c 'npm install && npm test -- -u'"],
+        "commands": ["bash -c 'cd ui && npm install && npm test -- -u'"],
         "fileFilters": ["ui/src/**/__snapshots__/**"],
         "executionMode": "branch"
       }
