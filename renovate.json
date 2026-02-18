@@ -1,0 +1,33 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended", "group:monorepos"],
+  "schedule": ["after 12pm on monday"],
+  "timezone": "UTC",
+  "automerge": false,
+  "platformAutomerge": false,
+  "packageRules": [
+    {
+      "description": "Docker base images",
+      "matchDatasources": ["docker"],
+      "matchPackagePatterns": ["^debian$", "^node$", "^golang$"],
+      "groupName": "docker-base-images"
+    },
+    {
+      "description": "Bootstrap packages",
+      "matchDatasources": ["npm"],
+      "matchPackagePatterns": ["^bootstrap$", "^bootswatch$"],
+      "groupName": "bootstrap"
+    },
+    {
+      "description": "GitHub Actions",
+      "matchManagers": ["github-actions"],
+      "groupName": "github-actions"
+    },
+    {
+      "description": "Go modules for tools",
+      "matchManagers": ["gomod"],
+      "matchFileNames": ["tools/**/go.mod"],
+      "groupName": "go-tools"
+    }
+  ]
+}
