@@ -95,7 +95,7 @@
       "@types/react": "17.0.91"
     },
     "enzyme@3.11.0": {
-      "cheerio": "1.0.0-rc.12"
+      "cheerio": "1.2.0"
     },
     "react-day-picker@8.10.1": {
       "date-fns": "4.1.0"
