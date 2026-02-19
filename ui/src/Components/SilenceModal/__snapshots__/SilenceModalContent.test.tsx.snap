@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`<SilenceModalContent /> Editor renders SilenceSubmitController when silenceFormStore.data.currentStage is 'Submit' 1`] = `
 <DocumentFragment>

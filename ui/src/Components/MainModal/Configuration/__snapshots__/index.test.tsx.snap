@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`<Configuration /> matches snapshot 1`] = `
 <DocumentFragment>
@@ -154,7 +154,7 @@ exports[`<Configuration /> matches snapshot 1`] = `
                       id="react-select-configuration-theme-input"
                       role="combobox"
                       spellcheck="false"
-                      style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                      style="color: inherit; background: 0px; opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
                       tabindex="0"
                       type="text"
                       value=""
@@ -389,7 +389,7 @@ exports[`<Configuration /> matches snapshot 1`] = `
                       id="react-select-configuration-collapse-input"
                       role="combobox"
                       spellcheck="false"
-                      style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                      style="color: inherit; background: 0px; opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
                       tabindex="0"
                       type="text"
                       value=""
@@ -495,7 +495,7 @@ exports[`<Configuration /> matches snapshot 1`] = `
                           id="react-select-configuration-sort-order-input"
                           role="combobox"
                           spellcheck="false"
-                          style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                          style="color: inherit; background: 0px; opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
                           tabindex="0"
                           type="text"
                           value=""
@@ -603,7 +603,7 @@ exports[`<Configuration /> matches snapshot 1`] = `
                           id="react-select-configuration-grid-label-input"
                           role="combobox"
                           spellcheck="false"
-                          style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                          style="color: inherit; background: 0px; opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
                           tabindex="0"
                           type="text"
                           value=""
