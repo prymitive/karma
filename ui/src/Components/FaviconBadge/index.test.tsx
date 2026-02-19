@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { render } from "@testing-library/react";
 
 import Favico from "favico.js";
 
@@ -12,21 +12,21 @@ beforeEach(() => {
   Favico.badge.mockClear();
 });
 
-const MountedFaviconBadge = () => {
-  return mount(<FaviconBadge alertStore={alertStore} />);
+const renderFaviconBadge = () => {
+  return render(<FaviconBadge alertStore={alertStore} />);
 };
 
 describe("<FaviconBadge />", () => {
   it("badge is updated on mount", () => {
     alertStore.info.setTotalAlerts(99);
-    MountedFaviconBadge();
+    renderFaviconBadge();
     expect(Favico.badge).toHaveBeenCalledTimes(1);
     expect(Favico.badge).toHaveBeenCalledWith(99);
   });
 
   it("badge is updated when alertStore.info.totalAlerts changes", () => {
     alertStore.info.setTotalAlerts(99);
-    MountedFaviconBadge();
+    renderFaviconBadge();
     expect(Favico.badge).toHaveBeenCalledTimes(1);
     expect(Favico.badge).toHaveBeenCalledWith(99);
 
@@ -37,7 +37,7 @@ describe("<FaviconBadge />", () => {
 
   it("badge is updated when alertStore.status.error changes", () => {
     alertStore.status.setError("foo");
-    MountedFaviconBadge();
+    renderFaviconBadge();
     expect(Favico.badge).toHaveBeenCalledTimes(1);
     expect(Favico.badge).toHaveBeenCalledWith("?");
   });
@@ -61,7 +61,7 @@ describe("<FaviconBadge />", () => {
         },
       ],
     });
-    MountedFaviconBadge();
+    renderFaviconBadge();
     expect(Favico.badge).toHaveBeenCalledWith("!");
   });
 });

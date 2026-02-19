@@ -1,8 +1,6 @@
 import { act } from "react-dom/test-utils";
 
-import { mount } from "enzyme";
-
-import toDiffableHtml from "diffable-html";
+import { render, fireEvent } from "@testing-library/react";
 
 import { useFetchGetMock } from "__fixtures__/useFetchGet";
 import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
@@ -31,18 +29,16 @@ afterEach(() => {
   global.window.innerWidth = originalInnerWidth;
 });
 
-const MountedInput = () => {
-  return mount(
+const renderInput = () => {
+  return render(
     <FilterInput alertStore={alertStore} settingsStore={settingsStore} />,
   );
 };
 
 describe("<FilterInput />", () => {
   it("matches snapshot with no filters", () => {
-    const tree = mount(
-      <FilterInput alertStore={alertStore} settingsStore={settingsStore} />,
-    );
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    const { asFragment } = renderInput();
+    expect(asFragment()).toMatchSnapshot();
     expect(alertStore.filters.values).toHaveLength(0);
   });
 
@@ -51,51 +47,60 @@ describe("<FilterInput />", () => {
       NewUnappliedFilter("foo=bar"),
       NewUnappliedFilter("baz!=bar"),
     ]);
-    const tree = mount(
-      <FilterInput alertStore={alertStore} settingsStore={settingsStore} />,
-    );
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    const { asFragment } = renderInput();
+    expect(asFragment()).toMatchSnapshot();
     expect(alertStore.filters.values).toHaveLength(2);
   });
 
   it("input gets focus by default on desktop", () => {
     global.window.innerWidth = 768;
-    const tree = MountedInput();
+    const { container } = renderInput();
     expect(
-      tree.find("div.components-filterinput-outer").hasClass("bg-focused"),
+      container
+        .querySelector("div.components-filterinput-outer")
+        ?.classList.contains("bg-focused"),
     ).toBe(true);
   });
 
   it("input doesn't get focus by default on mobile", () => {
     global.window.innerWidth = 767;
-    const tree = MountedInput();
+    const { container } = renderInput();
     expect(
-      tree.find("div.components-filterinput-outer").hasClass("bg-focused"),
+      container
+        .querySelector("div.components-filterinput-outer")
+        ?.classList.contains("bg-focused"),
     ).toBe(false);
   });
 
   it("onChange should modify inputStore.value", () => {
-    const tree = MountedInput();
-    tree.find("input").simulate("change", { target: { value: "foo=bar" } });
+    const { container } = renderInput();
+    const input = container.querySelector("input");
+    fireEvent.change(input!, { target: { value: "foo=bar" } });
     act(() => {
       jest.runOnlyPendingTimers();
     });
 
     expect(
-      tree.find("input.components-filterinput-wrapper").props().value,
+      (
+        container.querySelector(
+          "input.components-filterinput-wrapper",
+        ) as HTMLInputElement
+      )?.value,
     ).toBe("foo=bar");
   });
 
   it("submit should modify alertStore.filters", () => {
-    const tree = MountedInput();
+    const { container } = renderInput();
+    const input = container.querySelector("input");
+    const form = container.querySelector("form");
 
-    tree.find("input").simulate("change", { target: { value: "foo=bar" } });
+    fireEvent.change(input!, { target: { value: "foo=bar" } });
     act(() => {
       jest.runOnlyPendingTimers();
     });
 
     expect(alertStore.filters.values).toHaveLength(0);
-    tree.find("form").simulate("submit");
+    fireEvent.submit(form!);
     expect(alertStore.filters.values).toHaveLength(1);
     expect(alertStore.filters.values[0]).toMatchObject(
       NewUnappliedFilter("foo=bar"),
@@ -103,63 +108,66 @@ describe("<FilterInput />", () => {
   });
 
   it("submit should be no-op if input value is empty", () => {
-    const tree = MountedInput();
-    tree.find("input").simulate("change", { target: { value: "" } });
+    const { container } = renderInput();
+    const input = container.querySelector("input");
+    const form = container.querySelector("form");
+    fireEvent.change(input!, { target: { value: "" } });
     act(() => {
       jest.runOnlyPendingTimers();
     });
 
     expect(alertStore.filters.values).toHaveLength(0);
-    tree.find("form").simulate("submit");
+    fireEvent.submit(form!);
     expect(alertStore.filters.values).toHaveLength(0);
   });
 
   it("clicking on form-control div focuses input", () => {
-    const tree = MountedInput();
-    const formControl = tree.find("div.form-control");
-    formControl.simulate("click");
-    //expect(tree.find("input:focus")).toHaveLength(1);
+    const { container } = renderInput();
+    const formControl = container.querySelector("div.form-control");
+    fireEvent.click(formControl!);
     expect(
-      tree.find("div.components-filterinput-outer").hasClass("bg-focused"),
+      container
+        .querySelector("div.components-filterinput-outer")
+        ?.classList.contains("bg-focused"),
     ).toBe(true);
   });
 
   it("clicking input changes background color", () => {
-    const tree = MountedInput();
-    tree.find("input").simulate("click");
-    expect(toDiffableHtml(tree.html())).toMatch(/bg-focused/);
+    const { container } = renderInput();
+    const input = container.querySelector("input");
+    fireEvent.click(input!);
+    expect(container.innerHTML).toMatch(/bg-focused/);
   });
 
   it("focusing input changes background color", () => {
-    const tree = MountedInput();
-    const input = tree.find("input");
-    input.simulate("focus");
-    expect(toDiffableHtml(tree.html())).toMatch(/bg-focused/);
+    const { container } = renderInput();
+    const input = container.querySelector("input");
+    fireEvent.focus(input!);
+    expect(container.innerHTML).toMatch(/bg-focused/);
   });
 
   it("focusing form changes background color", () => {
-    const tree = MountedInput();
-    const formControl = tree.find(".form-control");
-    formControl.find("input").simulate("focus");
-    expect(toDiffableHtml(tree.html())).toMatch(/bg-focused/);
+    const { container } = renderInput();
+    const input = container.querySelector(".form-control input");
+    fireEvent.focus(input!);
+    expect(container.innerHTML).toMatch(/bg-focused/);
   });
 
   it("bluring input changes background color", async () => {
-    const tree = MountedInput();
-    const formControl = tree.find(".form-control");
-    formControl
-      .find("input")
-      .simulate("change", { target: { value: "cluster" } });
-    formControl.find("input").simulate("blur");
-    expect(toDiffableHtml(tree.html())).not.toMatch(/bg-focused/);
-    tree.unmount();
+    const { container, unmount } = renderInput();
+    const input = container.querySelector(".form-control input");
+    fireEvent.change(input!, { target: { value: "cluster" } });
+    fireEvent.blur(input!);
+    expect(container.innerHTML).not.toMatch(/bg-focused/);
+    unmount();
   });
 });
 
 describe("<FilterInput autocomplete />", () => {
   it("fetches suggestions on input change", async () => {
-    const tree = MountedInput();
-    tree.find("input").simulate("change", { target: { value: "cluster" } });
+    const { container, unmount } = renderInput();
+    const input = container.querySelector("input");
+    fireEvent.change(input!, { target: { value: "cluster" } });
     act(() => {
       jest.runOnlyPendingTimers();
     });
@@ -168,74 +176,66 @@ describe("<FilterInput autocomplete />", () => {
     expect(useFetchGetMock.fetch.calls[0]).toContain(
       "./autocomplete.json?term=cluster",
     );
-    tree.unmount();
+    unmount();
   });
 
   it("doesn't fetch any suggestion if the input value is empty", () => {
-    const tree = MountedInput();
-    tree.find("input").simulate("change", { target: { value: "" } });
+    const { container, unmount } = renderInput();
+    const input = container.querySelector("input");
+    fireEvent.change(input!, { target: { value: "" } });
     act(() => {
       jest.runOnlyPendingTimers();
     });
     expect(useFetchGetMock.fetch.calls).toHaveLength(0);
-    tree.unmount();
+    unmount();
   });
 
   it("highlighting a suggestion makes it active", async () => {
-    const tree = MountedInput();
-    tree.find("input").simulate("change", { target: { value: "cluster" } });
+    const { container } = renderInput();
+    const input = container.querySelector("input");
+    fireEvent.change(input!, { target: { value: "cluster" } });
     act(() => {
       jest.runOnlyPendingTimers();
     });
 
-    // suggestions are rendered only when input is focused
-    tree.find("input").simulate("focus");
-    // find() doesn't pick up suggestions even when tree.html() shows them
-    // forcing update seems to solve it
-    // https://github.com/airbnb/enzyme/issues/1233#issuecomment-343449560
-    tree.update();
+    fireEvent.focus(input!);
 
-    tree.find("input").simulate("keydown", { keyCode: 40, key: "ArrowDown" });
-    tree.update();
-    expect(tree.find(".dropdown-item").at(0).html()).toMatch(/active/);
+    fireEvent.keyDown(input!, { keyCode: 40, key: "ArrowDown" });
+    expect(container.querySelector(".dropdown-item")?.outerHTML).toMatch(
+      /active/,
+    );
   });
 
   it("handles invalid regexp values", async () => {
-    const tree = MountedInput();
-    tree.find("input").simulate("change", { target: { value: "foo(" } });
+    const { container } = renderInput();
+    const input = container.querySelector("input");
+    fireEvent.change(input!, { target: { value: "foo(" } });
     act(() => {
       jest.runOnlyPendingTimers();
     });
 
-    // suggestions are rendered only when input is focused
-    tree.find("input").simulate("focus");
-    // find() doesn't pick up suggestions even when tree.html() shows them
-    // forcing update seems to solve it
-    // https://github.com/airbnb/enzyme/issues/1233#issuecomment-343449560
-    tree.update();
+    fireEvent.focus(input!);
 
-    tree.find("input").simulate("keydown", { keyCode: 40, key: "ArrowDown" });
-    tree.update();
-    expect(tree.find(".dropdown-item").at(0).html()).toMatch(/active/);
+    fireEvent.keyDown(input!, { keyCode: 40, key: "ArrowDown" });
+    expect(container.querySelector(".dropdown-item")?.outerHTML).toMatch(
+      /active/,
+    );
   });
 
   it("clicking on a suggestion adds it to filters", async () => {
-    const tree = MountedInput();
-    tree.find("input").simulate("change", { target: { value: "cluster" } });
+    const { container } = renderInput();
+    const input = container.querySelector("input");
+    fireEvent.change(input!, { target: { value: "cluster" } });
     act(() => {
       jest.runOnlyPendingTimers();
     });
 
-    // suggestions are rendered only when input is focused
-    tree.find("input").simulate("focus");
+    fireEvent.focus(input!);
 
-    // find() doesn't pick up suggestions even when tree.html() shows them
-    // forcing update seems to solve it
-    // https://github.com/airbnb/enzyme/issues/1233#issuecomment-343449560
-    tree.update();
-    const suggestion = tree.find(".dropdown-item").at(1);
-    expect(suggestion.text()).toBe("cluster=prod");
-    suggestion.simulate("click");
+    const suggestions = container.querySelectorAll(".dropdown-item");
+    const suggestion = suggestions[1];
+    expect(suggestion?.textContent).toBe("cluster=prod");
+    fireEvent.click(suggestion!);
     expect(alertStore.filters.values).toHaveLength(1);
     expect(alertStore.filters.values[0]).toMatchObject({
       raw: "cluster=prod",
@@ -253,8 +253,9 @@ describe("<FilterInput autocomplete />", () => {
       cancelGet: jest.fn(),
     });
 
-    const tree = MountedInput();
-    tree.find("input").simulate("change", { target: { value: "cluster" } });
+    const { container } = renderInput();
+    const input = container.querySelector("input");
+    fireEvent.change(input!, { target: { value: "cluster" } });
     act(() => {
       jest.runOnlyPendingTimers();
     });

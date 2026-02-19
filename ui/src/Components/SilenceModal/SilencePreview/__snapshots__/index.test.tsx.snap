@@ -1,114 +1,141 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<SilencePreview /> matches snapshot 1`] = `
-"
-<div class="mb-3">
-  <div>
-    <p class="lead text-center">
-      Affected alerts
-    </p>
+<DocumentFragment>
+  <div
+    class="mb-3"
+  >
     <div>
-      <ul class="list-group list-group-flush mb-3">
-      </ul>
-    </div>
-    <div class="components-pagination">
-      <ul class="pagination justify-content-center mt-3">
-        <li class="page-item disabled">
-          <button class="page-link">
-            <svg
-              data-prefix="fas"
-              data-icon="angle-left"
-              class="svg-inline--fa fa-angle-left "
-              role="img"
-              viewbox="0 0 256 512"
-              aria-hidden="true"
+      <p
+        class="lead text-center"
+      >
+        Affected alerts
+      </p>
+      <div>
+        <ul
+          class="list-group list-group-flush mb-3"
+        />
+      </div>
+      <div
+        class="components-pagination"
+      >
+        <ul
+          class="pagination justify-content-center mt-3"
+        >
+          <li
+            class="page-item disabled"
+          >
+            <button
+              class="page-link"
             >
-              <path
-                fill="currentColor"
-                d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"
+              <svg
+                aria-hidden="true"
+                class="svg-inline--fa fa-angle-left "
+                data-icon="angle-left"
+                data-prefix="fas"
+                role="img"
+                viewBox="0 0 256 512"
               >
-              </path>
-            </svg>
-          </button>
-        </li>
-        <li class="page-item active font-weight-bold">
-          <button class="page-link active">
-            1
-          </button>
-        </li>
-        <li class="page-item ">
-          <button class="page-link ">
-            2
-          </button>
-        </li>
-        <li class="page-item ">
-          <button class="page-link ">
-            3
-          </button>
-        </li>
-        <li class="page-item ">
-          <button class="page-link">
-            <svg
-              data-prefix="fas"
-              data-icon="angle-right"
-              class="svg-inline--fa fa-angle-right "
-              role="img"
-              viewbox="0 0 256 512"
-              aria-hidden="true"
+                <path
+                  d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"
+                  fill="currentColor"
+                />
+              </svg>
+            </button>
+          </li>
+          <li
+            class="page-item active font-weight-bold"
+          >
+            <button
+              class="page-link active"
             >
-              <path
-                fill="currentColor"
-                d="M247.1 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L179.2 256 41.9 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"
+              1
+            </button>
+          </li>
+          <li
+            class="page-item "
+          >
+            <button
+              class="page-link "
+            >
+              2
+            </button>
+          </li>
+          <li
+            class="page-item "
+          >
+            <button
+              class="page-link "
+            >
+              3
+            </button>
+          </li>
+          <li
+            class="page-item "
+          >
+            <button
+              class="page-link"
+            >
+              <svg
+                aria-hidden="true"
+                class="svg-inline--fa fa-angle-right "
+                data-icon="angle-right"
+                data-prefix="fas"
+                role="img"
+                viewBox="0 0 256 512"
               >
-              </path>
-            </svg>
-          </button>
-        </li>
-      </ul>
+                <path
+                  d="M247.1 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L179.2 256 41.9 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"
+                  fill="currentColor"
+                />
+              </svg>
+            </button>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
-</div>
-<div class="d-flex flex-row-reverse">
-  <button
-    type="button"
-    class="btn btn-primary"
+  <div
+    class="d-flex flex-row-reverse"
   >
-    <svg
-      data-prefix="fas"
-      data-icon="circle-check"
-      class="svg-inline--fa fa-circle-check pe-1"
-      role="img"
-      viewbox="0 0 512 512"
-      aria-hidden="true"
+    <button
+      class="btn btn-primary"
+      type="button"
     >
-      <path
-        fill="currentColor"
-        d="M256 512a256 256 0 1 1 0-512 256 256 0 1 1 0 512zM374 145.7c-10.7-7.8-25.7-5.4-33.5 5.3L221.1 315.2 169 263.1c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l72 72c5 5 11.8 7.5 18.8 7s13.4-4.1 17.5-9.8L379.3 179.2c7.8-10.7 5.4-25.7-5.3-33.5z"
+      <svg
+        aria-hidden="true"
+        class="svg-inline--fa fa-circle-check pe-1"
+        data-icon="circle-check"
+        data-prefix="fas"
+        role="img"
+        viewBox="0 0 512 512"
       >
-      </path>
-    </svg>
-    Submit
-  </button>
-  <button
-    type="button"
-    class="btn btn-danger me-2"
-  >
-    <svg
-      data-prefix="fas"
-      data-icon="arrow-left"
-      class="svg-inline--fa fa-arrow-left pe-1"
-      role="img"
-      viewbox="0 0 512 512"
-      aria-hidden="true"
+        <path
+          d="M256 512a256 256 0 1 1 0-512 256 256 0 1 1 0 512zM374 145.7c-10.7-7.8-25.7-5.4-33.5 5.3L221.1 315.2 169 263.1c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l72 72c5 5 11.8 7.5 18.8 7s13.4-4.1 17.5-9.8L379.3 179.2c7.8-10.7 5.4-25.7-5.3-33.5z"
+          fill="currentColor"
+        />
+      </svg>
+      Submit
+    </button>
+    <button
+      class="btn btn-danger me-2"
+      type="button"
     >
-      <path
-        fill="currentColor"
-        d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 288 480 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-370.7 0 105.4-105.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"
+      <svg
+        aria-hidden="true"
+        class="svg-inline--fa fa-arrow-left pe-1"
+        data-icon="arrow-left"
+        data-prefix="fas"
+        role="img"
+        viewBox="0 0 512 512"
       >
-      </path>
-    </svg>
-    Back
-  </button>
-</div>
-"
+        <path
+          d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 288 480 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-370.7 0 105.4-105.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"
+          fill="currentColor"
+        />
+      </svg>
+      Back
+    </button>
+  </div>
+</DocumentFragment>
 `;

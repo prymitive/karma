@@ -1,8 +1,5 @@
 import React from "react";
 
-import Enzyme from "enzyme";
-import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
-
 import "@testing-library/jest-dom";
 
 import { useInView } from "react-intersection-observer";
@@ -28,13 +25,10 @@ jest.mock("Hooks/useFetchGet");
 
 jest.mock("react-intersection-observer");
 
-// https://github.com/airbnb/enzyme
-Enzyme.configure({ adapter: new Adapter() });
-
 FetchRetryConfig.minTimeout = 2;
 FetchRetryConfig.maxTimeout = 10;
 
-// floating-ui uses useLayoutEffect but that fails in enzyme
+// floating-ui uses useLayoutEffect
 React.useLayoutEffect = React.useEffect;
 
 beforeEach(() => {

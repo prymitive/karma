@@ -1,70 +1,80 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<LabelNameInput /> matches snapshot 1`] = `
-"
-<div class="css-b62m3t-container">
-  <span
-    id="react-select-silence-input-label-name-1-live-region"
-    class="css-1f43avz-a11yText-A11yText"
+<DocumentFragment>
+  <div
+    class="css-b62m3t-container"
   >
-  </span>
-  <span
-    aria-live="polite"
-    aria-atomic="false"
-    aria-relevant="additions text"
-    role="log"
-    class="css-1f43avz-a11yText-A11yText"
-  >
-  </span>
-  <div class="react-select__control css-18hiu1u-control">
-    <div class="react-select__value-container react-select__value-container--has-value css-1tlotun">
-      <div class="react-select__single-value css-qav5hl-singleValue">
-        cluster
-      </div>
+    <span
+      class="css-1f43avz-a11yText-A11yText"
+      id="react-select-silence-input-label-name-1-live-region"
+    />
+    <span
+      aria-atomic="false"
+      aria-live="polite"
+      aria-relevant="additions text"
+      class="css-1f43avz-a11yText-A11yText"
+      role="log"
+    />
+    <div
+      class="react-select__control css-18hiu1u-control"
+    >
       <div
-        class="react-select__input-container css-6hzavh"
-        data-value
+        class="react-select__value-container react-select__value-container--has-value css-1tlotun"
       >
-        <input
-          class="react-select__input"
-          style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
-          autocapitalize="none"
-          autocomplete="off"
-          autocorrect="off"
-          id="react-select-silence-input-label-name-1-input"
-          spellcheck="false"
-          tabindex="0"
-          type="text"
-          aria-autocomplete="list"
-          aria-expanded="false"
-          aria-haspopup="true"
-          role="combobox"
-          aria-activedescendant
-          value
+        <div
+          class="react-select__single-value css-qav5hl-singleValue"
         >
+          cluster
+        </div>
+        <div
+          class="react-select__input-container css-6hzavh"
+          data-value=""
+        >
+          <input
+            aria-activedescendant=""
+            aria-autocomplete="list"
+            aria-expanded="false"
+            aria-haspopup="true"
+            autocapitalize="none"
+            autocomplete="off"
+            autocorrect="off"
+            class="react-select__input"
+            id="react-select-silence-input-label-name-1-input"
+            role="combobox"
+            spellcheck="false"
+            style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+            tabindex="0"
+            type="text"
+            value=""
+          />
+        </div>
       </div>
-    </div>
-    <div class="react-select__indicators css-mik995">
-      <span class="react-select__indicator-separator css-1u9des2-indicatorSeparator">
-      </span>
       <div
-        class="react-select__indicator react-select__dropdown-indicator css-1xc3v61-indicatorContainer"
-        aria-hidden="true"
+        class="react-select__indicators css-mik995"
       >
-        <svg
-          height="20"
-          width="20"
-          viewbox="0 0 20 20"
+        <span
+          class="react-select__indicator-separator css-1u9des2-indicatorSeparator"
+        />
+        <div
           aria-hidden="true"
-          focusable="false"
-          class="css-tj5bde-Svg"
+          class="react-select__indicator react-select__dropdown-indicator css-1xc3v61-indicatorContainer"
         >
-          <path d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z">
-          </path>
-        </svg>
+          <svg
+            aria-hidden="true"
+            class="css-tj5bde-Svg"
+            focusable="false"
+            height="20"
+            viewBox="0 0 20 20"
+            width="20"
+          >
+            <path
+              d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+            />
+          </svg>
+        </div>
       </div>
     </div>
   </div>
-</div>
-"
+</DocumentFragment>
 `;

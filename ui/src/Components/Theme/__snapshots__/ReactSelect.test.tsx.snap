@@ -1,490 +1,550 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<WrappedCustomMultiSelect /> matches snapshot when focused 1`] = `
-"
-<div class="css-b62m3t-container">
-  <span
-    id="react-select-3-live-region"
-    class="css-1f43avz-a11yText-A11yText"
-  >
-    <span id="aria-selection">
-      option , selected.
-    </span>
-    <span id="aria-focused">
-    </span>
-    <span id="aria-results">
-    </span>
-    <span id="aria-guidance">
-      Select is focused ,type to refine list, press Down to open the menu,
-    </span>
-  </span>
-  <span
-    aria-live="polite"
-    aria-atomic="false"
-    aria-relevant="additions text"
-    role="log"
-    class="css-1f43avz-a11yText-A11yText"
-  >
-  </span>
-  <div class="css-ath5wh-control">
-    <div class="css-1tlotun">
-      <div
-        class="css-1jqq78o-placeholder"
-        id="react-select-3-placeholder"
-      >
-        Select...
-      </div>
-      <div
-        class="css-6hzavh"
-        data-value
-      >
-        <input
-          class
-          style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
-          autocapitalize="none"
-          autocomplete="off"
-          autocorrect="off"
-          id="react-select-3-input"
-          spellcheck="false"
-          tabindex="0"
-          type="text"
-          aria-autocomplete="list"
-          aria-expanded="false"
-          aria-haspopup="true"
-          role="combobox"
-          aria-activedescendant
-          aria-describedby="react-select-3-placeholder"
-          value
-        >
-      </div>
-    </div>
-    <div class="css-mik995">
-      <span class="css-1u9des2-indicatorSeparator">
-      </span>
-      <div
-        class="css-1fu8xx8-indicatorContainer"
-        aria-hidden="true"
-      >
-        <svg
-          height="20"
-          width="20"
-          viewbox="0 0 20 20"
-          aria-hidden="true"
-          focusable="false"
-          class="css-tj5bde-Svg"
-        >
-          <path d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z">
-          </path>
-        </svg>
-      </div>
-    </div>
-  </div>
-</div>
-"
-`;
-
-exports[`<WrappedCustomMultiSelect /> matches snapshot when focused and disabled 1`] = `
-"
-<div class="css-3iigni-container">
-  <span
-    id="react-select-4-live-region"
-    class="css-1f43avz-a11yText-A11yText"
-  >
-    <span id="aria-selection">
-      option , selected.
-    </span>
-    <span id="aria-focused">
-    </span>
-    <span id="aria-results">
-    </span>
-    <span id="aria-guidance">
-      Select is focused ,type to refine list, press Down to open the menu,
-    </span>
-  </span>
-  <span
-    aria-live="polite"
-    aria-atomic="false"
-    aria-relevant="additions text"
-    role="log"
-    class="css-1f43avz-a11yText-A11yText"
-  >
-  </span>
+<DocumentFragment>
   <div
-    class="css-zximad-control"
-    aria-disabled="true"
+    class="css-b62m3t-container"
   >
-    <div class="css-1tlotun">
+    <span
+      class="css-1f43avz-a11yText-A11yText"
+      id="react-select-3-live-region"
+    />
+    <span
+      aria-atomic="false"
+      aria-live="polite"
+      aria-relevant="additions text"
+      class="css-1f43avz-a11yText-A11yText"
+      role="log"
+    >
+      <span
+        id="aria-selection"
+      />
+      <span
+        id="aria-focused"
+      />
+      <span
+        id="aria-results"
+      />
+      <span
+        id="aria-guidance"
+      />
+    </span>
+    <div
+      class="css-ath5wh-control"
+    >
       <div
-        class="css-1jqq78o-placeholder"
-        id="react-select-4-placeholder"
+        class="css-1tlotun"
       >
-        Select...
-      </div>
-      <div
-        class="css-1c1b03h"
-        data-value
-      >
-        <input
-          class
-          style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
-          disabled
-          autocapitalize="none"
-          autocomplete="off"
-          autocorrect="off"
-          id="react-select-4-input"
-          spellcheck="false"
-          tabindex="0"
-          type="text"
-          aria-autocomplete="list"
-          aria-expanded="false"
-          aria-haspopup="true"
-          role="combobox"
-          aria-activedescendant
-          aria-describedby="react-select-4-placeholder"
-          value
+        <div
+          class="css-1jqq78o-placeholder"
+          id="react-select-3-placeholder"
         >
-      </div>
-    </div>
-    <div class="css-191n9vh">
-      <span class="css-894a34-indicatorSeparator">
-      </span>
-      <div
-        class="css-1fu8xx8-indicatorContainer"
-        aria-hidden="true"
-      >
-        <svg
-          height="20"
-          width="20"
-          viewbox="0 0 20 20"
-          aria-hidden="true"
-          focusable="false"
-          class="css-tj5bde-Svg"
-        >
-          <path d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z">
-          </path>
-        </svg>
-      </div>
-    </div>
-  </div>
-</div>
-"
-`;
-
-exports[`<WrappedCustomMultiSelect /> matches snapshot with a value 1`] = `
-"
-<div class="css-b62m3t-container">
-  <span
-    id="react-select-5-live-region"
-    class="css-1f43avz-a11yText-A11yText"
-  >
-  </span>
-  <span
-    aria-live="polite"
-    aria-atomic="false"
-    aria-relevant="additions text"
-    role="log"
-    class="css-1f43avz-a11yText-A11yText"
-  >
-  </span>
-  <div class="css-18hiu1u-control">
-    <div class="css-1tlotun">
-      <div class="css-qav5hl-singleValue">
-        foo
-      </div>
-      <div
-        class="css-6hzavh"
-        data-value
-      >
-        <input
-          class
-          style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
-          autocapitalize="none"
-          autocomplete="off"
-          autocorrect="off"
-          id="react-select-5-input"
-          spellcheck="false"
-          tabindex="0"
-          type="text"
-          aria-autocomplete="list"
-          aria-expanded="false"
-          aria-haspopup="true"
-          role="combobox"
-          aria-activedescendant
-          value
-        >
-      </div>
-    </div>
-    <div class="css-mik995">
-      <span class="css-1u9des2-indicatorSeparator">
-      </span>
-      <div
-        class="css-1xc3v61-indicatorContainer"
-        aria-hidden="true"
-      >
-        <svg
-          height="20"
-          width="20"
-          viewbox="0 0 20 20"
-          aria-hidden="true"
-          focusable="false"
-          class="css-tj5bde-Svg"
-        >
-          <path d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z">
-          </path>
-        </svg>
-      </div>
-    </div>
-  </div>
-</div>
-"
-`;
-
-exports[`<WrappedCustomMultiSelect /> matches snapshot with isDisabled=true 1`] = `
-"
-<div class="css-3iigni-container">
-  <span
-    id="react-select-7-live-region"
-    class="css-1f43avz-a11yText-A11yText"
-  >
-  </span>
-  <span
-    aria-live="polite"
-    aria-atomic="false"
-    aria-relevant="additions text"
-    role="log"
-    class="css-1f43avz-a11yText-A11yText"
-  >
-  </span>
-  <div
-    class="css-1bxufhm-control"
-    aria-disabled="true"
-  >
-    <div class="css-1tlotun">
-      <div class="css-qav5hl-singleValue">
-        foo
-      </div>
-      <div
-        class="css-1c1b03h"
-        data-value
-      >
-        <input
-          class
-          style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
-          disabled
-          autocapitalize="none"
-          autocomplete="off"
-          autocorrect="off"
-          id="react-select-7-input"
-          spellcheck="false"
-          tabindex="0"
-          type="text"
-          aria-autocomplete="list"
-          aria-expanded="false"
-          aria-haspopup="true"
-          role="combobox"
-          aria-activedescendant
-          value
-        >
-      </div>
-    </div>
-    <div class="css-191n9vh">
-      <span class="css-894a34-indicatorSeparator">
-      </span>
-      <div
-        class="css-1xc3v61-indicatorContainer"
-        aria-hidden="true"
-      >
-        <svg
-          height="20"
-          width="20"
-          viewbox="0 0 20 20"
-          aria-hidden="true"
-          focusable="false"
-          class="css-tj5bde-Svg"
-        >
-          <path d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z">
-          </path>
-        </svg>
-      </div>
-    </div>
-  </div>
-</div>
-"
-`;
-
-exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true 1`] = `
-"
-<div class="css-b62m3t-container">
-  <span
-    id="react-select-2-live-region"
-    class="css-1f43avz-a11yText-A11yText"
-  >
-  </span>
-  <span
-    aria-live="polite"
-    aria-atomic="false"
-    aria-relevant="additions text"
-    role="log"
-    class="css-1f43avz-a11yText-A11yText"
-  >
-  </span>
-  <div class="css-18hiu1u-control">
-    <div class="css-zz5bvt">
-      <div
-        class="css-1jqq78o-placeholder"
-        id="react-select-2-placeholder"
-      >
-        Select...
-      </div>
-      <div
-        class="css-6hzavh"
-        data-value
-      >
-        <input
-          class
-          style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
-          autocapitalize="none"
-          autocomplete="off"
-          autocorrect="off"
-          id="react-select-2-input"
-          spellcheck="false"
-          tabindex="0"
-          type="text"
-          aria-autocomplete="list"
-          aria-expanded="false"
-          aria-haspopup="true"
-          role="combobox"
-          aria-activedescendant
-          aria-describedby="react-select-2-placeholder"
-          value
-        >
-      </div>
-    </div>
-    <div class="css-mik995">
-      <span class="css-1u9des2-indicatorSeparator">
-      </span>
-      <div
-        class="css-1xc3v61-indicatorContainer"
-        aria-hidden="true"
-      >
-        <svg
-          height="20"
-          width="20"
-          viewbox="0 0 20 20"
-          aria-hidden="true"
-          focusable="false"
-          class="css-tj5bde-Svg"
-        >
-          <path d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z">
-          </path>
-        </svg>
-      </div>
-    </div>
-  </div>
-</div>
-"
-`;
-
-exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true and a value 1`] = `
-"
-<div class="css-b62m3t-container">
-  <span
-    id="react-select-6-live-region"
-    class="css-1f43avz-a11yText-A11yText"
-  >
-  </span>
-  <span
-    aria-live="polite"
-    aria-atomic="false"
-    aria-relevant="additions text"
-    role="log"
-    class="css-1f43avz-a11yText-A11yText"
-  >
-  </span>
-  <div class="css-18hiu1u-control">
-    <div class="css-zz5bvt">
-      <div class="css-1laq446-multiValue">
-        <div class="css-1vlm35c">
-          foo
+          Select...
         </div>
         <div
-          role="button"
-          class="css-16j2jaw"
-          aria-label="Remove foo"
+          class="css-6hzavh"
+          data-value=""
+        >
+          <input
+            aria-activedescendant=""
+            aria-autocomplete="list"
+            aria-describedby="react-select-3-placeholder"
+            aria-expanded="false"
+            aria-haspopup="true"
+            autocapitalize="none"
+            autocomplete="off"
+            autocorrect="off"
+            class=""
+            id="react-select-3-input"
+            role="combobox"
+            spellcheck="false"
+            style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+            tabindex="0"
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+      <div
+        class="css-mik995"
+      >
+        <span
+          class="css-1u9des2-indicatorSeparator"
+        />
+        <div
+          aria-hidden="true"
+          class="css-1fu8xx8-indicatorContainer"
         >
           <svg
-            height="14"
-            width="14"
-            viewbox="0 0 20 20"
             aria-hidden="true"
-            focusable="false"
             class="css-tj5bde-Svg"
+            focusable="false"
+            height="20"
+            viewBox="0 0 20 20"
+            width="20"
           >
-            <path d="M14.348 14.849c-0.469 0.469-1.229 0.469-1.697 0l-2.651-3.030-2.651 3.029c-0.469 0.469-1.229 0.469-1.697 0-0.469-0.469-0.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-0.469-0.469-0.469-1.228 0-1.697s1.228-0.469 1.697 0l2.652 3.031 2.651-3.031c0.469-0.469 1.228-0.469 1.697 0s0.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c0.469 0.469 0.469 1.229 0 1.698z">
-            </path>
+            <path
+              d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+            />
           </svg>
         </div>
       </div>
-      <div
-        class="css-6hzavh"
-        data-value
-      >
-        <input
-          class
-          style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
-          autocapitalize="none"
-          autocomplete="off"
-          autocorrect="off"
-          id="react-select-6-input"
-          spellcheck="false"
-          tabindex="0"
-          type="text"
-          aria-autocomplete="list"
-          aria-expanded="false"
-          aria-haspopup="true"
-          role="combobox"
-          aria-activedescendant
-          value
-        >
-      </div>
     </div>
-    <div class="css-mik995">
+  </div>
+</DocumentFragment>
+`;
+
+exports[`<WrappedCustomMultiSelect /> matches snapshot when focused and disabled 1`] = `
+<DocumentFragment>
+  <div
+    class="css-3iigni-container"
+  >
+    <span
+      class="css-1f43avz-a11yText-A11yText"
+      id="react-select-4-live-region"
+    />
+    <span
+      aria-atomic="false"
+      aria-live="polite"
+      aria-relevant="additions text"
+      class="css-1f43avz-a11yText-A11yText"
+      role="log"
+    >
+      <span
+        id="aria-selection"
+      />
+      <span
+        id="aria-focused"
+      />
+      <span
+        id="aria-results"
+      />
+      <span
+        id="aria-guidance"
+      />
+    </span>
+    <div
+      aria-disabled="true"
+      class="css-zximad-control"
+    >
       <div
-        class="css-1xc3v61-indicatorContainer"
-        aria-hidden="true"
+        class="css-1tlotun"
       >
-        <svg
-          height="20"
-          width="20"
-          viewbox="0 0 20 20"
-          aria-hidden="true"
-          focusable="false"
-          class="css-tj5bde-Svg"
+        <div
+          class="css-1jqq78o-placeholder"
+          id="react-select-4-placeholder"
         >
-          <path d="M14.348 14.849c-0.469 0.469-1.229 0.469-1.697 0l-2.651-3.030-2.651 3.029c-0.469 0.469-1.229 0.469-1.697 0-0.469-0.469-0.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-0.469-0.469-0.469-1.228 0-1.697s1.228-0.469 1.697 0l2.652 3.031 2.651-3.031c0.469-0.469 1.228-0.469 1.697 0s0.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c0.469 0.469 0.469 1.229 0 1.698z">
-          </path>
-        </svg>
+          Select...
+        </div>
+        <div
+          class="css-1c1b03h"
+          data-value=""
+        >
+          <input
+            aria-activedescendant=""
+            aria-autocomplete="list"
+            aria-describedby="react-select-4-placeholder"
+            aria-expanded="false"
+            aria-haspopup="true"
+            autocapitalize="none"
+            autocomplete="off"
+            autocorrect="off"
+            class=""
+            disabled=""
+            id="react-select-4-input"
+            role="combobox"
+            spellcheck="false"
+            style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+            tabindex="0"
+            type="text"
+            value=""
+          />
+        </div>
       </div>
-      <span class="css-1u9des2-indicatorSeparator">
-      </span>
       <div
-        class="css-1xc3v61-indicatorContainer"
-        aria-hidden="true"
+        class="css-191n9vh"
       >
-        <svg
-          height="20"
-          width="20"
-          viewbox="0 0 20 20"
+        <span
+          class="css-894a34-indicatorSeparator"
+        />
+        <div
           aria-hidden="true"
-          focusable="false"
-          class="css-tj5bde-Svg"
+          class="css-1fu8xx8-indicatorContainer"
         >
-          <path d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z">
-          </path>
-        </svg>
+          <svg
+            aria-hidden="true"
+            class="css-tj5bde-Svg"
+            focusable="false"
+            height="20"
+            viewBox="0 0 20 20"
+            width="20"
+          >
+            <path
+              d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+            />
+          </svg>
+        </div>
       </div>
     </div>
   </div>
-</div>
-"
+</DocumentFragment>
+`;
+
+exports[`<WrappedCustomMultiSelect /> matches snapshot with a value 1`] = `
+<DocumentFragment>
+  <div
+    class="css-b62m3t-container"
+  >
+    <span
+      class="css-1f43avz-a11yText-A11yText"
+      id="react-select-5-live-region"
+    />
+    <span
+      aria-atomic="false"
+      aria-live="polite"
+      aria-relevant="additions text"
+      class="css-1f43avz-a11yText-A11yText"
+      role="log"
+    />
+    <div
+      class="css-18hiu1u-control"
+    >
+      <div
+        class="css-1tlotun"
+      >
+        <div
+          class="css-qav5hl-singleValue"
+        >
+          foo
+        </div>
+        <div
+          class="css-6hzavh"
+          data-value=""
+        >
+          <input
+            aria-activedescendant=""
+            aria-autocomplete="list"
+            aria-expanded="false"
+            aria-haspopup="true"
+            autocapitalize="none"
+            autocomplete="off"
+            autocorrect="off"
+            class=""
+            id="react-select-5-input"
+            role="combobox"
+            spellcheck="false"
+            style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+            tabindex="0"
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+      <div
+        class="css-mik995"
+      >
+        <span
+          class="css-1u9des2-indicatorSeparator"
+        />
+        <div
+          aria-hidden="true"
+          class="css-1xc3v61-indicatorContainer"
+        >
+          <svg
+            aria-hidden="true"
+            class="css-tj5bde-Svg"
+            focusable="false"
+            height="20"
+            viewBox="0 0 20 20"
+            width="20"
+          >
+            <path
+              d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+            />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`<WrappedCustomMultiSelect /> matches snapshot with isDisabled=true 1`] = `
+<DocumentFragment>
+  <div
+    class="css-3iigni-container"
+  >
+    <span
+      class="css-1f43avz-a11yText-A11yText"
+      id="react-select-7-live-region"
+    />
+    <span
+      aria-atomic="false"
+      aria-live="polite"
+      aria-relevant="additions text"
+      class="css-1f43avz-a11yText-A11yText"
+      role="log"
+    />
+    <div
+      aria-disabled="true"
+      class="css-1bxufhm-control"
+    >
+      <div
+        class="css-1tlotun"
+      >
+        <div
+          class="css-qav5hl-singleValue"
+        >
+          foo
+        </div>
+        <div
+          class="css-1c1b03h"
+          data-value=""
+        >
+          <input
+            aria-activedescendant=""
+            aria-autocomplete="list"
+            aria-expanded="false"
+            aria-haspopup="true"
+            autocapitalize="none"
+            autocomplete="off"
+            autocorrect="off"
+            class=""
+            disabled=""
+            id="react-select-7-input"
+            role="combobox"
+            spellcheck="false"
+            style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+            tabindex="0"
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+      <div
+        class="css-191n9vh"
+      >
+        <span
+          class="css-894a34-indicatorSeparator"
+        />
+        <div
+          aria-hidden="true"
+          class="css-1xc3v61-indicatorContainer"
+        >
+          <svg
+            aria-hidden="true"
+            class="css-tj5bde-Svg"
+            focusable="false"
+            height="20"
+            viewBox="0 0 20 20"
+            width="20"
+          >
+            <path
+              d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+            />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true 1`] = `
+<DocumentFragment>
+  <div
+    class="css-b62m3t-container"
+  >
+    <span
+      class="css-1f43avz-a11yText-A11yText"
+      id="react-select-2-live-region"
+    />
+    <span
+      aria-atomic="false"
+      aria-live="polite"
+      aria-relevant="additions text"
+      class="css-1f43avz-a11yText-A11yText"
+      role="log"
+    />
+    <div
+      class="css-18hiu1u-control"
+    >
+      <div
+        class="css-zz5bvt"
+      >
+        <div
+          class="css-1jqq78o-placeholder"
+          id="react-select-2-placeholder"
+        >
+          Select...
+        </div>
+        <div
+          class="css-6hzavh"
+          data-value=""
+        >
+          <input
+            aria-activedescendant=""
+            aria-autocomplete="list"
+            aria-describedby="react-select-2-placeholder"
+            aria-expanded="false"
+            aria-haspopup="true"
+            autocapitalize="none"
+            autocomplete="off"
+            autocorrect="off"
+            class=""
+            id="react-select-2-input"
+            role="combobox"
+            spellcheck="false"
+            style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+            tabindex="0"
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+      <div
+        class="css-mik995"
+      >
+        <span
+          class="css-1u9des2-indicatorSeparator"
+        />
+        <div
+          aria-hidden="true"
+          class="css-1xc3v61-indicatorContainer"
+        >
+          <svg
+            aria-hidden="true"
+            class="css-tj5bde-Svg"
+            focusable="false"
+            height="20"
+            viewBox="0 0 20 20"
+            width="20"
+          >
+            <path
+              d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+            />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true and a value 1`] = `
+<DocumentFragment>
+  <div
+    class="css-b62m3t-container"
+  >
+    <span
+      class="css-1f43avz-a11yText-A11yText"
+      id="react-select-6-live-region"
+    />
+    <span
+      aria-atomic="false"
+      aria-live="polite"
+      aria-relevant="additions text"
+      class="css-1f43avz-a11yText-A11yText"
+      role="log"
+    />
+    <div
+      class="css-18hiu1u-control"
+    >
+      <div
+        class="css-zz5bvt"
+      >
+        <div
+          class="css-1laq446-multiValue"
+        >
+          <div
+            class="css-1vlm35c"
+          >
+            foo
+          </div>
+          <div
+            aria-label="Remove foo"
+            class="css-16j2jaw"
+            role="button"
+          >
+            <svg
+              aria-hidden="true"
+              class="css-tj5bde-Svg"
+              focusable="false"
+              height="14"
+              viewBox="0 0 20 20"
+              width="14"
+            >
+              <path
+                d="M14.348 14.849c-0.469 0.469-1.229 0.469-1.697 0l-2.651-3.030-2.651 3.029c-0.469 0.469-1.229 0.469-1.697 0-0.469-0.469-0.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-0.469-0.469-0.469-1.228 0-1.697s1.228-0.469 1.697 0l2.652 3.031 2.651-3.031c0.469-0.469 1.228-0.469 1.697 0s0.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c0.469 0.469 0.469 1.229 0 1.698z"
+              />
+            </svg>
+          </div>
+        </div>
+        <div
+          class="css-6hzavh"
+          data-value=""
+        >
+          <input
+            aria-activedescendant=""
+            aria-autocomplete="list"
+            aria-expanded="false"
+            aria-haspopup="true"
+            autocapitalize="none"
+            autocomplete="off"
+            autocorrect="off"
+            class=""
+            id="react-select-6-input"
+            role="combobox"
+            spellcheck="false"
+            style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+            tabindex="0"
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+      <div
+        class="css-mik995"
+      >
+        <div
+          aria-hidden="true"
+          class="css-1xc3v61-indicatorContainer"
+        >
+          <svg
+            aria-hidden="true"
+            class="css-tj5bde-Svg"
+            focusable="false"
+            height="20"
+            viewBox="0 0 20 20"
+            width="20"
+          >
+            <path
+              d="M14.348 14.849c-0.469 0.469-1.229 0.469-1.697 0l-2.651-3.030-2.651 3.029c-0.469 0.469-1.229 0.469-1.697 0-0.469-0.469-0.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-0.469-0.469-0.469-1.228 0-1.697s1.228-0.469 1.697 0l2.652 3.031 2.651-3.031c0.469-0.469 1.228-0.469 1.697 0s0.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c0.469 0.469 0.469 1.229 0 1.698z"
+            />
+          </svg>
+        </div>
+        <span
+          class="css-1u9des2-indicatorSeparator"
+        />
+        <div
+          aria-hidden="true"
+          class="css-1xc3v61-indicatorContainer"
+        >
+          <svg
+            aria-hidden="true"
+            class="css-tj5bde-Svg"
+            focusable="false"
+            height="20"
+            viewBox="0 0 20 20"
+            width="20"
+          >
+            <path
+              d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+            />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
 `;

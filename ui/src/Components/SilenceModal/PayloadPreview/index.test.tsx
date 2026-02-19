@@ -1,6 +1,4 @@
-import { mount } from "enzyme";
-
-import toDiffableHtml from "diffable-html";
+import { render } from "@testing-library/react";
 
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import PayloadPreview from ".";
@@ -13,7 +11,9 @@ describe("<PayloadPreview />", () => {
     silenceFormStore.data.setAuthor("me@example.com");
     silenceFormStore.data.setComment("PayloadPreview test");
 
-    const tree = mount(<PayloadPreview silenceFormStore={silenceFormStore} />);
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    const { asFragment } = render(
+      <PayloadPreview silenceFormStore={silenceFormStore} />,
+    );
+    expect(asFragment()).toMatchSnapshot();
   });
 });

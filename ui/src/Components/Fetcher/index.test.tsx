@@ -1,10 +1,8 @@
 import { act } from "react-dom/test-utils";
 
-import { mount } from "enzyme";
+import { render, fireEvent } from "@testing-library/react";
 
 import fetchMock from "fetch-mock";
-
-import toDiffableHtml from "diffable-html";
 
 import { EmptyAPIResponse } from "__fixtures__/Fetch";
 
@@ -66,7 +64,7 @@ const MockEmptyAPIResponseWithoutFilters = () => {
 describe("<Fetcher />", () => {
   it("changing interval changes how often fetch is called", () => {
     settingsStore.fetchConfig.setInterval(1);
-    mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
+    render(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     expect(fetchSpy).toHaveBeenCalledTimes(1);
 
     jest.setSystemTime(
@@ -114,23 +112,23 @@ describe("<Fetcher />", () => {
 
   it("calls alertStore.fetchWithThrottle on mount", () => {
     const fetchSpy = jest.spyOn(alertStore, "fetchWithThrottle");
-    mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
+    render(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     expect(fetchSpy).toHaveBeenCalledTimes(1);
   });
 
   it("calls alertStore.fetchWithThrottle again after filter change", () => {
     MockEmptyAPIResponseWithoutFilters();
     const fetchSpy = jest.spyOn(alertStore, "fetchWithThrottle");
-    const tree = mount(
+    const { rerender } = render(
       <Fetcher alertStore={alertStore} settingsStore={settingsStore} />,
     );
     alertStore.filters.setFilterValues([]);
-    tree.setProps({});
+    rerender(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     expect(fetchSpy).toHaveBeenCalledTimes(2);
   });
 
   it("keeps calling alertStore.fetchWithThrottle every minute", () => {
-    mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
+    render(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     expect(fetchSpy).toHaveBeenCalledTimes(1);
 
     jest.setSystemTime(
@@ -162,7 +160,7 @@ describe("<Fetcher />", () => {
     MockEmptyAPIResponseWithoutFilters();
     const fetchSpy = jest.spyOn(alertStore, "fetchWithThrottle");
     settingsStore.gridConfig.setSortOrder("default");
-    mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
+    render(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     expect(fetchSpy).toHaveBeenCalledWith("", false, "", "", false, {}, 5, {});
   });
 
@@ -171,7 +169,7 @@ describe("<Fetcher />", () => {
     const fetchSpy = jest.spyOn(alertStore, "fetchWithThrottle");
     settingsStore.gridConfig.setSortOrder("disabled");
     settingsStore.gridConfig.setSortReverse(false);
-    mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
+    render(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     expect(fetchSpy).toHaveBeenCalledWith(
       "",
       false,
@@ -189,7 +187,7 @@ describe("<Fetcher />", () => {
     const fetchSpy = jest.spyOn(alertStore, "fetchWithThrottle");
     settingsStore.gridConfig.setSortOrder("disabled");
     settingsStore.gridConfig.setSortReverse(true);
-    mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
+    render(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     expect(fetchSpy).toHaveBeenCalledWith(
       "",
       false,
@@ -207,7 +205,7 @@ describe("<Fetcher />", () => {
     const fetchSpy = jest.spyOn(alertStore, "fetchWithThrottle");
     settingsStore.gridConfig.setSortOrder("startsAt");
     settingsStore.gridConfig.setSortReverse(false);
-    mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
+    render(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     expect(fetchSpy).toHaveBeenCalledWith(
       "",
       false,
@@ -225,7 +223,7 @@ describe("<Fetcher />", () => {
     const fetchSpy = jest.spyOn(alertStore, "fetchWithThrottle");
     settingsStore.gridConfig.setSortOrder("startsAt");
     settingsStore.gridConfig.setSortReverse(true);
-    mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
+    render(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     expect(fetchSpy).toHaveBeenCalledWith(
       "",
       false,
@@ -244,7 +242,7 @@ describe("<Fetcher />", () => {
     settingsStore.gridConfig.setSortOrder("label");
     settingsStore.gridConfig.setSortLabel("cluster");
     settingsStore.gridConfig.setSortReverse(false);
-    mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
+    render(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     expect(fetchSpy).toHaveBeenCalledWith(
       "",
       false,
@@ -263,7 +261,7 @@ describe("<Fetcher />", () => {
     settingsStore.gridConfig.setSortOrder("label");
     settingsStore.gridConfig.setSortLabel("job");
     settingsStore.gridConfig.setSortReverse(true);
-    mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
+    render(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     expect(fetchSpy).toHaveBeenCalledWith(
       "",
       false,
@@ -282,7 +280,7 @@ describe("<Fetcher />", () => {
     settingsStore.gridConfig.setSortOrder("label");
     settingsStore.gridConfig.setSortLabel("instance");
     settingsStore.gridConfig.setSortReverse(null);
-    mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
+    render(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     expect(fetchSpy).toHaveBeenCalledWith(
       "",
       false,
@@ -301,7 +299,7 @@ describe("<Fetcher />", () => {
     settingsStore.gridConfig.setSortOrder("default");
     settingsStore.multiGridConfig.setGridLabel("cluster");
     settingsStore.multiGridConfig.setGridSortReverse(false);
-    mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
+    render(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     expect(fetchSpy).toHaveBeenCalledWith(
       "cluster",
       false,
@@ -320,7 +318,7 @@ describe("<Fetcher />", () => {
     settingsStore.gridConfig.setSortOrder("default");
     settingsStore.multiGridConfig.setGridLabel("cluster");
     settingsStore.multiGridConfig.setGridSortReverse(true);
-    mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
+    render(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     expect(fetchSpy).toHaveBeenCalledWith(
       "cluster",
       true,
@@ -339,7 +337,7 @@ describe("<Fetcher />", () => {
     settingsStore.gridConfig.setSortOrder("default");
     settingsStore.multiGridConfig.setGridLabel("");
     settingsStore.multiGridConfig.setGridSortReverse(true);
-    mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
+    render(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     expect(fetchSpy).toHaveBeenCalledWith("", true, "", "", false, {}, 5, {});
   });
 
@@ -351,7 +349,7 @@ describe("<Fetcher />", () => {
     settingsStore.multiGridConfig.setGridSortReverse(false);
     alertStore.ui.setGridGroupLimit("old", "bar", 10);
     alertStore.ui.setGridGroupLimit("foo", "bar", 5);
-    mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
+    render(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     expect(fetchSpy).toHaveBeenCalledWith(
       "",
       false,
@@ -365,13 +363,13 @@ describe("<Fetcher />", () => {
   });
 
   it("internal timer is null after unmount", () => {
-    const tree = mount(
+    const { unmount } = render(
       <Fetcher alertStore={alertStore} settingsStore={settingsStore} />,
     );
     expect(fetchSpy).toHaveBeenCalledTimes(1);
 
     act(() => {
-      tree.unmount();
+      unmount();
     });
     expect(fetchSpy).toHaveBeenCalledTimes(1);
 
@@ -389,13 +387,13 @@ describe("<Fetcher />", () => {
 
   it("doesn't fetch on mount when paused", () => {
     alertStore.status.pause();
-    mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
+    render(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     expect(fetchSpy).toHaveBeenCalledTimes(0);
   });
 
   it("doesn't fetch on update when paused", () => {
     alertStore.status.pause();
-    mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
+    render(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     settingsStore.gridConfig.setSortReverse(
       !settingsStore.gridConfig.config.reverseSort,
     );
@@ -404,7 +402,7 @@ describe("<Fetcher />", () => {
 
   it("fetches on update when resumed", () => {
     alertStore.status.pause();
-    mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
+    render(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     alertStore.status.resume();
     settingsStore.gridConfig.setSortReverse(
       !settingsStore.gridConfig.config.reverseSort,
@@ -417,7 +415,7 @@ describe("<Fetcher />", () => {
 
   it("fetches on resume", () => {
     alertStore.status.pause();
-    mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
+    render(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     alertStore.status.resume();
     jest.setSystemTime(
       new Date(Date.UTC(2000, 1, 1, 0, 0, 0)).getTime() + 2 * 1000,
@@ -431,91 +429,105 @@ describe("<Fetcher />", () => {
 
 describe("<Fetcher /> children", () => {
   it("renders Dots when countdown is in progress", () => {
-    const tree = mount(
+    const { container } = render(
       <Fetcher alertStore={alertStore} settingsStore={settingsStore} />,
     );
-    expect(tree.find("div.components-fetcher")).toHaveLength(1);
+    expect(container.querySelectorAll("div.components-fetcher")).toHaveLength(
+      1,
+    );
   });
 
   it("doesn't render any children when upgrade is needed", () => {
     act(() => {
       alertStore.info.setUpgradeNeeded(true);
     });
-    const tree = mount(
+    const { container } = render(
       <Fetcher alertStore={alertStore} settingsStore={settingsStore} />,
     );
-    expect(tree.find("div.navbar-brand").children()).toHaveLength(0);
+    expect(container.querySelector("div.navbar-brand")?.children).toHaveLength(
+      0,
+    );
   });
 
   it("renders PauseButton when paused", () => {
-    const tree = mount(
+    const { container } = render(
       <Fetcher alertStore={alertStore} settingsStore={settingsStore} />,
     );
     act(() => {
       alertStore.status.pause();
     });
-    expect(toDiffableHtml(tree.html())).toMatch(/fa-pause/);
+    expect(container.innerHTML).toMatch(/fa-pause/);
   });
 
   it("renders PauseButton when paused and hovered", () => {
-    const tree = mount(
+    const { container } = render(
       <Fetcher alertStore={alertStore} settingsStore={settingsStore} />,
     );
     act(() => {
       alertStore.status.pause();
     });
-    tree.find(".navbar-brand").simulate("mouseenter");
-    tree.update();
-    expect(toDiffableHtml(tree.html())).toMatch(/fa-pause/);
+    const navbarBrand = container.querySelector(".navbar-brand");
+    fireEvent.mouseEnter(navbarBrand!);
+    expect(container.innerHTML).toMatch(/fa-pause/);
 
-    tree.find(".navbar-brand").simulate("mouseleave");
-    tree.update();
-    expect(toDiffableHtml(tree.html())).toMatch(/fa-pause/);
+    fireEvent.mouseLeave(navbarBrand!);
+    expect(container.innerHTML).toMatch(/fa-pause/);
   });
 
   it("renders PlayButton when hovered", () => {
-    const tree = mount(
+    const { container } = render(
       <Fetcher alertStore={alertStore} settingsStore={settingsStore} />,
     );
-    tree.find(".navbar-brand").simulate("mouseenter");
-    tree.update();
-    expect(toDiffableHtml(tree.html())).toMatch(/fa-play/);
+    const navbarBrand = container.querySelector(".navbar-brand");
+    fireEvent.mouseEnter(navbarBrand!);
+    expect(container.innerHTML).toMatch(/fa-play/);
 
-    tree.find(".navbar-brand").simulate("mouseleave");
-    tree.update();
-    expect(tree.find("div.components-fetcher")).toHaveLength(1);
+    fireEvent.mouseLeave(navbarBrand!);
+    expect(container.querySelectorAll("div.components-fetcher")).toHaveLength(
+      1,
+    );
   });
 });
 
 describe("<Dots />", () => {
   it("matches snapshot", () => {
-    const tree = mount(<Dots alertStore={alertStore} dots={8} />);
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    const { asFragment } = render(<Dots alertStore={alertStore} dots={8} />);
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it("adds 'fetching' class when fetching data", () => {
     act(() => {
       alertStore.status.setFetching();
     });
-    const tree = mount(<Dots alertStore={alertStore} dots={8} />);
-    expect(tree.find("div.components-fetcher").hasClass("fetching")).toBe(true);
+    const { container } = render(<Dots alertStore={alertStore} dots={8} />);
+    expect(
+      container
+        .querySelector("div.components-fetcher")
+        ?.classList.contains("fetching"),
+    ).toBe(true);
   });
 
   it("adds 'processing' class when processing fetched data", () => {
     act(() => {
       alertStore.status.setProcessing();
     });
-    const tree = mount(<Dots alertStore={alertStore} dots={8} />);
-    expect(tree.find("div.components-fetcher").hasClass("processing")).toBe(
-      true,
-    );
+    const { container } = render(<Dots alertStore={alertStore} dots={8} />);
+    expect(
+      container
+        .querySelector("div.components-fetcher")
+        ?.classList.contains("processing"),
+    ).toBe(true);
   });
 
   it("adds 'retrying' class when fetch needs a retry", () => {
     act(() => {
       alertStore.info.setIsRetrying();
     });
-    const tree = mount(<Dots alertStore={alertStore} dots={8} />);
-    expect(tree.find("div.components-fetcher").hasClass("retrying")).toBe(true);
+    const { container } = render(<Dots alertStore={alertStore} dots={8} />);
+    expect(
+      container
+        .querySelector("div.components-fetcher")
+        ?.classList.contains("retrying"),
+    ).toBe(true);
   });
 });

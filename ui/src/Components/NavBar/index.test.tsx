@@ -1,6 +1,6 @@
 import { act } from "react-dom/test-utils";
 
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 
 import fetchMock from "fetch-mock";
 
@@ -76,18 +76,16 @@ afterEach(() => {
   fetchMock.reset();
 });
 
-const MountedNavbar = (fixedTop?: boolean) => {
-  return mount(
-    <NavBar
-      alertStore={alertStore}
-      settingsStore={settingsStore}
-      silenceFormStore={silenceFormStore}
-      fixedTop={fixedTop}
-    />,
-    {
-      wrappingComponent: ThemeContext.Provider,
-      wrappingComponentProps: { value: MockThemeContext },
-    },
+const renderNavbar = (fixedTop?: boolean) => {
+  return render(
+    <ThemeContext.Provider value={MockThemeContext}>
+      <NavBar
+        alertStore={alertStore}
+        settingsStore={settingsStore}
+        silenceFormStore={silenceFormStore}
+        fixedTop={fixedTop}
+      />
+    </ThemeContext.Provider>,
   );
 };
 
@@ -99,45 +97,52 @@ describe("<NavBar />", () => {
       clusters: {},
     });
     alertStore.info.setTimestamp("123");
-    const tree = MountedNavbar();
-    expect(tree.find("span.navbar-brand")).toHaveLength(0);
+    const { container } = renderNavbar();
+    expect(
+      container.querySelector("span.navbar-brand"),
+    ).not.toBeInTheDocument();
   });
 
   it("navbar-brand shows 15 alerts with totalAlerts=15", () => {
     alertStore.info.setTotalAlerts(15);
-    const tree = MountedNavbar();
-    const brand = tree.find("span.navbar-brand");
-    expect(brand.text()).toBe("15");
+    renderNavbar();
+    expect(screen.getByText("15")).toBeInTheDocument();
   });
 
   it("navbar includes 'fixed-top' class by default", () => {
-    const tree = MountedNavbar();
-    const nav = tree.find(".navbar");
-    expect((nav.props().className as string).split(" ")).toContain("fixed-top");
+    const { container } = renderNavbar();
+    const nav = container.querySelector(".navbar");
+    expect(nav?.className.split(" ")).toContain("fixed-top");
   });
 
   it("navbar includes 'fixed-top' class with fixedTop=true", () => {
-    const tree = MountedNavbar(true);
-    const nav = tree.find(".navbar");
-    expect((nav.props().className as string).split(" ")).toContain("fixed-top");
-    expect((nav.props().className as string).split(" ")).not.toContain("w-100");
+    const { container } = renderNavbar(true);
+    const nav = container.querySelector(".navbar");
+    expect(nav?.className.split(" ")).toContain("fixed-top");
+    expect(nav?.className.split(" ")).not.toContain("w-100");
   });
 
   it("navbar doesn't 'fixed-top' class with fixedTop=false", () => {
-    const tree = MountedNavbar(false);
-    const nav = tree.find(".navbar");
-    expect((nav.props().className as string).split(" ")).not.toContain(
-      "fixed-top",
-    );
-    expect((nav.props().className as string).split(" ")).toContain("w-100");
+    const { container } = renderNavbar(false);
+    const nav = container.querySelector(".navbar");
+    expect(nav?.className.split(" ")).not.toContain("fixed-top");
+    expect(nav?.className.split(" ")).toContain("w-100");
   });
 
   it("body 'padding-top' style is updated after resize", () => {
-    const tree = MountedNavbar();
+    const { rerender } = renderNavbar();
     act(() => {
       resizeCallback([{ contentRect: { width: 100, height: 10 } }]);
     });
-    tree.setProps({});
+    rerender(
+      <ThemeContext.Provider value={MockThemeContext}>
+        <NavBar
+          alertStore={alertStore}
+          settingsStore={settingsStore}
+          silenceFormStore={silenceFormStore}
+        />
+      </ThemeContext.Provider>,
+    );
     expect(
       window
         .getComputedStyle(document.body, null)
@@ -147,7 +152,15 @@ describe("<NavBar />", () => {
     act(() => {
       resizeCallback([{ contentRect: { width: 100, height: 36 } }]);
     });
-    tree.setProps({});
+    rerender(
+      <ThemeContext.Provider value={MockThemeContext}>
+        <NavBar
+          alertStore={alertStore}
+          settingsStore={settingsStore}
+          silenceFormStore={silenceFormStore}
+        />
+      </ThemeContext.Provider>,
+    );
     expect(
       window
         .getComputedStyle(document.body, null)

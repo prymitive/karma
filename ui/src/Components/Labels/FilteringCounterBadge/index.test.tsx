@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { render, screen, fireEvent } from "@testing-library/react";
 
 import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
 import { QueryOperators } from "Common/Query";
@@ -15,7 +15,7 @@ const validateClassName = (
   className: string,
   themed: boolean,
 ) => {
-  const tree = mount(
+  render(
     <FilteringCounterBadge
       alertStore={alertStore}
       name="@state"
@@ -24,11 +24,11 @@ const validateClassName = (
       themed={themed}
     />,
   );
-  expect(tree.find("span").hasClass(className)).toBe(true);
+  expect(screen.getByText("1")).toHaveClass(className);
 };
 
 const validateStyle = (value: string, themed: boolean) => {
-  const tree = mount(
+  render(
     <FilteringCounterBadge
       alertStore={alertStore}
       name="@state"
@@ -37,7 +37,7 @@ const validateStyle = (value: string, themed: boolean) => {
       themed={themed}
     />,
   );
-  expect(tree.find("span").prop("style")).toEqual({});
+  expect(screen.getByText("1")).not.toHaveAttribute("style");
 };
 
 const validateOnClick = (
@@ -47,7 +47,7 @@ const validateOnClick = (
   isAppend: boolean,
 ) => {
   alertStore.filters.setFilterValues([NewUnappliedFilter("foo=bar")]);
-  const tree = mount(
+  render(
     <FilteringCounterBadge
       alertStore={alertStore}
       name="@state"
@@ -57,9 +57,7 @@ const validateOnClick = (
       isAppend={isAppend}
     />,
   );
-  tree
-    .find(".components-label")
-    .simulate("click", { altKey: isNegative ? true : false });
+  fireEvent.click(screen.getByText("1"), { altKey: isNegative ? true : false });
   expect(alertStore.filters.values).toHaveLength(isAppend ? 2 : 1);
   if (isAppend) {
     expect(alertStore.filters.values).toContainEqual(
@@ -100,7 +98,7 @@ describe("<FilteringCounterBadge />", () => {
   });
 
   it("counter badge should have correct children based on the counter prop value", () => {
-    const tree = mount(
+    render(
       <FilteringCounterBadge
         alertStore={alertStore}
         name="@state"
@@ -109,7 +107,7 @@ describe("<FilteringCounterBadge />", () => {
         themed={true}
       />,
     );
-    expect(tree.text()).toBe("123");
+    expect(screen.getByText("123")).toBeInTheDocument();
   });
 
   for (const state of ["unprocessed", "active", "suppressed"]) {

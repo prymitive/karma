@@ -1,66 +1,66 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<ToastMessage /> matches snapshot 1`] = `
-"
-<div>
+<DocumentFragment>
   <div>
-    title string
+    <div>
+      title string
+    </div>
+    <div>
+      <code>
+        <div>
+          Div Message
+        </div>
+      </code>
+    </div>
   </div>
-  <div>
-    <code>
-      <div>
-        Div Message
-      </div>
-    </code>
-  </div>
-</div>
-"
+</DocumentFragment>
 `;
 
 exports[`<UpgradeToastMessage /> matches snapshot 1`] = `
-"
-<div>
+<DocumentFragment>
   <div>
-    New version available, updates are paused until this page auto reloads
-  </div>
-  <div>
-    <code>
-      1.2.3
-    </code>
-  </div>
-  <div class="d-flex flex-row-reverse">
-    <button
-      type="button"
-      class="btn btn-sm btn-light"
-    >
-      <svg
-        data-prefix="fas"
-        data-icon="stop"
-        class="svg-inline--fa fa-stop me-2"
-        role="img"
-        viewbox="0 0 448 512"
-        aria-hidden="true"
-      >
-        <path
-          fill="currentColor"
-          d="M64 32l320 0c35.3 0 64 28.7 64 64l0 320c0 35.3-28.7 64-64 64L64 480c-35.3 0-64-28.7-64-64L0 96C0 60.7 28.7 32 64 32z"
-        >
-        </path>
-      </svg>
-      Stop auto-reload
-    </button>
-  </div>
-  <div
-    class="mt-2 progress bg-dark"
-    style="height: 2px;"
-  >
+    <div>
+      New version available, updates are paused until this page auto reloads
+    </div>
+    <div>
+      <code>
+        1.2.3
+      </code>
+    </div>
     <div
-      class="progress-bar bg-white toast-upgrade-progressbar"
-      role="progressbar"
-      style="width: 100px;"
+      class="d-flex flex-row-reverse"
     >
+      <button
+        class="btn btn-sm btn-light"
+        type="button"
+      >
+        <svg
+          aria-hidden="true"
+          class="svg-inline--fa fa-stop me-2"
+          data-icon="stop"
+          data-prefix="fas"
+          role="img"
+          viewBox="0 0 448 512"
+        >
+          <path
+            d="M64 32l320 0c35.3 0 64 28.7 64 64l0 320c0 35.3-28.7 64-64 64L64 480c-35.3 0-64-28.7-64-64L0 96C0 60.7 28.7 32 64 32z"
+            fill="currentColor"
+          />
+        </svg>
+        Stop auto-reload
+      </button>
+    </div>
+    <div
+      class="mt-2 progress bg-dark"
+      style="height: 2px;"
+    >
+      <div
+        class="progress-bar bg-white toast-upgrade-progressbar"
+        role="progressbar"
+        style="width: 100px;"
+      />
     </div>
   </div>
-</div>
-"
+</DocumentFragment>
 `;

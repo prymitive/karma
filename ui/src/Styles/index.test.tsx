@@ -1,18 +1,18 @@
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 
 import LightTheme from "./LightTheme";
 import DarkTheme from "./DarkTheme";
 
 describe("<LightTheme />", () => {
   it("renders null", () => {
-    const tree = shallow(<LightTheme />);
-    expect(tree.html()).toBeNull();
+    const { container } = render(<LightTheme />);
+    expect(container.innerHTML).toBe("");
   });
 });
 
 describe("<DarkTheme />", () => {
   it("renders null", () => {
-    const tree = shallow(<DarkTheme />);
-    expect(tree.html()).toBeNull();
+    const { container } = render(<DarkTheme />);
+    expect(container.innerHTML).toBe("");
   });
 });

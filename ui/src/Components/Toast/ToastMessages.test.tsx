@@ -1,6 +1,4 @@
-import { mount } from "enzyme";
-
-import toDiffableHtml from "diffable-html";
+import { render, screen, fireEvent } from "@testing-library/react";
 
 import { AlertStore } from "Stores/AlertStore";
 import { ToastMessage, UpgradeToastMessage } from "./ToastMessages";
@@ -14,42 +12,53 @@ beforeEach(() => {
 
 describe("<ToastMessage />", () => {
   it("matches snapshot", () => {
-    const tree = mount(
+    const { asFragment } = render(
       <ToastMessage title="title string" message={<div>Div Message</div>} />,
     );
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    expect(asFragment()).toMatchSnapshot();
   });
 });
 
 describe("<UpgradeToastMessage />", () => {
   it("matches snapshot", () => {
-    const tree = mount(<UpgradeToastMessage alertStore={alertStore} />);
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    const { asFragment } = render(
+      <UpgradeToastMessage alertStore={alertStore} />,
+    );
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it("clicking on the stop button pauses page reload", () => {
-    const tree = mount(<UpgradeToastMessage alertStore={alertStore} />);
-    expect(tree.find("button").html()).toMatch(/fa-stop/);
-    expect(tree.find("button").text()).toBe("Stop auto-reload");
+    const { container } = render(
+      <UpgradeToastMessage alertStore={alertStore} />,
+    );
+    const button = screen.getByRole("button");
+    expect(container.querySelector("svg.fa-stop")).toBeInTheDocument();
+    expect(button.textContent).toBe("Stop auto-reload");
 
-    tree.find("button").simulate("click");
-    expect(tree.find("button").html()).toMatch(/fa-arrows-rotate/);
-    expect(tree.find("button").text()).toBe("Reload now");
+    fireEvent.click(button);
+    expect(container.querySelector("svg.fa-arrows-rotate")).toBeInTheDocument();
+    expect(button.textContent).toBe("Reload now");
   });
 
   it("clicking on the reload buton triggers a reload", () => {
-    const tree = mount(<UpgradeToastMessage alertStore={alertStore} />);
+    render(<UpgradeToastMessage alertStore={alertStore} />);
+    const button = screen.getByRole("button");
 
-    tree.find("button").simulate("click");
-    expect(tree.find("button").text()).toBe("Reload now");
+    fireEvent.click(button);
+    expect(button.textContent).toBe("Reload now");
 
-    tree.find("button").simulate("click");
+    fireEvent.click(button);
     expect(alertStore.info.upgradeNeeded).toBe(true);
   });
 
   it("upgradeNeeded=true after onAnimationEnd is called", () => {
-    const tree = mount(<UpgradeToastMessage alertStore={alertStore} />);
-    tree.find("div.toast-upgrade-progressbar").simulate("animationend");
+    const { container } = render(
+      <UpgradeToastMessage alertStore={alertStore} />,
+    );
+    const progressbar = container.querySelector(
+      "div.toast-upgrade-progressbar",
+    );
+    fireEvent.animationEnd(progressbar!);
     expect(alertStore.info.upgradeNeeded).toBe(true);
   });
 });

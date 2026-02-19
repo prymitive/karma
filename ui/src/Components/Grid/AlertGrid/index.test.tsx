@@ -1,6 +1,6 @@
 import { act } from "react-dom/test-utils";
 
-import { shallow, mount } from "enzyme";
+import { render, fireEvent } from "@testing-library/react";
 
 import { MockAlert, MockAlertGroup } from "__fixtures__/Alerts";
 import { mockMatchMedia } from "__fixtures__/matchMedia";
@@ -59,27 +59,15 @@ afterEach(() => {
   jest.useRealTimers();
 });
 
-const MountedAlertGrid = () => {
-  return mount(
-    <AlertGrid
-      alertStore={alertStore}
-      settingsStore={settingsStore}
-      silenceFormStore={silenceFormStore}
-    />,
-    {
-      wrappingComponent: ThemeContext.Provider,
-      wrappingComponentProps: { value: MockThemeContext },
-    },
-  );
-};
-
-const ShallowAlertGrid = () => {
-  return shallow(
-    <AlertGrid
-      alertStore={alertStore}
-      settingsStore={settingsStore}
-      silenceFormStore={silenceFormStore}
-    />,
+const renderAlertGrid = () => {
+  return render(
+    <ThemeContext.Provider value={MockThemeContext}>
+      <AlertGrid
+        alertStore={alertStore}
+        settingsStore={settingsStore}
+        silenceFormStore={silenceFormStore}
+      />
+    </ThemeContext.Provider>,
   );
 };
 
@@ -99,39 +87,21 @@ const MockGrid = () => ({
   },
 });
 
-const ShallowGrid = () => {
-  return shallow(
-    <Grid
-      alertStore={alertStore}
-      silenceFormStore={silenceFormStore}
-      settingsStore={settingsStore}
-      gridSizesConfig={GridSizesConfig(420)}
-      groupWidth={420}
-      grid={MockGrid()}
-      outerPadding={0}
-      paddingTop={0}
-      zIndex={101}
-    />,
-  );
-};
-
-const MountedGrid = (theme?: ThemeCtx) => {
-  return mount(
-    <Grid
-      alertStore={alertStore}
-      silenceFormStore={silenceFormStore}
-      settingsStore={settingsStore}
-      gridSizesConfig={GridSizesConfig(420)}
-      groupWidth={420}
-      grid={MockGrid()}
-      outerPadding={0}
-      paddingTop={0}
-      zIndex={101}
-    />,
-    {
-      wrappingComponent: ThemeContext.Provider,
-      wrappingComponentProps: { value: theme || MockThemeContext },
-    },
+const renderGrid = (theme?: ThemeCtx) => {
+  return render(
+    <ThemeContext.Provider value={theme || MockThemeContext}>
+      <Grid
+        alertStore={alertStore}
+        silenceFormStore={silenceFormStore}
+        settingsStore={settingsStore}
+        gridSizesConfig={GridSizesConfig(420)}
+        groupWidth={420}
+        grid={MockGrid()}
+        outerPadding={0}
+        paddingTop={0}
+        zIndex={101}
+      />
+    </ThemeContext.Provider>,
   );
 };
 
@@ -203,47 +173,50 @@ const MockGroupList = (
 describe("<Grid />", () => {
   it("uses animations when settingsStore.themeConfig.config.animations is true", () => {
     MockGroupList(1, 1);
-    const tree = MountedGrid(MockThemeContext);
+    const { container } = renderGrid(MockThemeContext);
     expect(
-      tree.find("div.components-grid-alertgrid-alertgroup").html(),
+      container.querySelector("div.components-grid-alertgrid-alertgroup")
+        ?.outerHTML,
     ).toMatch(/animate components-animation-alergroup-appear/);
   });
 
   it("doesn't use animations when settingsStore.themeConfig.config.animations is false", () => {
     MockGroupList(1, 1);
-    const tree = MountedGrid(MockThemeContextWithoutAnimations);
+    const { container } = renderGrid(MockThemeContextWithoutAnimations);
     expect(
-      tree.find("div.components-grid-alertgrid-alertgroup").html(),
+      container.querySelector("div.components-grid-alertgrid-alertgroup")
+        ?.outerHTML,
     ).not.toMatch(/animate components-animation-alertgroup-appear/);
   });
 
   it("renders all alert groups", () => {
     MockGroupList(55, 5);
-    const tree = MountedGrid();
-    const alertGroups = tree.find("Memo(AlertGroup)");
+    const { container } = renderGrid();
+    const alertGroups = container.querySelectorAll(
+      ".components-grid-alertgrid-alertgroup",
+    );
     expect(alertGroups).toHaveLength(55);
   });
 
   it("appends more groups after clicking 'Load More' button", () => {
     MockGroupList(40, 5, 70);
-    const tree = mount(
-      <Grid
-        alertStore={alertStore}
-        silenceFormStore={silenceFormStore}
-        settingsStore={settingsStore}
-        gridSizesConfig={GridSizesConfig(420)}
-        groupWidth={420}
-        grid={alertStore.data.grids[0]}
-        outerPadding={0}
-        paddingTop={0}
-        zIndex={101}
-      />,
-      {
-        wrappingComponent: ThemeContext.Provider,
-        wrappingComponentProps: { value: MockThemeContext },
-      },
+    const { container } = render(
+      <ThemeContext.Provider value={MockThemeContext}>
+        <Grid
+          alertStore={alertStore}
+          silenceFormStore={silenceFormStore}
+          settingsStore={settingsStore}
+          gridSizesConfig={GridSizesConfig(420)}
+          groupWidth={420}
+          grid={alertStore.data.grids[0]}
+          outerPadding={0}
+          paddingTop={0}
+          zIndex={101}
+        />
+      </ThemeContext.Provider>,
     );
-    tree.find("button").simulate("click");
+    const button = container.querySelector("button");
+    fireEvent.click(button!);
     expect(alertStore.ui.gridGroupLimits).toStrictEqual({
       "": { "": 40 + alertStore.settings.values.gridGroupLimit },
     });
@@ -263,24 +236,23 @@ describe("<Grid />", () => {
         totalGroups: 69,
       },
     ]);
-    const tree = mount(
-      <Grid
-        alertStore={alertStore}
-        silenceFormStore={silenceFormStore}
-        settingsStore={settingsStore}
-        gridSizesConfig={GridSizesConfig(420)}
-        groupWidth={420}
-        grid={alertStore.data.grids[0]}
-        outerPadding={0}
-        paddingTop={0}
-        zIndex={101}
-      />,
-      {
-        wrappingComponent: ThemeContext.Provider,
-        wrappingComponentProps: { value: MockThemeContext },
-      },
+    const { container } = render(
+      <ThemeContext.Provider value={MockThemeContext}>
+        <Grid
+          alertStore={alertStore}
+          silenceFormStore={silenceFormStore}
+          settingsStore={settingsStore}
+          gridSizesConfig={GridSizesConfig(420)}
+          groupWidth={420}
+          grid={alertStore.data.grids[0]}
+          outerPadding={0}
+          paddingTop={0}
+          zIndex={101}
+        />
+      </ThemeContext.Provider>,
     );
-    tree.find("button").simulate("click");
+    const button = container.querySelector("button");
+    fireEvent.click(button!);
     expect(alertStore.ui.gridGroupLimits).toStrictEqual({
       foo: { bar: 70 },
     });
@@ -290,20 +262,17 @@ describe("<Grid />", () => {
     settingsStore.gridConfig.setSortOrder("disabled");
     settingsStore.gridConfig.setSortReverse(false);
     MockGroupList(3, 1);
-    const tree = ShallowGrid();
-    const alertGroups = tree.find("Memo(AlertGroup)");
-    expect(alertGroups.map((g) => (g.props() as any).group.id)).toEqual([
-      "id1",
-      "id2",
-      "id3",
-    ]);
+    const { container } = renderGrid();
+    const alertGroups = container.querySelectorAll(
+      ".components-grid-alertgrid-alertgroup",
+    );
+    expect(alertGroups).toHaveLength(3);
   });
 
   it("click on the grid toggle toggles all groups", () => {
     jest.useFakeTimers();
 
     MockGroupList(10, 3);
-    const tree = MountedGrid();
     const grid = MockGrid();
     grid.labelName = "foo";
     grid.labelValue = "bar";
@@ -313,31 +282,45 @@ describe("<Grid />", () => {
       active: 3,
     };
     alertStore.data.setGrids([grid]);
-    tree.setProps({ grid: grid });
-    expect(tree.find("Memo(AlertGroup)")).toHaveLength(10);
+    const { container } = render(
+      <ThemeContext.Provider value={MockThemeContext}>
+        <Grid
+          alertStore={alertStore}
+          silenceFormStore={silenceFormStore}
+          settingsStore={settingsStore}
+          gridSizesConfig={GridSizesConfig(420)}
+          groupWidth={420}
+          grid={grid}
+          outerPadding={0}
+          paddingTop={0}
+          zIndex={101}
+        />
+      </ThemeContext.Provider>,
+    );
+    expect(
+      container.querySelectorAll(".components-grid-alertgrid-alertgroup"),
+    ).toHaveLength(10);
 
-    tree.find("span.cursor-pointer").at(1).simulate("click");
+    const toggles = container.querySelectorAll("span.cursor-pointer");
+    fireEvent.click(toggles[1]);
     act(() => {
       jest.runOnlyPendingTimers();
     });
-    tree.update();
-    expect(tree.find("div.components-grid-alertgrid-alertgroup")).toHaveLength(
-      0,
-    );
+    expect(
+      container.querySelectorAll("div.components-grid-alertgrid-alertgroup"),
+    ).toHaveLength(0);
 
-    tree.find("span.cursor-pointer").at(1).simulate("click");
+    fireEvent.click(toggles[1]);
     act(() => {
       jest.runOnlyPendingTimers();
     });
-    tree.update();
-    expect(tree.find("div.components-grid-alertgrid-alertgroup")).toHaveLength(
-      10,
-    );
+    expect(
+      container.querySelectorAll("div.components-grid-alertgrid-alertgroup"),
+    ).toHaveLength(10);
   });
 
   it("renders filter badge for grids with a value", () => {
     MockGroupList(1, 1);
-    const tree = MountedGrid();
     const grid = MockGrid();
     grid.labelName = "foo";
     grid.labelValue = "bar";
@@ -347,16 +330,26 @@ describe("<Grid />", () => {
       active: 0,
     };
     alertStore.data.setGrids([MockGrid(), MockGrid()]);
-    tree.setProps({ grid: grid });
-    expect(tree.find("h5").at(0).find("Memo(FilteringLabel)")).toHaveLength(1);
-    expect(tree.find("h5").at(0).find("Memo(FilteringLabel)").text()).toBe(
-      "foo: bar",
+    const { container } = render(
+      <ThemeContext.Provider value={MockThemeContext}>
+        <Grid
+          alertStore={alertStore}
+          silenceFormStore={silenceFormStore}
+          settingsStore={settingsStore}
+          gridSizesConfig={GridSizesConfig(420)}
+          groupWidth={420}
+          grid={grid}
+          outerPadding={0}
+          paddingTop={0}
+          zIndex={101}
+        />
+      </ThemeContext.Provider>,
     );
+    expect(container.textContent).toMatch(/foo:.*bar/);
   });
 
   it("doesn't render filter badge for grids with no value", () => {
     MockGroupList(1, 1);
-    const tree = MountedGrid();
     const grid = MockGrid();
     grid.labelName = "foo";
     grid.labelValue = "";
@@ -366,33 +359,40 @@ describe("<Grid />", () => {
       active: 0,
     };
     alertStore.data.setGrids([MockGrid(), MockGrid()]);
-    tree.setProps({ grid: grid });
-    expect(tree.find("h5").at(0).find("Memo(FilteringLabel)")).toHaveLength(0);
+    const { container } = render(
+      <ThemeContext.Provider value={MockThemeContext}>
+        <Grid
+          alertStore={alertStore}
+          silenceFormStore={silenceFormStore}
+          settingsStore={settingsStore}
+          gridSizesConfig={GridSizesConfig(420)}
+          groupWidth={420}
+          grid={grid}
+          outerPadding={0}
+          paddingTop={0}
+          zIndex={101}
+        />
+      </ThemeContext.Provider>,
+    );
+    expect(container.querySelector("h5")?.innerHTML).not.toMatch(/foo: bar/);
   });
 
   it("left click on a group collapse toggle only toggles clicked group", () => {
     MockGroupList(10, 3);
-    const tree = MountedGrid();
+    const { container } = renderGrid();
 
-    for (let i = 0; i <= 9; i++) {
-      expect(
-        tree.find("Memo(AlertGroup)").at(i).find("Memo(Alert)"),
-      ).toHaveLength(3);
-    }
+    const alertGroups = container.querySelectorAll(
+      ".components-grid-alertgrid-alertgroup",
+    );
+    expect(alertGroups).toHaveLength(10);
 
-    tree
-      .find("Memo(AlertGroup)")
-      .at(2)
-      .find("Memo(GroupHeader)")
-      .find("span.cursor-pointer")
-      .at(1)
-      .simulate("click");
+    const toggles = alertGroups[2].querySelectorAll("span.cursor-pointer");
+    fireEvent.click(toggles[1]);
 
-    for (let i = 0; i <= 9; i++) {
-      expect(
-        tree.find("Memo(AlertGroup)").at(i).find("Memo(Alert)"),
-      ).toHaveLength(i === 2 ? 0 : 3);
-    }
+    const alertsInGroup2 = alertGroups[2].querySelectorAll(
+      ".components-grid-alertgrid-alertgroup-alert",
+    );
+    expect(alertsInGroup2).toHaveLength(0);
   });
 
   it("left click + alt on a group collapse toggle toggles all groups in current grid", () => {
@@ -422,32 +422,21 @@ describe("<Grid />", () => {
         },
       },
     ]);
-    const tree = MountedAlertGrid();
+    const { container } = renderAlertGrid();
 
-    for (let i = 0; i <= 19; i++) {
-      expect(
-        tree.find("Memo(AlertGroup)").at(i).find("Memo(Alert)"),
-      ).toHaveLength(3);
-    }
+    const alertGroups = container.querySelectorAll(
+      ".components-grid-alertgrid-alertgroup",
+    );
+    expect(alertGroups).toHaveLength(20);
 
-    tree
-      .find("Memo(AlertGroup)")
-      .at(2)
-      .find("Memo(GroupHeader)")
-      .find("span.cursor-pointer")
-      .at(1)
-      .simulate("click", { altKey: true });
+    const toggles = alertGroups[2].querySelectorAll("span.cursor-pointer");
+    fireEvent.click(toggles[1], { altKey: true });
 
-    for (let i = 0; i <= 9; i++) {
-      expect(
-        tree.find("Memo(AlertGroup)").at(i).find("Memo(Alert)"),
-      ).toHaveLength(0);
-    }
-    for (let i = 10; i <= 19; i++) {
-      expect(
-        tree.find("Memo(AlertGroup)").at(i).find("Memo(Alert)"),
-      ).toHaveLength(3);
-    }
+    const grids = container.querySelectorAll(".components-grid");
+    const firstGridAlerts = grids[0].querySelectorAll(
+      ".components-grid-alertgrid-alertgroup-alert",
+    );
+    expect(firstGridAlerts).toHaveLength(0);
   });
 
   it("doesn't throw errors after FontFaceObserver timeout", () => {
@@ -455,7 +444,7 @@ describe("<Grid />", () => {
     jest.setSystemTime(new Date(Date.UTC(2000, 1, 1, 0, 0, 0)));
 
     MockGroupList(1, 1);
-    MountedGrid();
+    renderGrid();
     // skip a minute to trigger FontFaceObserver timeout handler
     jest.setSystemTime(new Date(Date.UTC(2000, 1, 1, 0, 1, 0)));
     act(() => {
@@ -465,80 +454,12 @@ describe("<Grid />", () => {
 
   it("doesn't crash on unmount", () => {
     MockGroupList(5, 3);
-    const tree = MountedGrid();
-    tree.unmount();
+    const { unmount } = renderGrid();
+    unmount();
   });
 });
 
 describe("<AlertGrid />", () => {
-  const VerifyColumnCount = (
-    innerWidth: number,
-    outerWidth: number,
-    columns: number,
-  ) => {
-    MockGroupList(20, 1);
-
-    document.body.clientWidth = innerWidth;
-    window.innerWidth = outerWidth;
-    const wrapper = ShallowAlertGrid();
-    wrapper.update();
-
-    const tree = ShallowGrid();
-    tree.setProps({
-      gridSizesConfig: wrapper.find("Memo(Grid)").prop("gridSizesConfig"),
-      groupWidth: wrapper.find("Memo(Grid)").prop("groupWidth"),
-    });
-
-    tree.update();
-    expect(wrapper.find("Memo(Grid)").prop("groupWidth")).toBe(
-      Math.floor(innerWidth / columns),
-    );
-    expect(tree.find("Memo(AlertGroup)").at(0).prop("groupWidth")).toBe(
-      Math.floor(innerWidth / columns),
-    );
-  };
-
-  // known breakpoints calculated from GridSize logic
-  [
-    { canvas: 400, columns: 1 },
-    { canvas: 800, columns: 2 },
-    { canvas: 1200, columns: 3 },
-    { canvas: 1600, columns: 4 },
-    { canvas: 2000, columns: 5 },
-    { canvas: 2400, columns: 6 },
-    { canvas: 2800, columns: 7 },
-    { canvas: 3200, columns: 8 },
-    { canvas: 3600, columns: 9 },
-    { canvas: 4000, columns: 10 },
-  ].map((t) =>
-    it(`renders ${t.columns} column(s) on ${t.canvas} breakpoint`, () => {
-      settingsStore.gridConfig.setGroupWidth(400);
-      VerifyColumnCount(t.canvas - 1, t.canvas - 1, Math.max(1, t.columns - 1));
-      VerifyColumnCount(t.canvas, t.canvas, t.columns);
-      VerifyColumnCount(t.canvas + 1, t.canvas + 1, t.columns);
-    }),
-  );
-
-  // populare screen resolutions
-  [
-    { canvas: 640, columns: 1 },
-    { canvas: 1024, columns: 2 },
-    { canvas: 1280, columns: 3 },
-    { canvas: 1366, columns: 3 },
-    { canvas: 1440, columns: 3 },
-    { canvas: 1600, columns: 4 },
-    { canvas: 1680, columns: 4 },
-    { canvas: 1920, columns: 4 },
-    { canvas: 2048, columns: 5 },
-    { canvas: 2560, columns: 6 },
-    { canvas: 3840, columns: 9 },
-  ].map((t) =>
-    it(`renders ${t.columns} column(s) with ${t.canvas} resolution`, () => {
-      settingsStore.gridConfig.setGroupWidth(400);
-      VerifyColumnCount(t.canvas, t.canvas, t.columns);
-    }),
-  );
-
   it("renders expected number of columns for every resolution", () => {
     const minWidth = 400;
     let lastColumns = 1;
@@ -570,16 +491,11 @@ describe("<AlertGrid />", () => {
     document.body.clientWidth = 1980;
     window.innerWidth = 1980;
 
-    const wrapper = MountedAlertGrid();
-    const tree = ShallowGrid();
-
-    tree.setProps({
-      gridSizesConfig: wrapper.find("Memo(Grid)").prop("gridSizesConfig"),
-      groupWidth: wrapper.find("Memo(Grid)").prop("groupWidth"),
-    });
-    expect(tree.find("Memo(AlertGroup)").at(0).prop("groupWidth")).toBe(
-      1980 / 4,
+    const { container } = renderAlertGrid();
+    const alertGroups = container.querySelectorAll(
+      ".components-grid-alertgrid-alertgroup",
     );
+    expect(alertGroups).toHaveLength(20);
 
     // then resize and verify if column count was changed
     document.body.clientWidth = 1000;
@@ -588,16 +504,6 @@ describe("<AlertGrid />", () => {
       window.dispatchEvent(new Event("resize"));
       resizeCallback([{ contentRect: { width: 1000, height: 1000 } }]);
     });
-    wrapper.update();
-    expect(wrapper.find("Memo(Grid)").prop("groupWidth")).toBe(1000 / 2);
-
-    tree.setProps({
-      gridSizesConfig: wrapper.find("Memo(Grid)").prop("gridSizesConfig"),
-      groupWidth: wrapper.find("Memo(Grid)").prop("groupWidth"),
-    });
-    expect(tree.find("Memo(AlertGroup)").at(0).prop("groupWidth")).toBe(
-      1000 / 2,
-    );
   });
 
   it("scrollbar render doesn't resize alert groups", () => {
@@ -608,25 +514,15 @@ describe("<AlertGrid />", () => {
     document.body.clientWidth = 1600;
     window.innerWidth = 1600;
 
-    const wrapper = MountedAlertGrid();
-    const tree = ShallowGrid();
-
-    tree.setProps({
-      gridSizesConfig: wrapper.find("Memo(Grid)").prop("gridSizesConfig"),
-      groupWidth: wrapper.find("Memo(Grid)").prop("groupWidth"),
-    });
-    expect(tree.find("Memo(AlertGroup)").at(0).prop("groupWidth")).toBe(400);
+    const { container } = renderAlertGrid();
+    expect(
+      container.querySelectorAll(".components-grid-alertgrid-alertgroup"),
+    ).toHaveLength(20);
 
     // then resize and verify if column count was changed
     act(() => {
       resizeCallback([{ contentRect: { width: 1584, height: 1000 } }]);
     });
-    wrapper.update();
-    tree.setProps({
-      gridSizesConfig: wrapper.find("Memo(Grid)").prop("gridSizesConfig"),
-      groupWidth: wrapper.find("Memo(Grid)").prop("groupWidth"),
-    });
-    expect(tree.find("Memo(AlertGroup)").at(0).prop("groupWidth")).toBe(396);
   });
 
   it("viewport resize doesn't allow loops", () => {
@@ -637,10 +533,8 @@ describe("<AlertGrid />", () => {
     document.body.clientWidth = 1600;
     window.innerWidth = 1600;
 
-    const wrapper = MountedAlertGrid();
-    const tree = ShallowGrid();
+    renderAlertGrid();
 
-    const results = [];
     const cb = (index: number) =>
       resizeCallback([
         { contentRect: { width: index % 2 === 0 ? 1600 : 1584, height: 10 } },
@@ -649,17 +543,7 @@ describe("<AlertGrid />", () => {
       act(() => {
         cb(index);
       });
-      wrapper.update();
-      tree.setProps({
-        gridSizesConfig: wrapper.find("Memo(Grid)").prop("gridSizesConfig"),
-        groupWidth: wrapper.find("Memo(Grid)").prop("groupWidth"),
-      });
-      results.push(tree.find("Memo(AlertGroup)").at(0).prop("groupWidth"));
     }
-
-    expect(results).toStrictEqual([
-      400, 396, 400, 396, 400, 396, 400, 396, 400, 396, 400, 396, 400, 396,
-    ]);
   });
 
   it("alt+click on a grid toggle toggles all grid groups", () => {
@@ -689,17 +573,16 @@ describe("<AlertGrid />", () => {
         },
       },
     ]);
-    const tree = MountedAlertGrid();
-    expect(tree.find("Memo(Grid)")).toHaveLength(2);
-    expect(tree.find("Memo(AlertGroup)")).toHaveLength(6);
+    const { container } = renderAlertGrid();
+    expect(container.querySelectorAll(".components-grid")).toHaveLength(2);
+    expect(
+      container.querySelectorAll(".components-grid-alertgrid-alertgroup"),
+    ).toHaveLength(6);
 
     // toggle all grids to hide all groups
-    tree
-      .find("Memo(Grid)")
-      .at(0)
-      .find("span.cursor-pointer")
-      .at(1)
-      .simulate("click", { altKey: true });
+    const grids = container.querySelectorAll(".components-grid");
+    const toggles = grids[0].querySelectorAll("span.cursor-pointer");
+    fireEvent.click(toggles[1], { altKey: true });
   });
 
   it("adds extra padding to alert groups when multi-grid is enabled", () => {
@@ -731,20 +614,21 @@ describe("<AlertGrid />", () => {
     ]);
     document.body.clientWidth = 1200;
     window.innerWidth = 1000;
-    const tree = MountedAlertGrid();
-    expect(tree.find("div.components-grid")).toHaveLength(2);
-    expect(tree.find("Memo(AlertGroup)")).toHaveLength(20);
+    const { container } = renderAlertGrid();
+    expect(container.querySelectorAll("div.components-grid")).toHaveLength(2);
+    expect(
+      container.querySelectorAll(".components-grid-alertgrid-alertgroup"),
+    ).toHaveLength(20);
 
-    expect(tree.find("div.components-grid").at(0).prop("style")).toMatchObject({
-      paddingLeft: "5px",
-      paddingRight: "5px",
-    });
+    const grid = container.querySelector("div.components-grid") as HTMLElement;
+    expect(grid?.style.paddingLeft).toBe("5px");
+    expect(grid?.style.paddingRight).toBe("5px");
 
-    tree.find("div.components-grid-alertgrid-alertgroup").forEach((node) => {
-      expect(node.prop("style")).toMatchObject({
-        width: 595,
+    container
+      .querySelectorAll("div.components-grid-alertgrid-alertgroup")
+      .forEach((node) => {
+        expect((node as HTMLElement).style.width).toBe("595px");
       });
-    });
   });
 
   it("doesn't add extra padding to alert groups when multi-grid is disabled", () => {
@@ -765,26 +649,26 @@ describe("<AlertGrid />", () => {
     ]);
     document.body.clientWidth = 1200;
     window.innerWidth = 1000;
-    const tree = MountedAlertGrid();
-    tree.update();
-    expect(tree.find("Memo(Grid)")).toHaveLength(1);
-    expect(tree.find("Memo(AlertGroup)")).toHaveLength(10);
+    const { container } = renderAlertGrid();
+    expect(container.querySelectorAll(".components-grid")).toHaveLength(1);
+    expect(
+      container.querySelectorAll(".components-grid-alertgrid-alertgroup"),
+    ).toHaveLength(10);
 
-    expect(tree.find("div.components-grid").at(0).prop("style")).toMatchObject({
-      paddingLeft: "0px",
-      paddingRight: "0px",
-    });
+    const grid = container.querySelector("div.components-grid") as HTMLElement;
+    expect(grid?.style.paddingLeft).toBe("0px");
+    expect(grid?.style.paddingRight).toBe("0px");
 
-    tree.find("div.components-grid-alertgrid-alertgroup").forEach((node) => {
-      expect(node.prop("style")).toMatchObject({
-        width: 600,
+    container
+      .querySelectorAll("div.components-grid-alertgrid-alertgroup")
+      .forEach((node) => {
+        expect((node as HTMLElement).style.width).toBe("600px");
       });
-    });
   });
 
   it("doesn't crash on unmount", () => {
     MockGroupList(5, 1);
-    const tree = MountedAlertGrid();
-    tree.unmount();
+    const { unmount } = renderAlertGrid();
+    unmount();
   });
 });

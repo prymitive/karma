@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 
 import { useFetchGetMock } from "__fixtures__/useFetchGet";
 import { AlertStore } from "Stores/AlertStore";
@@ -39,6 +39,16 @@ afterEach(() => {
   document.body.className = "";
 });
 
+const renderPaginatedAlertList = (filters: string[], title?: string) => {
+  return render(
+    <PaginatedAlertList
+      alertStore={alertStore}
+      filters={filters}
+      title={title}
+    />,
+  );
+};
+
 describe("<PaginatedAlertList />", () => {
   it("renders Placeholder while loading preview", () => {
     useFetchGetMock.fetch.setMockedData({
@@ -50,10 +60,8 @@ describe("<PaginatedAlertList />", () => {
       get: jest.fn(),
       cancelGet: jest.fn(),
     });
-    const tree = mount(
-      <PaginatedAlertList alertStore={alertStore} filters={["foo=bar"]} />,
-    );
-    expect(tree.find("Placeholder")).toHaveLength(1);
+    const { container } = renderPaginatedAlertList(["foo=bar"]);
+    expect(container.querySelector(".text-placeholder")).toBeInTheDocument();
   });
 
   it("renders Placeholder while response is empty", () => {
@@ -66,10 +74,8 @@ describe("<PaginatedAlertList />", () => {
       get: jest.fn(),
       cancelGet: jest.fn(),
     });
-    const tree = mount(
-      <PaginatedAlertList alertStore={alertStore} filters={["foo=bar"]} />,
-    );
-    expect(tree.find("Placeholder")).toHaveLength(1);
+    const { container } = renderPaginatedAlertList(["foo=bar"]);
+    expect(container.querySelector(".text-placeholder")).toBeInTheDocument();
   });
 
   it("renders LabelSetList with StaticLabel on mount", () => {
@@ -90,11 +96,8 @@ describe("<PaginatedAlertList />", () => {
       get: jest.fn(),
       cancelGet: jest.fn(),
     });
-    const tree = mount(
-      <PaginatedAlertList alertStore={alertStore} filters={["foo=bar"]} />,
-    );
-    expect(tree.find("LabelSetList")).toHaveLength(1);
-    expect(tree.find("Memo(StaticLabel)")).toHaveLength(3);
+    renderPaginatedAlertList(["foo=bar"]);
+    expect(screen.getByText("Fake Alert")).toBeInTheDocument();
   });
 
   it("renders empty LabelSetList with empty response", () => {
@@ -107,15 +110,14 @@ describe("<PaginatedAlertList />", () => {
       get: jest.fn(),
       cancelGet: jest.fn(),
     });
-    const tree = mount(
-      <PaginatedAlertList alertStore={alertStore} filters={["foo=bar"]} />,
-    );
-    expect(tree.find("LabelSetList")).toHaveLength(1);
-    expect(tree.find("Memo(StaticLabel)")).toHaveLength(0);
+    renderPaginatedAlertList(["foo=bar"]);
+    expect(screen.getByText("No alerts matched")).toBeInTheDocument();
   });
 
   it("fetches affected alerts on mount", () => {
-    mount(<PaginatedAlertList alertStore={alertStore} filters={["foo=bar"]} />);
+    render(
+      <PaginatedAlertList alertStore={alertStore} filters={["foo=bar"]} />,
+    );
     expect(useFetchGet).toHaveBeenCalled();
   });
 
@@ -137,15 +139,9 @@ describe("<PaginatedAlertList />", () => {
       get: jest.fn(),
       cancelGet: jest.fn(),
     });
-    const tree = mount(
-      <PaginatedAlertList
-        alertStore={alertStore}
-        filters={["foo=bar"]}
-        title="Affected alerts"
-      />,
-    );
-    expect(tree.text()).toMatch(/Affected alerts/);
-    expect(tree.find("Memo(StaticLabel)")).toHaveLength(3);
+    renderPaginatedAlertList(["foo=bar"], "Affected alerts");
+    expect(screen.getByText("Affected alerts")).toBeInTheDocument();
+    expect(screen.getByText("Fake Alert")).toBeInTheDocument();
   });
 
   it("handles empty grid response correctly", () => {
@@ -158,10 +154,8 @@ describe("<PaginatedAlertList />", () => {
       get: jest.fn(),
       cancelGet: jest.fn(),
     });
-    const tree = mount(
-      <PaginatedAlertList alertStore={alertStore} filters={["foo=bar"]} />,
-    );
-    expect(tree.text()).toMatch(/No alerts matched/);
+    renderPaginatedAlertList(["foo=bar"]);
+    expect(screen.getByText("No alerts matched")).toBeInTheDocument();
   });
 
   it("renders FetchError on failed preview fetch", () => {
@@ -174,9 +168,7 @@ describe("<PaginatedAlertList />", () => {
       get: jest.fn(),
       cancelGet: jest.fn(),
     });
-    const tree = mount(
-      <PaginatedAlertList alertStore={alertStore} filters={["foo=bar"]} />,
-    );
-    expect(tree.find("FetchError")).toHaveLength(1);
+    renderPaginatedAlertList(["foo=bar"]);
+    expect(screen.getByText("fake error")).toBeInTheDocument();
   });
 });

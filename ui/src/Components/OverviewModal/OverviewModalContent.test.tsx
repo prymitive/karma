@@ -1,6 +1,4 @@
-import { mount } from "enzyme";
-
-import toDiffableHtml from "diffable-html";
+import { render, fireEvent } from "@testing-library/react";
 
 import { useFetchGetMock } from "__fixtures__/useFetchGet";
 import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
@@ -18,11 +16,8 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
-const MountedOverviewModalContent = () =>
-  // we have multiple fragments and enzyme only renders the first one
-  // in html() and text(), debug() would work but it's noisy
-  // https://github.com/airbnb/enzyme/issues/1213
-  mount(
+const renderOverviewModalContent = () =>
+  render(
     <span>
       <OverviewModalContent alertStore={alertStore} onHide={onHide} />
     </span>,
@@ -99,8 +94,8 @@ describe("<OverviewModalContent />", () => {
       NewUnappliedFilter("foo=bar"),
     ]);
 
-    const tree = MountedOverviewModalContent();
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    const { asFragment } = renderOverviewModalContent();
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it("matches snapshot with no labels to show", () => {
@@ -116,8 +111,8 @@ describe("<OverviewModalContent />", () => {
       get: jest.fn(),
       cancelGet: jest.fn(),
     });
-    const tree = MountedOverviewModalContent();
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    const { asFragment } = renderOverviewModalContent();
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it("renders all labels after expand button click", () => {
@@ -160,16 +155,21 @@ describe("<OverviewModalContent />", () => {
       get: jest.fn(),
       cancelGet: jest.fn(),
     });
-    const tree = MountedOverviewModalContent();
+    const { container } = renderOverviewModalContent();
 
-    expect(tree.find("span.components-label")).toHaveLength(2 + 1); // +1 for toggle icon
-    expect(tree.find("span.components-label").at(0).text()).toBe("5foo");
-    expect(tree.find("span.components-label").at(1).text()).toBe("5bar");
+    const labels = container.querySelectorAll("span.components-label");
+    expect(labels).toHaveLength(2 + 1); // +1 for toggle icon
+    expect(labels[0].textContent).toBe("5foo");
+    expect(labels[1].textContent).toBe("5bar");
 
-    tree.find("span.badge.cursor-pointer.with-click").simulate("click");
+    const toggleBtn = container.querySelector(
+      "span.badge.cursor-pointer.with-click",
+    );
+    fireEvent.click(toggleBtn!);
 
-    expect(tree.find("span.components-label")).toHaveLength(4 + 1); // +1 for toggle icon
-    expect(tree.find("span.components-label").at(3).text()).toBe("3bar");
-    expect(tree.find("span.components-label").at(4).text()).toBe("3foo");
+    const expandedLabels = container.querySelectorAll("span.components-label");
+    expect(expandedLabels).toHaveLength(4 + 1); // +1 for toggle icon
+    expect(expandedLabels[3].textContent).toBe("3bar");
+    expect(expandedLabels[4].textContent).toBe("3foo");
   });
 });

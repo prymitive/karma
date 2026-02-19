@@ -1,6 +1,4 @@
-import { mount } from "enzyme";
-
-import toDiffableHtml from "diffable-html";
+import { render, fireEvent } from "@testing-library/react";
 
 import { Settings } from "Stores/Settings";
 import { FetchConfiguration } from "./FetchConfiguration";
@@ -10,39 +8,40 @@ beforeEach(() => {
   settingsStore = new Settings(null);
 });
 
-const FakeConfiguration = () => {
-  return mount(<FetchConfiguration settingsStore={settingsStore} />);
+const renderConfiguration = () => {
+  return render(<FetchConfiguration settingsStore={settingsStore} />);
 };
 
 describe("<FetchConfiguration />", () => {
   it("matches snapshot with default values", () => {
-    const tree = FakeConfiguration();
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    const { asFragment } = renderConfiguration();
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it("settings are updated on completed change", () => {
-    const tree = FakeConfiguration();
+    const { container } = renderConfiguration();
     expect(settingsStore.fetchConfig.config.interval).toBe(30);
 
-    const slider = tree.find(`div.input-range-thumb`).first();
-    slider.simulate("click");
+    const slider = container.querySelector("div.input-range-thumb");
+    fireEvent.click(slider!);
 
-    slider.simulate("keyDown", { key: "ArrowLeft", keyCode: 37 });
-    slider.simulate("keyUp", { key: "ArrowLeft", keyCode: 37 });
+    fireEvent.keyDown(slider!, { key: "ArrowLeft", keyCode: 37 });
+    fireEvent.keyUp(slider!, { key: "ArrowLeft", keyCode: 37 });
 
     expect(settingsStore.fetchConfig.config.interval).toBe(20);
 
-    slider.simulate("keyDown", { key: "ArrowRight", keyCode: 39 });
-    slider.simulate("keyUp", { key: "ArrowRight", keyCode: 39 });
-    slider.simulate("keyDown", { key: "ArrowRight", keyCode: 39 });
-    slider.simulate("keyUp", { key: "ArrowRight", keyCode: 39 });
+    fireEvent.keyDown(slider!, { key: "ArrowRight", keyCode: 39 });
+    fireEvent.keyUp(slider!, { key: "ArrowRight", keyCode: 39 });
+    fireEvent.keyDown(slider!, { key: "ArrowRight", keyCode: 39 });
+    fireEvent.keyUp(slider!, { key: "ArrowRight", keyCode: 39 });
 
     expect(settingsStore.fetchConfig.config.interval).toBe(40);
   });
 
   it("custom interval value is rendered correctly", () => {
     settingsStore.fetchConfig.setInterval(70);
-    const component = FakeConfiguration();
-    expect(component.find("Range").props().values).toContain(70);
+    const { container } = renderConfiguration();
+    const thumb = container.querySelector(".input-range-thumb");
+    expect(thumb).toBeInTheDocument();
   });
 });

@@ -1,23 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<AlertGroupTitleBarColor /> matches snapshot with default values 1`] = `
-"
-<div class="mb-0">
-  <div class="form-check form-check-inline mx-0 px-0">
-    <span class="form-check form-switch">
-      <input
-        id="configuration-colortitlebar"
-        class="form-check-input"
-        type="checkbox"
+<DocumentFragment>
+  <div
+    class="mb-0"
+  >
+    <div
+      class="form-check form-check-inline mx-0 px-0"
+    >
+      <span
+        class="form-check form-switch"
       >
-      <label
-        class="form-check-label cursor-pointer me-3"
-        for="configuration-colortitlebar"
-      >
-        Color group titlebar
-      </label>
-    </span>
+        <input
+          class="form-check-input"
+          id="configuration-colortitlebar"
+          type="checkbox"
+        />
+        <label
+          class="form-check-label cursor-pointer me-3"
+          for="configuration-colortitlebar"
+        >
+          Color group titlebar
+        </label>
+      </span>
+    </div>
   </div>
-</div>
-"
+</DocumentFragment>
 `;

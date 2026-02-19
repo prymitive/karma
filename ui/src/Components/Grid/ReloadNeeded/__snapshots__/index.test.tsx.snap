@@ -1,41 +1,45 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<ReloadNeeded /> matches snapshot 1`] = `
-"
-<h1 class="display-1 text-placeholder screen-center">
-  <div class="container-fluid text-center">
-    <svg
-      data-prefix="fas"
-      data-icon="circle-exclamation"
-      class="svg-inline--fa fa-circle-exclamation screen-center-icon-big text-danger mb-4"
-      role="img"
-      viewbox="0 0 512 512"
-      aria-hidden="true"
+<DocumentFragment>
+  <h1
+    class="display-1 text-placeholder screen-center components-animation-fade-appear components-animation-fade-appear-active"
+  >
+    <div
+      class="container-fluid text-center"
     >
-      <path
-        fill="currentColor"
-        d="M256 512a256 256 0 1 1 0-512 256 256 0 1 1 0 512zm0-192a32 32 0 1 0 0 64 32 32 0 1 0 0-64zm0-192c-18.2 0-32.7 15.5-31.4 33.7l7.4 104c.9 12.6 11.4 22.3 23.9 22.3 12.6 0 23-9.7 23.9-22.3l7.4-104c1.3-18.2-13.1-33.7-31.4-33.7z"
-      >
-      </path>
-    </svg>
-    <p class="lead text-white bg-secondary p-3 rounded text-wrap text-break">
       <svg
-        data-prefix="fas"
-        data-icon="spinner"
-        class="svg-inline--fa fa-spinner fa-spin me-2"
-        role="img"
-        viewbox="0 0 512 512"
         aria-hidden="true"
+        class="svg-inline--fa fa-circle-exclamation screen-center-icon-big text-danger mb-4"
+        data-icon="circle-exclamation"
+        data-prefix="fas"
+        role="img"
+        viewBox="0 0 512 512"
       >
         <path
+          d="M256 512a256 256 0 1 1 0-512 256 256 0 1 1 0 512zm0-192a32 32 0 1 0 0 64 32 32 0 1 0 0-64zm0-192c-18.2 0-32.7 15.5-31.4 33.7l7.4 104c.9 12.6 11.4 22.3 23.9 22.3 12.6 0 23-9.7 23.9-22.3l7.4-104c1.3-18.2-13.1-33.7-31.4-33.7z"
           fill="currentColor"
-          d="M208 48a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm0 416a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zM48 208a48 48 0 1 1 0 96 48 48 0 1 1 0-96zm368 48a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zM75 369.1A48 48 0 1 1 142.9 437 48 48 0 1 1 75 369.1zM75 75A48 48 0 1 1 142.9 142.9 48 48 0 1 1 75 75zM437 369.1A48 48 0 1 1 369.1 437 48 48 0 1 1 437 369.1z"
-        >
-        </path>
+        />
       </svg>
-      All API connection attempts failed. This migth be caused by authentication middleware, will try to reload.
-    </p>
-  </div>
-</h1>
-"
+      <p
+        class="lead text-white bg-secondary p-3 rounded text-wrap text-break"
+      >
+        <svg
+          aria-hidden="true"
+          class="svg-inline--fa fa-spinner fa-spin me-2"
+          data-icon="spinner"
+          data-prefix="fas"
+          role="img"
+          viewBox="0 0 512 512"
+        >
+          <path
+            d="M208 48a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm0 416a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zM48 208a48 48 0 1 1 0 96 48 48 0 1 1 0-96zm368 48a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zM75 369.1A48 48 0 1 1 142.9 437 48 48 0 1 1 75 369.1zM75 75A48 48 0 1 1 142.9 142.9 48 48 0 1 1 75 75zM437 369.1A48 48 0 1 1 369.1 437 48 48 0 1 1 437 369.1z"
+            fill="currentColor"
+          />
+        </svg>
+        All API connection attempts failed. This migth be caused by authentication middleware, will try to reload.
+      </p>
+    </div>
+  </h1>
+</DocumentFragment>
 `;

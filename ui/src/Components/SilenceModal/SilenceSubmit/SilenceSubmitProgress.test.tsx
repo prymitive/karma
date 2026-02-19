@@ -1,6 +1,6 @@
 import { act } from "react-dom/test-utils";
 
-import { mount } from "enzyme";
+import { render } from "@testing-library/react";
 
 import fetchMock from "fetch-mock";
 
@@ -61,8 +61,8 @@ afterEach(() => {
   fetchMock.resetHistory();
 });
 
-const MountedSilenceSubmitProgress = () => {
-  return mount(
+const renderSilenceSubmitProgress = () => {
+  return render(
     <SilenceSubmitProgress
       cluster="mockAlertmanager"
       members={["mockAlertmanager"]}
@@ -81,7 +81,7 @@ const MountedSilenceSubmitProgress = () => {
 
 describe("<SilenceSubmitProgress />", () => {
   it("sends a request on mount", async () => {
-    MountedSilenceSubmitProgress();
+    renderSilenceSubmitProgress();
     await act(async () => {
       await fetchMock.flush(true);
     });
@@ -89,7 +89,7 @@ describe("<SilenceSubmitProgress />", () => {
   });
 
   it("appends /api/v2/silences to the passed URI", async () => {
-    MountedSilenceSubmitProgress();
+    renderSilenceSubmitProgress();
     await act(async () => {
       await fetchMock.flush(true);
     });
@@ -98,7 +98,7 @@ describe("<SilenceSubmitProgress />", () => {
   });
 
   it("sends correct JSON payload", async () => {
-    MountedSilenceSubmitProgress();
+    renderSilenceSubmitProgress();
     await act(async () => {
       await fetchMock.flush(true);
     });
@@ -120,7 +120,7 @@ describe("<SilenceSubmitProgress />", () => {
     const upstreams = generateUpstreams();
     upstreams.instances[0].corsCredentials = "same-origin";
     alertStore.data.setUpstreams(upstreams);
-    MountedSilenceSubmitProgress();
+    renderSilenceSubmitProgress();
     await act(async () => {
       await fetchMock.flush(true);
     });
@@ -174,7 +174,7 @@ describe("<SilenceSubmitProgress />", () => {
       ha: NewClusterRequest("ha", ["am1", "am2"]),
     });
 
-    mount(
+    render(
       <SilenceSubmitProgress
         cluster="ha"
         members={["am2", "am1"]}
@@ -243,7 +243,7 @@ describe("<SilenceSubmitProgress />", () => {
       ha: NewClusterRequest("ha", ["am1", "am2"]),
     });
 
-    const tree = mount(
+    render(
       <SilenceSubmitProgress
         cluster="ha"
         members={["am2", "am1"]}
@@ -261,7 +261,6 @@ describe("<SilenceSubmitProgress />", () => {
     await act(async () => {
       await fetchMock.flush(true);
     });
-    tree.update();
     expect(fetchMock.calls()).toHaveLength(2);
     expect(silenceFormStore.data.requestsByCluster.ha).toMatchObject({
       isDone: true,
@@ -295,7 +294,7 @@ describe("<SilenceSubmitProgress />", () => {
       ha: NewClusterRequest("ha", ["am1", "am2"]),
     });
 
-    mount(
+    render(
       <SilenceSubmitProgress
         cluster="ha"
         members={["am2", "am1"]}
@@ -332,7 +331,7 @@ describe("<SilenceSubmitProgress />", () => {
       ha: NewClusterRequest("ha", ["am1", "am2"]),
     });
 
-    mount(
+    render(
       <SilenceSubmitProgress
         cluster="ha"
         members={["am2", "am1"]}
@@ -396,7 +395,7 @@ describe("<SilenceSubmitProgress />", () => {
       ha: NewClusterRequest("ha", ["am1", "am2"]),
     });
 
-    mount(
+    render(
       <SilenceSubmitProgress
         cluster="ha"
         members={["am2", "am1"]}
@@ -464,7 +463,7 @@ describe("<SilenceSubmitProgress />", () => {
       ha: NewClusterRequest("ha", ["am1", "am2"]),
     });
 
-    mount(
+    render(
       <SilenceSubmitProgress
         cluster="ha"
         members={["am2", "am1"]}
@@ -488,11 +487,10 @@ describe("<SilenceSubmitProgress />", () => {
   });
 
   it("renders silence link on successful fetch", async () => {
-    const tree = MountedSilenceSubmitProgress();
+    renderSilenceSubmitProgress();
     await act(async () => {
       await fetchMock.flush(true);
     });
-    tree.update();
     expect(
       silenceFormStore.data.requestsByCluster.mockAlertmanager,
     ).toMatchObject({
@@ -509,11 +507,10 @@ describe("<SilenceSubmitProgress />", () => {
       status: 500,
       body: "error message",
     });
-    const tree = MountedSilenceSubmitProgress();
+    renderSilenceSubmitProgress();
     await act(async () => {
       await fetchMock.flush(true);
     });
-    tree.update();
     expect(
       silenceFormStore.data.requestsByCluster.mockAlertmanager,
     ).toMatchObject({

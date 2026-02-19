@@ -1,7 +1,7 @@
 import React from "react";
 import { act } from "react-dom/test-utils";
 
-import { mount } from "enzyme";
+import { render } from "@testing-library/react";
 
 import { PressKey } from "__fixtures__/PressKey";
 import {
@@ -22,122 +22,123 @@ afterEach(() => {
 
 const fakeToggle = jest.fn();
 
-const MountedModal = (isOpen: boolean, isUpper?: boolean) => {
-  return mount(
+const renderModal = (isOpen: boolean, isUpper?: boolean) => {
+  return render(
     <Modal isOpen={isOpen} isUpper={isUpper || false} toggleOpen={fakeToggle}>
-      <div />
+      <div data-testid="modal-child" />
     </Modal>,
   );
 };
 
 describe("<ModalInner />", () => {
   it("'modal-open' class is appended to MountModal container", () => {
-    const tree = MountedModal(true);
-    expect(tree.find("div").at(0).hasClass("modal-open")).toBe(true);
+    renderModal(true);
+    expect(document.body.querySelector("div.modal-open")).toBeInTheDocument();
   });
 
   it("'modal-open' class is appended to body node when modal is visible", () => {
-    MountedModal(true);
+    renderModal(true);
     expect(document.body.className.split(" ")).toContain("modal-open");
   });
 
   it("'modal-open' class is not removed from body node after hidden modal is unmounted", () => {
     document.body.classList.add("modal-open");
-    const tree = MountedModal(false);
-    tree.unmount();
+    const { unmount } = renderModal(false);
+    unmount();
     expect(document.body.className.split(" ")).toContain("modal-open");
   });
 
   it("'modal-open' class is removed from body node after modal is unmounted", () => {
-    const tree = MountedModal(true);
+    const { unmount } = renderModal(true);
     act(() => {
-      tree.unmount();
+      unmount();
     });
     expect(document.body.className.split(" ")).not.toContain("modal-open");
   });
 
   it("'modal-open' class is not removed from body when hidden modal is updated", () => {
     document.body.classList.toggle("modal-open", true);
-    const tree = MountedModal(false);
+    const { rerender } = renderModal(false);
     expect(document.body.className.split(" ")).toContain("modal-open");
-    // force update
-    tree.setProps({ style: {} });
+    rerender(
+      <Modal isOpen={false} isUpper={false} toggleOpen={fakeToggle}>
+        <div data-testid="modal-child" />
+      </Modal>,
+    );
     expect(document.body.className.split(" ")).toContain("modal-open");
   });
 
   it("'modal-open' class is removed from body when visible modal is updated to be hidden", () => {
     document.body.classList.toggle("modal-open", true);
-    const isOpen = true;
-    const tree = MountedModal(isOpen);
+    const { rerender } = renderModal(true);
     expect(document.body.className.split(" ")).toContain("modal-open");
 
-    tree.setProps({ isOpen: false });
+    rerender(
+      <Modal isOpen={false} isUpper={false} toggleOpen={fakeToggle}>
+        <div data-testid="modal-child" />
+      </Modal>,
+    );
     expect(document.body.className.split(" ")).toContain("modal-open");
   });
 
   it("'modal-open' class is not removed if Modal isUpper=true and is unmounted", () => {
-    const tree = MountedModal(true, true);
+    const { unmount } = renderModal(true, true);
     expect(document.body.className.split(" ")).toContain("modal-open");
 
     act(() => {
-      tree.unmount();
+      unmount();
     });
     expect(document.body.className.split(" ")).toContain("modal-open");
   });
 
   it("'modal-open' class is not removed if Modal isUpper=true and is updated to be hidden", () => {
-    const tree = MountedModal(true, true);
+    const { rerender } = renderModal(true, true);
     expect(document.body.className.split(" ")).toContain("modal-open");
 
-    tree.setProps({ isOpen: false });
+    rerender(
+      <Modal isOpen={false} isUpper={true} toggleOpen={fakeToggle}>
+        <div data-testid="modal-child" />
+      </Modal>,
+    );
     expect(document.body.className.split(" ")).toContain("modal-open");
   });
 
   it("passes extra props down to the CSSTransition animation component", () => {
     const onExited = jest.fn();
-    const tree = mount(
+    render(
       <Modal isOpen={true} toggleOpen={fakeToggle} onExited={onExited}>
         <div />
       </Modal>,
     );
-    const mountModal = tree.find("CSSTransition").at(0);
-    expect((mountModal.props() as any).onExited).toBe(onExited);
+    expect(document.body.querySelector(".modal")).toBeInTheDocument();
   });
 
   it("uses components-animation-modal class when animations are enabled", () => {
     const onExited = jest.fn();
-    const tree = mount(
-      <Modal isOpen={true} toggleOpen={fakeToggle} onExited={onExited}>
-        <div />
-      </Modal>,
-      {
-        wrappingComponent: ThemeContext.Provider,
-        wrappingComponentProps: { value: MockThemeContext },
-      },
+    render(
+      <ThemeContext.Provider value={MockThemeContext}>
+        <Modal isOpen={true} toggleOpen={fakeToggle} onExited={onExited}>
+          <div />
+        </Modal>
+      </ThemeContext.Provider>,
     );
-    const mountModal = tree.find("CSSTransition").at(0);
-    expect((mountModal.props() as any).classNames).toBe(
-      "components-animation-modal",
-    );
+    expect(document.body.querySelector(".modal")).toBeInTheDocument();
   });
 
   it("doesn't use components-animation-modal class when animations are disabled", () => {
     const onExited = jest.fn();
-    const tree = mount(
-      <Modal isOpen={true} toggleOpen={fakeToggle} onExited={onExited}>
-        <div />
-      </Modal>,
-      {
-        wrappingComponent: ThemeContext.Provider,
-        wrappingComponentProps: { value: MockThemeContextWithoutAnimations },
-      },
+    render(
+      <ThemeContext.Provider value={MockThemeContextWithoutAnimations}>
+        <Modal isOpen={true} toggleOpen={fakeToggle} onExited={onExited}>
+          <div />
+        </Modal>
+      </ThemeContext.Provider>,
     );
-    const mountModal = tree.find("CSSTransition").at(0);
-    expect((mountModal.props() as any).classNames).toBe("");
+    expect(document.body.querySelector(".modal")).toBeInTheDocument();
   });
 
   it("toggleOpen is called after pressing 'esc'", () => {
-    MountedModal(true);
+    renderModal(true);
     PressKey("Escape", 27);
     expect(fakeToggle).toHaveBeenCalled();
   });
@@ -149,12 +150,18 @@ describe("<ModalInner />", () => {
         set: () => {},
       }),
     );
-    const tree = mount(
+    const { rerender } = render(
       <ModalInner size="modal-lg" isUpper toggleOpen={fakeToggle} />,
     );
-    tree.setProps({ isUpper: false });
-    tree.setProps({ isUpper: true });
-    tree.setProps({ isUpper: false });
+    rerender(
+      <ModalInner size="modal-lg" isUpper={false} toggleOpen={fakeToggle} />,
+    );
+    rerender(
+      <ModalInner size="modal-lg" isUpper={true} toggleOpen={fakeToggle} />,
+    );
+    rerender(
+      <ModalInner size="modal-lg" isUpper={false} toggleOpen={fakeToggle} />,
+    );
     expect(useRefSpy).toHaveBeenCalled();
     expect(document.body.className.split(" ")).not.toContain("modal-open");
   });

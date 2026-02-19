@@ -1,6 +1,4 @@
-import { mount } from "enzyme";
-
-import toDiffableHtml from "diffable-html";
+import { render, screen, fireEvent } from "@testing-library/react";
 
 import copy from "copy-to-clipboard";
 
@@ -14,27 +12,28 @@ beforeEach(() => {
   alertStore = new AlertStore([]);
 });
 
-const MountedFilteringLabel = (name: string, value: string) => {
-  return mount(
+const renderFilteringLabel = (name: string, value: string) => {
+  return render(
     <FilteringLabel alertStore={alertStore} name={name} value={value} />,
-  ).find(".components-label");
+  );
 };
 
-const RenderAndClick = (name: string, value: string, clickOptions?: any) => {
-  const tree = MountedFilteringLabel(name, value);
-  tree.find(".components-label").simulate("click", clickOptions || {});
+const renderAndClick = (name: string, value: string, clickOptions?: any) => {
+  const { container } = renderFilteringLabel(name, value);
+  const label = container.querySelector(".components-label");
+  fireEvent.click(label!, clickOptions || {});
 };
 
 describe("<FilteringLabel />", () => {
   it("matches snapshot", () => {
-    const tree = mount(
+    const { asFragment } = render(
       <FilteringLabel alertStore={alertStore} name="foo" value="bar" />,
     );
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it("calling onClick() adds a new filter 'foo=bar'", () => {
-    RenderAndClick("foo", "bar");
+    renderAndClick("foo", "bar");
     expect(alertStore.filters.values).toHaveLength(1);
     expect(alertStore.filters.values).toContainEqual(
       NewUnappliedFilter("foo=bar"),
@@ -42,7 +41,7 @@ describe("<FilteringLabel />", () => {
   });
 
   it("calling onClick() while holding Alt key adds a new filter 'foo!=bar'", () => {
-    RenderAndClick("foo", "bar", { altKey: true });
+    renderAndClick("foo", "bar", { altKey: true });
     expect(alertStore.filters.values).toHaveLength(1);
     expect(alertStore.filters.values).toContainEqual(
       NewUnappliedFilter("foo!=bar"),
@@ -50,8 +49,8 @@ describe("<FilteringLabel />", () => {
   });
 
   it("calling onClick() multiple times appends extra filter 'baz=bar'", () => {
-    RenderAndClick("foo", "bar");
-    RenderAndClick("bar", "baz");
+    renderAndClick("foo", "bar");
+    renderAndClick("bar", "baz");
     expect(alertStore.filters.values).toHaveLength(2);
     expect(alertStore.filters.values).toContainEqual(
       NewUnappliedFilter("foo=bar"),
@@ -62,7 +61,7 @@ describe("<FilteringLabel />", () => {
   });
 
   it("calling onClick() while holding Shift key copies label value to clipboard", () => {
-    RenderAndClick("foo", "bar", { shiftKey: true });
+    renderAndClick("foo", "bar", { shiftKey: true });
     expect(copy).toHaveBeenCalledWith("bar");
   });
 
@@ -76,8 +75,10 @@ describe("<FilteringLabel />", () => {
       },
       ...alertStore.data.colors,
     });
-    const tree = MountedFilteringLabel("foo", "bar");
-    expect(tree.hasClass("components-label-dark")).toBe(true);
+    const { container } = renderFilteringLabel("foo", "bar");
+    expect(container.querySelector(".components-label")).toHaveClass(
+      "components-label-dark",
+    );
   });
 
   it("label with bright background color should have 'components-label-bright' class", () => {
@@ -90,8 +91,10 @@ describe("<FilteringLabel />", () => {
       },
       ...alertStore.data.colors,
     });
-    const tree = MountedFilteringLabel("foo", "bar");
-    expect(tree.hasClass("components-label-bright")).toBe(true);
+    const { container } = renderFilteringLabel("foo", "bar");
+    expect(container.querySelector(".components-label")).toHaveClass(
+      "components-label-bright",
+    );
   });
 
   it("doesn't render the name if it's included in valueOnlyLabels", () => {
@@ -103,10 +106,9 @@ describe("<FilteringLabel />", () => {
         },
       },
     });
-    const tree = mount(
-      <FilteringLabel alertStore={alertStore} name="foo" value="bar" />,
-    );
-    expect(tree.text()).toBe("bar");
+    render(<FilteringLabel alertStore={alertStore} name="foo" value="bar" />);
+    expect(screen.getByText("bar")).toBeInTheDocument();
+    expect(screen.queryByText("foo:")).not.toBeInTheDocument();
   });
 
   it("renders the name if it's not included in valueOnlyLabels", () => {
@@ -118,9 +120,8 @@ describe("<FilteringLabel />", () => {
         },
       },
     });
-    const tree = mount(
-      <FilteringLabel alertStore={alertStore} name="foo" value="bar" />,
-    );
-    expect(tree.text()).toBe("foo: bar");
+    render(<FilteringLabel alertStore={alertStore} name="foo" value="bar" />);
+    expect(screen.getByText("foo:")).toBeInTheDocument();
+    expect(screen.getByText("bar")).toBeInTheDocument();
   });
 });

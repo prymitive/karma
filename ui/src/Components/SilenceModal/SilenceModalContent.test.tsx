@@ -1,6 +1,4 @@
-import { mount } from "enzyme";
-
-import toDiffableHtml from "diffable-html";
+import { render, fireEvent } from "@testing-library/react";
 
 import { MockThemeContext } from "__fixtures__/Theme";
 import { AlertStore } from "Stores/AlertStore";
@@ -49,18 +47,16 @@ afterEach(() => {
 
 const MockOnHide = jest.fn();
 
-const MountedSilenceModalContent = () => {
-  return mount(
-    <SilenceModalContent
-      alertStore={alertStore}
-      settingsStore={settingsStore}
-      silenceFormStore={silenceFormStore}
-      onHide={MockOnHide}
-    />,
-    {
-      wrappingComponent: ThemeContext.Provider,
-      wrappingComponentProps: { value: MockThemeContext },
-    },
+const renderSilenceModalContent = () => {
+  return render(
+    <ThemeContext.Provider value={MockThemeContext}>
+      <SilenceModalContent
+        alertStore={alertStore}
+        settingsStore={settingsStore}
+        silenceFormStore={silenceFormStore}
+        onHide={MockOnHide}
+      />
+    </ThemeContext.Provider>,
   );
 };
 
@@ -69,39 +65,39 @@ describe("<SilenceModalContent />", () => {
     const upstreams = generateUpstreams();
     upstreams.instances[0].readonly = true;
     alertStore.data.setUpstreams(upstreams);
-    const tree = MountedSilenceModalContent();
-    const placeholder = tree.find("ReadOnlyPlaceholder");
-    expect(placeholder).toHaveLength(1);
+    const { container } = renderSilenceModalContent();
+    expect(container.innerHTML).toMatch(/Read only mode/);
   });
 
   it("Clicking on the Browser tab changes content", () => {
-    const tree = MountedSilenceModalContent();
-    const tabs = tree.find("Tab");
-    tabs.at(1).simulate("click");
-    tree.update();
-    const form = tree.find("Memo(Browser)");
-    expect(form).toHaveLength(1);
+    const { container } = renderSilenceModalContent();
+    const tabs = container.querySelectorAll(".nav-link");
+    fireEvent.click(tabs[1]);
+    expect(silenceFormStore.tab.current).toBe("browser");
   });
 
   it("Clicking on the Editor tab changes content", () => {
     silenceFormStore.tab.setTab("browser");
-    const tree = MountedSilenceModalContent();
-    const tabs = tree.find("Tab");
-    tabs.at(0).simulate("click");
-    const form = tree.find("Memo(SilenceForm)");
-    expect(form).toHaveLength(1);
+    const { container } = renderSilenceModalContent();
+    const tabs = container.querySelectorAll(".nav-link");
+    fireEvent.click(tabs[0]);
+    expect(silenceFormStore.tab.current).toBe("editor");
   });
 
   it("Content is not blurred when silenceFormStore.toggle.blurred is false", () => {
     silenceFormStore.toggle.setBlur(false);
-    const tree = MountedSilenceModalContent();
-    expect(tree.find("div.modal-body.modal-content-blur")).toHaveLength(0);
+    const { container } = renderSilenceModalContent();
+    expect(
+      container.querySelector("div.modal-body.modal-content-blur"),
+    ).toBeNull();
   });
 
   it("Content is blurred when silenceFormStore.toggle.blurred is true", () => {
     silenceFormStore.toggle.setBlur(true);
-    const tree = MountedSilenceModalContent();
-    expect(tree.find("div.modal-body.modal-content-blur")).toHaveLength(1);
+    const { container } = renderSilenceModalContent();
+    expect(
+      container.querySelector("div.modal-body.modal-content-blur"),
+    ).toBeInTheDocument();
   });
 });
 
@@ -109,58 +105,55 @@ describe("<SilenceModalContent /> Editor", () => {
   it("title is 'New silence' when creating new silence", () => {
     silenceFormStore.data.setStage("form");
     silenceFormStore.data.setSilenceID(null);
-    const tree = MountedSilenceModalContent();
-    const tab = tree.find("Tab").at(0);
-    expect(tab.props().title).toBe("New silence");
+    const { container } = renderSilenceModalContent();
+    const tabs = container.querySelectorAll(".nav-link");
+    expect(tabs[0].textContent).toBe("New silence");
   });
   it("title is 'Editing silence' when editing exiting silence", () => {
     silenceFormStore.data.setStage("form");
     silenceFormStore.data.setSilenceID("1234");
-    const tree = MountedSilenceModalContent();
-    const tab = tree.find("Tab").at(0);
-    expect(tab.props().title).toBe("Editing silence");
+    const { container } = renderSilenceModalContent();
+    const tabs = container.querySelectorAll(".nav-link");
+    expect(tabs[0].textContent).toBe("Editing silence");
   });
   it("title is 'Preview silenced alerts' when previewing silenced alerts", () => {
     silenceFormStore.data.setStage("preview");
     silenceFormStore.data.setSilenceID("1234");
-    const tree = MountedSilenceModalContent();
-    const tab = tree.find("Tab").at(0);
-    expect(tab.props().title).toBe("Preview silenced alerts");
+    const { container } = renderSilenceModalContent();
+    const tabs = container.querySelectorAll(".nav-link");
+    expect(tabs[0].textContent).toBe("Preview silenced alerts");
   });
   it("title is 'Silence submitted' after sending silence to Alertmanager", () => {
     silenceFormStore.data.setStage("submit");
     silenceFormStore.data.setSilenceID("1234");
-    const tree = MountedSilenceModalContent();
-    const tab = tree.find("Tab").at(0);
-    expect(tab.props().title).toBe("Silence submitted");
+    const { container } = renderSilenceModalContent();
+    const tabs = container.querySelectorAll(".nav-link");
+    expect(tabs[0].textContent).toBe("Silence submitted");
   });
 
   it("renders SilenceForm when silenceFormStore.data.currentStage is 'UserInput'", () => {
     silenceFormStore.data.setStage("form");
-    const tree = MountedSilenceModalContent();
-    const form = tree.find("Memo(SilenceForm)");
-    expect(form).toHaveLength(1);
+    const { container } = renderSilenceModalContent();
+    expect(container.querySelector("form")).toBeInTheDocument();
   });
 
   it("renders SilencePreview when silenceFormStore.data.currentStage is 'Preview'", () => {
     silenceFormStore.data.setStage("preview");
-    const tree = MountedSilenceModalContent();
-    const ctrl = tree.find("SilencePreview");
-    expect(ctrl).toHaveLength(1);
+    const { container } = renderSilenceModalContent();
+    expect(container.innerHTML).toMatch(/Affected alerts/);
   });
 
   it("renders SilenceSubmitController when silenceFormStore.data.currentStage is 'Submit'", () => {
     silenceFormStore.data.setStage("submit");
-    const tree = MountedSilenceModalContent();
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    const { asFragment } = renderSilenceModalContent();
+    expect(asFragment()).toMatchSnapshot();
   });
 });
 
 describe("<SilenceModalContent /> Browser", () => {
   it("renders silence browser when tab is set to Browser", () => {
     silenceFormStore.tab.setTab("browser");
-    const tree = MountedSilenceModalContent();
-    const form = tree.find("Memo(Browser)");
-    expect(form).toHaveLength(1);
+    const { container } = renderSilenceModalContent();
+    expect(container.innerHTML).toMatch(/Sort order/);
   });
 });

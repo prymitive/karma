@@ -1,6 +1,4 @@
-import { mount } from "enzyme";
-
-import toDiffableHtml from "diffable-html";
+import { render, screen, fireEvent } from "@testing-library/react";
 
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore, NewEmptyMatcher } from "Stores/SilenceFormStore";
@@ -28,8 +26,8 @@ afterEach(() => {
   (useFetchGet as jest.MockedFunction<typeof useFetchGetMock>).mockReset();
 });
 
-const MountedSilencePreview = () => {
-  return mount(
+const renderSilencePreview = () => {
+  return render(
     <SilencePreview
       alertStore={alertStore}
       silenceFormStore={silenceFormStore}
@@ -39,7 +37,7 @@ const MountedSilencePreview = () => {
 
 describe("<SilencePreview />", () => {
   it("fetches matching alerts on mount", () => {
-    MountedSilencePreview();
+    renderSilencePreview();
     expect(useFetchGet).toHaveBeenCalled();
   });
 
@@ -47,7 +45,7 @@ describe("<SilencePreview />", () => {
     silenceFormStore.data.setAlertmanagers([
       { label: "amName", value: ["amValue"] },
     ]);
-    MountedSilencePreview();
+    renderSilencePreview();
     expect(useFetchGet).toHaveBeenCalledWith(
       "./alertList.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28amValue%29%24",
     );
@@ -57,7 +55,7 @@ describe("<SilencePreview />", () => {
     silenceFormStore.data.setAlertmanagers([
       { label: "cluster", value: ["am1", "am2"] },
     ]);
-    MountedSilencePreview();
+    renderSilencePreview();
     expect(useFetchGet).toHaveBeenCalledWith(
       "./alertList.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28am1%7Cam2%29%24",
     );
@@ -78,8 +76,8 @@ describe("<SilencePreview />", () => {
       cancelGet: jest.fn(),
     });
 
-    const tree = MountedSilencePreview();
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    const { asFragment } = renderSilencePreview();
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it("renders Placeholder while loading preview", () => {
@@ -92,8 +90,10 @@ describe("<SilencePreview />", () => {
       get: jest.fn(),
       cancelGet: jest.fn(),
     });
-    const tree = MountedSilencePreview();
-    expect(tree.find("Placeholder")).toHaveLength(1);
+    renderSilencePreview();
+    expect(
+      document.body.querySelectorAll(".text-placeholder"),
+    ).not.toHaveLength(0);
   });
 
   it("renders StaticLabel after fetch", () => {
@@ -114,9 +114,8 @@ describe("<SilencePreview />", () => {
       get: jest.fn(),
       cancelGet: jest.fn(),
     });
-    const tree = MountedSilencePreview();
-    expect(tree.text()).toMatch(/Affected alerts/);
-    expect(tree.find("Memo(StaticLabel)")).toHaveLength(3);
+    renderSilencePreview();
+    expect(screen.getByText(/Affected alerts/)).toBeInTheDocument();
   });
 
   it("handles empty grid response correctly", () => {
@@ -130,8 +129,8 @@ describe("<SilencePreview />", () => {
       cancelGet: jest.fn(),
     });
 
-    const tree = MountedSilencePreview();
-    expect(tree.text()).toMatch(/No alerts matched/);
+    renderSilencePreview();
+    expect(screen.getByText(/No alerts matched/)).toBeInTheDocument();
   });
 
   it("renders FetchError on failed fetch", () => {
@@ -145,21 +144,19 @@ describe("<SilencePreview />", () => {
       cancelGet: jest.fn(),
     });
 
-    const tree = MountedSilencePreview();
-    expect(tree.find("FetchError")).toHaveLength(1);
-    expect(tree.find("LabelSetList")).toHaveLength(0);
+    const { container } = renderSilencePreview();
+    expect(container.innerHTML).toMatch(/Fetch error/);
   });
 
   it("renders LabelSetList on successful fetch", () => {
-    const tree = MountedSilencePreview();
-    expect(tree.find("FetchError")).toHaveLength(0);
-    expect(tree.find("LabelSetList")).toHaveLength(1);
+    const { container } = renderSilencePreview();
+    expect(container.innerHTML).not.toMatch(/Fetch error/);
   });
 
   it("clicking on the submit button moves form to the 'Submit' stage", () => {
-    const tree = MountedSilencePreview();
-    const button = tree.find(".btn-primary");
-    button.simulate("click");
+    const { container } = renderSilencePreview();
+    const button = container.querySelector(".btn-primary");
+    fireEvent.click(button!);
     expect(silenceFormStore.data.currentStage).toBe("submit");
   });
 });

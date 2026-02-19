@@ -1,432 +1,96 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<AppToasts /> doesn't render upstream error toasts if not all instances are down 1`] = `
-"
-null
-"
-`;
+exports[`<AppToasts /> doesn't render upstream error toasts if not all instances are down 1`] = `<DocumentFragment />`;
 
 exports[`<AppToasts /> renders UpgradeToastMessage when alertStore.info.upgradeReady=true 1`] = `
-"
-<li class="nav-item components-navbar-button ml-auto">
-  <div class=" tooltip-trigger">
-    <span
-      id="components-notifications"
-      class="nav-link cursor-pointer"
+<DocumentFragment>
+  <li
+    class="nav-item components-navbar-button ml-auto"
+  >
+    <div
+      class=" tooltip-trigger"
     >
-      <svg
-        data-prefix="fas"
-        data-icon="circle-info"
-        class="svg-inline--fa fa-circle-info fa-fw "
-        role="img"
-        viewbox="0 0 512 512"
-        aria-hidden="true"
+      <span
+        class="nav-link cursor-pointer"
+        id="components-notifications"
       >
-        <path
-          fill="currentColor"
-          d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM224 160a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm-8 64l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z"
-        >
-        </path>
-      </svg>
-    </span>
-  </div>
-</li>
-<div class="components-toast-container d-flex flex-column">
-  <div class="m-1 bg-toast text-white rounded shadow components-animation-fade-appear components-animation-fade-appear-active">
-    <div class="d-flex flex-row p-1">
-      <div class="flex-shrink-0 flex-grow-0 align-self-center fa-stack fa-2x">
         <svg
-          data-prefix="fas"
-          data-icon="circle"
-          class="svg-inline--fa fa-circle fa-stack-2x text-success"
-          role="img"
-          viewbox="0 0 512 512"
           aria-hidden="true"
+          class="svg-inline--fa fa-circle-info fa-fw "
+          data-icon="circle-info"
+          data-prefix="fas"
+          role="img"
+          viewBox="0 0 512 512"
         >
           <path
+            d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM224 160a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm-8 64l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z"
             fill="currentColor"
-            d="M0 256a256 256 0 1 1 512 0 256 256 0 1 1 -512 0z"
-          >
-          </path>
+          />
         </svg>
-        <svg
-          data-prefix="fas"
-          data-icon="arrow-up"
-          class="svg-inline--fa fa-arrow-up fa-stack-1x text-white"
-          role="img"
-          viewbox="0 0 384 512"
-          aria-hidden="true"
-        >
-          <path
-            fill="currentColor"
-            d="M214.6 9.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 109.3 160 480c0 17.7 14.3 32 32 32s32-14.3 32-32l0-370.7 105.4 105.4c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"
-          >
-          </path>
-        </svg>
-      </div>
-      <div class="flex-shrink-1 flex-grow-1 align-self-center ms-1 me-3 text-break text-wrap">
-        <div>
-          <div>
-            New version available, updates are paused until this page auto reloads
-          </div>
-          <div>
-            <code>
-              unknown
-            </code>
-          </div>
-          <div class="d-flex flex-row-reverse">
-            <button
-              type="button"
-              class="btn btn-sm btn-light"
-            >
-              <svg
-                data-prefix="fas"
-                data-icon="stop"
-                class="svg-inline--fa fa-stop me-2"
-                role="img"
-                viewbox="0 0 448 512"
-                aria-hidden="true"
-              >
-                <path
-                  fill="currentColor"
-                  d="M64 32l320 0c35.3 0 64 28.7 64 64l0 320c0 35.3-28.7 64-64 64L64 480c-35.3 0-64-28.7-64-64L0 96C0 60.7 28.7 32 64 32z"
-                >
-                </path>
-              </svg>
-              Stop auto-reload
-            </button>
-          </div>
-          <div
-            class="mt-2 progress bg-dark"
-            style="height: 2px;"
-          >
-            <div
-              class="progress-bar bg-white toast-upgrade-progressbar"
-              role="progressbar"
-              style="width: 100px;"
-            >
-            </div>
-          </div>
-        </div>
-      </div>
+      </span>
     </div>
-  </div>
-</div>
-"
+  </li>
+</DocumentFragment>
 `;
 
 exports[`<AppToasts /> renders upstream error toasts for each unhealthy upstream 1`] = `
-"
-<li class="nav-item components-navbar-button ml-auto">
-  <div class=" tooltip-trigger">
-    <span
-      id="components-notifications"
-      class="nav-link cursor-pointer"
+<DocumentFragment>
+  <li
+    class="nav-item components-navbar-button ml-auto"
+  >
+    <div
+      class=" tooltip-trigger"
     >
-      <svg
-        data-prefix="fas"
-        data-icon="circle-info"
-        class="svg-inline--fa fa-circle-info fa-fw "
-        role="img"
-        viewbox="0 0 512 512"
-        aria-hidden="true"
+      <span
+        class="nav-link cursor-pointer"
+        id="components-notifications"
       >
-        <path
-          fill="currentColor"
-          d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM224 160a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm-8 64l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z"
-        >
-        </path>
-      </svg>
-    </span>
-  </div>
-</li>
-<div class="components-toast-container d-flex flex-column">
-  <div class="m-1 bg-toast text-white rounded shadow components-animation-fade-appear components-animation-fade-appear-active">
-    <div class="d-flex flex-row p-1">
-      <div class="flex-shrink-0 flex-grow-0 align-self-center fa-stack fa-2x">
         <svg
-          data-prefix="fas"
-          data-icon="circle"
-          class="svg-inline--fa fa-circle fa-stack-2x text-danger"
-          role="img"
-          viewbox="0 0 512 512"
           aria-hidden="true"
+          class="svg-inline--fa fa-circle-info fa-fw "
+          data-icon="circle-info"
+          data-prefix="fas"
+          role="img"
+          viewBox="0 0 512 512"
         >
           <path
+            d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM224 160a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm-8 64l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z"
             fill="currentColor"
-            d="M0 256a256 256 0 1 1 512 0 256 256 0 1 1 -512 0z"
-          >
-          </path>
+          />
         </svg>
-        <svg
-          data-prefix="fas"
-          data-icon="exclamation"
-          class="svg-inline--fa fa-exclamation fa-stack-1x text-white"
-          role="img"
-          viewbox="0 0 128 512"
-          aria-hidden="true"
-        >
-          <path
-            fill="currentColor"
-            d="M64 432c22.1 0 40 17.9 40 40s-17.9 40-40 40-40-17.9-40-40c0-22.1 17.9-40 40-40zM64 0c26.5 0 48 21.5 48 48 0 .6 0 1.1 0 1.7l-16 304c-.9 17-15 30.3-32 30.3S33 370.7 32 353.7L16 49.7c0-.6 0-1.1 0-1.7 0-26.5 21.5-48 48-48z"
-          >
-          </path>
-        </svg>
-      </div>
-      <div class="flex-shrink-1 flex-grow-1 align-self-center ms-1 me-3 text-break text-wrap">
-        <div>
-          <div>
-            Alertmanager am1 raised an error
-          </div>
-          <div>
-            <code>
-              error 1
-            </code>
-          </div>
-        </div>
-      </div>
-      <div class="flex-shrink-0 flex-grow-0 align-self-top">
-        <span class="badge components-label cursor-pointer with-click with-click-dark">
-          <svg
-            data-prefix="fas"
-            data-icon="xmark"
-            class="svg-inline--fa fa-xmark "
-            role="img"
-            viewbox="0 0 384 512"
-            aria-hidden="true"
-          >
-            <path
-              fill="currentColor"
-              d="M55.1 73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L147.2 256 9.9 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192.5 301.3 329.9 438.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.8 256 375.1 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192.5 210.7 55.1 73.4z"
-            >
-            </path>
-          </svg>
-        </span>
-      </div>
+      </span>
     </div>
-  </div>
-  <div class="m-1 bg-toast text-white rounded shadow components-animation-fade-appear components-animation-fade-appear-active">
-    <div class="d-flex flex-row p-1">
-      <div class="flex-shrink-0 flex-grow-0 align-self-center fa-stack fa-2x">
-        <svg
-          data-prefix="fas"
-          data-icon="circle"
-          class="svg-inline--fa fa-circle fa-stack-2x text-danger"
-          role="img"
-          viewbox="0 0 512 512"
-          aria-hidden="true"
-        >
-          <path
-            fill="currentColor"
-            d="M0 256a256 256 0 1 1 512 0 256 256 0 1 1 -512 0z"
-          >
-          </path>
-        </svg>
-        <svg
-          data-prefix="fas"
-          data-icon="exclamation"
-          class="svg-inline--fa fa-exclamation fa-stack-1x text-white"
-          role="img"
-          viewbox="0 0 128 512"
-          aria-hidden="true"
-        >
-          <path
-            fill="currentColor"
-            d="M64 432c22.1 0 40 17.9 40 40s-17.9 40-40 40-40-17.9-40-40c0-22.1 17.9-40 40-40zM64 0c26.5 0 48 21.5 48 48 0 .6 0 1.1 0 1.7l-16 304c-.9 17-15 30.3-32 30.3S33 370.7 32 353.7L16 49.7c0-.6 0-1.1 0-1.7 0-26.5 21.5-48 48-48z"
-          >
-          </path>
-        </svg>
-      </div>
-      <div class="flex-shrink-1 flex-grow-1 align-self-center ms-1 me-3 text-break text-wrap">
-        <div>
-          <div>
-            Alertmanager am3 raised an error
-          </div>
-          <div>
-            <code>
-              error 2
-            </code>
-          </div>
-        </div>
-      </div>
-      <div class="flex-shrink-0 flex-grow-0 align-self-top">
-        <span class="badge components-label cursor-pointer with-click with-click-dark">
-          <svg
-            data-prefix="fas"
-            data-icon="xmark"
-            class="svg-inline--fa fa-xmark "
-            role="img"
-            viewbox="0 0 384 512"
-            aria-hidden="true"
-          >
-            <path
-              fill="currentColor"
-              d="M55.1 73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L147.2 256 9.9 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192.5 301.3 329.9 438.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.8 256 375.1 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192.5 210.7 55.1 73.4z"
-            >
-            </path>
-          </svg>
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
-"
+  </li>
+</DocumentFragment>
 `;
 
 exports[`<AppToasts /> renders upstream error toasts if all instances are down 1`] = `
-"
-<li class="nav-item components-navbar-button ml-auto">
-  <div class=" tooltip-trigger">
-    <span
-      id="components-notifications"
-      class="nav-link cursor-pointer"
+<DocumentFragment>
+  <li
+    class="nav-item components-navbar-button ml-auto"
+  >
+    <div
+      class=" tooltip-trigger"
     >
-      <svg
-        data-prefix="fas"
-        data-icon="circle-info"
-        class="svg-inline--fa fa-circle-info fa-fw "
-        role="img"
-        viewbox="0 0 512 512"
-        aria-hidden="true"
+      <span
+        class="nav-link cursor-pointer"
+        id="components-notifications"
       >
-        <path
-          fill="currentColor"
-          d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM224 160a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm-8 64l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z"
-        >
-        </path>
-      </svg>
-    </span>
-  </div>
-</li>
-<div class="components-toast-container d-flex flex-column">
-  <div class="m-1 bg-toast text-white rounded shadow components-animation-fade-appear components-animation-fade-appear-active">
-    <div class="d-flex flex-row p-1">
-      <div class="flex-shrink-0 flex-grow-0 align-self-center fa-stack fa-2x">
         <svg
-          data-prefix="fas"
-          data-icon="circle"
-          class="svg-inline--fa fa-circle fa-stack-2x text-danger"
-          role="img"
-          viewbox="0 0 512 512"
           aria-hidden="true"
+          class="svg-inline--fa fa-circle-info fa-fw "
+          data-icon="circle-info"
+          data-prefix="fas"
+          role="img"
+          viewBox="0 0 512 512"
         >
           <path
+            d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM224 160a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm-8 64l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z"
             fill="currentColor"
-            d="M0 256a256 256 0 1 1 512 0 256 256 0 1 1 -512 0z"
-          >
-          </path>
+          />
         </svg>
-        <svg
-          data-prefix="fas"
-          data-icon="exclamation"
-          class="svg-inline--fa fa-exclamation fa-stack-1x text-white"
-          role="img"
-          viewbox="0 0 128 512"
-          aria-hidden="true"
-        >
-          <path
-            fill="currentColor"
-            d="M64 432c22.1 0 40 17.9 40 40s-17.9 40-40 40-40-17.9-40-40c0-22.1 17.9-40 40-40zM64 0c26.5 0 48 21.5 48 48 0 .6 0 1.1 0 1.7l-16 304c-.9 17-15 30.3-32 30.3S33 370.7 32 353.7L16 49.7c0-.6 0-1.1 0-1.7 0-26.5 21.5-48 48-48z"
-          >
-          </path>
-        </svg>
-      </div>
-      <div class="flex-shrink-1 flex-grow-1 align-self-center ms-1 me-3 text-break text-wrap">
-        <div>
-          <div>
-            Alertmanager am1 raised an error
-          </div>
-          <div>
-            <code>
-              error 1
-            </code>
-          </div>
-        </div>
-      </div>
-      <div class="flex-shrink-0 flex-grow-0 align-self-top">
-        <span class="badge components-label cursor-pointer with-click with-click-dark">
-          <svg
-            data-prefix="fas"
-            data-icon="xmark"
-            class="svg-inline--fa fa-xmark "
-            role="img"
-            viewbox="0 0 384 512"
-            aria-hidden="true"
-          >
-            <path
-              fill="currentColor"
-              d="M55.1 73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L147.2 256 9.9 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192.5 301.3 329.9 438.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.8 256 375.1 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192.5 210.7 55.1 73.4z"
-            >
-            </path>
-          </svg>
-        </span>
-      </div>
+      </span>
     </div>
-  </div>
-  <div class="m-1 bg-toast text-white rounded shadow components-animation-fade-appear components-animation-fade-appear-active">
-    <div class="d-flex flex-row p-1">
-      <div class="flex-shrink-0 flex-grow-0 align-self-center fa-stack fa-2x">
-        <svg
-          data-prefix="fas"
-          data-icon="circle"
-          class="svg-inline--fa fa-circle fa-stack-2x text-danger"
-          role="img"
-          viewbox="0 0 512 512"
-          aria-hidden="true"
-        >
-          <path
-            fill="currentColor"
-            d="M0 256a256 256 0 1 1 512 0 256 256 0 1 1 -512 0z"
-          >
-          </path>
-        </svg>
-        <svg
-          data-prefix="fas"
-          data-icon="exclamation"
-          class="svg-inline--fa fa-exclamation fa-stack-1x text-white"
-          role="img"
-          viewbox="0 0 128 512"
-          aria-hidden="true"
-        >
-          <path
-            fill="currentColor"
-            d="M64 432c22.1 0 40 17.9 40 40s-17.9 40-40 40-40-17.9-40-40c0-22.1 17.9-40 40-40zM64 0c26.5 0 48 21.5 48 48 0 .6 0 1.1 0 1.7l-16 304c-.9 17-15 30.3-32 30.3S33 370.7 32 353.7L16 49.7c0-.6 0-1.1 0-1.7 0-26.5 21.5-48 48-48z"
-          >
-          </path>
-        </svg>
-      </div>
-      <div class="flex-shrink-1 flex-grow-1 align-self-center ms-1 me-3 text-break text-wrap">
-        <div>
-          <div>
-            Alertmanager am2 raised an error
-          </div>
-          <div>
-            <code>
-              error 2
-            </code>
-          </div>
-        </div>
-      </div>
-      <div class="flex-shrink-0 flex-grow-0 align-self-top">
-        <span class="badge components-label cursor-pointer with-click with-click-dark">
-          <svg
-            data-prefix="fas"
-            data-icon="xmark"
-            class="svg-inline--fa fa-xmark "
-            role="img"
-            viewbox="0 0 384 512"
-            aria-hidden="true"
-          >
-            <path
-              fill="currentColor"
-              d="M55.1 73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L147.2 256 9.9 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192.5 301.3 329.9 438.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.8 256 375.1 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192.5 210.7 55.1 73.4z"
-            >
-            </path>
-          </svg>
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
-"
+  </li>
+</DocumentFragment>
 `;

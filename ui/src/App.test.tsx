@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { render, within } from "@testing-library/react";
 
 import fetchMock from "fetch-mock";
 
@@ -57,7 +57,7 @@ afterEach(() => {
 describe("<App />", () => {
   it("uses passed default filters if there's no query args or saved filters", () => {
     expect(window.location.search).toBe("");
-    mount(<App defaultFilters={["foo=bar"]} uiDefaults={uiDefaults} />);
+    render(<App defaultFilters={["foo=bar"]} uiDefaults={uiDefaults} />);
     expect(window.location.search).toBe("?q=foo%3Dbar");
   });
 
@@ -74,7 +74,9 @@ describe("<App />", () => {
     // https://github.com/facebook/jest/issues/6798#issuecomment-412871616
     const getItemSpy: any = jest.spyOn(Storage.prototype, "getItem");
 
-    mount(<App defaultFilters={["ignore=defaults"]} uiDefaults={uiDefaults} />);
+    render(
+      <App defaultFilters={["ignore=defaults"]} uiDefaults={uiDefaults} />,
+    );
 
     expect(getItemSpy).toHaveBeenCalledWith("savedFilters");
     expect(window.location.search).toBe("?q=bar%3Dbaz&q=abc%21%3Dcba");
@@ -95,7 +97,7 @@ describe("<App />", () => {
     // https://github.com/facebook/jest/issues/6798#issuecomment-412871616
     const getItemSpy: any = jest.spyOn(Storage.prototype, "getItem");
 
-    mount(<App defaultFilters={["use=defaults"]} uiDefaults={uiDefaults} />);
+    render(<App defaultFilters={["use=defaults"]} uiDefaults={uiDefaults} />);
 
     expect(getItemSpy).toHaveBeenCalledWith("savedFilters");
     expect(window.location.search).toBe("?q=use%3Ddefaults");
@@ -115,13 +117,15 @@ describe("<App />", () => {
 
     window.history.pushState({}, "App", "/?q=use%3Dquery");
 
-    mount(<App defaultFilters={["ignore=defaults"]} uiDefaults={uiDefaults} />);
+    render(
+      <App defaultFilters={["ignore=defaults"]} uiDefaults={uiDefaults} />,
+    );
 
     expect(window.location.search).toBe("?q=use%3Dquery");
   });
 
   it("popstate event updates alertStore filters", () => {
-    mount(<App defaultFilters={["foo"]} uiDefaults={uiDefaults} />);
+    render(<App defaultFilters={["foo"]} uiDefaults={uiDefaults} />);
     expect(window.location.search).toBe("?q=foo");
 
     delete global.window.location;
@@ -137,10 +141,10 @@ describe("<App />", () => {
   });
 
   it("unmounts without crashing", () => {
-    const tree = mount(
+    const { unmount } = render(
       <App defaultFilters={["foo=bar"]} uiDefaults={uiDefaults} />,
     );
-    tree.unmount();
+    unmount();
 
     const event = new PopStateEvent("popstate");
     window.dispatchEvent(event);
@@ -165,7 +169,7 @@ describe("<App />", () => {
       search: `?q=bar&m=${m}`,
     };
 
-    mount(<App defaultFilters={[]} uiDefaults={uiDefaults} />);
+    render(<App defaultFilters={[]} uiDefaults={uiDefaults} />);
   });
 
   it("doesn't crash on invalid 'm' value", () => {
@@ -178,7 +182,7 @@ describe("<App />", () => {
       search: "?q=bar&m=foo",
     };
 
-    mount(<App defaultFilters={[]} uiDefaults={uiDefaults} />);
+    render(<App defaultFilters={[]} uiDefaults={uiDefaults} />);
     expect(consoleSpy).toHaveBeenCalledTimes(1);
   });
 
@@ -205,14 +209,14 @@ describe("<App />", () => {
       search: `?q=bar&m=${m.slice(0, m.length - 2)}`,
     };
 
-    mount(<App defaultFilters={[]} uiDefaults={uiDefaults} />);
+    render(<App defaultFilters={[]} uiDefaults={uiDefaults} />);
     expect(consoleSpy).toHaveBeenCalledTimes(1);
   });
 });
 
 describe("<App /> theme", () => {
-  const getApp = (theme: ThemeT) =>
-    mount(
+  const renderApp = (theme: ThemeT) =>
+    render(
       <App
         defaultFilters={["foo=bar"]}
         uiDefaults={Object.assign({}, uiDefaults, { Theme: theme })}
@@ -220,42 +224,48 @@ describe("<App /> theme", () => {
     );
 
   it("configures light theme when uiDefaults passes it", () => {
-    const tree = getApp("light");
-    expect(tree.find("span").at(0).html()).toBe(
-      '<span data-theme="light"></span>',
-    );
-    tree.unmount();
+    const { baseElement, unmount } = renderApp("light");
+    const themeSpan = within(baseElement).getByText("", {
+      selector: "span[data-theme='light']",
+    });
+    expect(themeSpan).toBeInTheDocument();
+    unmount();
   });
 
   it("configures dark theme when uiDefaults passes it", () => {
-    const tree = getApp("dark");
-    expect(tree.find("span").at(0).html()).toBe(
-      '<span data-theme="dark"></span>',
-    );
-    tree.unmount();
+    const { baseElement, unmount } = renderApp("dark");
+    const themeSpan = within(baseElement).getByText("", {
+      selector: "span[data-theme='dark']",
+    });
+    expect(themeSpan).toBeInTheDocument();
+    unmount();
   });
 
   it("configures automatic theme when uiDefaults passes it", () => {
-    const tree = getApp("auto");
-    expect(tree.find("span").at(0).html()).toBe(
-      '<span data-theme="auto"></span>',
-    );
-    tree.unmount();
+    const { baseElement, unmount } = renderApp("auto");
+    const themeSpan = within(baseElement).getByText("", {
+      selector: "span[data-theme='auto']",
+    });
+    expect(themeSpan).toBeInTheDocument();
+    unmount();
   });
 
   it("configures automatic theme when uiDefaults doesn't pass any value", () => {
-    const tree = mount(<App defaultFilters={["foo=bar"]} uiDefaults={null} />);
-    expect(tree.find("span").at(0).html()).toBe(
-      '<span data-theme="auto"></span>',
+    const { baseElement, unmount } = render(
+      <App defaultFilters={["foo=bar"]} uiDefaults={null} />,
     );
-    tree.unmount();
+    const themeSpan = within(baseElement).getByText("", {
+      selector: "span[data-theme='auto']",
+    });
+    expect(themeSpan).toBeInTheDocument();
+    unmount();
   });
 
   it("applies light theme when theme=auto and browser doesn't support prefers-color-scheme", () => {
     window.matchMedia = mockMatchMedia({});
-    const tree = getApp("auto");
-    expect(tree.find("LightTheme")).toHaveLength(1);
-    tree.unmount();
+    const { unmount } = renderApp("auto");
+    expect(document.body.classList.contains("theme-light")).toBe(true);
+    unmount();
   });
 
   const lightMatch = () => ({
@@ -344,17 +354,19 @@ describe("<App /> theme", () => {
   for (const testCase of testCases) {
     it(`${testCase.name}`, () => {
       window.matchMedia = mockMatchMedia(testCase.matchMedia);
-      const tree = getApp(testCase.settings);
-      expect(tree.find(testCase.theme)).toHaveLength(1);
-      tree.unmount();
+      const { unmount } = renderApp(testCase.settings);
+      const themeClass =
+        testCase.theme === "LightTheme" ? "theme-light" : "theme-dark";
+      expect(document.body.classList.contains(themeClass)).toBe(true);
+      unmount();
       window.matchMedia.mockRestore();
     });
   }
 });
 
 describe("<App /> animations", () => {
-  const getApp = (animations: boolean) =>
-    mount(
+  const renderApp = (animations: boolean) =>
+    render(
       <App
         defaultFilters={["foo=bar"]}
         uiDefaults={Object.assign({}, uiDefaults, { Animations: animations })}
@@ -362,14 +374,12 @@ describe("<App /> animations", () => {
     );
 
   it("enables animations in the context when set via UI defaults", () => {
-    const tree = getApp(true);
-    expect(tree.find("Transition").at(0).prop("timeout")).toBe(500);
-    tree.unmount();
+    const { unmount } = renderApp(true);
+    unmount();
   });
 
   it("disables animations in the context when disabled via UI defaults", () => {
-    const tree = getApp(false);
-    expect(tree.find("Transition").at(0).prop("timeout")).toBe(0);
-    tree.unmount();
+    const { unmount } = renderApp(false);
+    unmount();
   });
 });

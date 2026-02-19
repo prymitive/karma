@@ -1,288 +1,399 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<GroupFooter /> matches snapshot 1`] = `
-"
-<div class="card-footer components-grid-alertgrid-alertgroup-footer px-2 py-1">
-  <div class="mb-1">
-    <div class=" tooltip-trigger">
-      <div class="mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100">
-        <span class="cursor-pointer">
+<DocumentFragment>
+  <div
+    class="card-footer components-grid-alertgrid-alertgroup-footer px-2 py-1"
+  >
+    <div
+      class="mb-1"
+    >
+      <div
+        class=" tooltip-trigger"
+      >
+        <div
+          class="mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100"
+        >
+          <span
+            class="cursor-pointer"
+          >
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-angle-right me-1 text-muted"
+              data-icon="angle-right"
+              data-prefix="fas"
+              role="img"
+              viewBox="0 0 256 512"
+            >
+              <path
+                d="M247.1 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L179.2 256 41.9 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"
+                fill="currentColor"
+              />
+            </svg>
+            <span
+              class="text-muted"
+            >
+              summary: 
+            </span>
+          </span>
+          <span
+            class="Linkify"
+          >
+            <span>
+              This is summary
+            </span>
+          </span>
+        </div>
+      </div>
+      <div
+        class=" tooltip-trigger"
+      >
+        <div
+          class="mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100 cursor-pointer"
+        >
           <svg
-            data-prefix="fas"
-            data-icon="angle-right"
-            class="svg-inline--fa fa-angle-right me-1 text-muted"
-            role="img"
-            viewbox="0 0 256 512"
             aria-hidden="true"
+            class="svg-inline--fa fa-angle-left me-1"
+            data-icon="angle-left"
+            data-prefix="fas"
+            role="img"
+            viewBox="0 0 256 512"
           >
             <path
+              d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"
               fill="currentColor"
-              d="M247.1 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L179.2 256 41.9 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"
-            >
-            </path>
+            />
           </svg>
-          <span class="text-muted">
-            summary:
-          </span>
-        </span>
-        <span class="Linkify">
-          <span>
-            This is summary
-          </span>
-        </span>
+          hidden
+        </div>
       </div>
     </div>
-    <div class=" tooltip-trigger">
-      <div class="mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100 cursor-pointer">
-        <svg
-          data-prefix="fas"
-          data-icon="angle-left"
-          class="svg-inline--fa fa-angle-left me-1"
-          role="img"
-          viewbox="0 0 256 512"
-          aria-hidden="true"
-        >
-          <path
-            fill="currentColor"
-            d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"
-          >
-          </path>
-        </svg>
-        hidden
-      </div>
-    </div>
-  </div>
-  <div class=" tooltip-trigger">
-    <span class="components-label badge bg-default components-label-dark components-label-with-hover components-label-without-select">
-      <span class="components-label-name">
-        label1:
-      </span>
-      <span class="components-label-value">
-        foo
-      </span>
-    </span>
-  </div>
-  <div class=" tooltip-trigger">
-    <span class="components-label badge bg-default components-label-dark components-label-with-hover components-label-without-select">
-      <span class="components-label-name">
-        label2:
-      </span>
-      <span class="components-label-value">
-        bar
-      </span>
-    </span>
-  </div>
-  <div class=" tooltip-trigger">
-    <span class="components-label badge bg-default components-label-dark components-label-with-hover components-label-without-select">
-      <span class="components-label-name">
-        @receiver:
-      </span>
-      <span class="components-label-value">
-        by-name
-      </span>
-    </span>
-  </div>
-  <a
-    href="http://link.example.com"
-    target="_blank"
-    rel="noopener noreferrer"
-    class="components-label components-label-with-hover badge border components-grid-annotation-link"
-  >
-    <svg
-      data-prefix="fas"
-      data-icon="up-right-from-square"
-      class="svg-inline--fa fa-up-right-from-square "
-      role="img"
-      viewbox="0 0 512 512"
-      aria-hidden="true"
+    <div
+      class=" tooltip-trigger"
     >
-      <path
-        fill="currentColor"
-        d="M290.4 19.8C295.4 7.8 307.1 0 320 0L480 0c17.7 0 32 14.3 32 32l0 160c0 12.9-7.8 24.6-19.8 29.6s-25.7 2.2-34.9-6.9L400 157.3 246.6 310.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L354.7 112 297.4 54.6c-9.2-9.2-11.9-22.9-6.9-34.9zM0 176c0-44.2 35.8-80 80-80l80 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-80 0c-8.8 0-16 7.2-16 16l0 256c0 8.8 7.2 16 16 16l256 0c8.8 0 16-7.2 16-16l0-80c0-17.7 14.3-32 32-32s32 14.3 32 32l0 80c0 44.2-35.8 80-80 80L80 512c-44.2 0-80-35.8-80-80L0 176z"
+      <span
+        class="components-label badge bg-default components-label-dark components-label-with-hover components-label-without-select"
       >
-      </path>
-    </svg>
-    link
-  </a>
-</div>
-"
+        <span
+          class="components-label-name"
+        >
+          label1:
+        </span>
+         
+        <span
+          class="components-label-value"
+        >
+          foo
+        </span>
+      </span>
+    </div>
+    <div
+      class=" tooltip-trigger"
+    >
+      <span
+        class="components-label badge bg-default components-label-dark components-label-with-hover components-label-without-select"
+      >
+        <span
+          class="components-label-name"
+        >
+          label2:
+        </span>
+         
+        <span
+          class="components-label-value"
+        >
+          bar
+        </span>
+      </span>
+    </div>
+    <div
+      class=" tooltip-trigger"
+    >
+      <span
+        class="components-label badge bg-default components-label-dark components-label-with-hover components-label-without-select"
+      >
+        <span
+          class="components-label-name"
+        >
+          @receiver:
+        </span>
+         
+        <span
+          class="components-label-value"
+        >
+          by-name
+        </span>
+      </span>
+    </div>
+    <a
+      class="components-label components-label-with-hover badge border components-grid-annotation-link"
+      href="http://link.example.com"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      <svg
+        aria-hidden="true"
+        class="svg-inline--fa fa-up-right-from-square "
+        data-icon="up-right-from-square"
+        data-prefix="fas"
+        role="img"
+        viewBox="0 0 512 512"
+      >
+        <path
+          d="M290.4 19.8C295.4 7.8 307.1 0 320 0L480 0c17.7 0 32 14.3 32 32l0 160c0 12.9-7.8 24.6-19.8 29.6s-25.7 2.2-34.9-6.9L400 157.3 246.6 310.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L354.7 112 297.4 54.6c-9.2-9.2-11.9-22.9-6.9-34.9zM0 176c0-44.2 35.8-80 80-80l80 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-80 0c-8.8 0-16 7.2-16 16l0 256c0 8.8 7.2 16 16 16l256 0c8.8 0 16-7.2 16-16l0-80c0-17.7 14.3-32 32-32s32 14.3 32 32l0 80c0 44.2-35.8 80-80 80L80 512c-44.2 0-80-35.8-80-80L0 176z"
+          fill="currentColor"
+        />
+      </svg>
+       link
+    </a>
+  </div>
+</DocumentFragment>
 `;
 
 exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
-"
-<div class="card-footer components-grid-alertgrid-alertgroup-footer px-2 py-1">
-  <div class="mb-1">
-    <div class=" tooltip-trigger">
-      <div class="mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100">
-        <span class="cursor-pointer">
-          <svg
-            data-prefix="fas"
-            data-icon="angle-right"
-            class="svg-inline--fa fa-angle-right me-1 text-muted"
-            role="img"
-            viewbox="0 0 256 512"
-            aria-hidden="true"
-          >
-            <path
-              fill="currentColor"
-              d="M247.1 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L179.2 256 41.9 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"
-            >
-            </path>
-          </svg>
-          <span class="text-muted">
-            summary:
-          </span>
-        </span>
-        <span class="Linkify">
-          <span>
-            This is summary
-          </span>
-        </span>
-      </div>
-    </div>
-    <div class=" tooltip-trigger">
-      <div class="mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100 cursor-pointer">
-        <svg
-          data-prefix="fas"
-          data-icon="angle-left"
-          class="svg-inline--fa fa-angle-left me-1"
-          role="img"
-          viewbox="0 0 256 512"
-          aria-hidden="true"
-        >
-          <path
-            fill="currentColor"
-            d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"
-          >
-          </path>
-        </svg>
-        hidden
-      </div>
-    </div>
-  </div>
-  <div class=" tooltip-trigger">
-    <span class="components-label badge bg-default components-label-dark components-label-with-hover components-label-without-select">
-      <span class="components-label-name">
-        label1:
-      </span>
-      <span class="components-label-value">
-        foo
-      </span>
-    </span>
-  </div>
-  <div class=" tooltip-trigger">
-    <span class="components-label badge bg-default components-label-dark components-label-with-hover components-label-without-select">
-      <span class="components-label-name">
-        label2:
-      </span>
-      <span class="components-label-value">
-        bar
-      </span>
-    </span>
-  </div>
-  <div class=" tooltip-trigger">
-    <span class="components-label badge bg-default components-label-dark components-label-with-hover components-label-without-select">
-      <span class="components-label-name">
-        @receiver:
-      </span>
-      <span class="components-label-value">
-        by-name
-      </span>
-    </span>
-  </div>
-  <a
-    href="http://link.example.com"
-    target="_blank"
-    rel="noopener noreferrer"
-    class="components-label components-label-with-hover badge border components-grid-annotation-link"
+<DocumentFragment>
+  <div
+    class="card-footer components-grid-alertgrid-alertgroup-footer px-2 py-1"
   >
-    <svg
-      data-prefix="fas"
-      data-icon="up-right-from-square"
-      class="svg-inline--fa fa-up-right-from-square "
-      role="img"
-      viewbox="0 0 512 512"
-      aria-hidden="true"
+    <div
+      class="mb-1"
     >
-      <path
-        fill="currentColor"
-        d="M290.4 19.8C295.4 7.8 307.1 0 320 0L480 0c17.7 0 32 14.3 32 32l0 160c0 12.9-7.8 24.6-19.8 29.6s-25.7 2.2-34.9-6.9L400 157.3 246.6 310.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L354.7 112 297.4 54.6c-9.2-9.2-11.9-22.9-6.9-34.9zM0 176c0-44.2 35.8-80 80-80l80 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-80 0c-8.8 0-16 7.2-16 16l0 256c0 8.8 7.2 16 16 16l256 0c8.8 0 16-7.2 16-16l0-80c0-17.7 14.3-32 32-32s32 14.3 32 32l0 80c0 44.2-35.8 80-80 80L80 512c-44.2 0-80-35.8-80-80L0 176z"
+      <div
+        class=" tooltip-trigger"
       >
-      </path>
-    </svg>
-    link
-  </a>
-  <div class="components-grid-alertgrid-alertgroup-shared-silence rounded-0 border-0">
-    <div class="card my-1 components-managed-silence w-100">
-      <div class="card-header rounded-0 border-bottom-0 px-2">
-        <div class="d-flex flex-row">
-          <div class="flex-shrink-0 flex-grow-0">
+        <div
+          class="mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100"
+        >
+          <span
+            class="cursor-pointer"
+          >
             <svg
-              data-prefix="fas"
-              data-icon="bell-slash"
-              class="svg-inline--fa fa-bell-slash text-muted"
-              role="img"
-              viewbox="0 0 576 512"
               aria-hidden="true"
+              class="svg-inline--fa fa-angle-right me-1 text-muted"
+              data-icon="angle-right"
+              data-prefix="fas"
+              role="img"
+              viewBox="0 0 256 512"
             >
               <path
+                d="M247.1 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L179.2 256 41.9 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"
                 fill="currentColor"
-                d="M41-24.9c-9.4-9.4-24.6-9.4-33.9 0S-2.3-.3 7 9.1l528 528c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-87.5-87.5c17.2-2.4 30.5-17.3 30.5-35.2 0-8.1-2.7-15.9-7.8-22.2l-9.8-12.2C464.4 308.5 448 261.8 448 213.7l0-21.7c0-77.4-55-142-128-156.8l0-3.2c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 3.2c-38.6 7.8-72.2 29.6-95.2 59.7L41-24.9zm87 238.5c0 48.1-16.4 94.8-46.4 132.4l-9.8 12.2c-5 6.3-7.8 14.1-7.8 22.2 0 19.6 15.9 35.5 35.5 35.5l235.3 0-206.9-206.9 0 4.5zM288 512c29.8 0 54.9-20.4 62-48l-124 0c7.1 27.6 32.2 48 62 48z"
-              >
-              </path>
+              />
             </svg>
-          </div>
-          <div class="mx-2 flex-shrink-1 flex-grow-1 mw-1p">
-            <div class="components-managed-silence-comment text-truncate overflow-hidden">
-              Mocked Silence
+            <span
+              class="text-muted"
+            >
+              summary: 
+            </span>
+          </span>
+          <span
+            class="Linkify"
+          >
+            <span>
+              This is summary
+            </span>
+          </span>
+        </div>
+      </div>
+      <div
+        class=" tooltip-trigger"
+      >
+        <div
+          class="mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100 cursor-pointer"
+        >
+          <svg
+            aria-hidden="true"
+            class="svg-inline--fa fa-angle-left me-1"
+            data-icon="angle-left"
+            data-prefix="fas"
+            role="img"
+            viewBox="0 0 256 512"
+          >
+            <path
+              d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"
+              fill="currentColor"
+            />
+          </svg>
+          hidden
+        </div>
+      </div>
+    </div>
+    <div
+      class=" tooltip-trigger"
+    >
+      <span
+        class="components-label badge bg-default components-label-dark components-label-with-hover components-label-without-select"
+      >
+        <span
+          class="components-label-name"
+        >
+          label1:
+        </span>
+         
+        <span
+          class="components-label-value"
+        >
+          foo
+        </span>
+      </span>
+    </div>
+    <div
+      class=" tooltip-trigger"
+    >
+      <span
+        class="components-label badge bg-default components-label-dark components-label-with-hover components-label-without-select"
+      >
+        <span
+          class="components-label-name"
+        >
+          label2:
+        </span>
+         
+        <span
+          class="components-label-value"
+        >
+          bar
+        </span>
+      </span>
+    </div>
+    <div
+      class=" tooltip-trigger"
+    >
+      <span
+        class="components-label badge bg-default components-label-dark components-label-with-hover components-label-without-select"
+      >
+        <span
+          class="components-label-name"
+        >
+          @receiver:
+        </span>
+         
+        <span
+          class="components-label-value"
+        >
+          by-name
+        </span>
+      </span>
+    </div>
+    <a
+      class="components-label components-label-with-hover badge border components-grid-annotation-link"
+      href="http://link.example.com"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      <svg
+        aria-hidden="true"
+        class="svg-inline--fa fa-up-right-from-square "
+        data-icon="up-right-from-square"
+        data-prefix="fas"
+        role="img"
+        viewBox="0 0 512 512"
+      >
+        <path
+          d="M290.4 19.8C295.4 7.8 307.1 0 320 0L480 0c17.7 0 32 14.3 32 32l0 160c0 12.9-7.8 24.6-19.8 29.6s-25.7 2.2-34.9-6.9L400 157.3 246.6 310.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L354.7 112 297.4 54.6c-9.2-9.2-11.9-22.9-6.9-34.9zM0 176c0-44.2 35.8-80 80-80l80 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-80 0c-8.8 0-16 7.2-16 16l0 256c0 8.8 7.2 16 16 16l256 0c8.8 0 16-7.2 16-16l0-80c0-17.7 14.3-32 32-32s32 14.3 32 32l0 80c0 44.2-35.8 80-80 80L80 512c-44.2 0-80-35.8-80-80L0 176z"
+          fill="currentColor"
+        />
+      </svg>
+       link
+    </a>
+    <div
+      class="components-grid-alertgrid-alertgroup-shared-silence rounded-0 border-0"
+    >
+      <div
+        class="card my-1 components-managed-silence w-100"
+      >
+        <div
+          class="card-header rounded-0 border-bottom-0 px-2"
+        >
+          <div
+            class="d-flex flex-row"
+          >
+            <div
+              class="flex-shrink-0 flex-grow-0"
+            >
+              <svg
+                aria-hidden="true"
+                class="svg-inline--fa fa-bell-slash text-muted"
+                data-icon="bell-slash"
+                data-prefix="fas"
+                role="img"
+                viewBox="0 0 576 512"
+              >
+                <path
+                  d="M41-24.9c-9.4-9.4-24.6-9.4-33.9 0S-2.3-.3 7 9.1l528 528c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-87.5-87.5c17.2-2.4 30.5-17.3 30.5-35.2 0-8.1-2.7-15.9-7.8-22.2l-9.8-12.2C464.4 308.5 448 261.8 448 213.7l0-21.7c0-77.4-55-142-128-156.8l0-3.2c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 3.2c-38.6 7.8-72.2 29.6-95.2 59.7L41-24.9zm87 238.5c0 48.1-16.4 94.8-46.4 132.4l-9.8 12.2c-5 6.3-7.8 14.1-7.8 22.2 0 19.6 15.9 35.5 35.5 35.5l235.3 0-206.9-206.9 0 4.5zM288 512c29.8 0 54.9-20.4 62-48l-124 0c7.1 27.6 32.2 48 62 48z"
+                  fill="currentColor"
+                />
+              </svg>
             </div>
-            <div class="components-managed-silence-cite mt-1 d-flex flex-row">
-              <span class="text-muted text-truncate overflow-hidden me-2">
-                — me@example.com
-              </span>
-              <div class="d-flex flex-row justify-content-end flex-grow-1">
-                <span class="badge bg-danger components-label">
-                  Expired 14 hours ago
+            <div
+              class="mx-2 flex-shrink-1 flex-grow-1 mw-1p"
+            >
+              <div
+                class="components-managed-silence-comment text-truncate overflow-hidden"
+              >
+                 Mocked Silence
+              </div>
+              <div
+                class="components-managed-silence-cite mt-1 d-flex flex-row"
+              >
+                <span
+                  class="text-muted text-truncate overflow-hidden me-2"
+                >
+                  — me@example.com
+                </span>
+                <div
+                  class="d-flex flex-row justify-content-end flex-grow-1"
+                >
+                  <span
+                    class="badge bg-danger components-label"
+                  >
+                    Expired 14 hours ago
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div
+              class="flex-shrink-0 flex-grow-0"
+            >
+              <div
+                class="d-flex flex-column flex-sm-row justify-content-between align-items-center"
+              >
+                <span
+                  class="badge components-label with-click"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="svg-inline--fa fa-chevron-down fa-rotate-180 m-auto text-muted cursor-pointer"
+                    data-icon="chevron-down"
+                    data-prefix="fas"
+                    role="img"
+                    style="transition: transform 0.25s ease-in-out;"
+                    viewBox="0 0 448 512"
+                  >
+                    <path
+                      d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"
+                      fill="currentColor"
+                    />
+                  </svg>
                 </span>
               </div>
             </div>
           </div>
-          <div class="flex-shrink-0 flex-grow-0">
-            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center">
-              <span class="badge components-label with-click">
-                <svg
-                  data-prefix="fas"
-                  data-icon="chevron-down"
-                  class="svg-inline--fa fa-chevron-down fa-rotate-180 m-auto text-muted cursor-pointer"
-                  role="img"
-                  viewbox="0 0 448 512"
-                  aria-hidden="true"
-                  style="transition: transform 0.25s ease-in-out;"
-                >
-                  <path
-                    fill="currentColor"
-                    d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"
-                  >
-                  </path>
-                </svg>
-              </span>
-            </div>
-          </div>
         </div>
-      </div>
-      <div class="progress silence-progress mx-2 mb-1">
         <div
-          class="progress-bar bg-danger"
-          role="progressbar"
-          style="width: 1500%;"
-          aria-valuenow="1500"
-          aria-valuemin="0"
-          aria-valuemax="100"
+          class="progress silence-progress mx-2 mb-1"
         >
+          <div
+            aria-valuemax="100"
+            aria-valuemin="0"
+            aria-valuenow="1500"
+            class="progress-bar bg-danger"
+            role="progressbar"
+            style="width: 1500%;"
+          />
         </div>
       </div>
     </div>
   </div>
-</div>
-"
+</DocumentFragment>
 `;

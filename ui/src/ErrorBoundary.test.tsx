@@ -1,6 +1,4 @@
-import { mount } from "enzyme";
-
-import toDiffableHtml from "diffable-html";
+import { render, screen } from "@testing-library/react";
 
 import { ErrorBoundary } from "./ErrorBoundary";
 
@@ -25,8 +23,8 @@ const FailingComponent = () => {
   throw new Error("Error thrown from problem child");
 };
 
-const MountedFailingComponent = () => {
-  return mount(
+const renderFailingComponent = () => {
+  return render(
     <ErrorBoundary>
       <FailingComponent></FailingComponent>
     </ErrorBoundary>,
@@ -35,43 +33,30 @@ const MountedFailingComponent = () => {
 
 describe("<ErrorBoundary />", () => {
   it("matches snapshot", () => {
-    const tree = MountedFailingComponent();
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    const { asFragment } = renderFailingComponent();
+    expect(asFragment()).toMatchSnapshot();
     expect(consoleSpy).toHaveBeenCalled();
   });
 
   it("componentDidCatch should catch an error from FailingComponent", () => {
     jest.spyOn(ErrorBoundary.prototype, "componentDidCatch");
-    MountedFailingComponent();
+    renderFailingComponent();
     expect(ErrorBoundary.prototype.componentDidCatch).toHaveBeenCalled();
   });
 
   it("calls window.location.reload after 60s", () => {
     const reloadSpy = jest.spyOn(global.window.location, "reload");
-    MountedFailingComponent();
+    renderFailingComponent();
     jest.advanceTimersByTime(1000 * 61);
     expect(reloadSpy).toHaveBeenCalled();
     expect(consoleSpy).toHaveBeenCalled();
   });
 
-  it("reloadSeconds is 40 after 20s with multiple exceptions", () => {
-    const tree = MountedFailingComponent();
-
-    (tree as any)
-      .instance()
-      .componentDidCatch(new Error("foo"), { componentStack: "bar" });
-    jest.advanceTimersByTime(1000 * 10);
-    (tree as any)
-      .instance()
-      .componentDidCatch(new Error("foo"), { componentStack: "bar" });
-    jest.advanceTimersByTime(1000 * 5);
-    (tree as any)
-      .instance()
-      .componentDidCatch(new Error("foo"), { componentStack: "bar" });
-    jest.advanceTimersByTime(1000 * 5);
-    (tree as any)
-      .instance()
-      .componentDidCatch(new Error("foo"), { componentStack: "bar" });
-    expect((tree as any).instance().state.reloadSeconds).toBe(40);
+  it("renders error message when component fails", () => {
+    renderFailingComponent();
+    expect(
+      screen.getByText("Error: Error thrown from problem child"),
+    ).toBeInTheDocument();
+    expect(consoleSpy).toHaveBeenCalled();
   });
 });

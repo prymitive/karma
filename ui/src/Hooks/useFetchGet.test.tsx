@@ -1,8 +1,7 @@
 import { act as actReact } from "react-dom/test-utils";
 
 import { renderHook, act } from "@testing-library/react-hooks";
-
-import { mount } from "enzyme";
+import { render } from "@testing-library/react";
 
 import fetchMock from "fetch-mock";
 
@@ -297,8 +296,8 @@ describe("useFetchGet", () => {
     };
 
     actReact(() => {
-      const tree = mount(<Component />);
-      tree.unmount();
+      const { unmount } = render(<Component />);
+      unmount();
     });
 
     for (let i = 0; i <= FetchRetryConfig.retries; i++) {
@@ -328,8 +327,8 @@ describe("useFetchGet", () => {
     };
 
     actReact(() => {
-      const tree = mount(<Component />);
-      tree.unmount();
+      const { unmount } = render(<Component />);
+      unmount();
     });
 
     for (let i = 0; i <= FetchRetryConfig.retries; i++) {
@@ -358,8 +357,8 @@ describe("useFetchGet", () => {
     };
 
     actReact(() => {
-      const tree = mount(<Component />);
-      tree.unmount();
+      const { unmount } = render(<Component />);
+      unmount();
     });
 
     for (let i = 0; i <= FetchRetryConfig.retries; i++) {
@@ -389,8 +388,8 @@ describe("useFetchGet", () => {
     };
 
     actReact(() => {
-      const tree = mount(<Component />);
-      tree.unmount();
+      const { unmount } = render(<Component />);
+      unmount();
     });
 
     jest.runOnlyPendingTimers();
@@ -417,8 +416,8 @@ describe("useFetchGet", () => {
     };
 
     actReact(() => {
-      const tree = mount(<Component />);
-      tree.unmount();
+      const { unmount } = render(<Component />);
+      unmount();
     });
 
     jest.runOnlyPendingTimers();
@@ -428,7 +427,7 @@ describe("useFetchGet", () => {
   it("doesn't update response after cleanup on slow body read", async () => {
     FetchRetryConfig.retries = 0;
 
-    let tree: any = false;
+    let unmountFn: (() => void) | null = null;
     const fetcher = (): Promise<Response> =>
       Promise.resolve({
         headers: {
@@ -436,7 +435,7 @@ describe("useFetchGet", () => {
         },
         text: async () => {
           actReact(() => {
-            tree.unmount();
+            if (unmountFn) unmountFn();
           });
           return "ok";
         },
@@ -458,7 +457,8 @@ describe("useFetchGet", () => {
     };
 
     actReact(() => {
-      tree = mount(<Component />);
+      const { unmount } = render(<Component />);
+      unmountFn = unmount;
     });
   });
 });

@@ -1,8 +1,6 @@
-import { mount } from "enzyme";
+import { render } from "@testing-library/react";
 
 import fetchMock from "fetch-mock";
-
-import toDiffableHtml from "diffable-html";
 
 import { MockThemeContext } from "__fixtures__/Theme";
 import { Settings } from "Stores/Settings";
@@ -25,11 +23,11 @@ afterEach(() => {
 describe("<Configuration />", () => {
   it("matches snapshot", () => {
     const settingsStore = new Settings(null);
-    const tree = mount(
+    const { asFragment } = render(
       <ThemeContext.Provider value={MockThemeContext}>
         <Configuration settingsStore={settingsStore} defaultIsOpen={true} />
       </ThemeContext.Provider>,
     );
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    expect(asFragment()).toMatchSnapshot();
   });
 });

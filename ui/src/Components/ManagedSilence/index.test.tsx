@@ -1,7 +1,6 @@
-import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 
-import toDiffableHtml from "diffable-html";
+import { render, screen, fireEvent } from "@testing-library/react";
 
 import { MockSilence } from "__fixtures__/Alerts";
 import { MockThemeContext } from "__fixtures__/Theme";
@@ -52,41 +51,40 @@ afterEach(() => {
   jest.useRealTimers();
 });
 
-const MountedManagedSilence = (onDidUpdate?: () => void) => {
-  return mount(
-    <ManagedSilence
-      cluster={cluster}
-      alertCount={123}
-      alertCountAlwaysVisible={true}
-      silence={silence}
-      alertStore={alertStore}
-      silenceFormStore={silenceFormStore}
-      onDidUpdate={onDidUpdate}
-    />,
-    {
-      wrappingComponent: ThemeContext.Provider,
-      wrappingComponentProps: { value: MockThemeContext },
-    },
+const renderManagedSilence = (onDidUpdate?: () => void) => {
+  return render(
+    <ThemeContext.Provider value={MockThemeContext}>
+      <ManagedSilence
+        cluster={cluster}
+        alertCount={123}
+        alertCountAlwaysVisible={true}
+        silence={silence}
+        alertStore={alertStore}
+        silenceFormStore={silenceFormStore}
+        onDidUpdate={onDidUpdate}
+      />
+    </ThemeContext.Provider>,
   );
 };
 
 describe("<ManagedSilence />", () => {
   it("matches snapshot when collapsed", () => {
-    const tree = MountedManagedSilence();
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    const { asFragment } = renderManagedSilence();
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it("clicking on expand toggle shows silence details", () => {
-    const tree = MountedManagedSilence();
-    tree.find("svg.text-muted.cursor-pointer").simulate("click");
-    const details = tree.find("SilenceDetails");
-    expect(details).toHaveLength(1);
+    const { container } = renderManagedSilence();
+    const toggle = container.querySelector("svg.text-muted.cursor-pointer");
+    fireEvent.click(toggle!);
+    expect(screen.getByText("Edit")).toBeInTheDocument();
   });
 
   it("matches snapshot with expaned details", () => {
-    const tree = MountedManagedSilence();
-    tree.find("svg.text-muted.cursor-pointer").simulate("click");
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    const { container, asFragment } = renderManagedSilence();
+    const toggle = container.querySelector("svg.text-muted.cursor-pointer");
+    fireEvent.click(toggle!);
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it("GetAlertmanager() returns alertmanager object from alertStore.data.upstreams.instances", () => {
@@ -153,47 +151,47 @@ describe("<ManagedSilence />", () => {
   });
 
   it("shows Edit button on unexpired silence", () => {
-    const tree = MountedManagedSilence();
-    tree.find("svg.text-muted.cursor-pointer").simulate("click");
+    const { container } = renderManagedSilence();
+    const toggle = container.querySelector("svg.text-muted.cursor-pointer");
+    fireEvent.click(toggle!);
 
-    const button = tree.find(".btn-primary");
-    expect(button.text()).toBe("Edit");
+    expect(screen.getByText("Edit")).toBeInTheDocument();
   });
 
   it("shows Delete button on unexpired silence", () => {
-    const tree = MountedManagedSilence();
-    tree.find("svg.text-muted.cursor-pointer").simulate("click");
+    const { container } = renderManagedSilence();
+    const toggle = container.querySelector("svg.text-muted.cursor-pointer");
+    fireEvent.click(toggle!);
 
-    const button = tree.find(".btn-danger");
-    expect(button.text()).toBe("Delete");
+    expect(screen.getByText("Delete")).toBeInTheDocument();
   });
 
   it("shows Recreate button on expired silence", () => {
     jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 23, 30, 0)));
-    const tree = MountedManagedSilence();
-    tree.find("svg.text-muted.cursor-pointer").simulate("click");
+    const { container } = renderManagedSilence();
+    const toggle = container.querySelector("svg.text-muted.cursor-pointer");
+    fireEvent.click(toggle!);
 
-    const button = tree.find(".btn-primary");
-    expect(button.text()).toBe("Recreate");
+    expect(screen.getByText("Recreate")).toBeInTheDocument();
   });
 
   it("clicking on Edit calls", () => {
-    const tree = MountedManagedSilence();
-    tree.find("svg.text-muted.cursor-pointer").simulate("click");
+    const { container } = renderManagedSilence();
+    const toggle = container.querySelector("svg.text-muted.cursor-pointer");
+    fireEvent.click(toggle!);
 
     expect(silenceFormStore.data.silenceID).toBeNull();
 
-    const button = tree.find(".btn-primary");
-    expect(button.text()).toBe("Edit");
-
-    button.simulate("click");
+    const button = screen.getByText("Edit");
+    fireEvent.click(button);
     expect(silenceFormStore.data.silenceID).toBe(silence.id);
   });
 
   it("call onDidUpdate if passed", () => {
     const fakeUpdate = jest.fn();
-    const tree = MountedManagedSilence(fakeUpdate);
-    tree.find("svg.text-muted.cursor-pointer").simulate("click");
+    const { container } = renderManagedSilence(fakeUpdate);
+    const toggle = container.querySelector("svg.text-muted.cursor-pointer");
+    fireEvent.click(toggle!);
     expect(fakeUpdate).toHaveBeenCalled();
   });
 });
@@ -201,56 +199,56 @@ describe("<ManagedSilence />", () => {
 describe("<ManagedSilence progress bar />", () => {
   it("renders with class 'danger' and no progressbar when expired", () => {
     jest.setSystemTime(new Date(Date.UTC(2001, 0, 1, 23, 0, 0)));
-    const tree = MountedManagedSilence();
-    expect(toDiffableHtml(tree.html())).toMatch(/bg-danger/);
-    expect(tree.text()).toMatch(/Expired 1 year ago/);
+    const { container } = renderManagedSilence();
+    expect(container.innerHTML).toMatch(/bg-danger/);
+    expect(screen.getByText(/Expired 1 year ago/)).toBeInTheDocument();
   });
 
   it("renders with class 'warning' if <= 5m is left", () => {
     jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 56, 0)));
-    const tree = MountedManagedSilence();
-    expect(toDiffableHtml(tree.html())).toMatch(/bg-warning/);
-    expect(tree.text()).toMatch(/Expires in 4 minutes/);
+    const { container } = renderManagedSilence();
+    expect(container.innerHTML).toMatch(/bg-warning/);
+    expect(screen.getByText(/Expires in 4 minutes/)).toBeInTheDocument();
   });
 
   it("progressbar uses class 'danger' when > 90%", () => {
     jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 55, 0)));
-    const tree = MountedManagedSilence();
-    expect(toDiffableHtml(tree.html())).toMatch(/progress-bar bg-danger/);
+    const { container } = renderManagedSilence();
+    expect(container.innerHTML).toMatch(/progress-bar bg-danger/);
   });
 
   it("progressbar uses class 'danger' when > 75%", () => {
     jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 50, 0)));
-    const tree = MountedManagedSilence();
-    expect(toDiffableHtml(tree.html())).toMatch(/progress-bar bg-warning/);
+    const { container } = renderManagedSilence();
+    expect(container.innerHTML).toMatch(/progress-bar bg-warning/);
   });
 
   it("progressbar uses class 'success' when <= 75%", () => {
     jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 30, 0)));
-    const tree = MountedManagedSilence();
-    expect(toDiffableHtml(tree.html())).toMatch(/progress-bar bg-success/);
+    const { container } = renderManagedSilence();
+    expect(container.innerHTML).toMatch(/progress-bar bg-success/);
   });
 
   it("progressbar is updated every 30 seconds", () => {
     jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 30, 0)));
-    const tree = MountedManagedSilence();
-    expect(toDiffableHtml(tree.html())).toMatch(/progress-bar bg-success/);
+    const { container } = renderManagedSilence();
+    expect(container.innerHTML).toMatch(/progress-bar bg-success/);
 
     jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 50, 0)));
     act(() => {
       jest.runOnlyPendingTimers();
     });
-    expect(toDiffableHtml(tree.html())).toMatch(/progress-bar bg-warning/);
+    expect(container.innerHTML).toMatch(/progress-bar bg-warning/);
 
     jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 55, 0)));
     act(() => {
       jest.runOnlyPendingTimers();
     });
-    expect(toDiffableHtml(tree.html())).toMatch(/progress-bar bg-danger/);
+    expect(container.innerHTML).toMatch(/progress-bar bg-danger/);
   });
 
   it("unmounts cleanly", () => {
-    const tree = MountedManagedSilence();
-    tree.unmount();
+    const { unmount } = renderManagedSilence();
+    unmount();
   });
 });

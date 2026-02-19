@@ -11,6 +11,8 @@ import {
   NewUnappliedFilter,
 } from "Stores/AlertStore";
 
+declare let global: any;
+
 beforeEach(() => {
   fetchMock.reset();
 });

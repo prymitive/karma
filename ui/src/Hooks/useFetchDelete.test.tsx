@@ -1,8 +1,7 @@
 import { act } from "react-dom/test-utils";
 
 import { renderHook } from "@testing-library/react-hooks";
-
-import { mount } from "enzyme";
+import { render } from "@testing-library/react";
 
 import fetchMock from "fetch-mock";
 
@@ -164,8 +163,8 @@ describe("useFetchDelete", () => {
       );
     };
 
-    const tree = mount(<Component />);
-    tree.unmount();
+    const { unmount } = render(<Component />);
+    unmount();
 
     await fetchMock.flush(true);
   });
@@ -192,8 +191,8 @@ describe("useFetchDelete", () => {
     };
 
     act(() => {
-      const tree = mount(<Component />);
-      tree.unmount();
+      const { unmount } = render(<Component />);
+      unmount();
     });
 
     await fetchMock.flush(true);
@@ -220,8 +219,8 @@ describe("useFetchDelete", () => {
     };
 
     act(() => {
-      const tree = mount(<Component />);
-      tree.unmount();
+      const { unmount } = render(<Component />);
+      unmount();
     });
 
     await fetchMock.flush(true);

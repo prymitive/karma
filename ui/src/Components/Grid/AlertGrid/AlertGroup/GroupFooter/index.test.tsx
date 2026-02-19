@@ -1,6 +1,4 @@
-import { mount } from "enzyme";
-
-import toDiffableHtml from "diffable-html";
+import { render } from "@testing-library/react";
 
 import {
   MockAlertGroup,
@@ -65,26 +63,28 @@ afterEach(() => {
   jest.useRealTimers();
 });
 
-const MountedGroupFooter = () => {
-  return mount(
-    <GroupFooter
-      group={group}
-      afterUpdate={MockAfterUpdate}
-      alertStore={alertStore}
-      silenceFormStore={silenceFormStore}
-    />,
-    {
-      wrappingComponent: ThemeContext.Provider,
-      wrappingComponentProps: { value: MockThemeContext },
-    },
+const renderGroupFooter = (props?: {
+  showSilences?: boolean;
+  showAnnotations?: boolean;
+}) => {
+  return render(
+    <ThemeContext.Provider value={MockThemeContext}>
+      <GroupFooter
+        group={group}
+        afterUpdate={MockAfterUpdate}
+        alertStore={alertStore}
+        silenceFormStore={silenceFormStore}
+        {...props}
+      />
+    </ThemeContext.Provider>,
   );
 };
 
 describe("<GroupFooter />", () => {
   it("matches snapshot", () => {
     group.shared.clusters = ["default"];
-    const tree = MountedGroupFooter().find("Memo(GroupFooter)");
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    const { asFragment } = renderGroupFooter();
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it("render deduplicated silence if present", () => {
@@ -98,8 +98,8 @@ describe("<GroupFooter />", () => {
       },
     });
 
-    const tree = MountedGroupFooter().find("Memo(GroupFooter)");
-    expect(tree.find("ManagedSilence")).toHaveLength(1);
+    const { container } = renderGroupFooter();
+    expect(container.innerHTML).toMatch(/Mocked Silence/);
   });
 
   it("render fallback silence if not found in alertStore", () => {
@@ -111,8 +111,8 @@ describe("<GroupFooter />", () => {
       default: {},
     });
 
-    const tree = MountedGroupFooter().find("Memo(GroupFooter)");
-    expect(tree.find("FallbackSilenceDesciption")).toHaveLength(1);
+    const { container } = renderGroupFooter();
+    expect(container.innerHTML).toMatch(/Silenced by 123456789/);
   });
 
   it("render fallback silence if cluster not found in alertStore", () => {
@@ -124,8 +124,8 @@ describe("<GroupFooter />", () => {
       foo: {},
     });
 
-    const tree = MountedGroupFooter().find("Memo(GroupFooter)");
-    expect(tree.find("FallbackSilenceDesciption")).toHaveLength(1);
+    const { container } = renderGroupFooter();
+    expect(container.innerHTML).toMatch(/Silenced by 123456789/);
   });
 
   it("mathes snapshot when silence is rendered", () => {
@@ -143,20 +143,20 @@ describe("<GroupFooter />", () => {
       },
     });
 
-    const tree = MountedGroupFooter().find("Memo(GroupFooter)");
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    const { asFragment } = renderGroupFooter();
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it("renders @receiver label when alertStore.data.receivers.length > 1", () => {
     alertStore.data.setReceivers(["foo", "bar"]);
-    const tree = MountedGroupFooter();
-    expect(toDiffableHtml(tree.html())).toMatch(/@receiver:/);
+    const { container } = renderGroupFooter();
+    expect(container.innerHTML).toMatch(/@receiver:/);
   });
 
   it("doesn't render @receiver label when alertStore.data.receivers.length == 0", () => {
     alertStore.data.setReceivers([]);
-    const tree = MountedGroupFooter();
-    expect(toDiffableHtml(tree.html())).not.toMatch(/@receiver:/);
+    const { container } = renderGroupFooter();
+    expect(container.innerHTML).not.toMatch(/@receiver:/);
   });
 
   it("doesn't render silences when showSilences=false", () => {
@@ -173,40 +173,19 @@ describe("<GroupFooter />", () => {
       },
     });
 
-    const tree = mount(
-      <GroupFooter
-        group={group}
-        afterUpdate={MockAfterUpdate}
-        alertStore={alertStore}
-        silenceFormStore={silenceFormStore}
-        showSilences={false}
-      />,
-      {
-        wrappingComponent: ThemeContext.Provider,
-        wrappingComponentProps: { value: MockThemeContext },
-      },
-    );
+    const { container } = renderGroupFooter({ showSilences: false });
     expect(
-      tree.find("div.components-grid-alertgrid-alertgroup-shared-silence"),
+      container.querySelectorAll(
+        "div.components-grid-alertgrid-alertgroup-shared-silence",
+      ),
     ).toHaveLength(0);
   });
 
   it("doesn't render annotations when showAnnotations=false", () => {
-    const tree = mount(
-      <GroupFooter
-        group={group}
-        afterUpdate={MockAfterUpdate}
-        alertStore={alertStore}
-        silenceFormStore={silenceFormStore}
-        showAnnotations={false}
-      />,
-      {
-        wrappingComponent: ThemeContext.Provider,
-        wrappingComponentProps: { value: MockThemeContext },
-      },
-    );
-    expect(tree.find("RenderLinkAnnotation")).toHaveLength(0);
-    expect(tree.find("RenderNonLinkAnnotation")).toHaveLength(0);
+    const { container } = renderGroupFooter({ showAnnotations: false });
+    expect(
+      container.querySelectorAll(".components-grid-annotation"),
+    ).toHaveLength(0);
   });
 
   it("renders @cluster label if there's more than one cluster", () => {
@@ -241,37 +220,13 @@ describe("<GroupFooter />", () => {
       ],
     });
     group.shared.clusters = ["default", "second"];
-    const tree = mount(
-      <GroupFooter
-        group={group}
-        afterUpdate={MockAfterUpdate}
-        alertStore={alertStore}
-        silenceFormStore={silenceFormStore}
-        showAnnotations={false}
-      />,
-      {
-        wrappingComponent: ThemeContext.Provider,
-        wrappingComponentProps: { value: MockThemeContext },
-      },
-    );
-    expect(toDiffableHtml(tree.html())).toMatch(/@cluster:/);
+    const { container } = renderGroupFooter({ showAnnotations: false });
+    expect(container.innerHTML).toMatch(/@cluster:/);
   });
 
   it("doesn't render @cluster label if there's only one cluster", () => {
     group.shared.clusters = ["default"];
-    const tree = mount(
-      <GroupFooter
-        group={group}
-        afterUpdate={MockAfterUpdate}
-        alertStore={alertStore}
-        silenceFormStore={silenceFormStore}
-        showAnnotations={false}
-      />,
-      {
-        wrappingComponent: ThemeContext.Provider,
-        wrappingComponentProps: { value: MockThemeContext },
-      },
-    );
-    expect(toDiffableHtml(tree.html())).not.toMatch(/@cluster:/);
+    const { container } = renderGroupFooter({ showAnnotations: false });
+    expect(container.innerHTML).not.toMatch(/@cluster:/);
   });
 });

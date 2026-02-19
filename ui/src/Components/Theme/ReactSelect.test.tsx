@@ -1,6 +1,4 @@
-import { mount } from "enzyme";
-
-import toDiffableHtml from "diffable-html";
+import { render, fireEvent } from "@testing-library/react";
 
 import Select from "react-select";
 
@@ -17,52 +15,55 @@ const ThemedSelect = (props: any) => (
 
 describe("<WrappedCustomMultiSelect />", () => {
   it("matches snapshot with isMulti=true", () => {
-    const tree = mount(<ThemedSelect isMulti />);
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    const { asFragment } = render(<ThemedSelect isMulti />);
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it("matches snapshot when focused", () => {
-    // this test is to cover styles state.isFocused conditions
-    const tree = mount(<ThemedSelect autoFocus />);
-    tree.find("input").simulate("focus");
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    const { asFragment, container } = render(<ThemedSelect autoFocus />);
+    const input = container.querySelector("input");
+    fireEvent.focus(input!);
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it("matches snapshot when focused and disabled", () => {
-    const tree = mount(<ThemedSelect autoFocus isDisabled />);
-    tree.find("input").simulate("focus");
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    const { asFragment, container } = render(
+      <ThemedSelect autoFocus isDisabled />,
+    );
+    const input = container.querySelector("input");
+    fireEvent.focus(input!);
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it("matches snapshot with a value", () => {
-    const tree = mount(
+    const { asFragment } = render(
       <ThemedSelect
         defaultValue={Option("foo")}
         options={[Option("foo"), Option("bar")]}
       />,
     );
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it("matches snapshot with isMulti=true and a value", () => {
-    const tree = mount(
+    const { asFragment } = render(
       <ThemedSelect
         isMulti
         defaultValue={Option("foo")}
         options={[Option("foo"), Option("bar")]}
       />,
     );
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it("matches snapshot with isDisabled=true", () => {
-    const tree = mount(
+    const { asFragment } = render(
       <ThemedSelect
         isDisabled
         defaultValue={Option("foo")}
         options={[Option("foo"), Option("bar")]}
       />,
     );
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    expect(asFragment()).toMatchSnapshot();
   });
 });

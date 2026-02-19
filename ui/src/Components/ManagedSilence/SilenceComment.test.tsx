@@ -1,6 +1,4 @@
-import { mount } from "enzyme";
-
-import toDiffableHtml from "diffable-html";
+import { render, screen, fireEvent } from "@testing-library/react";
 
 import { MockSilence } from "__fixtures__/Alerts";
 import type { APISilenceT } from "Models/APITypes";
@@ -25,8 +23,8 @@ afterEach(() => {
 
 const CollapseMock = jest.fn();
 
-const MountedSilenceComment = (collapsed: boolean, cluster?: string) => {
-  return mount(
+const renderSilenceComment = (collapsed: boolean, cluster?: string) => {
+  return render(
     <SilenceComment
       alertStore={alertStore}
       alertCount={123}
@@ -85,50 +83,57 @@ const MockMultipleClusters = () => {
 
 describe("<SilenceComment />", () => {
   it("Matches snapshot when collapsed", () => {
-    const tree = MountedSilenceComment(true);
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    const { asFragment } = renderSilenceComment(true);
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it("Matches snapshot when expanded", () => {
-    const tree = MountedSilenceComment(false);
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    const { asFragment } = renderSilenceComment(false);
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it("Matches snapshot when collapsed and multiple clusters are present", () => {
     MockMultipleClusters();
-    const tree = MountedSilenceComment(true, "ha");
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    const { asFragment } = renderSilenceComment(true, "ha");
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it("Matches snapshot when expanded and multiple clusters are present", () => {
     MockMultipleClusters();
-    const tree = MountedSilenceComment(false, "ha");
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    const { asFragment } = renderSilenceComment(false, "ha");
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it("Renders a JIRA link if present", () => {
     silence.ticketURL = "http://localhost/1234";
     silence.ticketID = "1234";
     silence.comment = "Ticket id 1234 and also 1234";
-    const tree = MountedSilenceComment(true);
-    expect(tree.find("a[href='http://localhost/1234']")).toHaveLength(2);
+    renderSilenceComment(true);
+    expect(screen.getAllByRole("link", { name: "1234" })).toHaveLength(2);
   });
 
   it("Renders a JIRA link if present and comment is expanded", () => {
     silence.ticketURL = "http://localhost/1234";
     silence.ticketID = "1234";
     silence.comment = "Ticket id 1234";
-    const tree = MountedSilenceComment(false);
-    expect(tree.find("a[href='http://localhost/1234']")).toHaveLength(1);
+    renderSilenceComment(false);
+    expect(screen.getAllByRole("link", { name: "1234" })).toHaveLength(1);
   });
 
   it("Correctly renders comments with spaces", () => {
     silence.ticketURL = "http://localhost/1234";
     silence.ticketID = "1234";
     silence.comment = "Ticket id 1234 should be linked here";
-    const tree = MountedSilenceComment(false);
-    expect(tree.html()).toContain(
-      '<div class="components-managed-silence-comment "> Ticket id <a href="http://localhost/1234" target="_blank" rel="noopener noreferrer">1234</a> should be linked here</div>',
+    const { container } = renderSilenceComment(false);
+    const commentDiv = container.querySelector(
+      ".components-managed-silence-comment",
+    );
+    expect(commentDiv).toHaveTextContent(
+      "Ticket id 1234 should be linked here",
+    );
+    expect(screen.getByRole("link", { name: "1234" })).toHaveAttribute(
+      "href",
+      "http://localhost/1234",
     );
   });
 
@@ -136,43 +141,48 @@ describe("<SilenceComment />", () => {
     silence.ticketURL = "http://localhost/1234";
     silence.ticketID = "1234";
     silence.comment = "1234 is the ticket id.";
-    const tree = MountedSilenceComment(false);
-    expect(tree.html()).toContain(
-      '<div class="components-managed-silence-comment "><a href="http://localhost/1234" target="_blank" rel="noopener noreferrer">1234</a> is the ticket id.</div>',
+    const { container } = renderSilenceComment(false);
+    const commentDiv = container.querySelector(
+      ".components-managed-silence-comment",
+    );
+    expect(commentDiv).toHaveTextContent("1234 is the ticket id.");
+    expect(screen.getByRole("link", { name: "1234" })).toHaveAttribute(
+      "href",
+      "http://localhost/1234",
     );
   });
 
   it("collapseToggle is called when collapse icon is clicked", () => {
-    const tree = MountedSilenceComment(true);
-    const collapse = tree.find("svg.fa-chevron-down");
-    collapse.simulate("click");
+    const { container } = renderSilenceComment(true);
+    const collapse = container.querySelector("svg.fa-chevron-down");
+    fireEvent.click(collapse!);
     expect(CollapseMock).toHaveBeenCalled();
   });
 
   it("Doesn't render cluster badges when collapsed and only a single cluster is present", () => {
-    const tree = MountedSilenceComment(true);
-    const ams = tree.find("span.badge.bg-secondary");
+    const { container } = renderSilenceComment(true);
+    const ams = container.querySelectorAll("span.badge.bg-secondary");
     expect(ams).toHaveLength(0);
   });
 
   it("Doesn't render cluster badges when expanded and only a single cluster is present", () => {
-    const tree = MountedSilenceComment(false);
-    const ams = tree.find("span.badge.bg-secondary");
+    const { container } = renderSilenceComment(false);
+    const ams = container.querySelectorAll("span.badge.bg-secondary");
     expect(ams).toHaveLength(0);
   });
 
   it("Renders cluster badge when collapsed and multiple clusters are present", () => {
     MockMultipleClusters();
-    const tree = MountedSilenceComment(true, "single");
-    const ams = tree.find("span.badge.bg-secondary");
+    const { container } = renderSilenceComment(true, "single");
+    const ams = container.querySelectorAll("span.badge.bg-secondary");
     expect(ams).toHaveLength(1);
-    expect(toDiffableHtml(ams.at(0).html())).toMatch(/single/);
+    expect(ams[0]).toHaveTextContent("single");
   });
 
   it("Doesn't render cluster badge when expanded and multiple clusters are present", () => {
     MockMultipleClusters();
-    const tree = MountedSilenceComment(false, "single");
-    const ams = tree.find("span.badge.bg-secondary");
+    const { container } = renderSilenceComment(false, "single");
+    const ams = container.querySelectorAll("span.badge.bg-secondary");
     expect(ams).toHaveLength(0);
   });
 });

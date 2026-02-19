@@ -1,15 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<MatchCounter /> matches snapshot 1`] = `
-"
-<div class=" tooltip-trigger">
-  <span
-    class="badge bg-light rounded-pill d-block"
-    style="font-size: 85%; line-height: 1rem;"
-    data-am="0"
+<DocumentFragment>
+  <div
+    class=" tooltip-trigger"
   >
-    25
-  </span>
-</div>
-"
+    <span
+      class="badge bg-light rounded-pill d-block"
+      data-am="0"
+      style="font-size: 85%; line-height: 1rem;"
+    >
+      25
+    </span>
+  </div>
+</DocumentFragment>
 `;

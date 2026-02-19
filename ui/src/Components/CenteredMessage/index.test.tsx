@@ -1,46 +1,48 @@
-import React from "react";
-
-import { shallow } from "enzyme";
-
-import toDiffableHtml from "diffable-html";
+import { render, screen } from "@testing-library/react";
 
 import { MockThemeContext } from "__fixtures__/Theme";
+import { ThemeContext } from "Components/Theme";
 import { CenteredMessage } from ".";
 
-beforeEach(() => {
-  jest.spyOn(React, "useContext").mockImplementation(() => MockThemeContext);
-});
+const renderWithTheme = (ui: React.ReactElement) =>
+  render(
+    <ThemeContext.Provider value={MockThemeContext}>
+      {ui}
+    </ThemeContext.Provider>,
+  );
 
 describe("<CenteredMessage />", () => {
   const Message = () => <div>Foo</div>;
 
   it("matches snapshot", () => {
-    const tree = shallow(
+    const { asFragment } = renderWithTheme(
       <CenteredMessage>
         <Message />
       </CenteredMessage>,
     );
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it("uses 'display-1 text-placeholder' className by default", () => {
-    const tree = shallow(
+    renderWithTheme(
       <CenteredMessage>
         <Message />
       </CenteredMessage>,
     );
-    expect(toDiffableHtml(tree.html())).toMatch(/display-1 text-placeholder/);
+    expect(screen.getByRole("heading")).toHaveClass(
+      "display-1",
+      "text-placeholder",
+    );
   });
 
   it("uses custom className if passed", () => {
-    const tree = shallow(
+    renderWithTheme(
       <CenteredMessage className="bar-class">
         <Message />
       </CenteredMessage>,
     );
-    expect(toDiffableHtml(tree.html())).toMatch(/bar-class/);
-    expect(toDiffableHtml(tree.html())).not.toMatch(
-      /display-1 text-placeholder/,
-    );
+    const heading = screen.getByRole("heading");
+    expect(heading).toHaveClass("bar-class");
+    expect(heading).not.toHaveClass("display-1", "text-placeholder");
   });
 });

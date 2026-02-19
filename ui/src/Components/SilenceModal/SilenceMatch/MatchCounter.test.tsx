@@ -1,6 +1,4 @@
-import { mount } from "enzyme";
-
-import toDiffableHtml from "diffable-html";
+import { render, screen } from "@testing-library/react";
 
 import { useFetchGetMock } from "__fixtures__/useFetchGet";
 import {
@@ -26,8 +24,8 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
-const MountedMatchCounter = () => {
-  return mount(
+const renderMatchCounter = () => {
+  return render(
     <MatchCounter silenceFormStore={silenceFormStore} matcher={matcher} />,
   );
 };
@@ -47,8 +45,8 @@ describe("<MatchCounter />", () => {
       get: jest.fn(),
       cancelGet: jest.fn(),
     });
-    const tree = MountedMatchCounter();
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    const { asFragment } = renderMatchCounter();
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it("renders spinner icon while fetching", () => {
@@ -62,9 +60,11 @@ describe("<MatchCounter />", () => {
       cancelGet: jest.fn(),
     });
 
-    const tree = MountedMatchCounter();
-    expect(tree.find("svg.fa-spinner")).toHaveLength(1);
-    expect(tree.find("svg.fa-spinner.text-danger")).toHaveLength(0);
+    const { container } = renderMatchCounter();
+    expect(container.querySelectorAll("svg.fa-spinner")).toHaveLength(1);
+    expect(
+      container.querySelectorAll("svg.fa-spinner.text-danger"),
+    ).toHaveLength(0);
   });
 
   it("renders spinner icon with text-danger while retrying fetching", () => {
@@ -78,8 +78,10 @@ describe("<MatchCounter />", () => {
       cancelGet: jest.fn(),
     });
 
-    const tree = MountedMatchCounter();
-    expect(tree.find("svg.fa-spinner.text-danger")).toHaveLength(1);
+    const { container } = renderMatchCounter();
+    expect(
+      container.querySelectorAll("svg.fa-spinner.text-danger"),
+    ).toHaveLength(1);
   });
 
   it("renders error icon on failed fetch", () => {
@@ -93,8 +95,10 @@ describe("<MatchCounter />", () => {
       cancelGet: jest.fn(),
     });
 
-    const tree = MountedMatchCounter();
-    expect(tree.find("svg.fa-circle-exclamation.text-danger")).toHaveLength(1);
+    const { container } = renderMatchCounter();
+    expect(
+      container.querySelectorAll("svg.fa-circle-exclamation.text-danger"),
+    ).toHaveLength(1);
   });
 
   it("totalAlerts is 0 after mount", () => {
@@ -108,8 +112,8 @@ describe("<MatchCounter />", () => {
       cancelGet: jest.fn(),
     });
 
-    const tree = MountedMatchCounter();
-    expect(tree.text()).toBe("0");
+    renderMatchCounter();
+    expect(screen.getByText("0")).toBeInTheDocument();
   });
 
   it("updates totalAlerts after successful fetch", () => {
@@ -126,12 +130,12 @@ describe("<MatchCounter />", () => {
       get: jest.fn(),
       cancelGet: jest.fn(),
     });
-    const tree = MountedMatchCounter();
-    expect(tree.text()).toBe("25");
+    renderMatchCounter();
+    expect(screen.getByText("25")).toBeInTheDocument();
   });
 
   it("sends correct query string for a 'foo=bar' matcher", () => {
-    MountedMatchCounter();
+    renderMatchCounter();
     expect(
       (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0],
     ).toBe("./alertList.json?q=foo%3Dbar");
@@ -139,7 +143,7 @@ describe("<MatchCounter />", () => {
 
   it("sends correct query string for a 'foo=~bar' matcher", () => {
     matcher.isRegex = true;
-    MountedMatchCounter();
+    renderMatchCounter();
     expect(
       (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0],
     ).toBe("./alertList.json?q=foo%3D~%5Ebar%24");
@@ -150,7 +154,7 @@ describe("<MatchCounter />", () => {
     v.wasCreated = true;
     matcher.values = [v];
     matcher.isRegex = false;
-    MountedMatchCounter();
+    renderMatchCounter();
     expect(
       (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0],
     ).toBe("./alertList.json?q=foo%3D%28x%29");
@@ -161,7 +165,7 @@ describe("<MatchCounter />", () => {
     v.wasCreated = true;
     matcher.values = [v];
     matcher.isRegex = true;
-    MountedMatchCounter();
+    renderMatchCounter();
     expect(
       (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0],
     ).toBe("./alertList.json?q=foo%3D~%5E%28x%29%24");
@@ -172,7 +176,7 @@ describe("<MatchCounter />", () => {
     v.wasCreated = false;
     matcher.values = [v];
     matcher.isRegex = false;
-    MountedMatchCounter();
+    renderMatchCounter();
     expect(
       (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0],
     ).toBe("./alertList.json?q=foo%3D%28x%29");
@@ -183,7 +187,7 @@ describe("<MatchCounter />", () => {
     v.wasCreated = false;
     matcher.values = [v];
     matcher.isRegex = true;
-    MountedMatchCounter();
+    renderMatchCounter();
     expect(
       (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0],
     ).toBe("./alertList.json?q=foo%3D~%5E%5C%28x%5C%29%24");
@@ -193,7 +197,7 @@ describe("<MatchCounter />", () => {
     matcher.values = [StringToOption("bar"), StringToOption("baz")];
     matcher.isRegex = true;
     silenceFormStore.data.setAlertmanagers([]);
-    MountedMatchCounter();
+    renderMatchCounter();
     expect(
       (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0],
     ).toBe("./alertList.json?q=foo%3D~%5E%28bar%7Cbaz%29%24");
@@ -206,7 +210,7 @@ describe("<MatchCounter />", () => {
         value: ["am1"],
       },
     ]);
-    MountedMatchCounter();
+    renderMatchCounter();
     expect(
       (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0],
     ).toBe("./alertList.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28am1%29%24");
@@ -223,7 +227,7 @@ describe("<MatchCounter />", () => {
         value: ["am2"],
       },
     ]);
-    MountedMatchCounter();
+    renderMatchCounter();
     expect(
       (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0],
     ).toBe(

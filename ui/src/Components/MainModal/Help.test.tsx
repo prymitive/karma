@@ -1,12 +1,10 @@
-import { shallow } from "enzyme";
-
-import toDiffableHtml from "diffable-html";
+import { render } from "@testing-library/react";
 
 import { Help } from "./Help";
 
 describe("<Help />", () => {
   it("matches snapshot", () => {
-    const tree = shallow(<Help defaultIsOpen={true} />);
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    const { asFragment } = render(<Help defaultIsOpen={true} />);
+    expect(asFragment()).toMatchSnapshot();
   });
 });

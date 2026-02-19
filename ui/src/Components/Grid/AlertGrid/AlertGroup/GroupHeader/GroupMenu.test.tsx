@@ -1,6 +1,6 @@
 import { act } from "react-dom/test-utils";
 
-import { mount } from "enzyme";
+import { render, fireEvent } from "@testing-library/react";
 
 import copy from "copy-to-clipboard";
 
@@ -88,8 +88,8 @@ beforeEach(() => {
   };
 });
 
-const MountedGroupMenu = (group: APIAlertGroupT, themed: boolean) => {
-  return mount(
+const renderGroupMenu = (group: APIAlertGroupT, themed: boolean) => {
+  return render(
     <GroupMenu
       grid={grid}
       group={group}
@@ -110,8 +110,8 @@ describe("<GroupMenu />", () => {
       [],
       {},
     );
-    const tree = MountedGroupMenu(group, true);
-    expect(tree.find("div.dropdown-menu")).toHaveLength(0);
+    const { container } = renderGroupMenu(group, true);
+    expect(container.querySelector("div.dropdown-menu")).toBeNull();
     expect(MockSetIsMenuOpen).not.toHaveBeenCalled();
   });
 
@@ -124,11 +124,11 @@ describe("<GroupMenu />", () => {
       [],
       {},
     );
-    const tree = MountedGroupMenu(group, true);
-    const toggle = tree.find("span.cursor-pointer");
-    toggle.simulate("click");
+    const { container } = renderGroupMenu(group, true);
+    const toggle = container.querySelector("span.cursor-pointer");
+    fireEvent.click(toggle!);
     expect(MockSetIsMenuOpen).toHaveBeenCalledTimes(1);
-    expect(tree.find("div.dropdown-menu")).toHaveLength(1);
+    expect(container.querySelector("div.dropdown-menu")).toBeInTheDocument();
     await act(() => promise);
   });
 
@@ -141,23 +141,22 @@ describe("<GroupMenu />", () => {
       [],
       {},
     );
-    const tree = MountedGroupMenu(group, true);
-    const toggle = tree.find("span.cursor-pointer");
+    const { container } = renderGroupMenu(group, true);
+    const toggle = container.querySelector("span.cursor-pointer");
 
-    toggle.simulate("click");
+    fireEvent.click(toggle!);
     act(() => {
       jest.runOnlyPendingTimers();
     });
     expect(MockSetIsMenuOpen).toHaveBeenCalledTimes(1);
-    expect(tree.find("div.dropdown-menu")).toHaveLength(1);
+    expect(container.querySelector("div.dropdown-menu")).toBeInTheDocument();
 
-    toggle.simulate("click");
+    fireEvent.click(toggle!);
     act(() => {
       jest.runOnlyPendingTimers();
     });
-    tree.update();
     expect(MockSetIsMenuOpen).toHaveBeenCalledTimes(2);
-    expect(tree.find("div.dropdown-menu")).toHaveLength(0);
+    expect(container.querySelector("div.dropdown-menu")).toBeNull();
     await act(() => promise);
   });
 
@@ -170,26 +169,26 @@ describe("<GroupMenu />", () => {
       [],
       {},
     );
-    const tree = MountedGroupMenu(group, true);
-    const toggle = tree.find("span.cursor-pointer");
+    const { container } = renderGroupMenu(group, true);
+    const toggle = container.querySelector("span.cursor-pointer");
 
-    toggle.simulate("click");
+    fireEvent.click(toggle!);
     expect(MockSetIsMenuOpen).toHaveBeenCalledTimes(1);
-    expect(tree.find("div.dropdown-menu")).toHaveLength(1);
+    expect(container.querySelector("div.dropdown-menu")).toBeInTheDocument();
 
-    tree.find("div.dropdown-item").at(0).simulate("click");
+    const menuItem = container.querySelector("div.dropdown-item");
+    fireEvent.click(menuItem!);
     act(() => {
       jest.runOnlyPendingTimers();
     });
-    tree.update();
     expect(MockSetIsMenuOpen).toHaveBeenCalledTimes(2);
-    expect(tree.find("div.dropdown-menu")).toHaveLength(0);
+    expect(container.querySelector("div.dropdown-menu")).toBeNull();
     await act(() => promise);
   });
 });
 
-const MountedMenuContent = (group: APIAlertGroupT) => {
-  return mount(
+const renderMenuContent = (group: APIAlertGroupT) => {
+  return render(
     <MenuContent
       x={0}
       y={0}
@@ -212,9 +211,9 @@ describe("<MenuContent />", () => {
       [],
       {},
     );
-    const tree = MountedMenuContent(group);
-    const button = tree.find(".dropdown-item").at(0);
-    button.simulate("click");
+    const { container } = renderMenuContent(group);
+    const buttons = container.querySelectorAll(".dropdown-item");
+    fireEvent.click(buttons[0]);
     expect(copy).toHaveBeenCalledTimes(1);
   });
 
@@ -227,9 +226,9 @@ describe("<MenuContent />", () => {
       {},
     );
     group.alertmanagerCount = { am1: 1, ro: 1 };
-    const tree = MountedMenuContent(group);
-    const button = tree.find(".dropdown-item").at(1);
-    button.simulate("click");
+    const { container } = renderMenuContent(group);
+    const buttons = container.querySelectorAll(".dropdown-item");
+    fireEvent.click(buttons[1]);
     expect(silenceFormStore.toggle.visible).toBe(true);
     expect(silenceFormStore.data.alertmanagers).toMatchObject([
       { label: "am1", value: ["am1"] },
@@ -249,10 +248,10 @@ describe("<MenuContent />", () => {
       [],
       {},
     );
-    const tree = MountedMenuContent(group);
-    const button = tree.find(".dropdown-item").at(1);
-    expect(button.hasClass("disabled")).toBe(true);
-    button.simulate("click");
+    const { container } = renderMenuContent(group);
+    const buttons = container.querySelectorAll(".dropdown-item");
+    expect(buttons[1].classList.contains("disabled")).toBe(true);
+    fireEvent.click(buttons[1]);
     expect(silenceFormStore.toggle.visible).toBe(false);
   });
 
@@ -287,17 +286,14 @@ describe("<MenuContent />", () => {
       {},
     );
 
-    const tree = MountedMenuContent(group);
-    expect(tree.find("a.dropdown-item")).toHaveLength(1);
+    const { container } = renderMenuContent(group);
+    expect(container.querySelectorAll("a.dropdown-item")).toHaveLength(1);
 
-    const link = tree.find("a.dropdown-item[href='linkAction']");
-    expect(link.text()).toBe("linkAction");
+    const link = container.querySelector("a.dropdown-item[href='linkAction']");
+    expect(link?.textContent).toBe("linkAction");
 
-    expect(tree.find("a.dropdown-item[href='nonLinkNonAction']")).toHaveLength(
-      0,
-    );
-    expect(tree.find("a.dropdown-item[href='nonLinkNonAction']")).toHaveLength(
-      0,
-    );
+    expect(
+      container.querySelector("a.dropdown-item[href='nonLinkNonAction']"),
+    ).toBeNull();
   });
 });

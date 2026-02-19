@@ -1,26 +1,28 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<AlertGroupWidthConfiguration /> matches snapshot with default values 1`] = `
-"
-<div class="p-3 text-center">
+<DocumentFragment>
   <div
-    class="input-range-track"
-    style="transform: scale(1); cursor: pointer;"
+    class="p-3 text-center"
   >
     <div
-      class="input-range-thumb"
-      style="position: absolute; z-index: 0; cursor: grab; user-select: none; transform: translate(NaNpx, NaNpx);"
-      tabindex="0"
-      aria-valuemax="800"
-      aria-valuemin="300"
-      aria-valuenow="420"
-      draggable="false"
-      aria-label
-      role="slider"
+      class="input-range-track"
+      style="transform: scale(1); cursor: pointer;"
     >
-      420
+      <div
+        aria-label=""
+        aria-valuemax="800"
+        aria-valuemin="300"
+        aria-valuenow="420"
+        class="input-range-thumb"
+        draggable="false"
+        role="slider"
+        style="position: absolute; z-index: 0; cursor: grab; user-select: none; transform: translate(NaNpx, NaNpx);"
+        tabindex="0"
+      >
+        420
+      </div>
     </div>
   </div>
-</div>
-"
+</DocumentFragment>
 `;

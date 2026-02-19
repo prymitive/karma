@@ -1,5 +1,6 @@
-import { shallow } from "enzyme";
+import { render, screen } from "@testing-library/react";
 
+import { mockMatchMedia } from "__fixtures__/matchMedia";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
@@ -11,20 +12,30 @@ let silenceFormStore: SilenceFormStore;
 
 let originalInnerWidth: number;
 
+declare let global: any;
+
 beforeEach(() => {
   alertStore = new AlertStore([]);
   settingsStore = new Settings(null);
   silenceFormStore = new SilenceFormStore();
 
   originalInnerWidth = global.innerWidth;
+
+  global.ResizeObserver = jest.fn(() => ({
+    observe: jest.fn(),
+    disconnect: jest.fn(),
+  }));
+  global.ResizeObserverEntry = jest.fn();
+
+  window.matchMedia = mockMatchMedia({});
 });
 
 afterEach(() => {
   global.innerWidth = originalInnerWidth;
 });
 
-const ShallowGrid = () => {
-  return shallow(
+const renderGrid = () => {
+  return render(
     <Grid
       alertStore={alertStore}
       settingsStore={settingsStore}
@@ -33,10 +44,23 @@ const ShallowGrid = () => {
   );
 };
 
+const setupGrids = () => {
+  alertStore.data.setGrids([
+    {
+      labelName: "",
+      labelValue: "",
+      alertGroups: [],
+      totalGroups: 0,
+      stateCount: { unprocessed: 0, suppressed: 0, active: 0 },
+    },
+  ]);
+};
+
 describe("<Grid />", () => {
   it("renders only AlertGrid when all upstreams are healthy", () => {
-    const tree = ShallowGrid();
-    expect(tree.find("Memo(AlertGrid)")).toHaveLength(1);
+    setupGrids();
+    const { container } = renderGrid();
+    expect(container.querySelector(".components-grid")).toBeInTheDocument();
   });
 
   it("renders FatalError if there's only one upstream and it's unhealthy", () => {
@@ -58,8 +82,8 @@ describe("<Grid />", () => {
       ],
       clusters: { am1: ["am1"] },
     });
-    const tree = ShallowGrid();
-    expect(tree.text()).toBe("<FatalError />");
+    renderGrid();
+    expect(screen.getByText("error")).toBeInTheDocument();
   });
 
   it("renders AlertGrid if there's only one upstream and it's unhealthy but there are alerts", () => {
@@ -82,8 +106,9 @@ describe("<Grid />", () => {
       clusters: { am1: ["am1"] },
     });
     alertStore.info.setTotalAlerts(1);
-    const tree = ShallowGrid();
-    expect(tree.find("Memo(AlertGrid)")).toHaveLength(1);
+    setupGrids();
+    const { container } = renderGrid();
+    expect(container.querySelector(".components-grid")).toBeInTheDocument();
   });
 
   it("renders FatalError if there's only one upstream and it's unhealthy but without any error", () => {
@@ -105,12 +130,12 @@ describe("<Grid />", () => {
       ],
       clusters: { am1: ["am1"] },
     });
-    const tree = ShallowGrid();
-    expect(tree.text()).toBe("<FatalError />");
+    renderGrid();
+    expect(screen.getByText("error")).toBeInTheDocument();
   });
 
   it("renders only FatalError on failed fetch", () => {
-    alertStore.status.setError("error");
+    alertStore.status.setError("fetch error");
     alertStore.data.setUpstreams({
       counters: { total: 0, healthy: 0, failed: 1 },
       instances: [
@@ -129,27 +154,28 @@ describe("<Grid />", () => {
       ],
       clusters: { am1: ["am1"] },
     });
-    const tree = ShallowGrid();
-    expect(tree.text()).toBe("<FatalError />");
+    renderGrid();
+    expect(screen.getByText("fetch error")).toBeInTheDocument();
   });
 
   it("renders UpgradeNeeded when alertStore.info.upgradeNeeded=true", () => {
     alertStore.info.setUpgradeNeeded(true);
-    const tree = ShallowGrid();
-    expect(tree.text()).toBe("<UpgradeNeeded />");
+    renderGrid();
+    expect(screen.getByText(/new version/i)).toBeInTheDocument();
   });
 
   it("renders ReloadNeeded when alertStore.info.reloadNeeded=true", () => {
     alertStore.info.setReloadNeeded(true);
-    const tree = ShallowGrid();
-    expect(tree.text()).toBe("<ReloadNeeded />");
+    renderGrid();
+    expect(screen.getByText(/reload/i)).toBeInTheDocument();
   });
 
   it("renders AlertGrid before any fetch finished when totalAlerts is 0", () => {
     alertStore.info.setVersion("unknown");
     alertStore.info.setTotalAlerts(0);
-    const tree = ShallowGrid();
-    expect(tree.find("Memo(AlertGrid)")).toHaveLength(1);
+    setupGrids();
+    const { container } = renderGrid();
+    expect(container.querySelector(".components-grid")).toBeInTheDocument();
   });
 
   it("renders EmptyGrid after first fetch when totalAlerts is 0", () => {
@@ -173,8 +199,8 @@ describe("<Grid />", () => {
       ],
       clusters: { dev: ["dev"] },
     });
-    const tree = ShallowGrid();
-    expect(tree.text()).toBe("<EmptyGrid />");
+    const { container } = renderGrid();
+    expect(container.querySelector(".fa-mug-hot")).toBeInTheDocument();
   });
 
   it("renders NoUpstream after first fetch when upstream list is empty", () => {
@@ -185,19 +211,22 @@ describe("<Grid />", () => {
       instances: [],
       clusters: {},
     });
-    const tree = ShallowGrid();
-    expect(tree.text()).toBe("<NoUpstream />");
+    renderGrid();
+    expect(
+      screen.getByText(/No alertmanager server configured/i),
+    ).toBeInTheDocument();
   });
 
   it("renders AlertGrid after first fetch finished when totalAlerts is >0", () => {
     alertStore.info.setVersion("unknown");
     alertStore.info.setTotalAlerts(1);
-    const tree = ShallowGrid();
-    expect(tree.find("Memo(AlertGrid)")).toHaveLength(1);
+    setupGrids();
+    const { container } = renderGrid();
+    expect(container.querySelector(".components-grid")).toBeInTheDocument();
   });
 
   it("unmounts without crashes", () => {
-    const tree = ShallowGrid();
-    tree.unmount();
+    const { unmount } = renderGrid();
+    unmount();
   });
 });

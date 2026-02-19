@@ -1,441 +1,511 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<AlertHistory /> handles fetch errors 1`] = `
-"
-<div class="w-100 d-flex">
-  <div class="w-100 d-flex justify-content-between align-self-center">
-    <div class="alert-history-tooltip tooltip-trigger">
-      <svg class="alert-history">
-        <rect
-          rx="2"
-          ry="2"
-          class="error"
+<DocumentFragment>
+  <div
+    class="w-100 d-flex"
+  >
+    <div
+      class="w-100 d-flex justify-content-between align-self-center"
+    >
+      <div
+        class="alert-history-tooltip tooltip-trigger"
+      >
+        <svg
+          class="alert-history"
         >
-        </rect>
-      </svg>
+          <rect
+            class="error"
+            rx="2"
+            ry="2"
+          />
+        </svg>
+      </div>
     </div>
   </div>
-</div>
-"
+</DocumentFragment>
 `;
 
 exports[`<AlertHistory /> handles reponses with errors 1`] = `
-"
-<div class="w-100 d-flex">
-  <div class="w-100 d-flex justify-content-between align-self-center">
-    <div class="alert-history-tooltip tooltip-trigger">
-      <svg class="alert-history">
-        <rect
-          rx="2"
-          ry="2"
-          class="error"
+<DocumentFragment>
+  <div
+    class="w-100 d-flex"
+  >
+    <div
+      class="w-100 d-flex justify-content-between align-self-center"
+    >
+      <div
+        class="alert-history-tooltip tooltip-trigger"
+      >
+        <svg
+          class="alert-history"
         >
-        </rect>
-      </svg>
+          <rect
+            class="error"
+            rx="2"
+            ry="2"
+          />
+        </svg>
+      </div>
     </div>
   </div>
-</div>
-"
+</DocumentFragment>
 `;
 
 exports[`<AlertHistory /> matches snapshot with empty response 1`] = `
-"
-<div class="w-100 d-flex">
-  <div class="w-100 d-flex justify-content-between align-self-center">
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="inactive"
+<DocumentFragment>
+  <div
+    class="w-100 d-flex"
+  >
+    <div
+      class="w-100 d-flex justify-content-between align-self-center"
+    >
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="inactive"
+        <rect
+          class="inactive"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="inactive"
+        <rect
+          class="inactive"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="inactive"
+        <rect
+          class="inactive"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="inactive"
+        <rect
+          class="inactive"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="inactive"
+        <rect
+          class="inactive"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="inactive"
+        <rect
+          class="inactive"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="inactive"
+        <rect
+          class="inactive"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="inactive"
+        <rect
+          class="inactive"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="inactive"
+        <rect
+          class="inactive"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="inactive"
+        <rect
+          class="inactive"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="inactive"
+        <rect
+          class="inactive"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="inactive"
+        <rect
+          class="inactive"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="inactive"
+        <rect
+          class="inactive"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="inactive"
+        <rect
+          class="inactive"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="inactive"
+        <rect
+          class="inactive"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="inactive"
+        <rect
+          class="inactive"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="inactive"
+        <rect
+          class="inactive"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="inactive"
+        <rect
+          class="inactive"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="inactive"
+        <rect
+          class="inactive"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="inactive"
+        <rect
+          class="inactive"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="inactive"
+        <rect
+          class="inactive"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="inactive"
+        <rect
+          class="inactive"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="inactive"
+        <rect
+          class="inactive"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
+        <rect
+          class="inactive"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+    </div>
   </div>
-</div>
-"
+</DocumentFragment>
 `;
 
 exports[`<AlertHistory /> matches snapshot with rainbow response 1`] = `
-"
-<div class="w-100 d-flex">
-  <div class="w-100 d-flex justify-content-between align-self-center">
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="inactive"
+<DocumentFragment>
+  <div
+    class="w-100 d-flex"
+  >
+    <div
+      class="w-100 d-flex justify-content-between align-self-center"
+    >
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="firing firing-1"
+        <rect
+          class="inactive"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="firing firing-2"
+        <rect
+          class="firing firing-1"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="firing firing-3"
+        <rect
+          class="firing firing-2"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="firing firing-4"
+        <rect
+          class="firing firing-3"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="firing firing-5"
+        <rect
+          class="firing firing-4"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="inactive"
+        <rect
+          class="firing firing-5"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="firing firing-1"
+        <rect
+          class="inactive"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="firing firing-2"
+        <rect
+          class="firing firing-1"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="firing firing-3"
+        <rect
+          class="firing firing-2"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="firing firing-4"
+        <rect
+          class="firing firing-3"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="firing firing-5"
+        <rect
+          class="firing firing-4"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="inactive"
+        <rect
+          class="firing firing-5"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="firing firing-1"
+        <rect
+          class="inactive"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="firing firing-2"
+        <rect
+          class="firing firing-1"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="firing firing-3"
+        <rect
+          class="firing firing-2"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="firing firing-4"
+        <rect
+          class="firing firing-3"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="firing firing-5"
+        <rect
+          class="firing firing-4"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="inactive"
+        <rect
+          class="firing firing-5"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="firing firing-1"
+        <rect
+          class="inactive"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="firing firing-2"
+        <rect
+          class="firing firing-1"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="firing firing-3"
+        <rect
+          class="firing firing-2"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="firing firing-4"
+        <rect
+          class="firing firing-3"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
-    <svg class="alert-history">
-      <rect
-        rx="2"
-        ry="2"
-        class="firing firing-5"
+        <rect
+          class="firing firing-4"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+      <svg
+        class="alert-history"
       >
-      </rect>
-    </svg>
+        <rect
+          class="firing firing-5"
+          rx="2"
+          ry="2"
+        />
+      </svg>
+    </div>
   </div>
-</div>
-"
+</DocumentFragment>
 `;

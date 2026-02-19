@@ -1,6 +1,4 @@
-import { mount } from "enzyme";
-
-import toDiffableHtml from "diffable-html";
+import { render, screen, fireEvent } from "@testing-library/react";
 
 import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
 
@@ -12,7 +10,7 @@ beforeEach(() => {
   alertStore = new AlertStore([]);
 });
 
-const MountedLabelWithPercent = (
+const renderLabelWithPercent = (
   name: string,
   value: string,
   hits: number,
@@ -20,7 +18,7 @@ const MountedLabelWithPercent = (
   offset: number,
   isActive: boolean,
 ) => {
-  return mount(
+  return render(
     <LabelWithPercent
       alertStore={alertStore}
       name={name}
@@ -33,33 +31,51 @@ const MountedLabelWithPercent = (
   );
 };
 
-const RenderAndClick = (name: string, value: string, clickOptions?: any) => {
-  const tree = MountedLabelWithPercent(name, value, 25, 50, 0, false);
-  tree
-    .find(".components-label")
-    .find("span")
-    .at(2)
-    .simulate("click", clickOptions || {});
+const renderAndClick = (name: string, value: string, clickOptions?: any) => {
+  renderLabelWithPercent(name, value, 25, 50, 0, false);
+  const labelText = screen.getByText(value);
+  fireEvent.click(labelText, clickOptions || {});
 };
 
 describe("<LabelWithPercent />", () => {
   it("matches snapshot with offset=0", () => {
-    const tree = MountedLabelWithPercent("foo", "bar", 25, 50, 0, false);
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    const { asFragment } = renderLabelWithPercent(
+      "foo",
+      "bar",
+      25,
+      50,
+      0,
+      false,
+    );
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it("matches snapshot with offset=25", () => {
-    const tree = MountedLabelWithPercent("foo", "bar", 25, 50, 25, false);
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    const { asFragment } = renderLabelWithPercent(
+      "foo",
+      "bar",
+      25,
+      50,
+      25,
+      false,
+    );
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it("matches snapshot with isActive=true", () => {
-    const tree = MountedLabelWithPercent("foo", "bar", 25, 50, 0, true);
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    const { asFragment } = renderLabelWithPercent(
+      "foo",
+      "bar",
+      25,
+      50,
+      0,
+      true,
+    );
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it("calling adds a new filter 'foo=bar'", () => {
-    RenderAndClick("foo", "bar");
+    renderAndClick("foo", "bar");
     expect(alertStore.filters.values).toHaveLength(1);
     expect(alertStore.filters.values).toContainEqual(
       NewUnappliedFilter("foo=bar"),
@@ -67,8 +83,9 @@ describe("<LabelWithPercent />", () => {
   });
 
   it("clicking the X buttom removes label from filters", () => {
-    const tree = MountedLabelWithPercent("foo", "bar", 25, 50, 0, true);
-    tree.find(".components-label").find("svg").simulate("click");
+    const { container } = renderLabelWithPercent("foo", "bar", 25, 50, 0, true);
+    const removeButton = container.querySelector("svg.fa-xmark");
+    fireEvent.click(removeButton!);
     expect(alertStore.filters.values).toHaveLength(0);
     expect(alertStore.filters.values).not.toContainEqual(
       NewUnappliedFilter("foo=bar"),
@@ -76,7 +93,7 @@ describe("<LabelWithPercent />", () => {
   });
 
   it("calling onClick() while holding Alt key adds a new filter 'foo!=bar'", () => {
-    RenderAndClick("foo", "bar", { altKey: true });
+    renderAndClick("foo", "bar", { altKey: true });
     expect(alertStore.filters.values).toHaveLength(1);
     expect(alertStore.filters.values).toContainEqual(
       NewUnappliedFilter("foo!=bar"),
@@ -84,17 +101,44 @@ describe("<LabelWithPercent />", () => {
   });
 
   it("uses bg-danger when percent is >66", () => {
-    const tree = MountedLabelWithPercent("foo", "bar", 25, 67, 0, false);
-    expect(toDiffableHtml(tree.html())).toMatch(/progress-bar bg-danger/);
+    const { container } = renderLabelWithPercent(
+      "foo",
+      "bar",
+      25,
+      67,
+      0,
+      false,
+    );
+    expect(
+      container.querySelector(".progress-bar.bg-danger"),
+    ).toBeInTheDocument();
   });
 
   it("uses bg-warning when percent is >33", () => {
-    const tree = MountedLabelWithPercent("foo", "bar", 25, 66, 0, false);
-    expect(toDiffableHtml(tree.html())).toMatch(/progress-bar bg-warning/);
+    const { container } = renderLabelWithPercent(
+      "foo",
+      "bar",
+      25,
+      66,
+      0,
+      false,
+    );
+    expect(
+      container.querySelector(".progress-bar.bg-warning"),
+    ).toBeInTheDocument();
   });
 
   it("uses bg-success when percent is <=33", () => {
-    const tree = MountedLabelWithPercent("foo", "bar", 25, 33, 0, false);
-    expect(toDiffableHtml(tree.html())).toMatch(/progress-bar bg-success/);
+    const { container } = renderLabelWithPercent(
+      "foo",
+      "bar",
+      25,
+      33,
+      0,
+      false,
+    );
+    expect(
+      container.querySelector(".progress-bar.bg-success"),
+    ).toBeInTheDocument();
   });
 });

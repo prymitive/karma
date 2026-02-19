@@ -1,7 +1,7 @@
 import { FC, useRef, useState } from "react";
 import { act } from "react-dom/test-utils";
 
-import { mount } from "enzyme";
+import { render, screen, fireEvent } from "@testing-library/react";
 
 import { useOnClickOutside } from "./useOnClickOutside";
 
@@ -27,8 +27,8 @@ describe("useOnClickOutside", () => {
   };
 
   it("closes modal on click outside", () => {
-    const tree = mount(<Component enabled />);
-    expect(tree.text()).toBe("Open");
+    render(<Component enabled />);
+    expect(screen.getByText("Open")).toBeInTheDocument();
 
     const clickEvent = document.createEvent("MouseEvents");
     clickEvent.initEvent("mousedown", true, true);
@@ -36,12 +36,12 @@ describe("useOnClickOutside", () => {
       document.dispatchEvent(clickEvent);
     });
 
-    expect(tree.text()).toBe("Hidden");
+    expect(screen.getByText("Hidden")).toBeInTheDocument();
   });
 
   it("ignores events when hidden", () => {
-    const tree = mount(<Component enabled />);
-    expect(tree.text()).toBe("Open");
+    render(<Component enabled />);
+    expect(screen.getByText("Open")).toBeInTheDocument();
 
     const clickEvent = document.createEvent("MouseEvents");
     clickEvent.initEvent("mousedown", true, true);
@@ -52,19 +52,19 @@ describe("useOnClickOutside", () => {
     act(() => {
       document.dispatchEvent(clickEvent);
     });
-    expect(tree.text()).toBe("Hidden");
+    expect(screen.getByText("Hidden")).toBeInTheDocument();
   });
 
   it("modal stays open on click inside", () => {
-    const tree = mount(<Component enabled />);
-    expect(tree.text()).toBe("Open");
-    tree.find("span").simulate("click");
-    expect(tree.text()).toBe("Open");
+    render(<Component enabled />);
+    expect(screen.getByText("Open")).toBeInTheDocument();
+    fireEvent.click(screen.getByText("Open"));
+    expect(screen.getByText("Open")).toBeInTheDocument();
   });
 
   it("only runs when enabled", () => {
-    const tree = mount(<Component enabled={false} />);
-    expect(tree.text()).toBe("Open");
+    const { rerender } = render(<Component enabled={false} />);
+    expect(screen.getByText("Open")).toBeInTheDocument();
 
     const clickEvent = document.createEvent("MouseEvents");
     clickEvent.initEvent("mousedown", true, true);
@@ -72,18 +72,18 @@ describe("useOnClickOutside", () => {
       document.dispatchEvent(clickEvent);
     });
 
-    expect(tree.text()).toBe("Open");
+    expect(screen.getByText("Open")).toBeInTheDocument();
 
-    tree.setProps({ enabled: true });
+    rerender(<Component enabled={true} />);
     act(() => {
       document.dispatchEvent(clickEvent);
     });
-    expect(tree.text()).toBe("Hidden");
+    expect(screen.getByText("Hidden")).toBeInTheDocument();
   });
 
   it("unmounts cleanly", () => {
-    const tree = mount(<Component enabled />);
-    expect(tree.text()).toBe("Open");
-    tree.unmount();
+    const { unmount } = render(<Component enabled />);
+    expect(screen.getByText("Open")).toBeInTheDocument();
+    unmount();
   });
 });

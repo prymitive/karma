@@ -1,219 +1,232 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<FilterInput /> matches snapshot with no filters 1`] = `
-"
-<form
-  class="flex-grow-1 flex-shrink-1 mr-auto"
-  style="min-width: 0px;"
->
-  <div class="input-group w-100 me-2 components-filterinput-outer bg-focused">
-    <div class="form-control components-filterinput border-0 rounded-0 bg-inherit">
-      <div class="autosuggest d-inline-block mw-100">
-        <span class="input-group-text text-muted d-inline-block me-2 border-0 bg-inherit px-1">
-          <svg
-            data-prefix="fas"
-            data-icon="magnifying-glass"
-            class="svg-inline--fa fa-magnifying-glass "
-            role="img"
-            viewbox="0 0 512 512"
-            aria-hidden="true"
-          >
-            <path
-              fill="currentColor"
-              d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376C296.3 401.1 253.9 416 208 416 93.1 416 0 322.9 0 208S93.1 0 208 0 416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"
-            >
-            </path>
-          </svg>
-        </span>
-        <input
-          class="components-filterinput-wrapper text-white mw-100"
-          size="1"
-          aria-activedescendant
-          aria-autocomplete="list"
-          aria-controls="downshift-0-menu"
-          aria-expanded="false"
-          aria-labelledby="downshift-0-label"
-          autocomplete="off"
-          id="downshift-0-input"
-          role="combobox"
-          value
+<DocumentFragment>
+  <form
+    class="flex-grow-1 flex-shrink-1 mr-auto"
+    style="min-width: 0px;"
+  >
+    <div
+      class="input-group w-100 me-2 components-filterinput-outer bg-focused"
+    >
+      <div
+        class="form-control components-filterinput border-0 rounded-0 bg-inherit"
+      >
+        <div
+          class="autosuggest d-inline-block mw-100"
         >
+          <span
+            class="input-group-text text-muted d-inline-block me-2 border-0 bg-inherit px-1"
+          >
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-magnifying-glass "
+              data-icon="magnifying-glass"
+              data-prefix="fas"
+              role="img"
+              viewBox="0 0 512 512"
+            >
+              <path
+                d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376C296.3 401.1 253.9 416 208 416 93.1 416 0 322.9 0 208S93.1 0 208 0 416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"
+                fill="currentColor"
+              />
+            </svg>
+          </span>
+          <input
+            aria-activedescendant=""
+            aria-autocomplete="list"
+            aria-controls="downshift-0-menu"
+            aria-expanded="false"
+            aria-labelledby="downshift-0-label"
+            autocomplete="off"
+            class="components-filterinput-wrapper text-white mw-100"
+            id="downshift-0-input"
+            role="combobox"
+            size="1"
+            value=""
+          />
+        </div>
+        <span
+          aria-labelledby="downshift-0-label"
+          class="dropdown"
+          id="downshift-0-menu"
+          role="listbox"
+        />
       </div>
       <span
-        class="dropdown"
-        id="downshift-0-menu"
-        role="listbox"
-        aria-labelledby="downshift-0-label"
+        class="input-group-text border-0 rounded-0 bg-inherit px-0"
       >
+        <button
+          aria-expanded="true"
+          aria-haspopup="true"
+          class="btn border-0 rounded-0 bg-inherit cursor-pointer components-navbar-history px-2 py-0 components-navbar-icon"
+          data-toggle="dropdown"
+          type="button"
+        >
+          <svg
+            aria-hidden="true"
+            class="svg-inline--fa fa-caret-down "
+            data-icon="caret-down"
+            data-prefix="fas"
+            role="img"
+            viewBox="0 0 320 512"
+          >
+            <path
+              d="M140.3 376.8c12.6 10.2 31.1 9.5 42.8-2.2l128-128c9.2-9.2 11.9-22.9 6.9-34.9S301.4 192 288.5 192l-256 0c-12.9 0-24.6 7.8-29.6 19.8S.7 237.5 9.9 246.6l128 128 2.4 2.2z"
+              fill="currentColor"
+            />
+          </svg>
+        </button>
       </span>
     </div>
-    <span class="input-group-text border-0 rounded-0 bg-inherit px-0">
-      <button
-        class="btn border-0 rounded-0 bg-inherit cursor-pointer components-navbar-history px-2 py-0 components-navbar-icon"
-        type="button"
-        data-toggle="dropdown"
-        aria-haspopup="true"
-        aria-expanded="true"
-      >
-        <svg
-          data-prefix="fas"
-          data-icon="caret-down"
-          class="svg-inline--fa fa-caret-down "
-          role="img"
-          viewbox="0 0 320 512"
-          aria-hidden="true"
-        >
-          <path
-            fill="currentColor"
-            d="M140.3 376.8c12.6 10.2 31.1 9.5 42.8-2.2l128-128c9.2-9.2 11.9-22.9 6.9-34.9S301.4 192 288.5 192l-256 0c-12.9 0-24.6 7.8-29.6 19.8S.7 237.5 9.9 246.6l128 128 2.4 2.2z"
-          >
-          </path>
-        </svg>
-      </button>
-    </span>
-  </div>
-</form>
-"
+  </form>
+</DocumentFragment>
 `;
 
 exports[`<FilterInput /> matches snapshot with some filters 1`] = `
-"
-<form
-  class="flex-grow-1 flex-shrink-1 mr-auto"
-  style="min-width: 0px;"
->
-  <div class="input-group w-100 me-2 components-filterinput-outer bg-focused">
-    <div class="form-control components-filterinput border-0 rounded-0 bg-inherit">
-      <button
-        type="button"
-        class="btn-secondary btn-sm components-filteredinputlabel components-label btn d-inline-flex flex-row align-items-center"
+<DocumentFragment>
+  <form
+    class="flex-grow-1 flex-shrink-1 mr-auto"
+    style="min-width: 0px;"
+  >
+    <div
+      class="input-group w-100 me-2 components-filterinput-outer bg-focused"
+    >
+      <div
+        class="form-control components-filterinput border-0 rounded-0 bg-inherit"
       >
-        <svg
-          data-prefix="fas"
-          data-icon="spinner"
-          class="svg-inline--fa fa-spinner fa-spin "
-          role="img"
-          viewbox="0 0 512 512"
-          aria-hidden="true"
+        <button
+          class="btn-secondary btn-sm components-filteredinputlabel components-label btn d-inline-flex flex-row align-items-center"
+          type="button"
         >
-          <path
-            fill="currentColor"
-            d="M208 48a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm0 416a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zM48 208a48 48 0 1 1 0 96 48 48 0 1 1 0-96zm368 48a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zM75 369.1A48 48 0 1 1 142.9 437 48 48 0 1 1 75 369.1zM75 75A48 48 0 1 1 142.9 142.9 48 48 0 1 1 75 75zM437 369.1A48 48 0 1 1 369.1 437 48 48 0 1 1 437 369.1z"
+          <svg
+            aria-hidden="true"
+            class="svg-inline--fa fa-spinner fa-spin "
+            data-icon="spinner"
+            data-prefix="fas"
+            role="img"
+            viewBox="0 0 512 512"
           >
-          </path>
-        </svg>
-        <div class="components-filteredinputlabel-text flex-grow-1 flex-shrink-1 ms-1 tooltip-trigger">
-          <span
-            tabindex="0"
-            class="cursor-text px-1"
+            <path
+              d="M208 48a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm0 416a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zM48 208a48 48 0 1 1 0 96 48 48 0 1 1 0-96zm368 48a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zM75 369.1A48 48 0 1 1 142.9 437 48 48 0 1 1 75 369.1zM75 75A48 48 0 1 1 142.9 142.9 48 48 0 1 1 75 75zM437 369.1A48 48 0 1 1 369.1 437 48 48 0 1 1 437 369.1z"
+              fill="currentColor"
+            />
+          </svg>
+          <div
+            class="components-filteredinputlabel-text flex-grow-1 flex-shrink-1 ms-1 tooltip-trigger"
           >
-            foo=bar
-          </span>
+            <span
+              class="cursor-text px-1"
+              tabindex="0"
+            >
+              foo=bar
+            </span>
+          </div>
+          <svg
+            aria-hidden="true"
+            class="svg-inline--fa fa-xmark cursor-pointer text-reset ms-1"
+            data-icon="xmark"
+            data-prefix="fas"
+            role="img"
+            viewBox="0 0 384 512"
+          >
+            <path
+              d="M55.1 73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L147.2 256 9.9 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192.5 301.3 329.9 438.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.8 256 375.1 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192.5 210.7 55.1 73.4z"
+              fill="currentColor"
+            />
+          </svg>
+        </button>
+        <button
+          class="btn-secondary btn-sm components-filteredinputlabel components-label btn d-inline-flex flex-row align-items-center"
+          type="button"
+        >
+          <svg
+            aria-hidden="true"
+            class="svg-inline--fa fa-spinner fa-spin "
+            data-icon="spinner"
+            data-prefix="fas"
+            role="img"
+            viewBox="0 0 512 512"
+          >
+            <path
+              d="M208 48a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm0 416a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zM48 208a48 48 0 1 1 0 96 48 48 0 1 1 0-96zm368 48a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zM75 369.1A48 48 0 1 1 142.9 437 48 48 0 1 1 75 369.1zM75 75A48 48 0 1 1 142.9 142.9 48 48 0 1 1 75 75zM437 369.1A48 48 0 1 1 369.1 437 48 48 0 1 1 437 369.1z"
+              fill="currentColor"
+            />
+          </svg>
+          <div
+            class="components-filteredinputlabel-text flex-grow-1 flex-shrink-1 ms-1 tooltip-trigger"
+          >
+            <span
+              class="cursor-text px-1"
+              tabindex="0"
+            >
+              baz!=bar
+            </span>
+          </div>
+          <svg
+            aria-hidden="true"
+            class="svg-inline--fa fa-xmark cursor-pointer text-reset ms-1"
+            data-icon="xmark"
+            data-prefix="fas"
+            role="img"
+            viewBox="0 0 384 512"
+          >
+            <path
+              d="M55.1 73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L147.2 256 9.9 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192.5 301.3 329.9 438.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.8 256 375.1 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192.5 210.7 55.1 73.4z"
+              fill="currentColor"
+            />
+          </svg>
+        </button>
+        <div
+          class="autosuggest d-inline-block mw-100"
+        >
+          <input
+            aria-activedescendant=""
+            aria-autocomplete="list"
+            aria-controls="downshift-2-menu"
+            aria-expanded="false"
+            aria-labelledby="downshift-2-label"
+            autocomplete="off"
+            class="components-filterinput-wrapper text-white mw-100"
+            id="downshift-2-input"
+            role="combobox"
+            size="1"
+            value=""
+          />
         </div>
-        <svg
-          data-prefix="fas"
-          data-icon="xmark"
-          class="svg-inline--fa fa-xmark cursor-pointer text-reset ms-1"
-          role="img"
-          viewbox="0 0 384 512"
-          aria-hidden="true"
-        >
-          <path
-            fill="currentColor"
-            d="M55.1 73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L147.2 256 9.9 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192.5 301.3 329.9 438.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.8 256 375.1 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192.5 210.7 55.1 73.4z"
-          >
-          </path>
-        </svg>
-      </button>
-      <button
-        type="button"
-        class="btn-secondary btn-sm components-filteredinputlabel components-label btn d-inline-flex flex-row align-items-center"
-      >
-        <svg
-          data-prefix="fas"
-          data-icon="spinner"
-          class="svg-inline--fa fa-spinner fa-spin "
-          role="img"
-          viewbox="0 0 512 512"
-          aria-hidden="true"
-        >
-          <path
-            fill="currentColor"
-            d="M208 48a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm0 416a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zM48 208a48 48 0 1 1 0 96 48 48 0 1 1 0-96zm368 48a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zM75 369.1A48 48 0 1 1 142.9 437 48 48 0 1 1 75 369.1zM75 75A48 48 0 1 1 142.9 142.9 48 48 0 1 1 75 75zM437 369.1A48 48 0 1 1 369.1 437 48 48 0 1 1 437 369.1z"
-          >
-          </path>
-        </svg>
-        <div class="components-filteredinputlabel-text flex-grow-1 flex-shrink-1 ms-1 tooltip-trigger">
-          <span
-            tabindex="0"
-            class="cursor-text px-1"
-          >
-            baz!=bar
-          </span>
-        </div>
-        <svg
-          data-prefix="fas"
-          data-icon="xmark"
-          class="svg-inline--fa fa-xmark cursor-pointer text-reset ms-1"
-          role="img"
-          viewbox="0 0 384 512"
-          aria-hidden="true"
-        >
-          <path
-            fill="currentColor"
-            d="M55.1 73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L147.2 256 9.9 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192.5 301.3 329.9 438.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.8 256 375.1 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192.5 210.7 55.1 73.4z"
-          >
-          </path>
-        </svg>
-      </button>
-      <div class="autosuggest d-inline-block mw-100">
-        <input
-          class="components-filterinput-wrapper text-white mw-100"
-          size="1"
-          aria-activedescendant
-          aria-autocomplete="list"
-          aria-controls="downshift-2-menu"
-          aria-expanded="false"
+        <span
           aria-labelledby="downshift-2-label"
-          autocomplete="off"
-          id="downshift-2-input"
-          role="combobox"
-          value
-        >
+          class="dropdown"
+          id="downshift-2-menu"
+          role="listbox"
+        />
       </div>
       <span
-        class="dropdown"
-        id="downshift-2-menu"
-        role="listbox"
-        aria-labelledby="downshift-2-label"
+        class="input-group-text border-0 rounded-0 bg-inherit px-0"
       >
+        <button
+          aria-expanded="true"
+          aria-haspopup="true"
+          class="btn border-0 rounded-0 bg-inherit cursor-pointer components-navbar-history px-2 py-0 components-navbar-icon"
+          data-toggle="dropdown"
+          type="button"
+        >
+          <svg
+            aria-hidden="true"
+            class="svg-inline--fa fa-caret-down "
+            data-icon="caret-down"
+            data-prefix="fas"
+            role="img"
+            viewBox="0 0 320 512"
+          >
+            <path
+              d="M140.3 376.8c12.6 10.2 31.1 9.5 42.8-2.2l128-128c9.2-9.2 11.9-22.9 6.9-34.9S301.4 192 288.5 192l-256 0c-12.9 0-24.6 7.8-29.6 19.8S.7 237.5 9.9 246.6l128 128 2.4 2.2z"
+              fill="currentColor"
+            />
+          </svg>
+        </button>
       </span>
     </div>
-    <span class="input-group-text border-0 rounded-0 bg-inherit px-0">
-      <button
-        class="btn border-0 rounded-0 bg-inherit cursor-pointer components-navbar-history px-2 py-0 components-navbar-icon"
-        type="button"
-        data-toggle="dropdown"
-        aria-haspopup="true"
-        aria-expanded="true"
-      >
-        <svg
-          data-prefix="fas"
-          data-icon="caret-down"
-          class="svg-inline--fa fa-caret-down "
-          role="img"
-          viewbox="0 0 320 512"
-          aria-hidden="true"
-        >
-          <path
-            fill="currentColor"
-            d="M140.3 376.8c12.6 10.2 31.1 9.5 42.8-2.2l128-128c9.2-9.2 11.9-22.9 6.9-34.9S301.4 192 288.5 192l-256 0c-12.9 0-24.6 7.8-29.6 19.8S.7 237.5 9.9 246.6l128 128 2.4 2.2z"
-          >
-          </path>
-        </svg>
-      </button>
-    </span>
-  </div>
-</form>
-"
+  </form>
+</DocumentFragment>
 `;

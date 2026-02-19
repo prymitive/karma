@@ -1,11 +1,9 @@
-import { shallow, mount } from "enzyme";
-
-import toDiffableHtml from "diffable-html";
+import { render, fireEvent } from "@testing-library/react";
 
 import { RenderNonLinkAnnotation, RenderLinkAnnotation } from ".";
 
-const ShallowLinkAnnotation = () => {
-  return shallow(
+const renderLinkAnnotation = () => {
+  return render(
     <RenderLinkAnnotation
       name="annotation name"
       value="http://localhost/foo"
@@ -15,22 +13,22 @@ const ShallowLinkAnnotation = () => {
 
 describe("<RenderLinkAnnotation />", () => {
   it("matches snapshot", () => {
-    const tree = ShallowLinkAnnotation();
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    const { asFragment } = renderLinkAnnotation();
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it("contains a link", () => {
-    const tree = ShallowLinkAnnotation();
-    const link = tree.find("a[href='http://localhost/foo']");
-    expect(link).toHaveLength(1);
-    expect(link.text()).toMatch(/annotation name/);
+    const { container } = renderLinkAnnotation();
+    const link = container.querySelector("a[href='http://localhost/foo']");
+    expect(link).toBeInTheDocument();
+    expect(link?.textContent).toMatch(/annotation name/);
   });
 });
 
 const MockAfterUpdate = jest.fn();
 
-const ShallowNonLinkAnnotation = (visible: boolean) => {
-  return shallow(
+const renderNonLinkAnnotation = (visible: boolean) => {
+  return render(
     <RenderNonLinkAnnotation
       name="foo"
       value="some long text"
@@ -41,20 +39,8 @@ const ShallowNonLinkAnnotation = (visible: boolean) => {
   );
 };
 
-const MountedNonLinkAnnotation = (visible: boolean) => {
-  return mount(
-    <RenderNonLinkAnnotation
-      name="foo"
-      value="some long text"
-      visible={visible}
-      allowHTML={false}
-      afterUpdate={MockAfterUpdate}
-    />,
-  );
-};
-
-const MountedNonLinkAnnotationContainingLink = (visible: boolean) => {
-  return mount(
+const renderNonLinkAnnotationContainingLink = (visible: boolean) => {
+  return render(
     <RenderNonLinkAnnotation
       name="foo"
       value="some long text with http://example.com link"
@@ -67,51 +53,53 @@ const MountedNonLinkAnnotationContainingLink = (visible: boolean) => {
 
 describe("<RenderNonLinkAnnotation />", () => {
   it("matches snapshot when visible=true", () => {
-    const tree = ShallowNonLinkAnnotation(true);
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    const { asFragment } = renderNonLinkAnnotation(true);
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it("contains value when visible=true", () => {
-    const tree = ShallowNonLinkAnnotation(true);
-    expect(toDiffableHtml(tree.html())).toMatch(/some long text/);
+    const { container } = renderNonLinkAnnotation(true);
+    expect(container.innerHTML).toMatch(/some long text/);
   });
 
   it("matches snapshot when visible=false", () => {
-    const tree = ShallowNonLinkAnnotation(false);
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    const { asFragment } = renderNonLinkAnnotation(false);
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it("doesn't contain value when visible=false", () => {
-    const tree = ShallowNonLinkAnnotation(false);
-    expect(toDiffableHtml(tree.html())).not.toMatch(/some long text/);
+    const { container } = renderNonLinkAnnotation(false);
+    expect(container.innerHTML).not.toMatch(/some long text/);
   });
 
   it("links inside annotation are rendered as a.href", () => {
-    const tree = MountedNonLinkAnnotationContainingLink(true);
-    const link = tree.find("a[href='http://example.com']");
-    expect(link.text()).toBe("http://example.com");
+    const { container } = renderNonLinkAnnotationContainingLink(true);
+    const link = container.querySelector("a[href='http://example.com']");
+    expect(link?.textContent).toBe("http://example.com");
   });
 
   it("clicking on - icon hides the value", () => {
-    const tree = MountedNonLinkAnnotation(true);
-    expect(toDiffableHtml(tree.html())).toMatch(/angle-right/);
-    expect(toDiffableHtml(tree.html())).toMatch(/some long text/);
-    tree.find(".fa-angle-right").simulate("click");
-    expect(toDiffableHtml(tree.html())).toMatch(/angle-left/);
-    expect(toDiffableHtml(tree.html())).not.toMatch(/some long text/);
+    const { container } = renderNonLinkAnnotation(true);
+    expect(container.innerHTML).toMatch(/angle-right/);
+    expect(container.innerHTML).toMatch(/some long text/);
+    const icon = container.querySelector(".fa-angle-right");
+    fireEvent.click(icon!);
+    expect(container.innerHTML).toMatch(/angle-left/);
+    expect(container.innerHTML).not.toMatch(/some long text/);
   });
 
   it("clicking on + icon shows the value", () => {
-    const tree = MountedNonLinkAnnotation(false);
-    expect(toDiffableHtml(tree.html())).toMatch(/angle-left/);
-    expect(toDiffableHtml(tree.html())).not.toMatch(/some long text/);
-    tree.find(".components-grid-annotation").simulate("click");
-    expect(toDiffableHtml(tree.html())).toMatch(/angle-right/);
-    expect(toDiffableHtml(tree.html())).toMatch(/some long text/);
+    const { container } = renderNonLinkAnnotation(false);
+    expect(container.innerHTML).toMatch(/angle-left/);
+    expect(container.innerHTML).not.toMatch(/some long text/);
+    const annotation = container.querySelector(".components-grid-annotation");
+    fireEvent.click(annotation!);
+    expect(container.innerHTML).toMatch(/angle-right/);
+    expect(container.innerHTML).toMatch(/some long text/);
   });
 
   it("escapes HTML when allowHTML=false", () => {
-    const tree = shallow(
+    const { container } = render(
       <RenderNonLinkAnnotation
         name="foo"
         value="<div>inside div</div>"
@@ -120,13 +108,11 @@ describe("<RenderNonLinkAnnotation />", () => {
         afterUpdate={MockAfterUpdate}
       />,
     );
-    expect(toDiffableHtml(tree.html())).toMatch(
-      /&lt;div&gt;inside div&lt;\/div&gt;/,
-    );
+    expect(container.innerHTML).toMatch(/&lt;div&gt;inside div&lt;\/div&gt;/);
   });
 
   it("doesn't escape HTML when allowHTML=true", () => {
-    const tree = shallow(
+    const { container } = render(
       <RenderNonLinkAnnotation
         name="foo"
         value="<div>inside div</div>"
@@ -135,6 +121,6 @@ describe("<RenderNonLinkAnnotation />", () => {
         afterUpdate={MockAfterUpdate}
       />,
     );
-    expect(tree.html()).toMatch(/<div>inside div<\/div>/);
+    expect(container.innerHTML).toMatch(/<div>inside div<\/div>/);
   });
 });

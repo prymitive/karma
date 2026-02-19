@@ -1,49 +1,59 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<ErrorBoundary /> matches snapshot 1`] = `
-"
-<div class="text-placeholder screen-center">
-  <div class="container-fluid text-center">
-    <h1 class="display-1">
-      <svg
-        data-prefix="fas"
-        data-icon="bomb"
-        class="svg-inline--fa fa-bomb text-danger me-4"
-        role="img"
-        viewbox="0 0 576 512"
-        aria-hidden="true"
+<DocumentFragment>
+  <div
+    class="text-placeholder screen-center"
+  >
+    <div
+      class="container-fluid text-center"
+    >
+      <h1
+        class="display-1"
       >
-        <path
-          fill="currentColor"
-          d="M480-16c6.9 0 13 4.4 15.2 10.9l13.5 40.4 40.4 13.5C555.6 51 560 57.1 560 64s-4.4 13-10.9 15.2l-40.4 13.5-13.5 40.4C493 139.6 486.9 144 480 144s-13-4.4-15.2-10.9l-13.5-40.4-40.4-13.5C404.4 77 400 70.9 400 64s4.4-13 10.9-15.2l40.4-13.5 13.5-40.4C467-11.6 473.1-16 480-16zM321.4 97.4c12.5-12.5 32.8-12.5 45.3 0l80 80c12.5 12.5 12.5 32.8 0 45.3l-10.9 10.9c7.9 22 12.2 45.7 12.2 70.5 0 114.9-93.1 208-208 208S32 418.9 32 304 125.1 96 240 96c24.7 0 48.5 4.3 70.5 12.3l10.9-10.9zM144 304c0-53 43-96 96-96 13.3 0 24-10.7 24-24s-10.7-24-24-24c-79.5 0-144 64.5-144 144 0 13.3 10.7 24 24 24s24-10.7 24-24z"
+        <svg
+          aria-hidden="true"
+          class="svg-inline--fa fa-bomb text-danger me-4"
+          data-icon="bomb"
+          data-prefix="fas"
+          role="img"
+          viewBox="0 0 576 512"
         >
-        </path>
-      </svg>
-      <span class="text-muted">
-        Internal error
-      </span>
-    </h1>
-    <p class="lead text-white bg-secondary p-3 rounded text-wrap text-break">
-      Error: Error thrown from problem child
-    </p>
-    <p class="text-muted d-inline-block">
-      This page will auto refresh in 60s
-      <span
-        class="progress bg-secondary mx-auto"
-        style="height: 2px;"
-      >
+          <path
+            d="M480-16c6.9 0 13 4.4 15.2 10.9l13.5 40.4 40.4 13.5C555.6 51 560 57.1 560 64s-4.4 13-10.9 15.2l-40.4 13.5-13.5 40.4C493 139.6 486.9 144 480 144s-13-4.4-15.2-10.9l-13.5-40.4-40.4-13.5C404.4 77 400 70.9 400 64s4.4-13 10.9-15.2l40.4-13.5 13.5-40.4C467-11.6 473.1-16 480-16zM321.4 97.4c12.5-12.5 32.8-12.5 45.3 0l80 80c12.5 12.5 12.5 32.8 0 45.3l-10.9 10.9c7.9 22 12.2 45.7 12.2 70.5 0 114.9-93.1 208-208 208S32 418.9 32 304 125.1 96 240 96c24.7 0 48.5 4.3 70.5 12.3l10.9-10.9zM144 304c0-53 43-96 96-96 13.3 0 24-10.7 24-24s-10.7-24-24-24c-79.5 0-144 64.5-144 144 0 13.3 10.7 24 24 24s24-10.7 24-24z"
+            fill="currentColor"
+          />
+        </svg>
         <span
-          class="progress-bar bg-info"
-          role="progressbar"
-          style="width: 100%;"
-          aria-valuenow="100"
-          aria-valuemin="0"
-          aria-valuemax="100"
+          class="text-muted"
         >
+          Internal error
         </span>
-      </span>
-    </p>
+      </h1>
+      <p
+        class="lead text-white bg-secondary p-3 rounded text-wrap text-break"
+      >
+        Error: Error thrown from problem child
+      </p>
+      <p
+        class="text-muted d-inline-block"
+      >
+        This page will auto refresh in 60s
+        <span
+          class="progress bg-secondary mx-auto"
+          style="height: 2px;"
+        >
+          <span
+            aria-valuemax="100"
+            aria-valuemin="0"
+            aria-valuenow="100"
+            class="progress-bar bg-info"
+            role="progressbar"
+            style="width: 100%;"
+          />
+        </span>
+      </p>
+    </div>
   </div>
-</div>
-"
+</DocumentFragment>
 `;

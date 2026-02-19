@@ -1,6 +1,4 @@
-import { mount } from "enzyme";
-
-import toDiffableHtml from "diffable-html";
+import { render, screen } from "@testing-library/react";
 
 import { MockSilence } from "__fixtures__/Alerts";
 import { AlertStore } from "Stores/AlertStore";
@@ -24,7 +22,7 @@ describe("<RenderSilence />", () => {
   });
 
   it("renders fallback text if silence is not present in AlertStore", () => {
-    const tree = mount(
+    const { asFragment } = render(
       <RenderSilence
         alertStore={alertStore}
         silenceFormStore={silenceFormStore}
@@ -33,8 +31,8 @@ describe("<RenderSilence />", () => {
         silenceID="1234567890"
       />,
     );
-    expect(tree.text()).toBe("Silenced by 1234567890");
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    expect(screen.getByText("Silenced by 1234567890")).toBeInTheDocument();
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it("renders ManagedSilence if silence is present in AlertStore", () => {
@@ -42,7 +40,7 @@ describe("<RenderSilence />", () => {
 
     alertStore.data.setSilences({ fakeCluster: { [silence.id]: silence } });
 
-    const tree = mount(
+    const { asFragment, container } = render(
       <RenderSilence
         alertStore={alertStore}
         silenceFormStore={silenceFormStore}
@@ -51,9 +49,8 @@ describe("<RenderSilence />", () => {
         silenceID={silence.id}
       />,
     );
-    expect(tree.find("ManagedSilence")).toHaveLength(1);
-    expect(tree.text()).toMatch(/Mocked Silence/);
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    expect(container.innerHTML).toMatch(/Mocked Silence/);
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it("re-render when silence was removed AlertStore is a no-op", () => {
@@ -61,7 +58,7 @@ describe("<RenderSilence />", () => {
 
     alertStore.data.setSilences({ fakeCluster: { [silence.id]: silence } });
 
-    const tree = mount(
+    const { container, rerender } = render(
       <RenderSilence
         alertStore={alertStore}
         silenceFormStore={silenceFormStore}
@@ -70,18 +67,24 @@ describe("<RenderSilence />", () => {
         silenceID={silence.id}
       />,
     );
-    expect(tree.find("ManagedSilence")).toHaveLength(1);
-    const snapshot = toDiffableHtml(tree.html());
+    const snapshot = container.innerHTML;
 
     alertStore.data.setSilences({});
 
-    tree.setProps({});
-    expect(tree.find("ManagedSilence")).toHaveLength(1);
-    expect(toDiffableHtml(tree.html())).toBe(snapshot);
+    rerender(
+      <RenderSilence
+        alertStore={alertStore}
+        silenceFormStore={silenceFormStore}
+        afterUpdate={jest.fn()}
+        cluster="fakeCluster"
+        silenceID={silence.id}
+      />,
+    );
+    expect(container.innerHTML).toBe(snapshot);
   });
 
   it("re-render when silence ID was changed updates it", () => {
-    const tree = mount(
+    const { rerender } = render(
       <RenderSilence
         alertStore={alertStore}
         silenceFormStore={silenceFormStore}
@@ -90,14 +93,22 @@ describe("<RenderSilence />", () => {
         silenceID="silence1"
       />,
     );
-    expect(tree.text()).toBe("Silenced by silence1");
+    expect(screen.getByText("Silenced by silence1")).toBeInTheDocument();
 
-    tree.setProps({ silenceID: "silence2" });
-    expect(tree.text()).toBe("Silenced by silence2");
+    rerender(
+      <RenderSilence
+        alertStore={alertStore}
+        silenceFormStore={silenceFormStore}
+        afterUpdate={jest.fn()}
+        cluster="fakeCluster"
+        silenceID="silence2"
+      />,
+    );
+    expect(screen.getByText("Silenced by silence2")).toBeInTheDocument();
   });
 
   it("re-render when cluster name was changed updates it", () => {
-    const tree = mount(
+    const { rerender } = render(
       <RenderSilence
         alertStore={alertStore}
         silenceFormStore={silenceFormStore}
@@ -106,9 +117,17 @@ describe("<RenderSilence />", () => {
         silenceID="1234567890"
       />,
     );
-    expect(tree.text()).toBe("Silenced by 1234567890");
+    expect(screen.getByText("Silenced by 1234567890")).toBeInTheDocument();
 
-    tree.setProps({ cluster: "cluster2" });
-    expect(tree.text()).toBe("Silenced by 1234567890");
+    rerender(
+      <RenderSilence
+        alertStore={alertStore}
+        silenceFormStore={silenceFormStore}
+        afterUpdate={jest.fn()}
+        cluster="cluster2"
+        silenceID="1234567890"
+      />,
+    );
+    expect(screen.getByText("Silenced by 1234567890")).toBeInTheDocument();
   });
 });

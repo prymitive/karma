@@ -1,6 +1,6 @@
 import { act } from "react-dom/test-utils";
 
-import { mount } from "enzyme";
+import { render, fireEvent } from "@testing-library/react";
 
 import copy from "copy-to-clipboard";
 
@@ -100,8 +100,8 @@ beforeEach(() => {
   alertStore.data.setUpstreams(generateUpstreams());
 });
 
-const MountedAlertMenu = (group: APIAlertGroupT) => {
-  return mount(
+const renderAlertMenu = (group: APIAlertGroupT) => {
+  return render(
     <AlertMenu
       grid={grid}
       group={group}
@@ -115,65 +115,64 @@ const MountedAlertMenu = (group: APIAlertGroupT) => {
 
 describe("<AlertMenu />", () => {
   it("menu content is hidden by default", () => {
-    const tree = MountedAlertMenu(group);
-    expect(tree.find("div.dropdown-menu")).toHaveLength(0);
+    const { container } = renderAlertMenu(group);
+    expect(container.querySelector("div.dropdown-menu")).toBeNull();
     expect(MockSetIsMenuOpen).not.toHaveBeenCalled();
   });
 
   it("clicking toggle renders menu content", async () => {
     const promise = Promise.resolve();
-    const tree = MountedAlertMenu(group);
-    const toggle = tree.find("span.cursor-pointer");
-    toggle.simulate("click");
+    const { container } = renderAlertMenu(group);
+    const toggle = container.querySelector("span.cursor-pointer");
+    fireEvent.click(toggle!);
     expect(MockSetIsMenuOpen).toHaveBeenCalledTimes(1);
-    expect(tree.find("div.dropdown-menu")).toHaveLength(1);
+    expect(container.querySelector("div.dropdown-menu")).toBeInTheDocument();
     await act(() => promise);
   });
 
   it("clicking toggle twice hides menu content", async () => {
     const promise = Promise.resolve();
-    const tree = MountedAlertMenu(group);
-    const toggle = tree.find("span.cursor-pointer");
+    const { container } = renderAlertMenu(group);
+    const toggle = container.querySelector("span.cursor-pointer");
 
-    toggle.simulate("click");
+    fireEvent.click(toggle!);
     act(() => {
       jest.runOnlyPendingTimers();
     });
     expect(MockSetIsMenuOpen).toHaveBeenCalledTimes(1);
-    expect(tree.find("div.dropdown-menu")).toHaveLength(1);
+    expect(container.querySelector("div.dropdown-menu")).toBeInTheDocument();
 
-    toggle.simulate("click");
+    fireEvent.click(toggle!);
     act(() => {
       jest.runOnlyPendingTimers();
     });
-    tree.update();
     expect(MockSetIsMenuOpen).toHaveBeenCalledTimes(2);
-    expect(tree.find("div.dropdown-menu")).toHaveLength(0);
+    expect(container.querySelector("div.dropdown-menu")).toBeNull();
     await act(() => promise);
   });
 
   it("clicking menu item hides menu content", async () => {
     const promise = Promise.resolve();
-    const tree = MountedAlertMenu(group);
-    const toggle = tree.find("span.cursor-pointer");
+    const { container } = renderAlertMenu(group);
+    const toggle = container.querySelector("span.cursor-pointer");
 
-    toggle.simulate("click");
+    fireEvent.click(toggle!);
     expect(MockSetIsMenuOpen).toHaveBeenCalledTimes(1);
-    expect(tree.find("div.dropdown-menu")).toHaveLength(1);
+    expect(container.querySelector("div.dropdown-menu")).toBeInTheDocument();
 
-    tree.find("a.dropdown-item").at(0).simulate("click");
+    const menuItem = container.querySelector("a.dropdown-item");
+    fireEvent.click(menuItem!);
     act(() => {
       jest.runOnlyPendingTimers();
     });
-    tree.update();
     expect(MockSetIsMenuOpen).toHaveBeenCalledTimes(2);
-    expect(tree.find("div.dropdown-menu")).toHaveLength(0);
+    expect(container.querySelector("div.dropdown-menu")).toBeNull();
     await act(() => promise);
   });
 });
 
-const MountedMenuContent = (group: APIAlertGroupT) => {
-  return mount(
+const renderMenuContent = (group: APIAlertGroupT) => {
+  return render(
     <MenuContent
       x={0}
       y={0}
@@ -191,9 +190,9 @@ const MountedMenuContent = (group: APIAlertGroupT) => {
 describe("<MenuContent />", () => {
   it("clicking on 'Silence' icon opens the silence form modal", () => {
     group.alertmanagerCount = { am1: 1, ro: 1 };
-    const tree = MountedMenuContent(group);
-    const button = tree.find(".dropdown-item").at(2);
-    button.simulate("click");
+    const { container } = renderMenuContent(group);
+    const buttons = container.querySelectorAll(".dropdown-item");
+    fireEvent.click(buttons[2]);
     expect(silenceFormStore.toggle.visible).toBe(true);
     expect(silenceFormStore.data.alertmanagers).toMatchObject([
       { label: "am1", value: ["am1"] },
@@ -205,17 +204,19 @@ describe("<MenuContent />", () => {
     upstreams.instances[0].readonly = true;
     upstreams.instances[2].readonly = true;
     alertStore.data.setUpstreams(upstreams);
-    const tree = MountedMenuContent(group);
-    const button = tree.find(".dropdown-item").at(2);
-    expect(button.hasClass("disabled")).toBe(true);
-    button.simulate("click");
+    const { container } = renderMenuContent(group);
+    const buttons = container.querySelectorAll(".dropdown-item");
+    expect(buttons[2].classList.contains("disabled")).toBe(true);
+    fireEvent.click(buttons[2]);
     expect(silenceFormStore.toggle.visible).toBe(false);
   });
 
   it("source link points at alert source", () => {
-    const tree = MountedMenuContent(group);
-    const link = tree.find("a.dropdown-item[href='localhost/graph']");
-    expect(link.text()).toBe("default");
+    const { container } = renderMenuContent(group);
+    const link = container.querySelector(
+      "a.dropdown-item[href='localhost/graph']",
+    );
+    expect(link?.textContent).toBe("default");
   });
 
   it("renders action annotations when present", () => {
@@ -276,34 +277,30 @@ describe("<MenuContent />", () => {
       {},
     );
 
-    const tree = MountedMenuContent(group);
-    expect(tree.find("a.dropdown-item")).toHaveLength(3);
+    const { container } = renderMenuContent(group);
+    expect(container.querySelectorAll("a.dropdown-item")).toHaveLength(3);
 
-    const link1 = tree.find("a.dropdown-item[href='linkAction']");
-    expect(link1.text()).toBe("linkAction");
+    const link1 = container.querySelector("a.dropdown-item[href='linkAction']");
+    expect(link1?.textContent).toBe("linkAction");
 
-    const link2 = tree.find("a.dropdown-item[href='linkActionShared']");
-    expect(link2.text()).toBe("linkActionShared");
-
-    expect(tree.find("a.dropdown-item[href='nonLinkNonAction']")).toHaveLength(
-      0,
+    const link2 = container.querySelector(
+      "a.dropdown-item[href='linkActionShared']",
     );
-    expect(tree.find("a.dropdown-item[href='nonLinkNonAction']")).toHaveLength(
-      0,
-    );
+    expect(link2?.textContent).toBe("linkActionShared");
+
     expect(
-      tree.find("a.dropdown-item[href='nonLinkNonActionShared']"),
-    ).toHaveLength(0);
+      container.querySelector("a.dropdown-item[href='nonLinkNonAction']"),
+    ).toBeNull();
     expect(
-      tree.find("a.dropdown-item[href='nonLinkNonActionShared']"),
-    ).toHaveLength(0);
+      container.querySelector("a.dropdown-item[href='nonLinkNonActionShared']"),
+    ).toBeNull();
   });
 
   it("clicking on 'Copy' icon copies alert data to clipboard", async () => {
     group.alertmanagerCount = { am1: 1, ro: 1 };
-    const tree = MountedMenuContent(group);
-    const button = tree.find(".dropdown-item").at(1);
-    button.simulate("click");
+    const { container } = renderMenuContent(group);
+    const buttons = container.querySelectorAll(".dropdown-item");
+    fireEvent.click(buttons[1]);
     expect(copy).toBeCalledWith(JSON.stringify(alertToJSON(group, alert)));
   });
 });

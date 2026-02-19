@@ -1,12 +1,10 @@
 import { act } from "react-dom/test-utils";
 
-import { mount } from "enzyme";
+import { render } from "@testing-library/react";
 
 import fetchMock from "fetch-mock";
 
 import { useInView } from "react-intersection-observer";
-
-import toDiffableHtml from "diffable-html";
 
 import { MockAlertGroup, MockAlert } from "__fixtures__/Alerts";
 import {
@@ -97,7 +95,9 @@ describe("<AlertHistory />", () => {
     grid.labelName = "";
     grid.labelValue = "";
     MockAlerts(3);
-    const tree = mount(<AlertHistory group={group} grid={grid}></AlertHistory>);
+    const { unmount } = render(
+      <AlertHistory group={group} grid={grid}></AlertHistory>,
+    );
     await act(async () => {
       await fetchMock.flush(true);
     });
@@ -111,7 +111,7 @@ describe("<AlertHistory />", () => {
         labels: { alertname: "Fake Alert", groupName: "fakeGroup" },
       }),
     );
-    tree.unmount();
+    unmount();
   });
 
   it("send a correct payload with non-empty grid", async () => {
@@ -128,7 +128,9 @@ describe("<AlertHistory />", () => {
     );
 
     MockAlerts(3);
-    const tree = mount(<AlertHistory group={group} grid={grid}></AlertHistory>);
+    const { unmount } = render(
+      <AlertHistory group={group} grid={grid}></AlertHistory>,
+    );
     await act(async () => {
       await fetchMock.flush(true);
     });
@@ -142,7 +144,7 @@ describe("<AlertHistory />", () => {
         labels: { alertname: "Fake Alert", groupName: "fakeGroup", foo: "bar" },
       }),
     );
-    tree.unmount();
+    unmount();
   });
 
   it("send a correct payload with @cluster grid", async () => {
@@ -161,7 +163,9 @@ describe("<AlertHistory />", () => {
     grid.labelName = "@cluster";
     grid.labelValue = "prod";
     MockAlerts(3);
-    const tree = mount(<AlertHistory group={group} grid={grid}></AlertHistory>);
+    const { unmount } = render(
+      <AlertHistory group={group} grid={grid}></AlertHistory>,
+    );
     await act(async () => {
       await fetchMock.flush(true);
     });
@@ -175,7 +179,7 @@ describe("<AlertHistory />", () => {
         labels: { alertname: "Fake Alert", groupName: "fakeGroup" },
       }),
     );
-    tree.unmount();
+    unmount();
   });
 
   it("send a correct payload with shared labels", async () => {
@@ -196,7 +200,9 @@ describe("<AlertHistory />", () => {
       { name: "shared1", value: "value1" },
       { name: "shared2", value: "value2" },
     ]);
-    const tree = mount(<AlertHistory group={group} grid={grid}></AlertHistory>);
+    const { unmount } = render(
+      <AlertHistory group={group} grid={grid}></AlertHistory>,
+    );
     await act(async () => {
       await fetchMock.flush(true);
     });
@@ -216,7 +222,7 @@ describe("<AlertHistory />", () => {
         },
       }),
     );
-    tree.unmount();
+    unmount();
   });
 
   it("matches snapshot with empty response", async () => {
@@ -233,13 +239,15 @@ describe("<AlertHistory />", () => {
     );
 
     MockAlerts(3);
-    const tree = mount(<AlertHistory group={group} grid={grid}></AlertHistory>);
+    const { unmount, asFragment } = render(
+      <AlertHistory group={group} grid={grid}></AlertHistory>,
+    );
     await act(async () => {
       await fetchMock.flush(true);
     });
     expect(fetchMock.calls()).toHaveLength(1);
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
-    tree.unmount();
+    expect(asFragment()).toMatchSnapshot();
+    unmount();
   });
 
   it("matches snapshot with rainbow response", async () => {
@@ -256,13 +264,15 @@ describe("<AlertHistory />", () => {
     );
 
     MockAlerts(3);
-    const tree = mount(<AlertHistory group={group} grid={grid}></AlertHistory>);
+    const { unmount, asFragment } = render(
+      <AlertHistory group={group} grid={grid}></AlertHistory>,
+    );
     await act(async () => {
       await fetchMock.flush(true);
     });
     expect(fetchMock.calls()).toHaveLength(1);
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
-    tree.unmount();
+    expect(asFragment()).toMatchSnapshot();
+    unmount();
   });
 
   it("doesn't fetch when not in view", async () => {
@@ -284,11 +294,13 @@ describe("<AlertHistory />", () => {
     ] as any);
 
     MockAlerts(3);
-    const tree = mount(<AlertHistory group={group} grid={grid}></AlertHistory>);
+    const { unmount } = render(
+      <AlertHistory group={group} grid={grid}></AlertHistory>,
+    );
     await act(async () => {
       await fetchMock.flush(true);
     });
-    tree.unmount();
+    unmount();
 
     expect(fetchMock.calls()).toHaveLength(0);
   });
@@ -313,7 +325,9 @@ describe("<AlertHistory />", () => {
     ] as any);
 
     MockAlerts(3);
-    const tree = mount(<AlertHistory group={group} grid={grid}></AlertHistory>);
+    const { unmount } = render(
+      <AlertHistory group={group} grid={grid}></AlertHistory>,
+    );
     await act(async () => {
       await fetchMock.flush(true);
     });
@@ -331,7 +345,7 @@ describe("<AlertHistory />", () => {
     });
     expect(fetchMock.calls()).toHaveLength(2);
 
-    tree.unmount();
+    unmount();
   });
 
   it("handles reponses with errors", async () => {
@@ -348,13 +362,15 @@ describe("<AlertHistory />", () => {
     );
 
     MockAlerts(3);
-    const tree = mount(<AlertHistory group={group} grid={grid}></AlertHistory>);
+    const { unmount, asFragment } = render(
+      <AlertHistory group={group} grid={grid}></AlertHistory>,
+    );
     await act(async () => {
       await fetchMock.flush(true);
     });
     expect(fetchMock.calls()).toHaveLength(1);
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
-    tree.unmount();
+    expect(asFragment()).toMatchSnapshot();
+    unmount();
   });
 
   it("handles fetch errors", async () => {
@@ -371,13 +387,15 @@ describe("<AlertHistory />", () => {
     );
 
     MockAlerts(3);
-    const tree = mount(<AlertHistory group={group} grid={grid}></AlertHistory>);
+    const { unmount, asFragment } = render(
+      <AlertHistory group={group} grid={grid}></AlertHistory>,
+    );
     await act(async () => {
       await fetchMock.flush(true);
     });
     expect(fetchMock.calls()).toHaveLength(1);
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
-    tree.unmount();
+    expect(asFragment()).toMatchSnapshot();
+    unmount();
   });
 
   interface testCasesT {
@@ -518,15 +536,18 @@ describe("<AlertHistory />", () => {
         },
       );
 
-      const tree = mount(<AlertHistory group={g} grid={gr}></AlertHistory>);
+      const { container, unmount } = render(
+        <AlertHistory group={g} grid={gr}></AlertHistory>,
+      );
       await act(async () => {
         await fetchMock.flush(true);
       });
-      tree.update();
 
-      const rects = tree.find("rect").map((r) => r.props().className);
+      const rects = Array.from(container.querySelectorAll("rect")).map(
+        (r) => r.className.baseVal,
+      );
       expect(rects).toStrictEqual(testCase.values);
-      tree.unmount();
+      unmount();
     });
   }
 });

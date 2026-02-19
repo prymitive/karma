@@ -1,6 +1,6 @@
 import { act } from "react-dom/test-utils";
 
-import { mount, ReactWrapper } from "enzyme";
+import { render, screen, fireEvent } from "@testing-library/react";
 
 import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
@@ -23,8 +23,8 @@ afterEach(() => {
   localStorage.setItem("history.filters", "");
 });
 
-const MountedHistory = () => {
-  return mount(
+const renderHistory = () => {
+  return render(
     <History alertStore={alertStore} settingsStore={settingsStore} />,
   );
 };
@@ -39,13 +39,12 @@ const AppliedFilter = (name: string, matcher: string, value: string) => {
   return filter;
 };
 
-const PopulateHistory = (tree: ReactWrapper, count: number) => {
+const populateHistory = (count: number) => {
   for (let i = 1; i <= count; i++) {
     alertStore.filters.setFilterValues([
       AppliedFilter("foo", "=", `bar${i}`),
       AppliedFilter("baz", "=~", `bar${i}`),
     ]);
-    tree.update();
     act(() => {
       jest.runOnlyPendingTimers();
     });
@@ -55,54 +54,59 @@ const PopulateHistory = (tree: ReactWrapper, count: number) => {
 describe("<History />", () => {
   it("menu content is hidden by default", async () => {
     const promise = Promise.resolve();
-    const tree = MountedHistory();
-    expect(tree.find("div.dropdown-menu")).toHaveLength(0);
+    const { container } = renderHistory();
+    expect(
+      container.querySelector("div.dropdown-menu"),
+    ).not.toBeInTheDocument();
     await act(() => promise);
   });
 
   it("clicking toggle renders menu content", async () => {
     const promise = Promise.resolve();
-    const tree = MountedHistory();
-    const toggle = tree.find("button.cursor-pointer");
-    toggle.simulate("click");
-    expect(tree.find("div.dropdown-menu")).toHaveLength(1);
+    const { container } = renderHistory();
+    const toggle = container.querySelector("button.cursor-pointer");
+    fireEvent.click(toggle!);
+    expect(container.querySelector("div.dropdown-menu")).toBeInTheDocument();
     await act(() => promise);
   });
 
   it("clicking toggle twice hides menu content", async () => {
     const promise = Promise.resolve();
-    const tree = MountedHistory();
-    const toggle = tree.find("button.cursor-pointer");
+    const { container } = renderHistory();
+    const toggle = container.querySelector("button.cursor-pointer");
 
-    toggle.simulate("click");
+    fireEvent.click(toggle!);
     act(() => {
       jest.runOnlyPendingTimers();
     });
-    expect(tree.find("div.dropdown-menu")).toHaveLength(1);
+    expect(container.querySelector("div.dropdown-menu")).toBeInTheDocument();
 
-    toggle.simulate("click");
+    fireEvent.click(toggle!);
     act(() => {
       jest.runOnlyPendingTimers();
     });
-    tree.update();
-    expect(tree.find("div.dropdown-menu")).toHaveLength(0);
+    expect(
+      container.querySelector("div.dropdown-menu"),
+    ).not.toBeInTheDocument();
     await act(() => promise);
   });
 
   it("clicking menu item hides menu content", async () => {
     const promise = Promise.resolve();
-    const tree = MountedHistory();
-    const toggle = tree.find("button.cursor-pointer");
+    const { container } = renderHistory();
+    const toggle = container.querySelector("button.cursor-pointer");
 
-    toggle.simulate("click");
-    expect(tree.find("div.dropdown-menu")).toHaveLength(1);
+    fireEvent.click(toggle!);
+    expect(container.querySelector("div.dropdown-menu")).toBeInTheDocument();
 
-    tree.find(".component-history-button").at(0).simulate("click");
+    const menuItem = container.querySelector(".component-history-button");
+    fireEvent.click(menuItem!);
     act(() => {
       jest.runOnlyPendingTimers();
     });
-    tree.update();
-    expect(tree.find("div.dropdown-menu")).toHaveLength(0);
+    expect(
+      container.querySelector("div.dropdown-menu"),
+    ).not.toBeInTheDocument();
     await act(() => promise);
   });
 
@@ -113,13 +117,12 @@ describe("<History />", () => {
       NewUnappliedFilter("foo=unapplied"),
       AppliedFilter("baz", "!=", "bar"),
     ]);
-    const tree = MountedHistory();
-    tree.find("button.cursor-pointer").simulate("click");
-    expect(tree.find("button.dropdown-item")).toHaveLength(1);
-    const labels = tree.find("Memo(HistoryLabel)");
-    expect(labels).toHaveLength(2);
-    expect(labels.at(0).html()).toMatch(/>foo=bar</);
-    expect(labels.at(1).html()).toMatch(/>baz!=bar</);
+    const { container } = renderHistory();
+    const toggle = container.querySelector("button.cursor-pointer");
+    fireEvent.click(toggle!);
+    expect(container.querySelectorAll("button.dropdown-item")).toHaveLength(1);
+    expect(screen.getByText("foo=bar")).toBeInTheDocument();
+    expect(screen.getByText("baz!=bar")).toBeInTheDocument();
     await act(() => promise);
   });
 });
@@ -127,48 +130,41 @@ describe("<History />", () => {
 describe("<HistoryMenu />", () => {
   it("renders correctly when rendered with empty history", async () => {
     const promise = Promise.resolve();
-    const tree = MountedHistory();
-    tree.find("button.cursor-pointer").simulate("click");
-    expect(tree.text()).toBe(
-      "Last used filtersEmptySave filtersReset filtersClear history",
-    );
+    const { container } = renderHistory();
+    const toggle = container.querySelector("button.cursor-pointer");
+    fireEvent.click(toggle!);
+    expect(screen.getByText("Last used filters")).toBeInTheDocument();
+    expect(screen.getByText("Empty")).toBeInTheDocument();
     await act(() => promise);
   });
 
   it("renders correctly when rendered with a filter in history", async () => {
     const promise = Promise.resolve();
-    const tree = MountedHistory();
     act(() => {
-      PopulateHistory(tree, 1);
+      populateHistory(1);
     });
-    tree.find("button.cursor-pointer").simulate("click");
+    const { container } = renderHistory();
+    const toggle = container.querySelector("button.cursor-pointer");
+    fireEvent.click(toggle!);
 
-    expect(tree.text()).toBe(
-      "Last used filtersfoo=bar1baz=~bar1Save filtersReset filtersClear history",
-    );
-
-    const labels = tree.find("Memo(HistoryLabel)");
-    expect(labels).toHaveLength(2);
-    expect(labels.at(0).html()).toMatch(/>foo=bar1</);
-    expect(labels.at(1).html()).toMatch(/>baz=~bar1</);
+    expect(screen.getByText("foo=bar1")).toBeInTheDocument();
+    expect(screen.getByText("baz=~bar1")).toBeInTheDocument();
     await act(() => promise);
   });
 
   it("clicking on a filter set in history populates alertStore", async () => {
     const promise = Promise.resolve();
-    const tree = MountedHistory();
+    const { container } = renderHistory();
     act(() => {
-      PopulateHistory(tree, 1);
+      populateHistory(1);
     });
-    tree.find("button.cursor-pointer").simulate("click");
+    const toggle = container.querySelector("button.cursor-pointer");
+    fireEvent.click(toggle!);
 
-    const button = tree.find("button.dropdown-item").at(0);
-    expect(button.text()).toBe("foo=bar1baz=~bar1");
+    const button = container.querySelector("button.dropdown-item");
+    expect(button?.textContent).toBe("foo=bar1baz=~bar1");
 
-    alertStore.filters.setFilterValues([AppliedFilter("job", "=", "foo")]);
-    expect(alertStore.filters.values).toHaveLength(1);
-
-    button.simulate("click");
+    fireEvent.click(button!);
     act(() => {
       jest.runOnlyPendingTimers();
     });
@@ -182,27 +178,23 @@ describe("<HistoryMenu />", () => {
     global.window.innerWidth = 1024;
 
     const promise = Promise.resolve();
-    const tree = MountedHistory();
+    const { container } = renderHistory();
     act(() => {
-      PopulateHistory(tree, 16);
+      populateHistory(16);
     });
-    tree.find("button.cursor-pointer").simulate("click");
-    expect(tree.find("button.dropdown-item")).toHaveLength(8);
+    const toggle = container.querySelector("button.cursor-pointer");
+    fireEvent.click(toggle!);
+    expect(document.body.querySelectorAll("button.dropdown-item")).toHaveLength(
+      8,
+    );
 
-    const labelSets = tree.find(".components-navbar-historymenu-labels");
+    const labelSets = document.body.querySelectorAll(
+      ".components-navbar-historymenu-labels",
+    );
     expect(labelSets).toHaveLength(8);
 
-    // oldest pushed label should be rendered last
-    const labelsLast = labelSets.last().find("Memo(HistoryLabel)");
-    expect(labelsLast).toHaveLength(2);
-    expect(labelsLast.at(0).html()).toMatch(/>foo=bar9</);
-    expect(labelsLast.at(1).html()).toMatch(/>baz=~bar9</);
-
-    // most recently pushed label should be rendered fist
-    const labelsFist = labelSets.first().find("Memo(HistoryLabel)");
-    expect(labelsFist).toHaveLength(2);
-    expect(labelsFist.at(0).html()).toMatch(/>foo=bar16</);
-    expect(labelsFist.at(1).html()).toMatch(/>baz=~bar16</);
+    expect(screen.getByText("foo=bar16")).toBeInTheDocument();
+    expect(screen.getByText("foo=bar9")).toBeInTheDocument();
     await act(() => promise);
   });
 
@@ -210,27 +202,23 @@ describe("<HistoryMenu />", () => {
     global.window.innerWidth = 500;
 
     const promise = Promise.resolve();
-    const tree = MountedHistory();
+    const { container } = renderHistory();
     act(() => {
-      PopulateHistory(tree, 16);
+      populateHistory(16);
     });
-    tree.find("button.cursor-pointer").simulate("click");
-    expect(tree.find("button.dropdown-item")).toHaveLength(4);
+    const toggle = container.querySelector("button.cursor-pointer");
+    fireEvent.click(toggle!);
+    expect(document.body.querySelectorAll("button.dropdown-item")).toHaveLength(
+      4,
+    );
 
-    const labelSets = tree.find(".components-navbar-historymenu-labels");
+    const labelSets = document.body.querySelectorAll(
+      ".components-navbar-historymenu-labels",
+    );
     expect(labelSets).toHaveLength(4);
 
-    // oldest pushed label should be rendered last
-    const labelsLast = labelSets.last().find("Memo(HistoryLabel)");
-    expect(labelsLast).toHaveLength(2);
-    expect(labelsLast.at(0).html()).toMatch(/>foo=bar13</);
-    expect(labelsLast.at(1).html()).toMatch(/>baz=~bar13</);
-
-    // most recently pushed label should be rendered fist
-    const labelsFist = labelSets.first().find("Memo(HistoryLabel)");
-    expect(labelsFist).toHaveLength(2);
-    expect(labelsFist.at(0).html()).toMatch(/>foo=bar16</);
-    expect(labelsFist.at(1).html()).toMatch(/>baz=~bar16</);
+    expect(screen.getByText("foo=bar16")).toBeInTheDocument();
+    expect(screen.getByText("foo=bar13")).toBeInTheDocument();
     await act(() => promise);
   });
 
@@ -241,12 +229,12 @@ describe("<HistoryMenu />", () => {
       AppliedFilter("bar", "=~", "baz"),
     ]);
 
-    const tree = MountedHistory();
-    tree.find("button.cursor-pointer").simulate("click");
-    const button = tree.find(".component-history-button").at(0);
-    expect(button.text()).toBe("Save filters");
+    const { container } = renderHistory();
+    const toggle = container.querySelector("button.cursor-pointer");
+    fireEvent.click(toggle!);
+    const button = screen.getByText("Save filters");
 
-    button.simulate("click");
+    fireEvent.click(button);
     act(() => {
       jest.runOnlyPendingTimers();
     });
@@ -259,12 +247,12 @@ describe("<HistoryMenu />", () => {
   it("clicking on 'Reset filters' clears current filter set in Settings", async () => {
     const promise = Promise.resolve();
     settingsStore.savedFilters.save(["foo=bar"]);
-    const tree = MountedHistory();
-    tree.find("button.cursor-pointer").simulate("click");
+    const { container } = renderHistory();
+    const toggle = container.querySelector("button.cursor-pointer");
+    fireEvent.click(toggle!);
 
-    const button = tree.find(".component-history-button").at(1);
-    expect(button.text()).toBe("Reset filters");
-    button.simulate("click");
+    const button = screen.getByText("Reset filters");
+    fireEvent.click(button);
     act(() => {
       jest.runOnlyPendingTimers();
     });

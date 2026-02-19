@@ -1,43 +1,49 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<UpgradeNeeded /> matches snapshot 1`] = `
-"
-<h1 class="display-1 text-placeholder screen-center">
-  <div class="container-fluid text-center">
-    <div class="shake-slow shake-constant mb-4">
-      <svg
-        data-prefix="fas"
-        data-icon="rocket"
-        class="svg-inline--fa fa-rocket screen-center-icon-big text-success"
-        role="img"
-        viewbox="0 0 512 512"
-        aria-hidden="true"
+<DocumentFragment>
+  <h1
+    class="display-1 text-placeholder screen-center components-animation-fade-appear components-animation-fade-appear-active"
+  >
+    <div
+      class="container-fluid text-center"
+    >
+      <div
+        class="shake-slow shake-constant mb-4"
       >
-        <path
-          fill="currentColor"
-          d="M128 320L24.5 320c-24.9 0-40.2-27.1-27.4-48.5L50 183.3C58.7 168.8 74.3 160 91.2 160l95 0c76.1-128.9 189.6-135.4 265.5-124.3 12.8 1.9 22.8 11.9 24.6 24.6 11.1 75.9 4.6 189.4-124.3 265.5l0 95c0 16.9-8.8 32.5-23.3 41.2l-88.2 52.9c-21.3 12.8-48.5-2.6-48.5-27.4L192 384c0-35.3-28.7-64-64-64l-.1 0zM400 160a48 48 0 1 0 -96 0 48 48 0 1 0 96 0z"
+        <svg
+          aria-hidden="true"
+          class="svg-inline--fa fa-rocket screen-center-icon-big text-success"
+          data-icon="rocket"
+          data-prefix="fas"
+          role="img"
+          viewBox="0 0 512 512"
         >
-        </path>
-      </svg>
+          <path
+            d="M128 320L24.5 320c-24.9 0-40.2-27.1-27.4-48.5L50 183.3C58.7 168.8 74.3 160 91.2 160l95 0c76.1-128.9 189.6-135.4 265.5-124.3 12.8 1.9 22.8 11.9 24.6 24.6 11.1 75.9 4.6 189.4-124.3 265.5l0 95c0 16.9-8.8 32.5-23.3 41.2l-88.2 52.9c-21.3 12.8-48.5-2.6-48.5-27.4L192 384c0-35.3-28.7-64-64-64l-.1 0zM400 160a48 48 0 1 0 -96 0 48 48 0 1 0 96 0z"
+            fill="currentColor"
+          />
+        </svg>
+      </div>
+      <p
+        class="lead text-muted"
+      >
+        <svg
+          aria-hidden="true"
+          class="svg-inline--fa fa-spinner fa-spin me-2"
+          data-icon="spinner"
+          data-prefix="fas"
+          role="img"
+          viewBox="0 0 512 512"
+        >
+          <path
+            d="M208 48a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm0 416a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zM48 208a48 48 0 1 1 0 96 48 48 0 1 1 0-96zm368 48a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zM75 369.1A48 48 0 1 1 142.9 437 48 48 0 1 1 75 369.1zM75 75A48 48 0 1 1 142.9 142.9 48 48 0 1 1 75 75zM437 369.1A48 48 0 1 1 369.1 437 48 48 0 1 1 437 369.1z"
+            fill="currentColor"
+          />
+        </svg>
+        Upgrading to a new version: 1.2.3
+      </p>
     </div>
-    <p class="lead text-muted">
-      <svg
-        data-prefix="fas"
-        data-icon="spinner"
-        class="svg-inline--fa fa-spinner fa-spin me-2"
-        role="img"
-        viewbox="0 0 512 512"
-        aria-hidden="true"
-      >
-        <path
-          fill="currentColor"
-          d="M208 48a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm0 416a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zM48 208a48 48 0 1 1 0 96 48 48 0 1 1 0-96zm368 48a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zM75 369.1A48 48 0 1 1 142.9 437 48 48 0 1 1 75 369.1zM75 75A48 48 0 1 1 142.9 142.9 48 48 0 1 1 75 75zM437 369.1A48 48 0 1 1 369.1 437 48 48 0 1 1 437 369.1z"
-        >
-        </path>
-      </svg>
-      Upgrading to a new version: 1.2.3
-    </p>
-  </div>
-</h1>
-"
+  </h1>
+</DocumentFragment>
 `;

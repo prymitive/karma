@@ -1,6 +1,6 @@
 import { act } from "react-dom/test-utils";
 
-import { mount } from "enzyme";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 
 import { AlertStore } from "Stores/AlertStore";
 import { InhibitedByModal } from ".";
@@ -17,96 +17,87 @@ afterEach(() => {
   document.body.className = "";
 });
 
+const renderInhibitedByModal = (fingerprints: string[]) => {
+  return render(
+    <InhibitedByModal alertStore={alertStore} fingerprints={fingerprints} />,
+  );
+};
+
 describe("<InhibitedByModal />", () => {
   it("renders a spinner placeholder while modal content is loading", () => {
-    const tree = mount(
-      <InhibitedByModal alertStore={alertStore} fingerprints={["foo"]} />,
-    );
-    const toggle = tree.find("span.badge.bg-light");
-    toggle.simulate("click");
-    expect(tree.find("InhibitedByModalContent")).toHaveLength(0);
-    expect(tree.find(".modal-content").find("svg.fa-spinner")).toHaveLength(1);
+    const { container } = renderInhibitedByModal(["foo"]);
+    const toggle = container.querySelector("span.badge.bg-light");
+    fireEvent.click(toggle!);
+    expect(
+      document.body.querySelector(".modal-content svg.fa-spinner"),
+    ).toBeInTheDocument();
   });
 
   it("renders modal content if fallback is not used", () => {
-    const tree = mount(
-      <InhibitedByModal alertStore={alertStore} fingerprints={["foo"]} />,
-    );
-    const toggle = tree.find("span.badge.bg-light");
-    toggle.simulate("click");
-    expect(tree.find(".modal-title").text()).toBe("Inhibiting alerts");
-    expect(tree.find(".modal-content").find("svg.fa-spinner")).toHaveLength(0);
+    const { container } = renderInhibitedByModal(["foo"]);
+    const toggle = container.querySelector("span.badge.bg-light");
+    fireEvent.click(toggle!);
+    expect(screen.getByText("Inhibiting alerts")).toBeInTheDocument();
   });
 
   it("handles multiple fingerprints", () => {
-    const tree = mount(
-      <InhibitedByModal
-        alertStore={alertStore}
-        fingerprints={["foo", "bar"]}
-      />,
-    );
-    const toggle = tree.find("span.badge.bg-light");
-    toggle.simulate("click");
-    expect(tree.find(".modal-title").text()).toBe("Inhibiting alerts");
-    expect(tree.find(".modal-content").find("svg.fa-spinner")).toHaveLength(0);
+    const { container } = renderInhibitedByModal(["foo", "bar"]);
+    const toggle = container.querySelector("span.badge.bg-light");
+    fireEvent.click(toggle!);
+    expect(screen.getByText("Inhibiting alerts")).toBeInTheDocument();
   });
 
-  it("hides the modal when toggle() is called twice", () => {
-    const tree = mount(
-      <InhibitedByModal alertStore={alertStore} fingerprints={["foo"]} />,
-    );
-    const toggle = tree.find("span.badge.bg-light");
+  it("hides the modal when toggle() is called twice", async () => {
+    const { container } = renderInhibitedByModal(["foo"]);
+    const toggle = container.querySelector("span.badge.bg-light");
 
-    toggle.simulate("click");
+    fireEvent.click(toggle!);
     act(() => {
       jest.runOnlyPendingTimers();
     });
-    tree.update();
-    expect(tree.find(".modal-title").text()).toBe("Inhibiting alerts");
+    expect(screen.getByText("Inhibiting alerts")).toBeInTheDocument();
 
-    toggle.simulate("click");
+    fireEvent.click(toggle!);
     act(() => {
       jest.runOnlyPendingTimers();
     });
-    tree.update();
-    expect(tree.find(".modal-title")).toHaveLength(0);
+    await waitFor(() => {
+      expect(screen.queryByText("Inhibiting alerts")).not.toBeInTheDocument();
+    });
   });
 
-  it("hides the modal when button.btn-close is clicked", () => {
-    const tree = mount(
-      <InhibitedByModal alertStore={alertStore} fingerprints={["foo"]} />,
-    );
-    const toggle = tree.find("span.badge.bg-light");
+  it("hides the modal when button.btn-close is clicked", async () => {
+    const { container } = renderInhibitedByModal(["foo"]);
+    const toggle = container.querySelector("span.badge.bg-light");
 
-    toggle.simulate("click");
-    expect(tree.find(".modal-title").text()).toBe("Inhibiting alerts");
+    fireEvent.click(toggle!);
+    expect(screen.getByText("Inhibiting alerts")).toBeInTheDocument();
 
-    tree.find("button.btn-close").simulate("click");
+    const closeBtn = document.body.querySelector("button.btn-close");
+    fireEvent.click(closeBtn!);
     act(() => {
       jest.runOnlyPendingTimers();
     });
-    tree.update();
-    expect(tree.find("InhibitedByModalContent")).toHaveLength(0);
+    await waitFor(() => {
+      expect(screen.queryByText("Inhibiting alerts")).not.toBeInTheDocument();
+    });
   });
 
   it("'modal-open' class is appended to body node when modal is visible", () => {
-    const tree = mount(
-      <InhibitedByModal alertStore={alertStore} fingerprints={["foo"]} />,
-    );
-    const toggle = tree.find("span.badge.bg-light");
-    toggle.simulate("click");
+    const { container } = renderInhibitedByModal(["foo"]);
+    const toggle = container.querySelector("span.badge.bg-light");
+    fireEvent.click(toggle!);
     expect(document.body.className.split(" ")).toContain("modal-open");
   });
 
   it("'modal-open' class is removed from body node after modal is hidden", () => {
-    const tree = mount(
-      <InhibitedByModal alertStore={alertStore} fingerprints={["foo"]} />,
-    );
+    const { container } = renderInhibitedByModal(["foo"]);
 
-    tree.find("span.badge.bg-light").simulate("click");
+    const toggle = container.querySelector("span.badge.bg-light");
+    fireEvent.click(toggle!);
     expect(document.body.className.split(" ")).toContain("modal-open");
 
-    tree.find("span.badge.bg-light").simulate("click");
+    fireEvent.click(toggle!);
     act(() => {
       jest.runOnlyPendingTimers();
     });
@@ -114,15 +105,13 @@ describe("<InhibitedByModal />", () => {
   });
 
   it("'modal-open' class is removed from body node after modal is unmounted", () => {
-    const tree = mount(
-      <InhibitedByModal alertStore={alertStore} fingerprints={["foo"]} />,
-    );
+    const { container, unmount } = renderInhibitedByModal(["foo"]);
 
-    const toggle = tree.find("span.badge.bg-light");
-    toggle.simulate("click");
+    const toggle = container.querySelector("span.badge.bg-light");
+    fireEvent.click(toggle!);
 
     act(() => {
-      tree.unmount();
+      unmount();
     });
     expect(document.body.className.split(" ")).not.toContain("modal-open");
   });

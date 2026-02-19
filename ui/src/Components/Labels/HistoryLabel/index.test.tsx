@@ -1,4 +1,4 @@
-import { shallow } from "enzyme";
+import { render, screen } from "@testing-library/react";
 
 import { AlertStore } from "Stores/AlertStore";
 
@@ -10,8 +10,8 @@ beforeEach(() => {
   alertStore = new AlertStore([]);
 });
 
-const ShallowHistoryLabel = (name: string, matcher: string, value: string) => {
-  return shallow(
+const renderHistoryLabel = (name: string, matcher: string, value: string) => {
+  return render(
     <HistoryLabel
       alertStore={alertStore}
       name={name}
@@ -23,15 +23,15 @@ const ShallowHistoryLabel = (name: string, matcher: string, value: string) => {
 
 describe("<HistoryLabel />", () => {
   it("renders name, matcher and value if all are set", () => {
-    const tree = ShallowHistoryLabel("foo", "=", "bar");
-    expect(tree.text()).toBe("foo=bar");
+    renderHistoryLabel("foo", "=", "bar");
+    expect(screen.getByText("foo=bar")).toBeInTheDocument();
   });
 
   it("renders only value if name is falsey", () => {
-    const tree = shallow(
+    render(
       <HistoryLabel alertStore={alertStore} name="" matcher="" value="bar" />,
     );
-    expect(tree.text()).toBe("bar");
+    expect(screen.getByText("bar")).toBeInTheDocument();
   });
 
   it("label with dark background color should have 'components-label-dark' class", () => {
@@ -44,10 +44,10 @@ describe("<HistoryLabel />", () => {
       },
       ...alertStore.data.colors,
     });
-    const tree = ShallowHistoryLabel("foo", "=", "bar").find(
-      ".components-label",
-    );
-    expect(tree.hasClass("components-label-dark")).toBe(true);
+    renderHistoryLabel("foo", "=", "bar");
+    expect(
+      screen.getByText("foo=bar").closest(".components-label"),
+    ).toHaveClass("components-label-dark");
   });
 
   it("label with bright background color should have 'components-label-bright' class", () => {
@@ -60,9 +60,9 @@ describe("<HistoryLabel />", () => {
       },
       ...alertStore.data.colors,
     });
-    const tree = ShallowHistoryLabel("foo", "=", "bar").find(
-      ".components-label",
-    );
-    expect(tree.hasClass("components-label-bright")).toBe(true);
+    renderHistoryLabel("foo", "=", "bar");
+    expect(
+      screen.getByText("foo=bar").closest(".components-label"),
+    ).toHaveClass("components-label-bright");
   });
 });

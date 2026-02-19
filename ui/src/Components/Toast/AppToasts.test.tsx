@@ -1,6 +1,4 @@
-import { mount } from "enzyme";
-
-import toDiffableHtml from "diffable-html";
+import { render, screen, fireEvent } from "@testing-library/react";
 
 import { AlertStore } from "Stores/AlertStore";
 import AppToasts from "./AppToasts";
@@ -59,20 +57,20 @@ const makeErrors = () => {
 describe("<AppToasts />", () => {
   it("doesn't render anything when alertStore.info.upgradeNeeded=true", () => {
     alertStore.info.setUpgradeNeeded(true);
-    const tree = mount(<AppToasts alertStore={alertStore} />);
-    expect(tree.html()).toBeNull();
+    const { container } = render(<AppToasts alertStore={alertStore} />);
+    expect(container.innerHTML).toBe("");
   });
 
   it("doesn't render anything when there are no notifications to show", () => {
-    const tree = mount(<AppToasts alertStore={alertStore} />);
-    expect(tree.html()).toBeNull();
+    const { container } = render(<AppToasts alertStore={alertStore} />);
+    expect(container.innerHTML).toBe("");
   });
 
   it("renders upstream error toasts for each unhealthy upstream", () => {
     makeErrors();
-    const tree = mount(<AppToasts alertStore={alertStore} />);
-    expect(tree.find("Toast")).toHaveLength(2);
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    const { asFragment } = render(<AppToasts alertStore={alertStore} />);
+    expect(document.body.querySelectorAll(".bg-toast")).toHaveLength(2);
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it("doesn't render upstream error toasts if not all instances are down", () => {
@@ -106,9 +104,9 @@ describe("<AppToasts />", () => {
       ],
       clusters: { am: ["am1", "am2"] },
     });
-    const tree = mount(<AppToasts alertStore={alertStore} />);
-    expect(tree.find("Toast")).toHaveLength(0);
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    const { asFragment } = render(<AppToasts alertStore={alertStore} />);
+    expect(document.body.querySelectorAll(".bg-toast")).toHaveLength(0);
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it("renders upstream error toasts if all instances are down", () => {
@@ -142,15 +140,15 @@ describe("<AppToasts />", () => {
       ],
       clusters: { am: ["am1", "am2"] },
     });
-    const tree = mount(<AppToasts alertStore={alertStore} />);
-    expect(tree.find("Toast")).toHaveLength(2);
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    const { asFragment } = render(<AppToasts alertStore={alertStore} />);
+    expect(document.body.querySelectorAll(".bg-toast")).toHaveLength(2);
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it("removes notifications when upstream recovers", () => {
     makeErrors();
-    const tree = mount(<AppToasts alertStore={alertStore} />);
-    expect(tree.find("Toast")).toHaveLength(2);
+    const { rerender } = render(<AppToasts alertStore={alertStore} />);
+    expect(document.body.querySelectorAll(".bg-toast")).toHaveLength(2);
 
     alertStore.data.setUpstreams({
       counters: { total: 3, healthy: 3, failed: 0 },
@@ -194,30 +192,37 @@ describe("<AppToasts />", () => {
       ],
       clusters: { am1: ["am1"], am2: ["am2"], am3: ["am3"] },
     });
-    tree.update();
-    expect(tree.find("Toast")).toHaveLength(0);
+    rerender(<AppToasts alertStore={alertStore} />);
+    expect(document.body.querySelectorAll(".bg-toast")).toHaveLength(0);
   });
 
   it("clicking navbar icon toggles all notifications", () => {
     makeErrors();
     alertStore.info.setUpgradeNeeded(false);
     alertStore.info.setUpgradeReady(false);
-    const tree = mount(<AppToasts alertStore={alertStore} />);
-    expect(tree.find("div.bg-toast")).toHaveLength(2);
-    expect(tree.find("span.badge.cursor-pointer.with-click")).toHaveLength(2);
+    const { container } = render(<AppToasts alertStore={alertStore} />);
+    expect(document.body.querySelectorAll("div.bg-toast")).toHaveLength(2);
+    expect(
+      document.body.querySelectorAll("span.badge.cursor-pointer.with-click"),
+    ).toHaveLength(2);
 
-    tree.find("span.badge.cursor-pointer.with-click").at(1).simulate("click");
-    expect(tree.find("div.bg-toast")).toHaveLength(1);
+    const closeBtns = document.body.querySelectorAll(
+      "span.badge.cursor-pointer.with-click",
+    );
+    fireEvent.click(closeBtns[1]);
+    expect(document.body.querySelectorAll("div.bg-toast")).toHaveLength(1);
 
-    tree.find("span#components-notifications").simulate("click");
-    tree.update();
-    expect(tree.find("div.bg-toast")).toHaveLength(2);
+    const notificationsIcon = container.querySelector(
+      "span#components-notifications",
+    );
+    fireEvent.click(notificationsIcon!);
+    expect(document.body.querySelectorAll("div.bg-toast")).toHaveLength(2);
   });
 
   it("renders UpgradeToastMessage when alertStore.info.upgradeReady=true", () => {
     alertStore.info.setUpgradeReady(true);
-    const tree = mount(<AppToasts alertStore={alertStore} />);
-    expect(tree.find("UpgradeToastMessage")).toHaveLength(1);
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    const { asFragment } = render(<AppToasts alertStore={alertStore} />);
+    expect(screen.getByText(/new version/i)).toBeInTheDocument();
+    expect(asFragment()).toMatchSnapshot();
   });
 });

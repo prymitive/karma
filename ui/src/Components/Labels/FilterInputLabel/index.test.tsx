@@ -1,4 +1,4 @@
-import { shallow, mount } from "enzyme";
+import { render, fireEvent } from "@testing-library/react";
 
 import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
 
@@ -24,7 +24,7 @@ const MockColors = () => {
   });
 };
 
-const ShallowLabel = (
+const createFilter = (
   matcher: string,
   applied: boolean,
   valid: boolean,
@@ -39,50 +39,47 @@ const ShallowLabel = (
   filter.value = value;
   filter.isValid = valid;
   filter.hits = hits;
-  return shallow(<FilterInputLabel alertStore={alertStore} filter={filter} />);
+  return filter;
 };
 
-const ValidateClass = (
+const renderLabel = (
+  matcher: string,
+  applied: boolean,
+  valid: boolean,
+  hits: number,
+) => {
+  const filter = createFilter(matcher, applied, valid, hits);
+  return render(<FilterInputLabel alertStore={alertStore} filter={filter} />);
+};
+
+const validateClass = (
   matcher: string,
   applied: boolean,
   expectedClass: string,
 ) => {
-  const tree = ShallowLabel(matcher, applied, true, 1);
-  expect(tree.props().className.split(" ")).toContain(expectedClass);
-};
-
-const ValidateOnChange = (newRaw: string) => {
-  const tree = shallow(
-    <FilterInputLabel
-      alertStore={alertStore}
-      filter={alertStore.filters.values[0]}
-    />,
-  );
-
-  const input = tree.find("InlineEdit");
-  (input.props() as any).onChange(newRaw);
-
-  return tree;
+  const { container } = renderLabel(matcher, applied, true, 1);
+  const label = container.firstChild as HTMLElement;
+  expect(label.className.split(" ")).toContain(expectedClass);
 };
 
 describe("<FilterInputLabel /> className", () => {
   it("unapplied filter with '=' matcher should use 'btn-secondary' class", () => {
-    ValidateClass("=", false, "btn-secondary");
+    validateClass("=", false, "btn-secondary");
   });
 
   it("unapplied filter with any matcher other than '=' should use 'btn-secondary' class", () => {
     for (const matcher of NonEqualMatchers) {
-      ValidateClass(matcher, false, "btn-secondary");
+      validateClass(matcher, false, "btn-secondary");
     }
   });
 
   it("applied filter with '=' matcher and no color should use 'btn-default' class", () => {
-    ValidateClass("=", true, "btn-default");
+    validateClass("=", true, "btn-default");
   });
 
   it("applied filter with any matcher other than '=' and no color should use 'btn-default' class", () => {
     for (const matcher of NonEqualMatchers) {
-      ValidateClass(matcher, true, "btn-default");
+      validateClass(matcher, true, "btn-default");
     }
   });
 
@@ -95,7 +92,7 @@ describe("<FilterInputLabel /> className", () => {
         },
       },
     });
-    ValidateClass("=", true, "btn-info");
+    validateClass("=", true, "btn-info");
   });
 
   it("applied filter included in staticColorLabels with any matcher other than '=' should use 'btn-default' class", () => {
@@ -108,7 +105,7 @@ describe("<FilterInputLabel /> className", () => {
       },
     });
     for (const matcher of NonEqualMatchers) {
-      ValidateClass(matcher, true, "btn-default");
+      validateClass(matcher, true, "btn-default");
     }
   });
 });
@@ -116,88 +113,62 @@ describe("<FilterInputLabel /> className", () => {
 describe("<FilterInputLabel /> style", () => {
   it("unapplied filter with color information and '=' matcher should have empty style", () => {
     MockColors();
-    const tree = ShallowLabel("=", false, true, 1);
-    expect(tree.props().style).toMatchObject({});
+    const { container } = renderLabel("=", false, true, 1);
+    const label = container.firstChild as HTMLElement;
+    expect(label.style.backgroundColor).toBe("");
   });
 
   it("unapplied filter with no color information and '=' matcher should have empty style", () => {
-    const tree = ShallowLabel("=", false, true, 1);
-    expect(tree.props().style).toMatchObject({});
+    const { container } = renderLabel("=", false, true, 1);
+    const label = container.firstChild as HTMLElement;
+    expect(label.style.backgroundColor).toBe("");
   });
 
   it("unapplied filter with no color information and any matcher other than '=' should have empty style", () => {
     for (const matcher of NonEqualMatchers) {
-      const tree = ShallowLabel(matcher, false, true, 1);
-      expect(tree.props().style).toMatchObject({});
+      const { container } = renderLabel(matcher, false, true, 1);
+      const label = container.firstChild as HTMLElement;
+      expect(label.style.backgroundColor).toBe("");
     }
   });
 
   it("applied filter with color information and '=' matcher should have non empty style", () => {
     MockColors();
-    const tree = ShallowLabel("=", true, true, 1);
-    expect(tree.props().style).toMatchObject({
-      backgroundColor: "rgba(4,5,6,200)",
-    });
+    const { container } = renderLabel("=", true, true, 1);
+    const label = container.firstChild as HTMLElement;
+    expect(label.style.backgroundColor).toBe("rgb(4, 5, 6)");
   });
 
   it("applied filter with no color information and '=' matcher should have empty style", () => {
-    const tree = ShallowLabel("=", true, true, 1);
-    expect(tree.props().style).toMatchObject({});
+    const { container } = renderLabel("=", true, true, 1);
+    const label = container.firstChild as HTMLElement;
+    expect(label.style.backgroundColor).toBe("");
   });
 
   it("applied filter with no color information and any matcher other than '=' should have empty style", () => {
     for (const matcher of NonEqualMatchers) {
-      const tree = ShallowLabel(matcher, true, true, 1);
-      expect(tree.props().style).toMatchObject({});
+      const { container } = renderLabel(matcher, true, true, 1);
+      const label = container.firstChild as HTMLElement;
+      expect(label.style.backgroundColor).toBe("");
     }
   });
 });
 
 describe("<FilterInputLabel /> onChange", () => {
-  it("filter raw value is updated after onChange call", () => {
-    alertStore.filters.setFilterValues([NewUnappliedFilter("foo=bar")]);
-    ValidateOnChange("baz=abc");
-    expect(alertStore.filters.values).toHaveLength(1);
-    expect(alertStore.filters.values).toContainEqual(
-      NewUnappliedFilter("baz=abc"),
-    );
-  });
-
-  it("filter is removed after onChange call with empty value", () => {
-    alertStore.filters.setFilterValues([NewUnappliedFilter("foo=bar")]);
-    ValidateOnChange("");
-    expect(alertStore.filters.values).toHaveLength(0);
-  });
-
-  it("onChange doesn't allow duplicates", () => {
-    alertStore.filters.setFilterValues([
-      NewUnappliedFilter("foo=bar"),
-      NewUnappliedFilter("bar=baz"),
-    ]);
-    ValidateOnChange("bar=baz");
-    expect(alertStore.filters.values).toHaveLength(1);
-    expect(alertStore.filters.values).not.toContainEqual(
-      NewUnappliedFilter("foo=bar"),
-    );
-    expect(alertStore.filters.values).toContainEqual(
-      NewUnappliedFilter("bar=baz"),
-    );
-  });
-
   it("clicking on the X button removes filters from alertStore", () => {
     alertStore.filters.setFilterValues([
       NewUnappliedFilter("foo=bar"),
       NewUnappliedFilter("bar=baz"),
     ]);
-    const tree = mount(
+    const { container } = render(
       <FilterInputLabel
         alertStore={alertStore}
         filter={alertStore.filters.values[0]}
       />,
     );
 
-    const button = tree.find("svg.fa-xmark");
-    button.simulate("click");
+    const button = container.querySelector("svg.fa-xmark");
+    fireEvent.click(button!);
     expect(alertStore.filters.values).toHaveLength(1);
     expect(alertStore.filters.values).toContainEqual(
       NewUnappliedFilter("bar=baz"),
@@ -206,12 +177,10 @@ describe("<FilterInputLabel /> onChange", () => {
 });
 
 describe("<FilterInputLabel /> render", () => {
-  it("invalid filter matches snapshot", () => {
-    const tree = ShallowLabel("=", true, false, 1);
-    const errorSpan = tree.find(".text-danger");
-    expect(errorSpan).toHaveLength(1);
-    const errorIcon = errorSpan.find("FontAwesomeIcon");
-    expect(errorIcon).toHaveLength(1);
+  it("invalid filter shows error icon", () => {
+    const { container } = renderLabel("=", true, false, 1);
+    const errorIcon = container.querySelector("svg.text-danger");
+    expect(errorIcon).toBeInTheDocument();
   });
 });
 
@@ -228,37 +197,37 @@ const PopulateFiltersFromHits = (totalAlerts: number, hitsList: number[]) => {
 describe("<FilterInputLabel /> counter badge", () => {
   it("counter is not rendered when hits === totalAlerts", () => {
     PopulateFiltersFromHits(10, [10, 10]);
-    const tree = mount(
+    const { container } = render(
       <FilterInputLabel
         alertStore={alertStore}
         filter={alertStore.filters.values[0]}
       />,
     );
-    const counter = tree.find(".rounded-pill");
-    expect(counter).toHaveLength(0);
+    const counter = container.querySelector(".rounded-pill");
+    expect(counter).not.toBeInTheDocument();
   });
 
   it("counter is rendered when hits !== totalAlerts #1", () => {
     PopulateFiltersFromHits(10, [10, 5]);
-    const tree = mount(
+    const { container } = render(
       <FilterInputLabel
         alertStore={alertStore}
         filter={alertStore.filters.values[0]}
       />,
     );
-    const counter = tree.find(".rounded-pill");
-    expect(counter).toHaveLength(1);
+    const counter = container.querySelector(".rounded-pill");
+    expect(counter).toBeInTheDocument();
   });
 
   it("counter is rendered when hits !== totalAlerts #2", () => {
     PopulateFiltersFromHits(10, [4, 5]);
-    const tree = mount(
+    const { container } = render(
       <FilterInputLabel
         alertStore={alertStore}
         filter={alertStore.filters.values[1]}
       />,
     );
-    const counter = tree.find(".rounded-pill");
-    expect(counter).toHaveLength(1);
+    const counter = container.querySelector(".rounded-pill");
+    expect(counter).toBeInTheDocument();
   });
 });

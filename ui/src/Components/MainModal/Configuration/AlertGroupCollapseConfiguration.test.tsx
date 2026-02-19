@@ -1,6 +1,4 @@
-import { mount } from "enzyme";
-
-import toDiffableHtml from "diffable-html";
+import { render, fireEvent, waitFor } from "@testing-library/react";
 
 import { MockThemeContext } from "__fixtures__/Theme";
 import { Settings } from "Stores/Settings";
@@ -13,61 +11,57 @@ beforeEach(() => {
   settingsStore = new Settings(null);
 });
 
-const FakeConfiguration = () => {
-  return mount(
-    <AlertGroupCollapseConfiguration settingsStore={settingsStore} />,
-    {
-      wrappingComponent: ThemeContext.Provider,
-      wrappingComponentProps: { value: MockThemeContext },
-    },
+const renderConfiguration = () => {
+  return render(
+    <ThemeContext.Provider value={MockThemeContext}>
+      <AlertGroupCollapseConfiguration settingsStore={settingsStore} />
+    </ThemeContext.Provider>,
   );
 };
 
 describe("<AlertGroupCollapseConfiguration />", () => {
   it("matches snapshot with default values", () => {
-    const tree = FakeConfiguration();
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    const { asFragment } = renderConfiguration();
+    expect(asFragment()).toMatchSnapshot();
   });
 
-  it("resets stored config to defaults if it is invalid", (done) => {
+  it("resets stored config to defaults if it is invalid", async () => {
     settingsStore.alertGroupConfig.setDefaultCollapseState("foo" as any);
-    const tree = FakeConfiguration();
-    const select = tree.find("div.react-select__value-container");
-    expect(select.text()).toBe(
+    const { container } = renderConfiguration();
+    const select = container.querySelector("div.react-select__value-container");
+    expect(select?.textContent).toBe(
       settingsStore.alertGroupConfig.options.collapsedOnMobile.label,
     );
-    setTimeout(() => {
+    await waitFor(() => {
       expect(settingsStore.alertGroupConfig.config.defaultCollapseState).toBe(
         settingsStore.alertGroupConfig.options.collapsedOnMobile.value,
       );
-      done();
-    }, 200);
+    });
   });
 
-  it("rendered correct default value", (done) => {
+  it("rendered correct default value", async () => {
     settingsStore.alertGroupConfig.setDefaultCollapseState("expanded");
-    const tree = FakeConfiguration();
-    const select = tree.find("div.react-select__value-container");
-    setTimeout(() => {
-      expect(select.text()).toBe(
+    const { container } = renderConfiguration();
+    const select = container.querySelector("div.react-select__value-container");
+    await waitFor(() => {
+      expect(select?.textContent).toBe(
         settingsStore.alertGroupConfig.options.expanded.label,
       );
-      done();
-    }, 200);
+    });
   });
 
-  it("clicking on a label option updates settingsStore", (done) => {
-    const tree = FakeConfiguration();
-    tree
-      .find("input#react-select-configuration-collapse-input")
-      .simulate("change", { target: { value: " " } });
-    const options = tree.find("div.react-select__option");
-    options.at(1).simulate("click");
-    setTimeout(() => {
+  it("clicking on a label option updates settingsStore", async () => {
+    const { container } = renderConfiguration();
+    const input = container.querySelector(
+      "input#react-select-configuration-collapse-input",
+    );
+    fireEvent.change(input!, { target: { value: " " } });
+    const options = container.querySelectorAll("div.react-select__option");
+    fireEvent.click(options[1]);
+    await waitFor(() => {
       expect(settingsStore.alertGroupConfig.config.defaultCollapseState).toBe(
         settingsStore.alertGroupConfig.options.collapsed.value,
       );
-      done();
-    }, 200);
+    });
   });
 });

@@ -1,11 +1,9 @@
-import React from "react";
 import { act } from "react-dom/test-utils";
 
-import { mount, shallow } from "enzyme";
-
-import toDiffableHtml from "diffable-html";
+import { render } from "@testing-library/react";
 
 import { MockThemeContext } from "__fixtures__/Theme";
+import { ThemeContext } from "Components/Theme";
 import { UpgradeNeeded } from ".";
 
 declare let window: any;
@@ -13,7 +11,6 @@ declare let window: any;
 beforeEach(() => {
   jest.useFakeTimers();
   jest.clearAllTimers();
-  jest.spyOn(React, "useContext").mockImplementation(() => MockThemeContext);
 
   delete window.location;
   window.location = { reload: jest.fn() };
@@ -24,12 +21,19 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
+const renderWithTheme = (ui: React.ReactElement) =>
+  render(
+    <ThemeContext.Provider value={MockThemeContext}>
+      {ui}
+    </ThemeContext.Provider>,
+  );
+
 describe("<UpgradeNeeded />", () => {
   it("matches snapshot", () => {
-    const tree = shallow(
+    const { asFragment } = renderWithTheme(
       <UpgradeNeeded newVersion="1.2.3" reloadAfter={100000000} />,
     );
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it("calls window.location.reload after timer is done", () => {
@@ -37,7 +41,9 @@ describe("<UpgradeNeeded />", () => {
       .spyOn(global.window.location, "reload")
       .mockImplementation(() => {});
 
-    mount(<UpgradeNeeded newVersion="1.2.3" reloadAfter={100000000} />);
+    renderWithTheme(
+      <UpgradeNeeded newVersion="1.2.3" reloadAfter={100000000} />,
+    );
 
     act(() => {
       jest.runOnlyPendingTimers();
@@ -50,13 +56,13 @@ describe("<UpgradeNeeded />", () => {
       .spyOn(global.window.location, "reload")
       .mockImplementation(() => {});
 
-    const tree = mount(
+    const { unmount } = renderWithTheme(
       <UpgradeNeeded newVersion="1.2.3" reloadAfter={100000000} />,
     );
     expect(reloadSpy).not.toBeCalled();
 
     act(() => {
-      tree.unmount();
+      unmount();
     });
 
     act(() => {

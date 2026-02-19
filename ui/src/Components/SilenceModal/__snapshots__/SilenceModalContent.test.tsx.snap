@@ -1,51 +1,64 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<SilenceModalContent /> Editor renders SilenceSubmitController when silenceFormStore.data.currentStage is 'Submit' 1`] = `
-"
-<div class="modal-header py-2">
-  <nav class="nav nav-pills nav-justified w-100">
-    <span class="nav-item nav-link cursor-pointer mx-1 px-2 active">
-      Silence submitted
-    </span>
-    <span class="nav-item nav-link cursor-pointer mx-1 px-2 components-tab-inactive">
-      Browse
-    </span>
-    <button
-      type="button"
-      class="btn-close my-auto"
+<DocumentFragment>
+  <div
+    class="modal-header py-2"
+  >
+    <nav
+      class="nav nav-pills nav-justified w-100"
     >
-    </button>
-  </nav>
-</div>
-<div class="modal-body ">
-  <div class="table-responsive">
-    <table class="table table-borderless">
-      <tbody>
-      </tbody>
-    </table>
-  </div>
-  <div class="d-flex flex-row-reverse">
-    <button
-      type="button"
-      class="btn btn-primary"
-    >
-      <svg
-        data-prefix="fas"
-        data-icon="arrow-left"
-        class="svg-inline--fa fa-arrow-left pe-1"
-        role="img"
-        viewbox="0 0 512 512"
-        aria-hidden="true"
+      <span
+        class="nav-item nav-link cursor-pointer mx-1 px-2 active"
       >
-        <path
-          fill="currentColor"
-          d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 288 480 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-370.7 0 105.4-105.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"
-        >
-        </path>
-      </svg>
-      Back
-    </button>
+        Silence submitted
+      </span>
+      <span
+        class="nav-item nav-link cursor-pointer mx-1 px-2 components-tab-inactive"
+      >
+        Browse
+      </span>
+      <button
+        class="btn-close my-auto"
+        type="button"
+      />
+    </nav>
   </div>
-</div>
-"
+  <div
+    class="modal-body "
+  >
+    <div
+      class="table-responsive"
+    >
+      <table
+        class="table table-borderless"
+      >
+        <tbody />
+      </table>
+    </div>
+    <div
+      class="d-flex flex-row-reverse"
+    >
+      <button
+        class="btn btn-primary"
+        type="button"
+      >
+        <svg
+          aria-hidden="true"
+          class="svg-inline--fa fa-arrow-left pe-1"
+          data-icon="arrow-left"
+          data-prefix="fas"
+          role="img"
+          viewBox="0 0 512 512"
+        >
+          <path
+            d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 288 480 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-370.7 0 105.4-105.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"
+            fill="currentColor"
+          />
+        </svg>
+        Back
+      </button>
+    </div>
+  </div>
+</DocumentFragment>
 `;
