@@ -38,7 +38,7 @@
     "react-dom": "17.0.2",
     "react-hotkeys-hook": "4.4.1",
     "react-idle-timer": "4.6.4",
-    "react-intersection-observer": "9.13.1",
+    "react-intersection-observer": "10.0.3",
     "react-json-pretty": "2.2.0",
     "react-linkify": "0.2.2",
     "react-media-hook": "0.5.1",
