@@ -4,7 +4,7 @@
 cmp stderr stderr.txt
 
 -- stderr.txt --
-level=fatal msg="Execution failed" error="failed to unmarshal configuration: 1 error(s) decoding:\n\n* error decoding 'Alertmanager.Interval': time: invalid duration \"abc123\""
+level=fatal msg="Execution failed" error="failed to unmarshal configuration: decoding failed due to the following error(s):\n\n'Alertmanager.Interval' time: invalid duration"
 -- karma.yaml --
 alertmanager:
   interval: abc123
