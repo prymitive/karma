@@ -47,7 +47,7 @@ beforeEach(() => {
   alertStore.data.setLabelNames(["alertname", "job", "cluster"]);
 
   window.matchMedia = mockMatchMedia({});
-  global.ResizeObserver = jest.fn((cb) => {
+  global.ResizeObserver = jest.fn((_) => {
     return {
       observe: jest.fn(),
       disconnect: jest.fn(),

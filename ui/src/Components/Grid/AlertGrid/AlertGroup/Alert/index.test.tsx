@@ -9,7 +9,7 @@ import {
   MockSilence,
 } from "__fixtures__/Alerts";
 import { MockThemeContext } from "__fixtures__/Theme";
-import type { APIAlertGroupT, APIAlertT, APIGridT } from "Models/APITypes";
+import type { APIAlertGroupT, APIAlertT } from "Models/APITypes";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { BorderClassMap } from "Common/Colors";
@@ -18,25 +18,12 @@ import Alert from ".";
 
 let alertStore: AlertStore;
 let silenceFormStore: SilenceFormStore;
-let grid: APIGridT;
 
 beforeEach(() => {
   jest.useFakeTimers();
   jest.setSystemTime(new Date(Date.UTC(2018, 7, 15, 20, 40, 0)));
   alertStore = new AlertStore([]);
   silenceFormStore = new SilenceFormStore();
-
-  grid = {
-    labelName: "foo",
-    labelValue: "bar",
-    alertGroups: [],
-    totalGroups: 0,
-    stateCount: {
-      active: 0,
-      suppressed: 0,
-      unprocessed: 0,
-    },
-  };
 });
 
 afterEach(() => {
@@ -71,7 +58,6 @@ const renderAlert = (
   return render(
     <ThemeContext.Provider value={MockThemeContext}>
       <Alert
-        grid={grid}
         alert={alert}
         group={group}
         showReceiver={showReceiver}

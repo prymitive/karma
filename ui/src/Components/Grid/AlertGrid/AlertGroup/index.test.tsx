@@ -24,7 +24,7 @@ let group: APIAlertGroupT;
 let grid: APIGridT;
 let originalInnerWidth: number;
 
-const MockGroup = (groupName: string) => {
+const MockGroup = () => {
   const group = MockAlertGroup(
     [
       { name: "alertname", value: "Fake Alert" },
@@ -47,7 +47,7 @@ beforeEach(() => {
   alertStore = new AlertStore([]);
   settingsStore = new Settings(null);
   silenceFormStore = new SilenceFormStore();
-  group = MockGroup("fakeGroup");
+  group = MockGroup();
 
   alertStore.data.setReceivers(["by-cluster-service", "by-name"]);
   alertStore.settings.setValues({

@@ -162,7 +162,7 @@ const SilenceDetails: FC<{
                     } px-1 me-1 components-label`}
                   >
                     {matcher.name}
-                    {MatcherToOperator(matcher)}"{matcher.value}"
+                    {MatcherToOperator(matcher)}&quot;{matcher.value}&quot;
                   </span>
                 ))}
               </div>

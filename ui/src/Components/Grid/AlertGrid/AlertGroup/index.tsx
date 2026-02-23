@@ -159,7 +159,6 @@ const AlertGroup: FC<{
         <GroupHeader
           isCollapsed={isCollapsed}
           setIsCollapsed={setIsCollapsed}
-          grid={grid}
           group={group}
           alertStore={alertStore}
           silenceFormStore={silenceFormStore}
@@ -178,7 +177,6 @@ const AlertGroup: FC<{
                 .map((alert) => (
                   <Alert
                     key={alert.id}
-                    grid={grid}
                     group={group}
                     alert={alert}
                     showReceiver={

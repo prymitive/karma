@@ -14,7 +14,6 @@ import { faWrench } from "@fortawesome/free-solid-svg-icons/faWrench";
 import { faCopy } from "@fortawesome/free-solid-svg-icons/faCopy";
 
 import type {
-  APIGridT,
   APIAlertT,
   APIAlertGroupT,
   APIAnnotationT,
@@ -157,14 +156,13 @@ const MenuContent: FC<{
 };
 
 const AlertMenu: FC<{
-  grid: APIGridT;
   group: APIAlertGroupT;
   alert: APIAlertT;
   alertStore: AlertStore;
   silenceFormStore: SilenceFormStore;
   setIsMenuOpen: (isOpen: boolean) => void;
 }> = observer(
-  ({ grid, group, alert, alertStore, silenceFormStore, setIsMenuOpen }) => {
+  ({ group, alert, alertStore, silenceFormStore, setIsMenuOpen }) => {
     const [isHidden, setIsHidden] = useState<boolean>(true);
 
     const toggle = useCallback(() => {

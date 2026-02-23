@@ -68,7 +68,10 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     }
   };
 
-  componentDidCatch(error: Error, { componentStack }: ErrorInfo): void {
+  componentDidCatch(
+    error: Error,
+    { componentStack: _componentStack }: ErrorInfo,
+  ): void {
     if (this.state.cachedError === null) {
       this.setState({ cachedError: error });
     }

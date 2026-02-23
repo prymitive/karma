@@ -9,7 +9,6 @@ import type {
   APIAlertGroupT,
   APIAlertT,
   APIAlertsResponseUpstreamsT,
-  APIGridT,
 } from "Models/APITypes";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
@@ -20,7 +19,6 @@ let alertStore: AlertStore;
 let silenceFormStore: SilenceFormStore;
 let alert: APIAlertT;
 let group: APIAlertGroupT;
-let grid: APIGridT;
 
 let MockAfterClick: () => void;
 let MockSetIsMenuOpen: () => void;
@@ -85,25 +83,12 @@ beforeEach(() => {
     [],
     {},
   );
-  grid = {
-    labelName: "foo",
-    labelValue: "bar",
-    alertGroups: [],
-    totalGroups: 0,
-    stateCount: {
-      active: 0,
-      suppressed: 0,
-      unprocessed: 0,
-    },
-  };
-
   alertStore.data.setUpstreams(generateUpstreams());
 });
 
 const renderAlertMenu = (group: APIAlertGroupT) => {
   return render(
     <AlertMenu
-      grid={grid}
       group={group}
       alert={alert}
       alertStore={alertStore}
@@ -301,6 +286,8 @@ describe("<MenuContent />", () => {
     const { container } = renderMenuContent(group);
     const buttons = container.querySelectorAll(".dropdown-item");
     fireEvent.click(buttons[1]);
-    expect(copy).toBeCalledWith(JSON.stringify(alertToJSON(group, alert)));
+    expect(copy).toHaveBeenCalledWith(
+      JSON.stringify(alertToJSON(group, alert)),
+    );
   });
 });

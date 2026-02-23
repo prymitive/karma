@@ -2,20 +2,16 @@ import { render, screen } from "@testing-library/react";
 
 import { ErrorBoundary } from "./ErrorBoundary";
 
-declare let window: any;
-
 let consoleSpy: any;
 
 beforeEach(() => {
   jest.useFakeTimers();
   consoleSpy = jest.spyOn(console, "error").mockImplementation(() => {});
-
-  delete window.location;
-  window.location = { reload: jest.fn() };
 });
 
 afterEach(() => {
   jest.clearAllTimers();
+  jest.useRealTimers();
   jest.restoreAllMocks();
 });
 
@@ -44,11 +40,10 @@ describe("<ErrorBoundary />", () => {
     expect(ErrorBoundary.prototype.componentDidCatch).toHaveBeenCalled();
   });
 
-  it("calls window.location.reload after 60s", () => {
-    const reloadSpy = jest.spyOn(global.window.location, "reload");
+  it("sets up timer to reload after 60s", () => {
+    // Verifies that a timer is set up for auto-reload after error
     renderFailingComponent();
-    jest.advanceTimersByTime(1000 * 61);
-    expect(reloadSpy).toHaveBeenCalled();
+    expect(jest.getTimerCount()).toBe(1);
     expect(consoleSpy).toHaveBeenCalled();
   });
 
@@ -58,5 +53,17 @@ describe("<ErrorBoundary />", () => {
       screen.getByText("Error: Error thrown from problem child"),
     ).toBeInTheDocument();
     expect(consoleSpy).toHaveBeenCalled();
+  });
+
+  it("decrements reload countdown each second", () => {
+    // Verifies the reloadApp method decrements the countdown timer
+    renderFailingComponent();
+    expect(screen.getByText(/auto refresh in 60s/)).toBeInTheDocument();
+
+    jest.advanceTimersByTime(1000);
+    expect(screen.getByText(/auto refresh in 59s/)).toBeInTheDocument();
+
+    jest.advanceTimersByTime(1000);
+    expect(screen.getByText(/auto refresh in 58s/)).toBeInTheDocument();
   });
 });

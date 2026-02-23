@@ -26,7 +26,7 @@ afterEach(() => {
 });
 
 it("doesn't load ResizeObserver polyfill if not needed", () => {
-  global.window.ResizeObserver = jest.fn((cb) => {
+  global.window.ResizeObserver = jest.fn((_) => {
     return {
       observe: jest.fn(),
       disconnect: jest.fn(),

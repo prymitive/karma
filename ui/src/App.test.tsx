@@ -125,14 +125,12 @@ describe("<App />", () => {
   });
 
   it("popstate event updates alertStore filters", () => {
+    // Verifies that popstate event triggers filter update from URL
     render(<App defaultFilters={["foo"]} uiDefaults={uiDefaults} />);
     expect(window.location.search).toBe("?q=foo");
 
-    delete global.window.location;
-    global.window.location = {
-      href: "http://localhost/?q=bar",
-      search: "?q=bar",
-    };
+    // Use history.pushState to change URL, then trigger popstate
+    window.history.pushState({}, "App", "/?q=bar");
 
     const event = new PopStateEvent("popstate");
     window.dispatchEvent(event);

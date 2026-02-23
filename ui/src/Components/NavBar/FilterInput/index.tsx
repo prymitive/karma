@@ -46,7 +46,6 @@ const FilterInput: FC<{
     { autorun: false },
   );
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
   const stateReducer = (
     state: UseComboboxState<string>,
     actionAndChanges: UseComboboxStateChangeOptions<string>,

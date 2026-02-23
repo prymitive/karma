@@ -10,7 +10,7 @@ import { faShareSquare } from "@fortawesome/free-solid-svg-icons/faShareSquare";
 import { faBellSlash } from "@fortawesome/free-solid-svg-icons/faBellSlash";
 import { faWrench } from "@fortawesome/free-solid-svg-icons/faWrench";
 
-import type { APIAlertGroupT, APIGridT } from "Models/APITypes";
+import type { APIAlertGroupT } from "Models/APITypes";
 import { FormatAlertsQ } from "Stores/AlertStore";
 import type { AlertStore } from "Stores/AlertStore";
 import {
@@ -142,13 +142,12 @@ const MenuContent: FC<{
 };
 
 const GroupMenu: FC<{
-  grid: APIGridT;
   group: APIAlertGroupT;
   alertStore: AlertStore;
   silenceFormStore: SilenceFormStore;
   themed: boolean;
   setIsMenuOpen: (isOpen: boolean) => void;
-}> = ({ grid, group, alertStore, silenceFormStore, themed, setIsMenuOpen }) => {
+}> = ({ group, alertStore, silenceFormStore, themed, setIsMenuOpen }) => {
   const [isHidden, setIsHidden] = useState<boolean>(true);
 
   const toggle = useCallback(() => {

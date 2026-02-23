@@ -159,8 +159,9 @@ export const SilenceDelete: FC<{
             floating={refs.setFloating}
             strategy={strategy}
             maxHeight={maxHeight}
-            children={children}
-          />
+          >
+            {children}
+          </SilenceDeleteMenu>
         </DropdownSlide>
       </div>
     </div>

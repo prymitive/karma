@@ -104,7 +104,7 @@ const ReactSelectStyles = <OptionType, IsMulti extends boolean>(
           borderTopLeftRadius: "0.25rem",
           borderBottomLeftRadius: "0.25rem",
         },
-  singleValue: (base, props: SingleValueProps<OptionType>) => ({
+  singleValue: (base, _props: SingleValueProps<OptionType>) => ({
     ...base,
     color: theme.singleValueColor,
   }),
