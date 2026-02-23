@@ -513,7 +513,7 @@ describe("AlertStore.fetch", () => {
     // there should be no filters set on AlertStore instance since we started
     // with 0 and rejected response with 1 filter
     expect(store.filters.values).toHaveLength(0);
-    // console.info should have been called since we emited a log line
+    // console.info should have been called since we emitted a log line
     expect(consoleSpy).toHaveBeenCalledTimes(1);
   });
 

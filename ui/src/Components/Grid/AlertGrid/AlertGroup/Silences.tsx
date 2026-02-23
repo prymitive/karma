@@ -5,7 +5,7 @@ import type { AlertStore } from "Stores/AlertStore";
 import type { SilenceFormStore } from "Stores/SilenceFormStore";
 import { ManagedSilence } from "Components/ManagedSilence";
 
-const FallbackSilenceDesciption: FC<{
+const FallbackSilenceDescription: FC<{
   silenceID: string;
 }> = ({ silenceID }) => {
   return (
@@ -42,10 +42,10 @@ const RenderSilence: FC<{
 
     if (silence === null) {
       return (
-        <FallbackSilenceDesciption
+        <FallbackSilenceDescription
           key={silenceID}
           silenceID={silenceID}
-        ></FallbackSilenceDesciption>
+        ></FallbackSilenceDescription>
       );
     }
 

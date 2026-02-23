@@ -80,7 +80,7 @@ describe("<ManagedSilence />", () => {
     expect(screen.getByText("Edit")).toBeInTheDocument();
   });
 
-  it("matches snapshot with expaned details", () => {
+  it("matches snapshot with expanded details", () => {
     const { container, asFragment } = renderManagedSilence();
     const toggle = container.querySelector("svg.text-muted.cursor-pointer");
     fireEvent.click(toggle!);

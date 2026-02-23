@@ -82,7 +82,7 @@ describe("<LabelWithPercent />", () => {
     );
   });
 
-  it("clicking the X buttom removes label from filters", () => {
+  it("clicking the X button removes label from filters", () => {
     const { container } = renderLabelWithPercent("foo", "bar", 25, 50, 0, true);
     const removeButton = container.querySelector("svg.fa-xmark");
     fireEvent.click(removeButton!);

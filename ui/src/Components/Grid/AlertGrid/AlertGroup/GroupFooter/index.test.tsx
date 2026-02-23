@@ -128,7 +128,7 @@ describe("<GroupFooter />", () => {
     expect(container.innerHTML).toMatch(/Silenced by 123456789/);
   });
 
-  it("mathes snapshot when silence is rendered", () => {
+  it("matches snapshot when silence is rendered", () => {
     for (let index = 0; index < group.alerts.length; index++) {
       group.alerts[index].alertmanager[0].silencedBy = ["123456789"];
     }

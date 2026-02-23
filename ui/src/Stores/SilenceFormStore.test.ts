@@ -824,7 +824,7 @@ describe("SilenceFormStore.data", () => {
     });
   }
 
-  it("toAlertmanagerPayload constains id when store.data.silenceID is set", () => {
+  it("toAlertmanagerPayload contains id when store.data.silenceID is set", () => {
     store.data.setSilenceID("12345");
     expect(store.data.toAlertmanagerPayload).toMatchObject({
       id: "12345",
@@ -1036,7 +1036,7 @@ describe("SilenceFormStore.data.isValid", () => {
     expect(store.data.isValid).toBe(false);
   });
 
-  it("isValid returns 'false' if matchers list is pupulated when a matcher without any name", () => {
+  it("isValid returns 'false' if matchers list is populated when a matcher without any name", () => {
     store.data.setAlertmanagers([MockAlertmanagerOption()]);
     store.data.setMatchers([
       MockMatcher("", [{ label: "bar", value: "bar", wasCreated: false }]),
@@ -1046,7 +1046,7 @@ describe("SilenceFormStore.data.isValid", () => {
     expect(store.data.isValid).toBe(false);
   });
 
-  it("isValid returns 'false' if matchers list is pupulated when a matcher without any value ([])", () => {
+  it("isValid returns 'false' if matchers list is populated when a matcher without any value ([])", () => {
     store.data.setAlertmanagers([MockAlertmanagerOption()]);
     store.data.setMatchers([MockMatcher("foo", [])]);
     store.data.setAuthor("me@example.com");
@@ -1054,7 +1054,7 @@ describe("SilenceFormStore.data.isValid", () => {
     expect(store.data.isValid).toBe(false);
   });
 
-  it("isValid returns 'false' if matchers list is pupulated when a matcher with empty value ([''])", () => {
+  it("isValid returns 'false' if matchers list is populated when a matcher with empty value ([''])", () => {
     store.data.setAlertmanagers([MockAlertmanagerOption()]);
     store.data.setMatchers([MockMatcher("foo", [])]);
     store.data.setAuthor("me@example.com");
@@ -1082,7 +1082,7 @@ describe("SilenceFormStore.data.isValid", () => {
     expect(store.data.isValid).toBe(false);
   });
 
-  it("isValid returns 'true' if all fileds are set", () => {
+  it("isValid returns 'true' if all fields are set", () => {
     store.data.setAlertmanagers([MockAlertmanagerOption()]);
     store.data.setMatchers([
       MockMatcher("foo", [{ label: "bar", value: "bar", wasCreated: false }]),

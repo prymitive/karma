@@ -530,7 +530,7 @@ describe("<SilenceDelete />", () => {
 
     const { container, unmount } = renderBrowser();
 
-    // nothing is selected intially
+    // nothing is selected initially
     const checkboxes = container.querySelectorAll("input.form-check-input");
     expect(checkboxes).toHaveLength(5);
     for (const i of [1, 2, 3, 4]) {

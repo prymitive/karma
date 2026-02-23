@@ -150,7 +150,7 @@ exports[`<GroupFooter /> matches snapshot 1`] = `
 </DocumentFragment>
 `;
 
-exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
+exports[`<GroupFooter /> matches snapshot when silence is rendered 1`] = `
 <DocumentFragment>
   <div
     class="card-footer components-grid-alertgrid-alertgroup-footer px-2 py-1"

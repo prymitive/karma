@@ -15,7 +15,7 @@ exports[`<Help /> matches snapshot 1`] = `
           class="accordion-button "
           type="button"
         >
-          Fiter operators
+          Filter operators
         </button>
       </h2>
       <div
@@ -156,7 +156,7 @@ exports[`<Help /> matches snapshot 1`] = `
                 </code>
               </div>
               <div>
-                True if compared alert attribue value is less than 
+                True if compared alert attribute value is less than 
                 <code>
                   value
                 </code>
@@ -365,7 +365,7 @@ exports[`<Help /> matches snapshot 1`] = `
                     <code>
                       4
                     </code>
-                    . Value will be casted to integer if possible, string comparision will be used as fallback.
+                    . Value will be casted to integer if possible, string comparison will be used as fallback.
                   </div>
                 </li>
               </ul>

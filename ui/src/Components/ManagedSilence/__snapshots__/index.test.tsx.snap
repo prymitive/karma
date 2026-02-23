@@ -108,7 +108,7 @@ exports[`<ManagedSilence /> matches snapshot when collapsed 1`] = `
 </DocumentFragment>
 `;
 
-exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
+exports[`<ManagedSilence /> matches snapshot with expanded details 1`] = `
 <DocumentFragment>
   <div
     class="card my-1 components-managed-silence w-100"

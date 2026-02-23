@@ -37,7 +37,7 @@ exports[`<ReloadNeeded /> matches snapshot 1`] = `
             fill="currentColor"
           />
         </svg>
-        All API connection attempts failed. This migth be caused by authentication middleware, will try to reload.
+        All API connection attempts failed. This might be caused by authentication middleware, will try to reload.
       </p>
     </div>
   </h1>

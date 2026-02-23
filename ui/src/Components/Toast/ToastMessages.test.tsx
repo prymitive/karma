@@ -40,7 +40,7 @@ describe("<UpgradeToastMessage />", () => {
     expect(button.textContent).toBe("Reload now");
   });
 
-  it("clicking on the reload buton triggers a reload", () => {
+  it("clicking on the reload button triggers a reload", () => {
     render(<UpgradeToastMessage alertStore={alertStore} />);
     const button = screen.getByRole("button");
 

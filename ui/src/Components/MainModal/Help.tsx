@@ -69,7 +69,7 @@ const FilterExample: FC<{
 const Help: FC<{ defaultIsOpen: boolean }> = ({ defaultIsOpen }) => (
   <Accordion>
     <AccordionItem
-      text="Fiter operators"
+      text="Filter operators"
       content={
         <dl>
           <FilterOperatorHelp operator="=" description="Exact match">
@@ -99,7 +99,7 @@ const Help: FC<{ defaultIsOpen: boolean }> = ({ defaultIsOpen }) => (
             <code>value</code>.
           </FilterOperatorHelp>
           <FilterOperatorHelp operator="&lt;" description="Less than match">
-            True if compared alert attribue value is less than{" "}
+            True if compared alert attribute value is less than{" "}
             <code>value</code>.
           </FilterOperatorHelp>
         </dl>
@@ -140,7 +140,7 @@ const Help: FC<{ defaultIsOpen: boolean }> = ({ defaultIsOpen }) => (
             <FilterExample example="priority>4">
               Match alerts with label <code>priority</code> value{" "}
               <code>&gt;</code> than <code>4</code>. Value will be casted to
-              integer if possible, string comparision will be used as fallback.
+              integer if possible, string comparison will be used as fallback.
             </FilterExample>
           </QueryHelp>
         </dl>

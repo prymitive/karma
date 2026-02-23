@@ -175,7 +175,6 @@ describe("<FilterInputLabel /> onChange", () => {
     );
   });
 
-
   it("editing filter to new value replaces it in alertStore", () => {
     // Verifies that onChange replaces filter when edited to new value
     const filter = createFilter("=", true, true, 1);

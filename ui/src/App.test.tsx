@@ -26,7 +26,7 @@ const uiDefaults: UIDefaults = {
 };
 
 beforeEach(() => {
-  // createing App instance will push current filters into window.location
+  // creating App instance will push current filters into window.location
   // ensure it's wiped after each test
   window.history.pushState({}, "App", "/");
 

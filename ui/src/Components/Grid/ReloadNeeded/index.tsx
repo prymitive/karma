@@ -23,7 +23,7 @@ const ReloadNeeded: FC<{
         />
         <p className="lead text-white bg-secondary p-3 rounded text-wrap text-break">
           <FontAwesomeIcon className="me-2" icon={faSpinner} spin />
-          All API connection attempts failed. This migth be caused by
+          All API connection attempts failed. This might be caused by
           authentication middleware, will try to reload.
         </p>
       </div>

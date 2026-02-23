@@ -68,7 +68,7 @@ const AlertGroup: FC<{
   );
 
   // Used to calculate step size when loading more alerts.
-  // Step is calculated from the excesive alert count
+  // Step is calculated from the excessive alert count
   // (what's > defaultRenderCount) by dividing it into 5 clicks.
   // Don't use step lower than 5, too much clicking if we have a group of 9:
   // * we'll show initially 5
