@@ -4,8 +4,7 @@ import "@testing-library/jest-dom";
 
 import { useInView } from "react-intersection-observer";
 
-// react-idle-timer >= 4.6.0
-import "regenerator-runtime/runtime";
+import { createMocks as createIdleTimerMocks } from "react-idle-timer";
 
 import { configure } from "mobx";
 
@@ -13,6 +12,8 @@ import { FetchRetryConfig } from "Common/Fetch";
 
 import { useFetchGetMock } from "__fixtures__/useFetchGet";
 import { useFetchGet } from "Hooks/useFetchGet";
+
+createIdleTimerMocks();
 
 configure({
   enforceActions: "always",

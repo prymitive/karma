@@ -4,6 +4,8 @@ import { render, screen } from "@testing-library/react";
 
 import fetchMock from "fetch-mock";
 
+import { useIdleTimer } from "react-idle-timer";
+
 import { MockThemeContext } from "__fixtures__/Theme";
 import { EmptyAPIResponse } from "__fixtures__/Fetch";
 import { AlertStore } from "Stores/AlertStore";
@@ -12,15 +14,24 @@ import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { ThemeContext } from "Components/Theme";
 import NavBar from ".";
 
+jest.mock("react-idle-timer");
+
 let alertStore: AlertStore;
 let settingsStore: Settings;
 let silenceFormStore: SilenceFormStore;
 let resizeCallback: (val: any) => void;
+let idleTimerCallbacks: { onIdle?: () => void; onActive?: () => void };
 
 declare let global: any;
 
 beforeEach(() => {
   jest.useFakeTimers();
+  idleTimerCallbacks = {};
+  (useIdleTimer as jest.Mock).mockImplementation((options) => {
+    idleTimerCallbacks.onIdle = options.onIdle;
+    idleTimerCallbacks.onActive = options.onActive;
+    return { pause: jest.fn(), reset: jest.fn() };
+  });
   global.ResizeObserver = jest.fn((cb) => {
     resizeCallback = cb;
     return {
@@ -91,12 +102,12 @@ const renderNavbar = (fixedTop?: boolean) => {
 
 describe("<NavBar />", () => {
   it("sets isIdle to true after idle timeout", () => {
-    // Verifies that react-idle-timer triggers onIdle callback after timeout period
+    // Verifies that onIdle callback from react-idle-timer sets isIdle to true
     renderNavbar();
     expect(alertStore.ui.isIdle).toBe(false);
 
     act(() => {
-      jest.advanceTimersByTime(1000 * 60 * 3 + 1000);
+      idleTimerCallbacks.onIdle?.();
     });
 
     expect(alertStore.ui.isIdle).toBe(true);
@@ -110,7 +121,8 @@ describe("<NavBar />", () => {
     expect(container.querySelector(".invisible")).not.toBeInTheDocument();
 
     act(() => {
-      jest.advanceTimersByTime(1000 * 60 * 3 + 1000);
+      idleTimerCallbacks.onIdle?.();
+      jest.advanceTimersByTime(1000);
     });
 
     expect(alertStore.ui.isIdle).toBe(true);

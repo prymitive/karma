@@ -2,20 +2,15 @@ import { act } from "react-dom/test-utils";
 
 function PressKey(key: string, code: number): void {
   act(() => {
-    document.dispatchEvent(
-      new KeyboardEvent("keydown", {
-        key: key,
-        keyCode: code,
-        which: code,
-      } as KeyboardEventInit),
-    );
-    document.dispatchEvent(
-      new KeyboardEvent("keyup", {
-        key: key,
-        keyCode: code,
-        which: code,
-      } as KeyboardEventInit),
-    );
+    const eventInit = {
+      key: key,
+      code: key,
+      keyCode: code,
+      which: code,
+      bubbles: true,
+    } as KeyboardEventInit;
+    document.dispatchEvent(new KeyboardEvent("keydown", eventInit));
+    document.dispatchEvent(new KeyboardEvent("keyup", eventInit));
   });
 }
 
