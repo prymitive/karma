@@ -201,11 +201,13 @@ const renderTabContentStart = () => {
 
 describe("<TabContentStart />", () => {
   it("selecting date on DayPicker updates startsAt", () => {
+    // Verifies clicking a day in the calendar updates the startsAt date
     const { container } = renderTabContentStart();
     expect(silenceFormStore.data.startsAt.toISOString()).toBe(
       new Date(2060, 1, 1, 0, 0, 0).toISOString(),
     );
-    const dayButtons = container.querySelectorAll("button.rdp-button.rdp-day");
+    // In v9, day buttons use .rdp-day_button class
+    const dayButtons = container.querySelectorAll("button.rdp-day_button");
     fireEvent.click(dayButtons[17]);
     expect(silenceFormStore.data.startsAt.toISOString()).toBe(
       new Date(2060, 1, 18, 0, 0, 0).toISOString(),
@@ -222,17 +224,15 @@ describe("<TabContentStart />", () => {
     expect(silenceFormStore.data.startsAt.toISOString()).toBe(
       new Date(2060, 1, 1, 0, 0, 0).toISOString(),
     );
-    expect(container.querySelector(".rdp-caption_label")?.textContent).toBe(
+    expect(container.querySelector(".rdp-month_caption")?.textContent).toBe(
       "February 2060",
     );
-    fireEvent.click(
-      container.querySelector("button.rdp-button.rdp-nav_button_next")!,
-    );
-    expect(container.querySelector(".rdp-caption_label")?.textContent).toBe(
+    fireEvent.click(container.querySelector("button.rdp-button_next")!);
+    expect(container.querySelector(".rdp-month_caption")?.textContent).toBe(
       "March 2060",
     );
     fireEvent.click(container.querySelector("button.btn.btn-light.btn-sm")!);
-    expect(container.querySelector(".rdp-caption_label")?.textContent).toBe(
+    expect(container.querySelector(".rdp-month_caption")?.textContent).toBe(
       format(new Date(), "LLLL yyyy"),
     );
   });
@@ -353,11 +353,13 @@ const renderTabContentEnd = () => {
 
 describe("<TabContentEnd />", () => {
   it("Selecting date on DayPicker updates endsAt", () => {
+    // Verifies clicking a day in the calendar updates the endsAt date
     const { container } = renderTabContentEnd();
     expect(silenceFormStore.data.endsAt.toISOString()).toBe(
       new Date(2061, 1, 1, 0, 0, 0).toISOString(),
     );
-    const dayButtons = container.querySelectorAll("button.rdp-button.rdp-day");
+    // In v9, day buttons use .rdp-day_button class
+    const dayButtons = container.querySelectorAll("button.rdp-day_button");
     fireEvent.click(dayButtons[23]);
     expect(silenceFormStore.data.endsAt.toISOString()).toBe(
       new Date(2061, 1, 24, 0, 0, 0).toISOString(),
@@ -374,17 +376,15 @@ describe("<TabContentEnd />", () => {
     expect(silenceFormStore.data.endsAt.toISOString()).toBe(
       new Date(2061, 1, 1, 0, 0, 0).toISOString(),
     );
-    expect(container.querySelector(".rdp-caption_label")?.textContent).toBe(
+    expect(container.querySelector(".rdp-month_caption")?.textContent).toBe(
       "February 2061",
     );
-    fireEvent.click(
-      container.querySelector("button.rdp-button.rdp-nav_button_next")!,
-    );
-    expect(container.querySelector(".rdp-caption_label")?.textContent).toBe(
+    fireEvent.click(container.querySelector("button.rdp-button_next")!);
+    expect(container.querySelector(".rdp-month_caption")?.textContent).toBe(
       "March 2061",
     );
     fireEvent.click(container.querySelector("button.btn.btn-light.btn-sm")!);
-    expect(container.querySelector(".rdp-caption_label")?.textContent).toBe(
+    expect(container.querySelector(".rdp-month_caption")?.textContent).toBe(
       format(new Date(), "LLLL yyyy"),
     );
   });

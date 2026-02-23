@@ -34,7 +34,7 @@
     "react": "17.0.2",
     "react-app-polyfill": "3.0.0",
     "react-cool-dimensions": "3.0.1",
-    "react-day-picker": "8.10.1",
+    "react-day-picker": "9.6.7",
     "react-dom": "17.0.2",
     "react-hotkeys-hook": "5.2.4",
     "react-idle-timer": "5.7.2",
@@ -89,11 +89,6 @@
     "typescript": "5.9.3",
     "vite": "7.3.1",
     "vite-tsconfig-paths": "6.1.1"
-  },
-  "overrides": {
-    "react-day-picker@8.10.1": {
-      "date-fns": "4.1.0"
-    }
   },
   "scripts": {
     "start": "VITE_APP_BACKEND_URI=http://localhost:8080 vite",

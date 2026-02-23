@@ -9,7 +9,7 @@ import { setSeconds } from "date-fns/setSeconds";
 import { isSameMonth } from "date-fns/isSameMonth";
 
 import { DayPicker } from "react-day-picker";
-import "react-day-picker/dist/style.css";
+import "react-day-picker/style.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarDay } from "@fortawesome/free-solid-svg-icons/faCalendarDay";
@@ -89,8 +89,8 @@ const TabContentStart: FC<{
           disabled={{
             before: nowZeroSeconds(),
           }}
-          onDayClick={(val) => {
-            const startsAt = new Date(val);
+          onDayClick={(date) => {
+            const startsAt = new Date(date);
             startsAt.setHours(silenceFormStore.data.startsAt.getHours());
             startsAt.setMinutes(silenceFormStore.data.startsAt.getMinutes());
             startsAt.setSeconds(0);
@@ -148,8 +148,8 @@ const TabContentEnd: FC<{ silenceFormStore: SilenceFormStore }> = observer(
             disabled={{
               before: setSeconds(silenceFormStore.data.startsAt, 0),
             }}
-            onDayClick={(val) => {
-              const endsAt = new Date(val);
+            onDayClick={(date) => {
+              const endsAt = new Date(date);
               endsAt.setHours(silenceFormStore.data.endsAt.getHours());
               endsAt.setMinutes(silenceFormStore.data.endsAt.getMinutes());
               endsAt.setSeconds(0);
