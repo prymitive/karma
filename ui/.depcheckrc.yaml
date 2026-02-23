@@ -14,6 +14,7 @@ ignores:
   - "@types/node"
   - "eslint-plugin-jest"
   - "node-fetch"
+  - eslint
   - identity-obj-proxy
   - jest
   - jest-fetch-mock
