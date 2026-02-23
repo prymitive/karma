@@ -376,7 +376,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
             class="rdp-months"
           >
             <nav
-              aria-label=""
+              aria-label="Navigation bar"
               class="rdp-nav"
             >
               <button
@@ -1197,7 +1197,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
             class="rdp-months"
           >
             <nav
-              aria-label=""
+              aria-label="Navigation bar"
               class="rdp-nav"
             >
               <button
