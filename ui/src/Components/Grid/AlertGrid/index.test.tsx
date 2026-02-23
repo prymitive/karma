@@ -671,4 +671,36 @@ describe("<AlertGrid />", () => {
     const { unmount } = renderAlertGrid();
     unmount();
   });
+
+  it("alt+space hotkey toggles pause state", () => {
+    // Verifies that pressing alt+space triggers alertStore.status.togglePause
+    MockGroupList(1, 1);
+    renderAlertGrid();
+
+    expect(alertStore.status.paused).toBe(false);
+
+    act(() => {
+      document.dispatchEvent(
+        new KeyboardEvent("keydown", {
+          key: " ",
+          code: "Space",
+          altKey: true,
+        } as KeyboardEventInit),
+      );
+    });
+
+    expect(alertStore.status.paused).toBe(true);
+
+    act(() => {
+      document.dispatchEvent(
+        new KeyboardEvent("keydown", {
+          key: " ",
+          code: "Space",
+          altKey: true,
+        } as KeyboardEventInit),
+      );
+    });
+
+    expect(alertStore.status.paused).toBe(false);
+  });
 });

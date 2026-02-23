@@ -881,4 +881,80 @@ describe("<SilenceDelete />", () => {
 
     await act(() => promise);
   });
+
+  it("displays errors when delete requests fail on all cluster members", async () => {
+    // Verifies that MassDelete shows error messages when all retries fail
+    const promise = Promise.resolve();
+
+    alertStore.data.setUpstreams({
+      counters: { total: 1, healthy: 1, failed: 0 },
+      instances: [
+        {
+          name: "am1",
+          cluster: "am",
+          clusterMembers: ["am1"],
+          uri: "http://m1.example.com",
+          publicURI: "http://example.com",
+          readonly: false,
+          error: "",
+          version: "0.24.0",
+          headers: {},
+          corsCredentials: "include",
+        },
+      ],
+      clusters: { am: ["am1"] },
+    });
+
+    fetchMock.reset();
+    fetchMock.mock("http://m1.example.com/api/v2/silence/1", {
+      status: 500,
+      body: "Internal Server Error",
+    });
+
+    const newSilence = (id: string): APISilenceT => {
+      const s = MockSilence();
+      s.id = id;
+      return s;
+    };
+
+    useFetchGetMock.fetch.setMockedData({
+      response: [
+        {
+          cluster: cluster,
+          alertCount: 1,
+          silence: newSilence("1"),
+          isExpired: false,
+        },
+      ],
+      error: null,
+      isLoading: false,
+      isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
+    });
+
+    const { container } = renderBrowser();
+
+    const checkboxes = container.querySelectorAll(
+      "input.form-check-input[type='checkbox']",
+    );
+    act(() => {
+      fireEvent.click(checkboxes[1]);
+    });
+
+    const del = container.querySelector(".btn.btn-danger");
+    fireEvent.click(del!);
+
+    await act(async () => {
+      jest.advanceTimersByTime(10 * 60);
+      await fetchMock.flush(true);
+    });
+
+    const errorDisplay = document.body.querySelector(".bg-dark.text-white");
+    expect(errorDisplay).toBeInTheDocument();
+    expect(errorDisplay?.querySelector("samp")).toBeInTheDocument();
+
+    await act(() => promise);
+  });
 });

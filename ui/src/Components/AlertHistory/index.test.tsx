@@ -276,6 +276,7 @@ describe("<AlertHistory />", () => {
   });
 
   it("doesn't fetch when not in view", async () => {
+    // Verifies that react-intersection-observer prevents fetch when component is outside viewport
     fetchMock.resetHistory();
     fetchMock.mock(
       "*",
@@ -303,6 +304,48 @@ describe("<AlertHistory />", () => {
     unmount();
 
     expect(fetchMock.calls()).toHaveLength(0);
+  });
+
+  it("fetches when component transitions from out-of-view to in-view", async () => {
+    // Verifies that react-intersection-observer triggers fetch when component becomes visible
+    fetchMock.resetHistory();
+    fetchMock.mock(
+      "*",
+      {
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(RainbowHistoryResponse),
+      },
+      {
+        overwriteRoutes: true,
+      },
+    );
+
+    (useInView as jest.MockedFunction<typeof useInView>).mockReturnValue([
+      jest.fn(),
+      false,
+    ] as any);
+
+    MockAlerts(3);
+    const { rerender, unmount } = render(
+      <AlertHistory group={group} grid={grid}></AlertHistory>,
+    );
+    await act(async () => {
+      await fetchMock.flush(true);
+    });
+    expect(fetchMock.calls()).toHaveLength(0);
+
+    (useInView as jest.MockedFunction<typeof useInView>).mockReturnValue([
+      jest.fn(),
+      true,
+    ] as any);
+
+    rerender(<AlertHistory group={group} grid={grid}></AlertHistory>);
+    await act(async () => {
+      await fetchMock.flush(true);
+    });
+    expect(fetchMock.calls()).toHaveLength(1);
+
+    unmount();
   });
 
   it("fetches an update after 300 seconds", async () => {
@@ -348,7 +391,7 @@ describe("<AlertHistory />", () => {
     unmount();
   });
 
-  it("handles reponses with errors", async () => {
+  it("handles responses with errors", async () => {
     fetchMock.resetHistory();
     fetchMock.mock(
       "*",

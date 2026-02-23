@@ -174,6 +174,32 @@ describe("<FilterInputLabel /> onChange", () => {
       NewUnappliedFilter("bar=baz"),
     );
   });
+
+
+  it("editing filter to new value replaces it in alertStore", () => {
+    // Verifies that onChange replaces filter when edited to new value
+    const filter = createFilter("=", true, true, 1);
+    alertStore.filters.setFilterValues([filter]);
+
+    const { container } = render(
+      <FilterInputLabel
+        alertStore={alertStore}
+        filter={alertStore.filters.values[0]}
+      />,
+    );
+
+    const editSpan = container.querySelector(
+      ".components-filteredinputlabel-text span",
+    );
+    fireEvent.click(editSpan!);
+
+    const input = container.querySelector("input");
+    fireEvent.change(input!, { target: { value: "foo=newvalue" } });
+    fireEvent.keyDown(input!, { keyCode: 13 });
+
+    expect(alertStore.filters.values).toHaveLength(1);
+    expect(alertStore.filters.values[0].raw).toBe("foo=newvalue");
+  });
 });
 
 describe("<FilterInputLabel /> render", () => {

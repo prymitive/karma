@@ -26,7 +26,7 @@ exports[`<AlertHistory /> handles fetch errors 1`] = `
 </DocumentFragment>
 `;
 
-exports[`<AlertHistory /> handles reponses with errors 1`] = `
+exports[`<AlertHistory /> handles responses with errors 1`] = `
 <DocumentFragment>
   <div
     class="w-100 d-flex"

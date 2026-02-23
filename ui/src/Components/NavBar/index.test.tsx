@@ -90,6 +90,46 @@ const renderNavbar = (fixedTop?: boolean) => {
 };
 
 describe("<NavBar />", () => {
+  it("sets isIdle to true after idle timeout", () => {
+    // Verifies that react-idle-timer triggers onIdle callback after timeout period
+    renderNavbar();
+    expect(alertStore.ui.isIdle).toBe(false);
+
+    act(() => {
+      jest.advanceTimersByTime(1000 * 60 * 3 + 1000);
+    });
+
+    expect(alertStore.ui.isIdle).toBe(true);
+  });
+
+  it("navbar becomes invisible when idle", () => {
+    // Verifies that navbar container class changes to invisible when idle
+    const { container } = renderNavbar();
+
+    expect(container.querySelector(".visible")).toBeInTheDocument();
+    expect(container.querySelector(".invisible")).not.toBeInTheDocument();
+
+    act(() => {
+      jest.advanceTimersByTime(1000 * 60 * 3 + 1000);
+    });
+
+    expect(alertStore.ui.isIdle).toBe(true);
+    expect(container.querySelector(".invisible")).toBeInTheDocument();
+  });
+
+  it("pauses idle timer when alertStore.status.paused is true", () => {
+    // Verifies that idle timer is paused when alerts are paused
+    renderNavbar();
+
+    alertStore.status.pause();
+
+    act(() => {
+      jest.advanceTimersByTime(1000 * 60 * 3 + 1000);
+    });
+
+    expect(alertStore.ui.isIdle).toBe(false);
+  });
+
   it("renders null with no upstreams", () => {
     alertStore.data.setUpstreams({
       counters: { total: 0, healthy: 0, failed: 0 },
