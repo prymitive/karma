@@ -2,11 +2,11 @@ import { CommonOptions, FetchGet, FetchRetryConfig } from "./Fetch";
 
 import merge from "lodash.merge";
 
-import fetchMock from "fetch-mock";
+import fetchMock from "@fetch-mock/jest";
 
 beforeEach(() => {
-  fetchMock.reset();
-  fetchMock.mock("*", {
+  fetchMock.mockReset();
+  fetchMock.route("*", {
     status: 200,
     body: "ok",
   });
@@ -14,7 +14,7 @@ beforeEach(() => {
 
 afterEach(() => {
   jest.restoreAllMocks();
-  fetchMock.reset();
+  fetchMock.mockReset();
 });
 
 describe("Fetch", () => {
@@ -23,15 +23,15 @@ describe("Fetch", () => {
   };
 
   const methodOptions: { [key: string]: RequestInit } = {
-    FetchGet: { method: "GET", mode: "cors" },
+    FetchGet: { method: "get", mode: "cors" },
   };
 
   for (const [name, func] of Object.entries(tests)) {
     it(`${name}: passes '{credentials: include}' to all requests`, async () => {
       const request = func("http://example.com/", {}, jest.fn());
       await expect(request).resolves.toMatchObject({ status: 200 });
-      expect(fetchMock.lastUrl()).toBe("http://example.com/");
-      expect(fetchMock.lastOptions()).toEqual(
+      expect(fetchMock.callHistory.lastCall()?.url).toBe("http://example.com/");
+      expect(fetchMock.callHistory.lastCall()?.options).toEqual(
         merge({}, CommonOptions, methodOptions[name]),
       );
     });
@@ -45,8 +45,8 @@ describe("Fetch", () => {
         () => {},
       );
       await expect(request).resolves.toMatchObject({ status: 200 });
-      expect(fetchMock.lastUrl()).toBe("http://example.com/");
-      expect(fetchMock.lastOptions()).toEqual(
+      expect(fetchMock.callHistory.lastCall()?.url).toBe("http://example.com/");
+      expect(fetchMock.callHistory.lastCall()?.options).toEqual(
         merge(
           {},
           CommonOptions,
@@ -67,8 +67,8 @@ describe("Fetch", () => {
         () => {},
       );
       await expect(request).resolves.toMatchObject({ status: 200 });
-      expect(fetchMock.lastUrl()).toBe("http://example.com/");
-      expect(fetchMock.lastOptions()).toEqual(
+      expect(fetchMock.callHistory.lastCall()?.url).toBe("http://example.com/");
+      expect(fetchMock.callHistory.lastCall()?.options).toEqual(
         merge({}, CommonOptions, methodOptions[name], {
           credentials: "omit",
           redirect: "follow",
@@ -78,36 +78,41 @@ describe("Fetch", () => {
   }
 
   it("FetchGet switches to no-cors for the last retry", async () => {
-    fetchMock.reset();
-    fetchMock.mock("*", {
+    fetchMock.mockReset();
+    fetchMock.route("*", {
       throws: new Error("Fetch error"),
     });
 
     const request = FetchGet("http://example.com", {}, jest.fn());
     await expect(request).rejects.toThrow("Fetch error");
 
-    expect(fetchMock.calls()).toHaveLength(FetchRetryConfig.retries + 1);
-    expect(fetchMock.calls().map((r) => r[1])).toMatchObject(
+    expect(fetchMock.callHistory.calls()).toHaveLength(
+      FetchRetryConfig.retries + 1,
+    );
+    expect(fetchMock.callHistory.calls().map((r) => r?.options)).toMatchObject(
       Array.from(Array(FetchRetryConfig.retries + 1).keys(), (i) => ({
         mode: i < FetchRetryConfig.retries ? "cors" : "no-cors",
         credentials: "include",
       })),
     );
     // ensure that the the second to last call was with cors
-    expect(fetchMock.calls()[fetchMock.calls().length - 2][1]).toMatchObject({
+    expect(
+      fetchMock.callHistory.calls()[fetchMock.callHistory.calls().length - 2]
+        ?.options,
+    ).toMatchObject({
       mode: "cors",
       credentials: "include",
     });
     // ensure that the last call was with no-cors
-    expect(fetchMock.lastOptions()).toMatchObject({
+    expect(fetchMock.callHistory.lastCall()?.options).toMatchObject({
       mode: "no-cors",
       credentials: "include",
     });
   });
 
   it("FetchGet calls beforeRetry before each retry", async () => {
-    fetchMock.reset();
-    fetchMock.mock("*", {
+    fetchMock.mockReset();
+    fetchMock.route("*", {
       throws: new Error("Fetch error"),
     });
 

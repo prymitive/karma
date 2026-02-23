@@ -2,7 +2,7 @@ import { act } from "react-dom/test-utils";
 
 import { render, fireEvent } from "@testing-library/react";
 
-import fetchMock from "fetch-mock";
+import fetchMock from "@fetch-mock/jest";
 
 import { MockAlert, MockAlertGroup } from "__fixtures__/Alerts";
 import {
@@ -465,8 +465,8 @@ describe("<AlertGroup /> renderConfig", () => {
   });
 
   it("uses 'z-index: 100' style after setIsMenuOpen() is called on any Alert", async () => {
-    fetchMock.reset();
-    fetchMock.mock("*", { body: "" });
+    fetchMock.mockReset();
+    fetchMock.route("*", { body: "" });
 
     const promise = Promise.resolve();
     MockAlerts(5, 5);
@@ -555,8 +555,8 @@ describe("<AlertGroup /> card theme", () => {
   });
 
   it("renders AlertHistory when enabled", async () => {
-    fetchMock.reset();
-    fetchMock.mock(
+    fetchMock.mockReset();
+    fetchMock.route(
       "/history.json",
       {
         headers: { "Content-Type": "application/json" },
@@ -574,11 +574,11 @@ describe("<AlertGroup /> card theme", () => {
     group.stateCount = { active: 5, suppressed: 0, unprocessed: 0 };
     const { container } = renderAlertGroup(jest.fn());
     await act(async () => {
-      await fetchMock.flush(true);
+      await fetchMock.callHistory.flush(true);
     });
     expect(container.innerHTML).toMatch(/alert-history/);
-    expect(fetchMock.calls()).toHaveLength(1);
-    expect(fetchMock.calls()[0][0]).toBe("/history.json");
+    expect(fetchMock.callHistory.calls()).toHaveLength(1);
+    expect(fetchMock.callHistory.calls()[0]?.url).toContain("/history.json");
   });
 
   it("doesn't render AlertHistory when disabled", () => {

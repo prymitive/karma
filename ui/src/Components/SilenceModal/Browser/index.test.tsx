@@ -2,7 +2,7 @@ import { act } from "react-dom/test-utils";
 
 import { render, fireEvent } from "@testing-library/react";
 
-import fetchMock from "fetch-mock";
+import fetchMock from "@fetch-mock/jest";
 
 import { useFetchGetMock } from "__fixtures__/useFetchGet";
 import { MockSilence } from "__fixtures__/Alerts";
@@ -63,7 +63,7 @@ afterEach(() => {
   localStorage.setItem("fetchConfig.interval", "");
   global.window.innerWidth = 1024;
 
-  fetchMock.reset();
+  fetchMock.mockReset();
 });
 
 const MockSilenceList = (count: number): APIManagedSilenceT[] => {
@@ -523,7 +523,7 @@ describe("<SilenceDelete />", () => {
       cancelGet: jest.fn(),
     });
 
-    fetchMock.mock("*", {
+    fetchMock.route("*", {
       status: 200,
       body: "ok",
     });
@@ -554,10 +554,10 @@ describe("<SilenceDelete />", () => {
 
     await act(async () => {
       jest.advanceTimersByTime(2 * 60);
-      await fetchMock.flush(true);
+      await fetchMock.callHistory.flush(true);
     });
 
-    expect(fetchMock.calls()).toHaveLength(3);
+    expect(fetchMock.callHistory.calls()).toHaveLength(3);
 
     const closeBtn = container.querySelector(".btn-close");
     if (closeBtn) fireEvent.click(closeBtn);
@@ -611,7 +611,7 @@ describe("<SilenceDelete />", () => {
       cancelGet: jest.fn(),
     });
 
-    fetchMock.mock("*", {
+    fetchMock.route("*", {
       status: 200,
       body: "ok",
     });
@@ -662,10 +662,10 @@ describe("<SilenceDelete />", () => {
 
     await act(async () => {
       jest.advanceTimersByTime(2 * 60);
-      await fetchMock.flush(true);
+      await fetchMock.callHistory.flush(true);
     });
 
-    expect(fetchMock.calls()).toHaveLength(2);
+    expect(fetchMock.callHistory.calls()).toHaveLength(2);
 
     const closeBtn = container.querySelector(".btn-close");
     if (closeBtn) fireEvent.click(closeBtn);
@@ -693,7 +693,7 @@ describe("<SilenceDelete />", () => {
       cancelGet: jest.fn(),
     });
 
-    fetchMock.mock("*", {
+    fetchMock.route("*", {
       status: 200,
       body: "ok",
     });
@@ -715,7 +715,7 @@ describe("<SilenceDelete />", () => {
 
     await act(async () => {
       jest.advanceTimersByTime(60);
-      await fetchMock.flush(true);
+      await fetchMock.callHistory.flush(true);
     });
 
     PressKey("Escape", 27);
@@ -781,30 +781,30 @@ describe("<SilenceDelete />", () => {
       clusters: { am: ["am1", "am2", "am3"], failed: ["am4"] },
     });
 
-    fetchMock.reset();
-    fetchMock.mock("http://m1.example.com/api/v2/silence/1", {
+    fetchMock.mockReset();
+    fetchMock.route("http://m1.example.com/api/v2/silence/1", {
       throws: new TypeError("failed to fetch"),
     });
-    fetchMock.mock("http://m2.example.com/api/v2/silence/1", {
+    fetchMock.route("http://m2.example.com/api/v2/silence/1", {
       status: 502,
       body: "Bad Gateway",
     });
-    fetchMock.mock("http://m3.example.com/api/v2/silence/1", {
+    fetchMock.route("http://m3.example.com/api/v2/silence/1", {
       status: 200,
       body: "OK",
     });
-    fetchMock.mock("http://m1.example.com/api/v2/silence/2", {
+    fetchMock.route("http://m1.example.com/api/v2/silence/2", {
       throws: "error text",
     });
-    fetchMock.mock("http://m2.example.com/api/v2/silence/2", {
+    fetchMock.route("http://m2.example.com/api/v2/silence/2", {
       status: 200,
       body: "OK",
     });
-    fetchMock.mock("http://m4.example.com/api/v2/silence/3", {
+    fetchMock.route("http://m4.example.com/api/v2/silence/3", {
       status: 400,
       body: "Bad Request",
     });
-    fetchMock.mock("http://m4.example.com/api/v2/silence/4", {
+    fetchMock.route("http://m4.example.com/api/v2/silence/4", {
       throws: new TypeError("failed to fetch"),
     });
 
@@ -866,11 +866,11 @@ describe("<SilenceDelete />", () => {
 
     await act(async () => {
       jest.advanceTimersByTime(10 * 60);
-      await fetchMock.flush(true);
+      await fetchMock.callHistory.flush(true);
     });
 
-    expect(fetchMock.calls()).toHaveLength(7);
-    const uris = fetchMock.calls().map((c) => c[0]);
+    expect(fetchMock.callHistory.calls()).toHaveLength(7);
+    const uris = fetchMock.callHistory.calls().map((c) => c?.url);
     expect(uris).toContainEqual("http://m1.example.com/api/v2/silence/1");
     expect(uris).toContainEqual("http://m1.example.com/api/v2/silence/2");
     expect(uris).toContainEqual("http://m4.example.com/api/v2/silence/3");
@@ -905,8 +905,8 @@ describe("<SilenceDelete />", () => {
       clusters: { am: ["am1"] },
     });
 
-    fetchMock.reset();
-    fetchMock.mock("http://m1.example.com/api/v2/silence/1", {
+    fetchMock.mockReset();
+    fetchMock.route("http://m1.example.com/api/v2/silence/1", {
       status: 500,
       body: "Internal Server Error",
     });
@@ -948,7 +948,7 @@ describe("<SilenceDelete />", () => {
 
     await act(async () => {
       jest.advanceTimersByTime(10 * 60);
-      await fetchMock.flush(true);
+      await fetchMock.callHistory.flush(true);
     });
 
     const errorDisplay = document.body.querySelector(".bg-dark.text-white");

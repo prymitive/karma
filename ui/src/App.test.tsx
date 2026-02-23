@@ -1,6 +1,6 @@
 import { render, within } from "@testing-library/react";
 
-import fetchMock from "fetch-mock";
+import fetchMock from "@fetch-mock/jest";
 
 import { mockMatchMedia } from "__fixtures__/matchMedia";
 import { EmptyAPIResponse } from "__fixtures__/Fetch";
@@ -39,8 +39,8 @@ beforeEach(() => {
   }));
   global.ResizeObserverEntry = jest.fn();
 
-  fetchMock.reset();
-  fetchMock.mock("*", {
+  fetchMock.mockReset();
+  fetchMock.route("*", {
     body: JSON.stringify(EmptyAPIResponse()),
   });
 });

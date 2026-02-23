@@ -3,7 +3,7 @@ import { act as actReact } from "react-dom/test-utils";
 import { renderHook, act } from "@testing-library/react-hooks";
 import { render } from "@testing-library/react";
 
-import fetchMock from "fetch-mock";
+import fetchMock from "@fetch-mock/jest";
 
 import { FetchRetryConfig } from "Common/Fetch";
 import { useFetchGet } from "./useFetchGet";
@@ -11,27 +11,24 @@ import { useFetchGet } from "./useFetchGet";
 jest.unmock("./useFetchGet");
 
 describe("useFetchGet", () => {
-  beforeAll(() => {
-    fetchMock.mock("http://localhost/ok", {
+  beforeEach(() => {
+    jest.useFakeTimers();
+    fetchMock.mockReset();
+    fetchMock.route("http://localhost/ok", {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status: "ok" }),
     });
-    fetchMock.mock("http://localhost/401", 401);
-    fetchMock.mock("http://localhost/error", {
+    fetchMock.route("http://localhost/401", 401);
+    fetchMock.route("http://localhost/error", {
       throws: new TypeError("failed to fetch"),
     });
-    fetchMock.mock("http://localhost/unknown", {
-      throws: "foo",
+    fetchMock.route("http://localhost/unknown", {
+      throws: new Error("foo"),
     });
-  });
-
-  beforeEach(() => {
-    jest.useFakeTimers();
-    fetchMock.resetHistory();
   });
 
   afterEach(() => {
-    fetchMock.resetHistory();
+    fetchMock.mockClear();
   });
 
   it("sends a GET request", async () => {
@@ -41,10 +38,10 @@ describe("useFetchGet", () => {
 
     await waitForNextUpdate();
 
-    expect(fetchMock.calls()).toHaveLength(1);
-    expect(fetchMock.lastUrl()).toBe("http://localhost/ok");
-    expect(fetchMock.lastOptions()).toMatchObject({
-      method: "GET",
+    expect(fetchMock.callHistory.calls()).toHaveLength(1);
+    expect(fetchMock.callHistory.lastCall()?.url).toBe("http://localhost/ok");
+    expect(fetchMock.callHistory.lastCall()?.options).toMatchObject({
+      method: "get",
     });
   });
 
@@ -55,9 +52,9 @@ describe("useFetchGet", () => {
 
     await waitForNextUpdate();
 
-    expect(fetchMock.calls()).toHaveLength(1);
-    expect(fetchMock.lastUrl()).toBe("http://localhost/ok");
-    expect(fetchMock.lastOptions()).toMatchObject({
+    expect(fetchMock.callHistory.calls()).toHaveLength(1);
+    expect(fetchMock.callHistory.lastCall()?.url).toBe("http://localhost/ok");
+    expect(fetchMock.callHistory.lastCall()?.options).toMatchObject({
       mode: "cors",
       credentials: "include",
       redirect: "follow",
@@ -69,15 +66,15 @@ describe("useFetchGet", () => {
       useFetchGet<string>("http://localhost/ok", { autorun: false }),
     );
 
-    expect(fetchMock.calls()).toHaveLength(0);
+    expect(fetchMock.callHistory.calls()).toHaveLength(0);
 
     act(() => {
       result.current.get();
     });
     await waitForNextUpdate();
 
-    expect(fetchMock.calls()).toHaveLength(1);
-    expect(fetchMock.lastUrl()).toBe("http://localhost/ok");
+    expect(fetchMock.callHistory.calls()).toHaveLength(1);
+    expect(fetchMock.callHistory.lastCall()?.url).toBe("http://localhost/ok");
   });
 
   it("will retry failed requests", async () => {
@@ -121,12 +118,16 @@ describe("useFetchGet", () => {
     expect(result.current.isRetrying).toBe(false);
     expect(result.current.retryCount).toBe(FetchRetryConfig.retries + 1);
 
-    expect(fetchMock.calls()).toHaveLength(FetchRetryConfig.retries + 1);
-    expect(fetchMock.lastUrl()).toBe("http://localhost/error");
+    expect(fetchMock.callHistory.calls()).toHaveLength(
+      FetchRetryConfig.retries + 1,
+    );
+    expect(fetchMock.callHistory.lastCall()?.url).toBe(
+      "http://localhost/error",
+    );
 
     //verify headers for each request
     for (let i = 0; i <= FetchRetryConfig.retries; i++) {
-      expect(fetchMock.calls()[i][1]).toMatchObject({
+      expect(fetchMock.callHistory.calls()[i]?.options).toMatchObject({
         mode: i < FetchRetryConfig.retries ? "cors" : "no-cors",
         credentials: "include",
         redirect: "follow",
@@ -153,7 +154,7 @@ describe("useFetchGet", () => {
   });
 
   it("error is updated after 500 response with JSON body", async () => {
-    fetchMock.mock("http://localhost/500/json", {
+    fetchMock.route("http://localhost/500/json", {
       status: 500,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status: "error" }),
@@ -172,7 +173,7 @@ describe("useFetchGet", () => {
   });
 
   it("error is updated after 500 response with plain body", async () => {
-    fetchMock.mock("http://localhost/500/text", {
+    fetchMock.route("http://localhost/500/text", {
       status: 500,
       body: "error",
     });
@@ -245,13 +246,13 @@ describe("useFetchGet", () => {
     }
 
     expect(result.current.response).toBe(null);
-    expect(result.current.error).toBe("unknown error: foo");
+    expect(result.current.error).toBe("foo");
     expect(result.current.isLoading).toBe(false);
     expect(result.current.isRetrying).toBe(false);
   });
 
   it("error is updated on uparsable JSON", async () => {
-    fetchMock.mock("http://localhost/json/invalid", {
+    fetchMock.route("http://localhost/json/invalid", {
       headers: { "Content-Type": "application/json" },
       body: "this is not a valid JSON body",
     });
@@ -270,14 +271,14 @@ describe("useFetchGet", () => {
 
     expect(result.current.response).toBe(null);
     expect(result.current.error).toBe(
-      "invalid json response body at http://localhost/json/invalid reason: Unexpected token 'h', \"this is not\"... is not valid JSON",
+      "unknown error: SyntaxError: Unexpected token 'h', \"this is not\"... is not valid JSON",
     );
     expect(result.current.isLoading).toBe(false);
     expect(result.current.isRetrying).toBe(false);
   });
 
   it("doesn't update response on 200 response after cleanup", async () => {
-    fetchMock.mock("http://localhost/slow/ok", {
+    fetchMock.route("http://localhost/slow/ok", {
       delay: 1000,
       body: JSON.stringify({ status: "ok" }),
     });
@@ -302,12 +303,12 @@ describe("useFetchGet", () => {
 
     for (let i = 0; i <= FetchRetryConfig.retries; i++) {
       jest.runOnlyPendingTimers();
-      await fetchMock.flush(true);
+      await fetchMock.callHistory.flush(true);
     }
   });
 
   it("doesn't update error on 500 response after cleanup", async () => {
-    fetchMock.mock("http://localhost/slow/500", {
+    fetchMock.route("http://localhost/slow/500", {
       delay: 1000,
       status: 500,
       body: JSON.stringify({ status: "error" }),
@@ -333,12 +334,12 @@ describe("useFetchGet", () => {
 
     for (let i = 0; i <= FetchRetryConfig.retries; i++) {
       jest.runOnlyPendingTimers();
-      await fetchMock.flush(true);
+      await fetchMock.callHistory.flush(true);
     }
   });
 
   it("doesn't update error on failed response after cleanup", async () => {
-    fetchMock.mock("http://localhost/slow/error", {
+    fetchMock.route("http://localhost/slow/error", {
       delay: 1000,
       throws: new TypeError("failed to fetch"),
     });
@@ -363,12 +364,12 @@ describe("useFetchGet", () => {
 
     for (let i = 0; i <= FetchRetryConfig.retries; i++) {
       jest.runOnlyPendingTimers();
-      await fetchMock.flush(true);
+      await fetchMock.callHistory.flush(true);
     }
   });
 
   it("doesn't update error on unparsable JSON after cleanup", async () => {
-    fetchMock.mock("http://localhost/slow/json/invalid", {
+    fetchMock.route("http://localhost/slow/json/invalid", {
       delay: 1000,
       headers: { "Content-Type": "application/json" },
       body: "this is not a valid JSON body",
@@ -393,11 +394,11 @@ describe("useFetchGet", () => {
     });
 
     jest.runOnlyPendingTimers();
-    await fetchMock.flush(true);
+    await fetchMock.callHistory.flush(true);
   });
 
   it("doesn't update response after cleanup", async () => {
-    fetchMock.mock("http://localhost/slow/text", {
+    fetchMock.route("http://localhost/slow/text", {
       delay: 1000,
       body: "ok",
     });
@@ -421,7 +422,7 @@ describe("useFetchGet", () => {
     });
 
     jest.runOnlyPendingTimers();
-    await fetchMock.flush(true);
+    await fetchMock.callHistory.flush(true);
   });
 
   it("doesn't update response after cleanup on slow body read", async () => {

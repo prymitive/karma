@@ -2,7 +2,7 @@ import { act } from "react-dom/test-utils";
 
 import { render, screen } from "@testing-library/react";
 
-import fetchMock from "fetch-mock";
+import fetchMock from "@fetch-mock/jest";
 
 import { useIdleTimer } from "react-idle-timer";
 
@@ -73,8 +73,8 @@ beforeEach(() => {
     clusters: { dev: ["dev"] },
   });
 
-  fetchMock.reset();
-  fetchMock.mock("*", {
+  fetchMock.mockReset();
+  fetchMock.route("*", {
     body: JSON.stringify(EmptyAPIResponse()),
   });
 });
@@ -84,7 +84,7 @@ afterEach(() => {
     jest.runOnlyPendingTimers();
     jest.useRealTimers();
   });
-  fetchMock.reset();
+  fetchMock.mockReset();
 });
 
 const renderNavbar = (fixedTop?: boolean) => {

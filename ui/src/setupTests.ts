@@ -2,6 +2,8 @@ import React from "react";
 
 import "@testing-library/jest-dom";
 
+import fetchMock, { manageFetchMockGlobally } from "@fetch-mock/jest";
+
 import { useInView } from "react-intersection-observer";
 
 import { createMocks as createIdleTimerMocks } from "react-idle-timer";
@@ -14,6 +16,10 @@ import { useFetchGetMock } from "__fixtures__/useFetchGet";
 import { useFetchGet } from "Hooks/useFetchGet";
 
 createIdleTimerMocks();
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+manageFetchMockGlobally(jest as any);
+fetchMock.mockGlobal();
 
 configure({
   enforceActions: "always",

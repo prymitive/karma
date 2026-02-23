@@ -3,32 +3,29 @@ import { act } from "react-dom/test-utils";
 import { renderHook } from "@testing-library/react-hooks";
 import { render } from "@testing-library/react";
 
-import fetchMock from "fetch-mock";
+import fetchMock from "@fetch-mock/jest";
 
 import { useFetchDelete } from "./useFetchDelete";
 
 describe("useFetchDelete", () => {
-  beforeAll(() => {
-    fetchMock.mock("http://localhost/ok", "body ok");
-    fetchMock.mock("http://localhost/401", 401);
-    fetchMock.mock("http://localhost/500", {
+  beforeEach(() => {
+    fetchMock.mockReset();
+    fetchMock.route("http://localhost/ok", "body ok");
+    fetchMock.route("http://localhost/401", 401);
+    fetchMock.route("http://localhost/500", {
       status: 500,
       body: "fake error",
     });
-    fetchMock.mock("http://localhost/error", {
+    fetchMock.route("http://localhost/error", {
       throws: new TypeError("failed to fetch"),
     });
-    fetchMock.mock("http://localhost/unknown", {
-      throws: "foo",
+    fetchMock.route("http://localhost/unknown", {
+      throws: new Error("foo"),
     });
-  });
-
-  beforeEach(() => {
-    fetchMock.resetHistory();
   });
 
   afterEach(() => {
-    fetchMock.resetHistory();
+    fetchMock.mockClear();
   });
 
   const EmptyOptions = {};
@@ -40,10 +37,10 @@ describe("useFetchDelete", () => {
 
     await waitForNextUpdate();
 
-    expect(fetchMock.calls()).toHaveLength(1);
-    expect(fetchMock.lastUrl()).toBe("http://localhost/ok");
-    expect(fetchMock.lastOptions()).toMatchObject({
-      method: "DELETE",
+    expect(fetchMock.callHistory.calls()).toHaveLength(1);
+    expect(fetchMock.callHistory.lastCall()?.url).toBe("http://localhost/ok");
+    expect(fetchMock.callHistory.lastCall()?.options).toMatchObject({
+      method: "delete",
     });
   });
 
@@ -54,9 +51,9 @@ describe("useFetchDelete", () => {
 
     await waitForNextUpdate();
 
-    expect(fetchMock.calls()).toHaveLength(1);
-    expect(fetchMock.lastUrl()).toBe("http://localhost/ok");
-    expect(fetchMock.lastOptions()).toMatchObject({
+    expect(fetchMock.callHistory.calls()).toHaveLength(1);
+    expect(fetchMock.callHistory.lastCall()?.url).toBe("http://localhost/ok");
+    expect(fetchMock.callHistory.lastCall()?.options).toMatchObject({
       mode: "cors",
       credentials: "include",
       redirect: "follow",
@@ -139,12 +136,12 @@ describe("useFetchDelete", () => {
     await waitForNextUpdate();
 
     expect(result.current.response).toBe(null);
-    expect(result.current.error).toBe("unknown error: foo");
+    expect(result.current.error).toBe("foo");
     expect(result.current.isDeleting).toBe(false);
   });
 
   it("doesn't update response after cleanup", async () => {
-    fetchMock.mock(
+    fetchMock.route(
       "http://localhost/slow/ok",
       new Promise((res) => setTimeout(() => res("ok"), 1000)),
     );
@@ -166,11 +163,11 @@ describe("useFetchDelete", () => {
     const { unmount } = render(<Component />);
     unmount();
 
-    await fetchMock.flush(true);
+    await fetchMock.callHistory.flush(true);
   });
 
   it("doesn't update error on 500 response after cleanup", async () => {
-    fetchMock.mock("http://localhost/slow/500", {
+    fetchMock.route("http://localhost/slow/500", {
       delay: 1000,
       status: 500,
       body: "error",
@@ -195,11 +192,11 @@ describe("useFetchDelete", () => {
       unmount();
     });
 
-    await fetchMock.flush(true);
+    await fetchMock.callHistory.flush(true);
   });
 
   it("doesn't update error on failed response after cleanup", async () => {
-    fetchMock.mock("http://localhost/slow/error", {
+    fetchMock.route("http://localhost/slow/error", {
       delay: 1000,
       throws: new TypeError("failed to fetch"),
     });
@@ -223,6 +220,6 @@ describe("useFetchDelete", () => {
       unmount();
     });
 
-    await fetchMock.flush(true);
+    await fetchMock.callHistory.flush(true);
   });
 });

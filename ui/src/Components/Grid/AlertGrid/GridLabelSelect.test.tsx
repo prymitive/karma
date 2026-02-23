@@ -2,7 +2,7 @@ import { act } from "react-dom/test-utils";
 
 import { render, fireEvent } from "@testing-library/react";
 
-import fetchMock from "fetch-mock";
+import fetchMock from "@fetch-mock/jest";
 
 import { MockGrid } from "__fixtures__/Stories";
 import { MockThemeContextWithoutAnimations } from "__fixtures__/Theme";
@@ -25,8 +25,8 @@ declare let document: any;
 declare let window: any;
 
 beforeEach(() => {
-  fetchMock.reset();
-  fetchMock.mock("*", {
+  fetchMock.mockReset();
+  fetchMock.route("*", {
     body: JSON.stringify([]),
   });
 

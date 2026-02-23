@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 
-import fetchMock from "fetch-mock";
+import fetchMock from "@fetch-mock/jest";
 
 import { MockThemeContext } from "__fixtures__/Theme";
 import { useFetchGetMock } from "__fixtures__/useFetchGet";
@@ -10,8 +10,8 @@ import { MultiGridConfiguration } from "./MultiGridConfiguration";
 
 let settingsStore: Settings;
 beforeEach(() => {
-  fetchMock.reset();
-  fetchMock.mock("*", {
+  fetchMock.mockReset();
+  fetchMock.route("*", {
     body: JSON.stringify([]),
   });
 

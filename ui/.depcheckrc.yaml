@@ -15,7 +15,7 @@ ignores:
   - "eslint-plugin-jest"
   - "node-fetch"
   - eslint
+  - fetch-mock
   - identity-obj-proxy
   - jest
-  - jest-fetch-mock
   - terser

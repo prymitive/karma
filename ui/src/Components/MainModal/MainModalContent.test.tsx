@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 
-import fetchMock from "fetch-mock";
+import fetchMock from "@fetch-mock/jest";
 
 import { MockThemeContext } from "__fixtures__/Theme";
 import { AlertStore } from "Stores/AlertStore";
@@ -16,15 +16,15 @@ beforeEach(() => {
   alertStore = new AlertStore([]);
   settingsStore = new Settings(null);
   onHide.mockClear();
-  fetchMock.reset();
-  fetchMock.mock("*", {
+  fetchMock.mockReset();
+  fetchMock.route("*", {
     body: JSON.stringify([]),
   });
 });
 
 afterEach(() => {
   jest.restoreAllMocks();
-  fetchMock.reset();
+  fetchMock.mockReset();
 });
 
 const renderModalContent = () => {

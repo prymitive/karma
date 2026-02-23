@@ -2,7 +2,7 @@ import { act } from "react-dom/test-utils";
 
 import { render } from "@testing-library/react";
 
-import fetchMock from "fetch-mock";
+import fetchMock from "@fetch-mock/jest";
 
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore, NewClusterRequest } from "Stores/SilenceFormStore";
@@ -43,8 +43,8 @@ beforeEach(() => {
     ]),
   });
 
-  fetchMock.resetHistory();
-  fetchMock.mock(
+  fetchMock.mockClear();
+  fetchMock.route(
     "*",
     {
       headers: { "Content-Type": "application/json" },
@@ -58,7 +58,7 @@ beforeEach(() => {
 
 afterEach(() => {
   jest.restoreAllMocks();
-  fetchMock.resetHistory();
+  fetchMock.mockClear();
 });
 
 const renderSilenceSubmitProgress = () => {
@@ -83,29 +83,28 @@ describe("<SilenceSubmitProgress />", () => {
   it("sends a request on mount", async () => {
     renderSilenceSubmitProgress();
     await act(async () => {
-      await fetchMock.flush(true);
+      await fetchMock.callHistory.flush(true);
     });
-    expect(fetchMock.calls()).toHaveLength(1);
+    expect(fetchMock.callHistory.calls()).toHaveLength(1);
   });
 
   it("appends /api/v2/silences to the passed URI", async () => {
     renderSilenceSubmitProgress();
     await act(async () => {
-      await fetchMock.flush(true);
+      await fetchMock.callHistory.flush(true);
     });
-    const uri = fetchMock.calls()[0][0];
+    const uri = fetchMock.callHistory.calls()[0]?.url;
     expect(uri).toBe("http://localhost/api/v2/silences");
   });
 
   it("sends correct JSON payload", async () => {
     renderSilenceSubmitProgress();
     await act(async () => {
-      await fetchMock.flush(true);
+      await fetchMock.callHistory.flush(true);
     });
-    const payload = fetchMock.calls()[0][1];
+    const payload = fetchMock.callHistory.calls()[0]?.options;
     expect(payload).toMatchObject({
-      method: "POST",
-      headers: { "Content-Type": "application/json", foo: "bar" },
+      method: "post",
       body: JSON.stringify({
         matchers: [],
         startsAt: "now",
@@ -114,6 +113,10 @@ describe("<SilenceSubmitProgress />", () => {
         comment: "fake payload",
       }),
     });
+    // Check headers - stored as plain object
+    const headers = payload?.headers as Record<string, string>;
+    expect(headers["content-type"]).toBe("application/json");
+    expect(headers["foo"]).toBe("bar");
   });
 
   it("uses CORS credentials from alertmanager config", async () => {
@@ -122,21 +125,23 @@ describe("<SilenceSubmitProgress />", () => {
     alertStore.data.setUpstreams(upstreams);
     renderSilenceSubmitProgress();
     await act(async () => {
-      await fetchMock.flush(true);
+      await fetchMock.callHistory.flush(true);
     });
-    expect(fetchMock.calls()[0][0]).toBe("http://localhost/api/v2/silences");
-    expect(fetchMock.calls()[0][1]).toMatchObject({
+    expect(fetchMock.callHistory.calls()[0]?.url).toBe(
+      "http://localhost/api/v2/silences",
+    );
+    expect(fetchMock.callHistory.calls()[0]?.options).toMatchObject({
       credentials: "same-origin",
-      method: "POST",
+      method: "post",
     });
   });
 
   it("will retry on another cluster member after fetch failure", async () => {
-    fetchMock.reset();
-    fetchMock.mock("http://am2.example.com/api/v2/silences", {
+    fetchMock.mockReset();
+    fetchMock.route("http://am2.example.com/api/v2/silences", {
       throws: new TypeError("failed to fetch"),
     });
-    fetchMock.mock("http://am1.example.com/api/v2/silences", {
+    fetchMock.route("http://am1.example.com/api/v2/silences", {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ silenceID: "123456789" }),
     });
@@ -190,23 +195,23 @@ describe("<SilenceSubmitProgress />", () => {
       />,
     );
     await act(async () => {
-      await fetchMock.flush(true);
+      await fetchMock.callHistory.flush(true);
     });
-    expect(fetchMock.calls()[0][0]).toBe(
+    expect(fetchMock.callHistory.calls()[0]?.url).toBe(
       "http://am2.example.com/api/v2/silences",
     );
-    expect(fetchMock.calls()).toHaveLength(2);
-    expect(fetchMock.calls()[1][0]).toBe(
+    expect(fetchMock.callHistory.calls()).toHaveLength(2);
+    expect(fetchMock.callHistory.calls()[1]?.url).toBe(
       "http://am1.example.com/api/v2/silences",
     );
   });
 
   it("will use error message from last failed cluster member", async () => {
-    fetchMock.reset();
-    fetchMock.mock("http://am2.example.com/api/v2/silences", {
+    fetchMock.mockReset();
+    fetchMock.route("http://am2.example.com/api/v2/silences", {
       throws: new TypeError("failed to fetch from am2"),
     });
-    fetchMock.mock("http://am1.example.com/api/v2/silences", {
+    fetchMock.route("http://am1.example.com/api/v2/silences", {
       throws: new TypeError("failed to fetch from am1"),
     });
     alertStore.data.setUpstreams({
@@ -259,9 +264,9 @@ describe("<SilenceSubmitProgress />", () => {
       />,
     );
     await act(async () => {
-      await fetchMock.flush(true);
+      await fetchMock.callHistory.flush(true);
     });
-    expect(fetchMock.calls()).toHaveLength(2);
+    expect(fetchMock.callHistory.calls()).toHaveLength(2);
     expect(silenceFormStore.data.requestsByCluster.ha).toMatchObject({
       isDone: true,
       error: "failed to fetch from am1",
@@ -310,9 +315,9 @@ describe("<SilenceSubmitProgress />", () => {
       />,
     );
     await act(async () => {
-      await fetchMock.flush(true);
+      await fetchMock.callHistory.flush(true);
     });
-    expect(fetchMock.calls()[0][0]).toBe(
+    expect(fetchMock.callHistory.calls()[0]?.url).toBe(
       "http://am1.example.com/api/v2/silences",
     );
     expect(consoleSpy).toHaveBeenCalledTimes(1);
@@ -347,9 +352,9 @@ describe("<SilenceSubmitProgress />", () => {
       />,
     );
     await act(async () => {
-      await fetchMock.flush(true);
+      await fetchMock.callHistory.flush(true);
     });
-    expect(fetchMock.calls()).toHaveLength(0);
+    expect(fetchMock.callHistory.calls()).toHaveLength(0);
     expect(consoleSpy).toHaveBeenCalledTimes(2);
   });
 
@@ -411,10 +416,10 @@ describe("<SilenceSubmitProgress />", () => {
       />,
     );
     await act(async () => {
-      await fetchMock.flush(true);
+      await fetchMock.callHistory.flush(true);
     });
-    expect(fetchMock.calls()).toHaveLength(1);
-    expect(fetchMock.calls()[0][0]).toBe(
+    expect(fetchMock.callHistory.calls()).toHaveLength(1);
+    expect(fetchMock.callHistory.calls()[0]?.url).toBe(
       "http://am1.example.com/api/v2/silences",
     );
     expect(logs).toEqual(['Alertmanager instance "am2" is read-only']);
@@ -478,7 +483,7 @@ describe("<SilenceSubmitProgress />", () => {
         silenceFormStore={silenceFormStore}
       />,
     );
-    expect(fetchMock.calls()).toHaveLength(0);
+    expect(fetchMock.callHistory.calls()).toHaveLength(0);
     expect(logs).toEqual([
       'Alertmanager instance "am2" is read-only',
       'Alertmanager instance "am1" is read-only',
@@ -489,7 +494,7 @@ describe("<SilenceSubmitProgress />", () => {
   it("renders silence link on successful fetch", async () => {
     renderSilenceSubmitProgress();
     await act(async () => {
-      await fetchMock.flush(true);
+      await fetchMock.callHistory.flush(true);
     });
     expect(
       silenceFormStore.data.requestsByCluster.mockAlertmanager,
@@ -502,14 +507,14 @@ describe("<SilenceSubmitProgress />", () => {
   });
 
   it("sets error icon on failed fetch", async () => {
-    fetchMock.reset();
-    fetchMock.mock("*", {
+    fetchMock.mockReset();
+    fetchMock.route("*", {
       status: 500,
       body: "error message",
     });
     renderSilenceSubmitProgress();
     await act(async () => {
-      await fetchMock.flush(true);
+      await fetchMock.callHistory.flush(true);
     });
     expect(
       silenceFormStore.data.requestsByCluster.mockAlertmanager,

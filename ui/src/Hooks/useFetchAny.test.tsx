@@ -3,43 +3,40 @@ import { act } from "react-dom/test-utils";
 import { renderHook } from "@testing-library/react-hooks";
 import { render } from "@testing-library/react";
 
-import fetchMock from "fetch-mock";
+import fetchMock from "@fetch-mock/jest";
 
 import { useFetchAny, UpstreamT } from "./useFetchAny";
 
 describe("useFetchAny", () => {
-  beforeAll(() => {
-    fetchMock.mock("http://localhost/ok", "body ok");
-    fetchMock.mock("http://localhost/ok/json", {
+  beforeEach(() => {
+    fetchMock.mockReset();
+    fetchMock.route("http://localhost/ok", "body ok");
+    fetchMock.route("http://localhost/ok/json", {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status: "ok" }),
     });
-    fetchMock.mock("http://localhost/500", {
+    fetchMock.route("http://localhost/500", {
       status: 500,
       body: "fake error",
     });
-    fetchMock.mock("http://localhost/401", 401);
-    fetchMock.mock("http://localhost/error", {
+    fetchMock.route("http://localhost/401", 401);
+    fetchMock.route("http://localhost/error", {
       throws: new TypeError("failed to fetch"),
     });
-    fetchMock.mock("http://localhost/unknown", {
-      throws: "foo",
+    fetchMock.route("http://localhost/unknown", {
+      throws: new Error("foo"),
     });
-  });
-
-  beforeEach(() => {
-    fetchMock.resetHistory();
   });
 
   afterEach(() => {
-    fetchMock.resetHistory();
+    fetchMock.mockClear();
   });
 
   it("does nothing on empty upstream list", async () => {
     const upstreams: UpstreamT[] = [];
     const { result } = renderHook(() => useFetchAny(upstreams));
 
-    expect(fetchMock.calls()).toHaveLength(0);
+    expect(fetchMock.callHistory.calls()).toHaveLength(0);
     expect(result.current.inProgress).toBe(false);
   });
 
@@ -49,10 +46,10 @@ describe("useFetchAny", () => {
 
     await waitForNextUpdate();
 
-    expect(fetchMock.calls()).toHaveLength(1);
-    expect(fetchMock.lastUrl()).toBe("http://localhost/ok");
-    expect(fetchMock.lastOptions()).toMatchObject({
-      method: "GET",
+    expect(fetchMock.callHistory.calls()).toHaveLength(1);
+    expect(fetchMock.callHistory.lastCall()?.url).toBe("http://localhost/ok");
+    expect(fetchMock.callHistory.lastCall()?.options).toMatchObject({
+      method: "get",
       credentials: "include",
       mode: "cors",
       redirect: "follow",
@@ -63,17 +60,17 @@ describe("useFetchAny", () => {
     const upstreams: UpstreamT[] = [
       {
         uri: "http://localhost/ok",
-        options: { method: "POST", credentials: "same-origin" },
+        options: { method: "post", credentials: "same-origin" },
       },
     ];
     const { waitForNextUpdate } = renderHook(() => useFetchAny(upstreams));
 
     await waitForNextUpdate();
 
-    expect(fetchMock.calls()).toHaveLength(1);
-    expect(fetchMock.lastUrl()).toBe("http://localhost/ok");
-    expect(fetchMock.lastOptions()).toMatchObject({
-      method: "POST",
+    expect(fetchMock.callHistory.calls()).toHaveLength(1);
+    expect(fetchMock.callHistory.lastCall()?.url).toBe("http://localhost/ok");
+    expect(fetchMock.callHistory.lastCall()?.options).toMatchObject({
+      method: "post",
       credentials: "same-origin",
       mode: "cors",
       redirect: "follow",
@@ -86,9 +83,9 @@ describe("useFetchAny", () => {
 
     await waitForNextUpdate();
 
-    expect(fetchMock.calls()).toHaveLength(1);
-    expect(fetchMock.lastUrl()).toBe("http://localhost/ok");
-    expect(fetchMock.lastOptions()).toMatchObject({
+    expect(fetchMock.callHistory.calls()).toHaveLength(1);
+    expect(fetchMock.callHistory.lastCall()?.url).toBe("http://localhost/ok");
+    expect(fetchMock.callHistory.lastCall()?.options).toMatchObject({
       mode: "cors",
       credentials: "include",
       redirect: "follow",
@@ -204,13 +201,13 @@ describe("useFetchAny", () => {
     await waitForNextUpdate();
 
     expect(result.current.response).toBe(null);
-    expect(result.current.error).toBe("unknown error: foo");
+    expect(result.current.error).toBe("foo");
     expect(result.current.inProgress).toBe(false);
     expect(result.current.responseURI).toBe(null);
   });
 
   it("doesn't update response after cleanup", async () => {
-    fetchMock.mock(
+    fetchMock.route(
       "http://localhost/slow/ok",
       new Promise((res) => setTimeout(() => res("ok"), 1000)),
     );
@@ -230,11 +227,11 @@ describe("useFetchAny", () => {
     const { unmount } = render(<Component />);
     unmount();
 
-    await fetchMock.flush(true);
+    await fetchMock.callHistory.flush(true);
   });
 
   it("doesn't update error on 500 response after cleanup", async () => {
-    fetchMock.mock("http://localhost/slow/500", {
+    fetchMock.route("http://localhost/slow/500", {
       delay: 1000,
       status: 500,
       body: "error",
@@ -257,11 +254,11 @@ describe("useFetchAny", () => {
       unmount();
     });
 
-    await fetchMock.flush(true);
+    await fetchMock.callHistory.flush(true);
   });
 
   it("doesn't update error on failed response after cleanup", async () => {
-    fetchMock.mock("http://localhost/slow/error", {
+    fetchMock.route("http://localhost/slow/error", {
       delay: 1000,
       throws: new TypeError("failed to fetch"),
     });
@@ -283,7 +280,7 @@ describe("useFetchAny", () => {
       unmount();
     });
 
-    await fetchMock.flush(true);
+    await fetchMock.callHistory.flush(true);
   });
 
   it("doesn't retry on success", async () => {
@@ -298,8 +295,8 @@ describe("useFetchAny", () => {
 
     await waitForNextUpdate();
 
-    expect(fetchMock.calls()).toHaveLength(1);
-    expect(fetchMock.calls()[0][0]).toBe("http://localhost/ok");
+    expect(fetchMock.callHistory.calls()).toHaveLength(1);
+    expect(fetchMock.callHistory.calls()[0]?.url).toBe("http://localhost/ok");
 
     expect(result.current.response).toBe("body ok");
     expect(result.current.error).toBe(null);
@@ -319,10 +316,12 @@ describe("useFetchAny", () => {
 
     await waitForNextUpdate();
 
-    expect(fetchMock.calls()).toHaveLength(3);
-    expect(fetchMock.calls()[0][0]).toBe("http://localhost/500");
-    expect(fetchMock.calls()[1][0]).toBe("http://localhost/error");
-    expect(fetchMock.calls()[2][0]).toBe("http://localhost/ok");
+    expect(fetchMock.callHistory.calls()).toHaveLength(3);
+    expect(fetchMock.callHistory.calls()[0]?.url).toBe("http://localhost/500");
+    expect(fetchMock.callHistory.calls()[1]?.url).toBe(
+      "http://localhost/error",
+    );
+    expect(fetchMock.callHistory.calls()[2]?.url).toBe("http://localhost/ok");
 
     expect(result.current.response).toBe("body ok");
     expect(result.current.error).toBe(null);
@@ -342,9 +341,11 @@ describe("useFetchAny", () => {
 
     await waitForNextUpdate();
 
-    expect(fetchMock.calls()).toHaveLength(2);
-    expect(fetchMock.calls()[0][0]).toBe("http://localhost/500");
-    expect(fetchMock.calls()[1][0]).toBe("http://localhost/ok/json");
+    expect(fetchMock.callHistory.calls()).toHaveLength(2);
+    expect(fetchMock.callHistory.calls()[0]?.url).toBe("http://localhost/500");
+    expect(fetchMock.callHistory.calls()[1]?.url).toBe(
+      "http://localhost/ok/json",
+    );
 
     expect(result.current.response).toMatchObject({ status: "ok" });
     expect(result.current.error).toBe(null);

@@ -1,4 +1,4 @@
-import fetchMock from "fetch-mock";
+import fetchMock from "@fetch-mock/jest";
 
 import { EmptyAPIResponse } from "__fixtures__/Fetch";
 import { mockMatchMedia } from "__fixtures__/matchMedia";
@@ -37,8 +37,8 @@ it("loads ResizeObserver polyfill if needed", () => {
   const response = EmptyAPIResponse();
   response.filters = [];
 
-  fetchMock.reset();
-  fetchMock.mock("*", {
+  fetchMock.mockReset();
+  fetchMock.route("*", {
     body: JSON.stringify(response),
   });
 

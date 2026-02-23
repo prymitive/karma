@@ -2,7 +2,7 @@ import { act } from "react-dom/test-utils";
 
 import { render, fireEvent } from "@testing-library/react";
 
-import fetchMock from "fetch-mock";
+import fetchMock from "@fetch-mock/jest";
 
 import { MockThemeContext } from "__fixtures__/Theme";
 import { ThemeContext } from "Components/Theme";
@@ -21,15 +21,15 @@ beforeEach(() => {
   silenceFormStore = new SilenceFormStore();
 
   jest.useFakeTimers();
-  fetchMock.reset();
-  fetchMock.mock("*", {
+  fetchMock.mockReset();
+  fetchMock.route("*", {
     body: JSON.stringify([]),
   });
 });
 
 afterEach(() => {
   jest.restoreAllMocks();
-  fetchMock.reset();
+  fetchMock.mockReset();
   document.body.className = "";
 });
 

@@ -2,7 +2,7 @@ import { act } from "react-dom/test-utils";
 
 import { render } from "@testing-library/react";
 
-import fetchMock from "fetch-mock";
+import fetchMock from "@fetch-mock/jest";
 
 import { useInView } from "react-intersection-observer";
 
@@ -73,15 +73,15 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  fetchMock.resetHistory();
-  fetchMock.reset();
+  fetchMock.mockClear();
+  fetchMock.mockReset();
   jest.useRealTimers();
 });
 
 describe("<AlertHistory />", () => {
   it("send a correct payload with empty grid", async () => {
-    fetchMock.resetHistory();
-    fetchMock.mock(
+    fetchMock.mockClear();
+    fetchMock.route(
       "*",
       {
         headers: { "Content-Type": "application/json" },
@@ -99,10 +99,10 @@ describe("<AlertHistory />", () => {
       <AlertHistory group={group} grid={grid}></AlertHistory>,
     );
     await act(async () => {
-      await fetchMock.flush(true);
+      await fetchMock.callHistory.flush(true);
     });
-    expect(fetchMock.calls()).toHaveLength(1);
-    expect(fetchMock.calls()[0][1]?.body).toStrictEqual(
+    expect(fetchMock.callHistory.calls()).toHaveLength(1);
+    expect(fetchMock.callHistory.calls()[0]?.options?.body).toStrictEqual(
       JSON.stringify({
         sources: [
           "https://secure.example.com/graph",
@@ -115,8 +115,8 @@ describe("<AlertHistory />", () => {
   });
 
   it("send a correct payload with non-empty grid", async () => {
-    fetchMock.resetHistory();
-    fetchMock.mock(
+    fetchMock.mockClear();
+    fetchMock.route(
       "*",
       {
         headers: { "Content-Type": "application/json" },
@@ -132,10 +132,10 @@ describe("<AlertHistory />", () => {
       <AlertHistory group={group} grid={grid}></AlertHistory>,
     );
     await act(async () => {
-      await fetchMock.flush(true);
+      await fetchMock.callHistory.flush(true);
     });
-    expect(fetchMock.calls()).toHaveLength(1);
-    expect(fetchMock.calls()[0][1]?.body).toStrictEqual(
+    expect(fetchMock.callHistory.calls()).toHaveLength(1);
+    expect(fetchMock.callHistory.calls()[0]?.options?.body).toStrictEqual(
       JSON.stringify({
         sources: [
           "https://secure.example.com/graph",
@@ -148,8 +148,8 @@ describe("<AlertHistory />", () => {
   });
 
   it("send a correct payload with @cluster grid", async () => {
-    fetchMock.resetHistory();
-    fetchMock.mock(
+    fetchMock.mockClear();
+    fetchMock.route(
       "*",
       {
         headers: { "Content-Type": "application/json" },
@@ -167,10 +167,10 @@ describe("<AlertHistory />", () => {
       <AlertHistory group={group} grid={grid}></AlertHistory>,
     );
     await act(async () => {
-      await fetchMock.flush(true);
+      await fetchMock.callHistory.flush(true);
     });
-    expect(fetchMock.calls()).toHaveLength(1);
-    expect(fetchMock.calls()[0][1]?.body).toStrictEqual(
+    expect(fetchMock.callHistory.calls()).toHaveLength(1);
+    expect(fetchMock.callHistory.calls()[0]?.options?.body).toStrictEqual(
       JSON.stringify({
         sources: [
           "https://secure.example.com/graph",
@@ -183,8 +183,8 @@ describe("<AlertHistory />", () => {
   });
 
   it("send a correct payload with shared labels", async () => {
-    fetchMock.resetHistory();
-    fetchMock.mock(
+    fetchMock.mockClear();
+    fetchMock.route(
       "*",
       {
         headers: { "Content-Type": "application/json" },
@@ -204,10 +204,10 @@ describe("<AlertHistory />", () => {
       <AlertHistory group={group} grid={grid}></AlertHistory>,
     );
     await act(async () => {
-      await fetchMock.flush(true);
+      await fetchMock.callHistory.flush(true);
     });
-    expect(fetchMock.calls()).toHaveLength(1);
-    expect(fetchMock.calls()[0][1]?.body).toStrictEqual(
+    expect(fetchMock.callHistory.calls()).toHaveLength(1);
+    expect(fetchMock.callHistory.calls()[0]?.options?.body).toStrictEqual(
       JSON.stringify({
         sources: [
           "https://secure.example.com/graph",
@@ -226,8 +226,8 @@ describe("<AlertHistory />", () => {
   });
 
   it("matches snapshot with empty response", async () => {
-    fetchMock.resetHistory();
-    fetchMock.mock(
+    fetchMock.mockClear();
+    fetchMock.route(
       "*",
       {
         headers: { "Content-Type": "application/json" },
@@ -243,16 +243,16 @@ describe("<AlertHistory />", () => {
       <AlertHistory group={group} grid={grid}></AlertHistory>,
     );
     await act(async () => {
-      await fetchMock.flush(true);
+      await fetchMock.callHistory.flush(true);
     });
-    expect(fetchMock.calls()).toHaveLength(1);
+    expect(fetchMock.callHistory.calls()).toHaveLength(1);
     expect(asFragment()).toMatchSnapshot();
     unmount();
   });
 
   it("matches snapshot with rainbow response", async () => {
-    fetchMock.resetHistory();
-    fetchMock.mock(
+    fetchMock.mockClear();
+    fetchMock.route(
       "*",
       {
         headers: { "Content-Type": "application/json" },
@@ -268,17 +268,17 @@ describe("<AlertHistory />", () => {
       <AlertHistory group={group} grid={grid}></AlertHistory>,
     );
     await act(async () => {
-      await fetchMock.flush(true);
+      await fetchMock.callHistory.flush(true);
     });
-    expect(fetchMock.calls()).toHaveLength(1);
+    expect(fetchMock.callHistory.calls()).toHaveLength(1);
     expect(asFragment()).toMatchSnapshot();
     unmount();
   });
 
   it("doesn't fetch when not in view", async () => {
     // Verifies that react-intersection-observer prevents fetch when component is outside viewport
-    fetchMock.resetHistory();
-    fetchMock.mock(
+    fetchMock.mockClear();
+    fetchMock.route(
       "*",
       {
         headers: { "Content-Type": "application/json" },
@@ -299,17 +299,17 @@ describe("<AlertHistory />", () => {
       <AlertHistory group={group} grid={grid}></AlertHistory>,
     );
     await act(async () => {
-      await fetchMock.flush(true);
+      await fetchMock.callHistory.flush(true);
     });
     unmount();
 
-    expect(fetchMock.calls()).toHaveLength(0);
+    expect(fetchMock.callHistory.calls()).toHaveLength(0);
   });
 
   it("fetches when component transitions from out-of-view to in-view", async () => {
     // Verifies that react-intersection-observer triggers fetch when component becomes visible
-    fetchMock.resetHistory();
-    fetchMock.mock(
+    fetchMock.mockClear();
+    fetchMock.route(
       "*",
       {
         headers: { "Content-Type": "application/json" },
@@ -330,9 +330,9 @@ describe("<AlertHistory />", () => {
       <AlertHistory group={group} grid={grid}></AlertHistory>,
     );
     await act(async () => {
-      await fetchMock.flush(true);
+      await fetchMock.callHistory.flush(true);
     });
-    expect(fetchMock.calls()).toHaveLength(0);
+    expect(fetchMock.callHistory.calls()).toHaveLength(0);
 
     (useInView as jest.MockedFunction<typeof useInView>).mockReturnValue([
       jest.fn(),
@@ -341,16 +341,16 @@ describe("<AlertHistory />", () => {
 
     rerender(<AlertHistory group={group} grid={grid}></AlertHistory>);
     await act(async () => {
-      await fetchMock.flush(true);
+      await fetchMock.callHistory.flush(true);
     });
-    expect(fetchMock.calls()).toHaveLength(1);
+    expect(fetchMock.callHistory.calls()).toHaveLength(1);
 
     unmount();
   });
 
   it("fetches an update after 300 seconds", async () => {
-    fetchMock.resetHistory();
-    fetchMock.mock(
+    fetchMock.mockClear();
+    fetchMock.route(
       "*",
       {
         headers: { "Content-Type": "application/json" },
@@ -372,28 +372,28 @@ describe("<AlertHistory />", () => {
       <AlertHistory group={group} grid={grid}></AlertHistory>,
     );
     await act(async () => {
-      await fetchMock.flush(true);
+      await fetchMock.callHistory.flush(true);
     });
-    expect(fetchMock.calls()).toHaveLength(1);
+    expect(fetchMock.callHistory.calls()).toHaveLength(1);
 
     await act(async () => {
       jest.advanceTimersByTime(1000 * 299);
-      await fetchMock.flush(true);
+      await fetchMock.callHistory.flush(true);
     });
-    expect(fetchMock.calls()).toHaveLength(1);
+    expect(fetchMock.callHistory.calls()).toHaveLength(1);
 
     await act(async () => {
       jest.advanceTimersByTime(1000 * 2);
-      await fetchMock.flush(true);
+      await fetchMock.callHistory.flush(true);
     });
-    expect(fetchMock.calls()).toHaveLength(2);
+    expect(fetchMock.callHistory.calls()).toHaveLength(2);
 
     unmount();
   });
 
   it("handles responses with errors", async () => {
-    fetchMock.resetHistory();
-    fetchMock.mock(
+    fetchMock.mockClear();
+    fetchMock.route(
       "*",
       {
         headers: { "Content-Type": "application/json" },
@@ -409,16 +409,16 @@ describe("<AlertHistory />", () => {
       <AlertHistory group={group} grid={grid}></AlertHistory>,
     );
     await act(async () => {
-      await fetchMock.flush(true);
+      await fetchMock.callHistory.flush(true);
     });
-    expect(fetchMock.calls()).toHaveLength(1);
+    expect(fetchMock.callHistory.calls()).toHaveLength(1);
     expect(asFragment()).toMatchSnapshot();
     unmount();
   });
 
   it("handles fetch errors", async () => {
-    fetchMock.resetHistory();
-    fetchMock.mock(
+    fetchMock.mockClear();
+    fetchMock.route(
       "*",
       {
         status: 500,
@@ -434,9 +434,9 @@ describe("<AlertHistory />", () => {
       <AlertHistory group={group} grid={grid}></AlertHistory>,
     );
     await act(async () => {
-      await fetchMock.flush(true);
+      await fetchMock.callHistory.flush(true);
     });
-    expect(fetchMock.calls()).toHaveLength(1);
+    expect(fetchMock.callHistory.calls()).toHaveLength(1);
     expect(asFragment()).toMatchSnapshot();
     unmount();
   });
@@ -567,8 +567,8 @@ describe("<AlertHistory />", () => {
     };
 
     it(`${testCase.title}`, async () => {
-      fetchMock.resetHistory();
-      fetchMock.mock(
+      fetchMock.mockClear();
+      fetchMock.route(
         "*",
         {
           headers: { "Content-Type": "application/json" },
@@ -583,7 +583,7 @@ describe("<AlertHistory />", () => {
         <AlertHistory group={g} grid={gr}></AlertHistory>,
       );
       await act(async () => {
-        await fetchMock.flush(true);
+        await fetchMock.callHistory.flush(true);
       });
 
       const rects = Array.from(container.querySelectorAll("rect")).map(

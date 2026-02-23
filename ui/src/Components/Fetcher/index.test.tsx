@@ -2,7 +2,7 @@ import { act } from "react-dom/test-utils";
 
 import { render, fireEvent } from "@testing-library/react";
 
-import fetchMock from "fetch-mock";
+import fetchMock from "@fetch-mock/jest";
 
 import { EmptyAPIResponse } from "__fixtures__/Fetch";
 
@@ -48,14 +48,14 @@ afterEach(() => {
   jest.clearAllMocks();
   jest.restoreAllMocks();
   jest.useRealTimers();
-  fetchMock.reset();
+  fetchMock.mockReset();
 });
 
 const MockEmptyAPIResponseWithoutFilters = () => {
   const response = EmptyAPIResponse();
   response.filters = [];
-  fetchMock.reset();
-  fetchMock.mock("*", {
+  fetchMock.mockReset();
+  fetchMock.route("*", {
     status: 200,
     body: JSON.stringify(response),
   });

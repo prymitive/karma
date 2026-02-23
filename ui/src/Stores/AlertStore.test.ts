@@ -1,4 +1,4 @@
-import fetchMock from "fetch-mock";
+import fetchMock from "@fetch-mock/jest";
 
 import { EmptyAPIResponse } from "__fixtures__/Fetch";
 import { MockGroup } from "__fixtures__/Stories";
@@ -14,12 +14,12 @@ import {
 declare let global: any;
 
 beforeEach(() => {
-  fetchMock.reset();
+  fetchMock.mockReset();
 });
 
 afterEach(() => {
   jest.restoreAllMocks();
-  fetchMock.reset();
+  fetchMock.mockReset();
 });
 
 describe("AlertStore.data", () => {
@@ -530,8 +530,8 @@ describe("AlertStore.fetch", () => {
 
   it("fetch() works with valid response", async () => {
     const response = EmptyAPIResponse();
-    fetchMock.reset();
-    fetchMock.mock("*", {
+    fetchMock.mockReset();
+    fetchMock.route("*", {
       body: JSON.stringify(response),
     });
 
@@ -540,14 +540,14 @@ describe("AlertStore.fetch", () => {
       store.fetch("", false, "", "", false, {}, 5, {}),
     ).resolves.toBeUndefined();
 
-    expect(fetchMock.calls()).toHaveLength(1);
+    expect(fetchMock.callHistory.calls()).toHaveLength(1);
     expect(store.status.value).toEqual(AlertStoreStatuses.Idle);
     expect(store.info.version).toBe("fakeVersion");
   });
 
   it("fetch() handles response with error correctly", async () => {
-    fetchMock.reset();
-    fetchMock.mock("*", {
+    fetchMock.mockReset();
+    fetchMock.route("*", {
       body: JSON.stringify({ error: "Fetch error" }),
     });
 
@@ -556,7 +556,7 @@ describe("AlertStore.fetch", () => {
       store.fetch("", false, "", "", false, {}, 5, {}),
     ).resolves.toBeUndefined();
 
-    expect(fetchMock.calls()).toHaveLength(1);
+    expect(fetchMock.callHistory.calls()).toHaveLength(1);
     expect(store.status.value).toEqual(AlertStoreStatuses.Failure);
     expect(store.info.version).toBe("unknown");
   });
@@ -565,8 +565,8 @@ describe("AlertStore.fetch", () => {
     const consoleSpy = jest
       .spyOn(console, "trace")
       .mockImplementation(() => {});
-    fetchMock.reset();
-    fetchMock.mock("*", {
+    fetchMock.mockReset();
+    fetchMock.route("*", {
       throws: new Error("fetch error"),
     });
 
@@ -575,7 +575,7 @@ describe("AlertStore.fetch", () => {
       store.fetch("", false, "", "", false, {}, 5, {}),
     ).resolves.toHaveProperty("error");
 
-    expect(fetchMock.calls()).toHaveLength(10);
+    expect(fetchMock.callHistory.calls()).toHaveLength(10);
     expect(store.status.value).toEqual(AlertStoreStatuses.Failure);
     expect(store.info.version).toBe("unknown");
     // there should be a trace of the error
@@ -586,51 +586,51 @@ describe("AlertStore.fetch", () => {
     jest.spyOn(console, "trace").mockImplementation(() => {});
     const store = new AlertStore([]);
 
-    fetchMock.reset();
-    fetchMock.mock("*", {
+    fetchMock.mockReset();
+    fetchMock.route("*", {
       throws: new Error("fetch error"),
     });
 
     await expect(
       store.fetch("", false, "", "", false, {}, 5, {}),
     ).resolves.toHaveProperty("error");
-    expect(fetchMock.calls()).toHaveLength(10);
+    expect(fetchMock.callHistory.calls()).toHaveLength(10);
   });
 
   it("fetch() retry counter is reset after successful fetch", async () => {
     jest.spyOn(console, "trace").mockImplementation(() => {});
     const store = new AlertStore(["label=value"]);
 
-    fetchMock.reset();
-    fetchMock.mock("*", {
+    fetchMock.mockReset();
+    fetchMock.route("*", {
       throws: new Error("fetch error"),
     });
 
     await expect(
       store.fetch("", false, "", "", false, {}, 5, {}),
     ).resolves.toHaveProperty("error");
-    expect(fetchMock.calls()).toHaveLength(10);
+    expect(fetchMock.callHistory.calls()).toHaveLength(10);
 
     const response = EmptyAPIResponse();
-    fetchMock.reset();
-    fetchMock.mock("*", {
+    fetchMock.mockReset();
+    fetchMock.route("*", {
       body: JSON.stringify(response),
     });
 
     await expect(
       store.fetch("", false, "", "", false, {}, 5, {}),
     ).resolves.toBeUndefined();
-    expect(fetchMock.calls()).toHaveLength(1);
+    expect(fetchMock.callHistory.calls()).toHaveLength(1);
 
-    fetchMock.reset();
-    fetchMock.mock("*", {
+    fetchMock.mockReset();
+    fetchMock.route("*", {
       throws: new Error("fetch error"),
     });
 
     await expect(
       store.fetch("", false, "", "", false, {}, 5, {}),
     ).resolves.toHaveProperty("error");
-    expect(fetchMock.calls()).toHaveLength(10);
+    expect(fetchMock.callHistory.calls()).toHaveLength(10);
   });
 
   it("fetch() reloads the page after if auth middleware is detected", async () => {
@@ -659,8 +659,8 @@ describe("AlertStore.fetch", () => {
     store.filters.setFilterValues([NewUnappliedFilter("foo")]);
 
     jest.spyOn(console, "trace").mockImplementation(() => {});
-    fetchMock.reset();
-    fetchMock.mock("*", {
+    fetchMock.mockReset();
+    fetchMock.route("*", {
       throws: new Error("fetch error"),
     });
 
@@ -672,8 +672,8 @@ describe("AlertStore.fetch", () => {
 
   it("stored settings are updated if needed after fetch", async () => {
     const response = EmptyAPIResponse();
-    fetchMock.reset();
-    fetchMock.mock("*", {
+    fetchMock.mockReset();
+    fetchMock.route("*", {
       body: JSON.stringify(response),
     });
 
@@ -717,8 +717,8 @@ describe("AlertStore.fetch", () => {
 
   it("wants to reload page after new version is returned in the API", async () => {
     const response = EmptyAPIResponse();
-    fetchMock.reset();
-    fetchMock.mock("*", {
+    fetchMock.mockReset();
+    fetchMock.route("*", {
       body: JSON.stringify(response),
     });
     const store = new AlertStore(["label=value"]);
@@ -728,8 +728,8 @@ describe("AlertStore.fetch", () => {
     expect(store.info.upgradeReady).toBe(false);
 
     response.version = "newFakeVersion";
-    fetchMock.reset();
-    fetchMock.mock("*", {
+    fetchMock.mockReset();
+    fetchMock.route("*", {
       body: JSON.stringify(response),
     });
     await expect(
@@ -793,17 +793,19 @@ describe("AlertStore.fetch", () => {
 
   it("uses correct query args with gridSortReverse=false", async () => {
     const response = EmptyAPIResponse();
-    fetchMock.reset();
-    fetchMock.mock("*", {
+    fetchMock.mockReset();
+    fetchMock.route("*", {
       body: JSON.stringify(response),
     });
     const store = new AlertStore(["label=value"]);
     await expect(
       store.fetch("", false, "sortOrder", "sortLabel", false, {}, 5, {}),
     ).resolves.toBeUndefined();
-    expect(fetchMock.calls().length).toEqual(1);
-    expect(fetchMock.calls()[0][0]).toBe("/alerts.json");
-    expect(JSON.parse(fetchMock.calls()[0][1]?.body as string)).toStrictEqual({
+    expect(fetchMock.callHistory.calls().length).toEqual(1);
+    expect(fetchMock.callHistory.calls()[0]?.url).toContain("/alerts.json");
+    expect(
+      JSON.parse(fetchMock.callHistory.calls()[0]?.options?.body as string),
+    ).toStrictEqual({
       filters: ["label=value"],
       gridLabel: "",
       gridLimits: {},
@@ -818,17 +820,19 @@ describe("AlertStore.fetch", () => {
 
   it("uses correct query args with gridSortReverse=true", async () => {
     const response = EmptyAPIResponse();
-    fetchMock.reset();
-    fetchMock.mock("*", {
+    fetchMock.mockReset();
+    fetchMock.route("*", {
       body: JSON.stringify(response),
     });
     const store = new AlertStore(["label=value"]);
     await expect(
       store.fetch("cluster", true, "sortOrder", "sortLabel", true, {}, 5, {}),
     ).resolves.toBeUndefined();
-    expect(fetchMock.calls().length).toEqual(1);
-    expect(fetchMock.calls()[0][0]).toBe("/alerts.json");
-    expect(JSON.parse(fetchMock.calls()[0][1]?.body as string)).toStrictEqual({
+    expect(fetchMock.callHistory.calls().length).toEqual(1);
+    expect(fetchMock.callHistory.calls()[0]?.url).toContain("/alerts.json");
+    expect(
+      JSON.parse(fetchMock.callHistory.calls()[0]?.options?.body as string),
+    ).toStrictEqual({
       filters: ["label=value"],
       gridLabel: "cluster",
       gridLimits: {},
@@ -843,8 +847,8 @@ describe("AlertStore.fetch", () => {
 
   it("uses correct query args with limits", async () => {
     const response = EmptyAPIResponse();
-    fetchMock.reset();
-    fetchMock.mock("*", {
+    fetchMock.mockReset();
+    fetchMock.route("*", {
       body: JSON.stringify(response),
     });
     const store = new AlertStore(["label=value"]);
@@ -866,9 +870,11 @@ describe("AlertStore.fetch", () => {
         { "1234567890": 7, "1234567891": 1 },
       ),
     ).resolves.toBeUndefined();
-    expect(fetchMock.calls().length).toEqual(1);
-    expect(fetchMock.calls()[0][0]).toBe("/alerts.json");
-    expect(JSON.parse(fetchMock.calls()[0][1]?.body as string)).toStrictEqual({
+    expect(fetchMock.callHistory.calls().length).toEqual(1);
+    expect(fetchMock.callHistory.calls()[0]?.url).toContain("/alerts.json");
+    expect(
+      JSON.parse(fetchMock.callHistory.calls()[0]?.options?.body as string),
+    ).toStrictEqual({
       filters: ["label=value"],
       gridLabel: "cluster",
       gridLimits: { bar: 7 },
@@ -904,8 +910,8 @@ describe("AlertStore.fetch", () => {
         stateCount: { unprocessed: 0, active: 3, suppressed: 0 },
       },
     ];
-    fetchMock.reset();
-    fetchMock.mock("*", {
+    fetchMock.mockReset();
+    fetchMock.route("*", {
       body: JSON.stringify(response),
     });
 
@@ -923,9 +929,11 @@ describe("AlertStore.fetch", () => {
         { g1: 7, g2: 1, g4: 6 },
       ),
     ).resolves.toBeUndefined();
-    expect(fetchMock.calls().length).toEqual(1);
-    expect(fetchMock.calls()[0][0]).toBe("/alerts.json");
-    expect(JSON.parse(fetchMock.calls()[0][1]?.body as string)).toStrictEqual({
+    expect(fetchMock.callHistory.calls().length).toEqual(1);
+    expect(fetchMock.callHistory.calls()[0]?.url).toContain("/alerts.json");
+    expect(
+      JSON.parse(fetchMock.callHistory.calls()[0]?.options?.body as string),
+    ).toStrictEqual({
       filters: ["label=value"],
       gridLabel: "cluster",
       gridLimits: { bar: 7 },

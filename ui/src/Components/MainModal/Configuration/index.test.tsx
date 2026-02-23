@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react";
 
-import fetchMock from "fetch-mock";
+import fetchMock from "@fetch-mock/jest";
 
 import { MockThemeContext } from "__fixtures__/Theme";
 import { Settings } from "Stores/Settings";
@@ -8,8 +8,8 @@ import { ThemeContext } from "Components/Theme";
 import { Configuration } from ".";
 
 beforeEach(() => {
-  fetchMock.reset();
-  fetchMock.mock("*", {
+  fetchMock.mockReset();
+  fetchMock.route("*", {
     status: 200,
     body: JSON.stringify([]),
   });
@@ -17,7 +17,7 @@ beforeEach(() => {
 
 afterEach(() => {
   jest.restoreAllMocks();
-  fetchMock.reset();
+  fetchMock.mockReset();
 });
 
 describe("<Configuration />", () => {
