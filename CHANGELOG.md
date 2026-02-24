@@ -4,7 +4,7 @@
 
 ### Changed
 
-- No changes in this release, only fixes for the release process. 
+- No changes in this release, only fixes for the release process.
 
 ## v0.123
 
