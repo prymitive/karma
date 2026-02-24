@@ -15,6 +15,26 @@ import { ThemeContext } from "Components/Theme";
 import AlertGrid from ".";
 import { GridLabelSelect } from "./GridLabelSelect";
 
+jest.mock("@floating-ui/react-dom", () => {
+  const actual = jest.requireActual("@floating-ui/react-dom");
+  return {
+    ...actual,
+    useFloating: jest.fn(() => ({
+      x: 150,
+      y: 275,
+      refs: {
+        setReference: jest.fn(),
+        setFloating: jest.fn(),
+      },
+      strategy: "absolute",
+      update: jest.fn(),
+      placement: "bottom",
+      middlewareData: {},
+      context: {},
+    })),
+  };
+});
+
 let alertStore: AlertStore;
 let settingsStore: Settings;
 let silenceFormStore: SilenceFormStore;
@@ -204,6 +224,29 @@ describe("<GridLabelSelect />", () => {
       container.querySelectorAll("div.components-grid-label-select-menu"),
     ).toHaveLength(0);
 
+    await act(() => promise);
+  });
+
+  it("passes floating coordinates into dropdown styles", async () => {
+    const promise = Promise.resolve();
+    const { container } = renderGridLabelSelect();
+
+    const toggle = container.querySelector(
+      "span.components-grid-label-select-dropdown",
+    );
+
+    fireEvent.click(toggle!);
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
+
+    const dropdown = container.querySelector(
+      "div.components-grid-label-select-menu",
+    ) as HTMLElement;
+
+    expect(dropdown.style.top).toBe("275px");
+    expect(dropdown.style.left).toBe("150px");
+    expect(dropdown.style.position).toBe("absolute");
     await act(() => promise);
   });
 });

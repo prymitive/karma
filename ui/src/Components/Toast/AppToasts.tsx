@@ -40,7 +40,7 @@ const AppToasts: FC<{
             className="nav-link cursor-pointer"
             onClick={show}
           >
-            <FontAwesomeIcon icon={faInfoCircle} fixedWidth />
+            <FontAwesomeIcon icon={faInfoCircle} className="fa-fw" />
           </span>
         </TooltipWrapper>
       </li>

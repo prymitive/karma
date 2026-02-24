@@ -38,8 +38,7 @@ const SilenceIDCopyButton: FC<{
         <span
           ref={(node) => {
             ref(node);
-            (nodeRef as React.MutableRefObject<HTMLElement | null>).current =
-              node;
+            nodeRef.current = node;
           }}
           className="badge bg-secondary px-1 me-1 components-label cursor-pointer"
           onClick={() => {
@@ -93,9 +92,8 @@ const SilenceDetails: FC<{
             <div>
               <span className="badge px-1 me-1 components-label silence-detail">
                 <FontAwesomeIcon
-                  className="text-muted me-1"
+                  className="text-muted me-1 fa-fw"
                   icon={faCalendarCheck}
-                  fixedWidth
                 />
                 Started <DateFromNow timestamp={silence.startsAt} />
               </span>
@@ -103,9 +101,8 @@ const SilenceDetails: FC<{
                 className={`badge ${expiresClass} px-1 me-1 components-label silence-detail`}
               >
                 <FontAwesomeIcon
-                  className="text-muted me-1"
+                  className="text-muted me-1 fa-fw"
                   icon={faCalendarTimes}
-                  fixedWidth
                 />
                 {expiresLabel} <DateFromNow timestamp={silence.endsAt} />
               </span>
@@ -113,9 +110,8 @@ const SilenceDetails: FC<{
             <div className="my-1 d-flex flex-row">
               <span className="badge px-1 me-1 components-label silence-detail flex-grow-0 flex-shrink-0">
                 <FontAwesomeIcon
-                  className="text-muted me-1"
+                  className="text-muted me-1 fa-fw"
                   icon={faFingerprint}
-                  fixedWidth
                 />
                 ID:
               </span>
@@ -127,9 +123,8 @@ const SilenceDetails: FC<{
             <div className="my-1">
               <span className="badge px-1 me-1 components-label silence-detail">
                 <FontAwesomeIcon
-                  className="text-muted me-1"
+                  className="text-muted me-1 fa-fw"
                   icon={faHome}
-                  fixedWidth
                 />
                 View in Alertmanager:
               </span>
@@ -145,9 +140,8 @@ const SilenceDetails: FC<{
               <div className="flex-shrink-0 flex-grow-0">
                 <span className="badge px-1 me-1 components-label silence-detail">
                   <FontAwesomeIcon
-                    className="text-muted me-1"
+                    className="text-muted me-1 fa-fw"
                     icon={faFilter}
-                    fixedWidth
                   />
                   Matchers:
                 </span>

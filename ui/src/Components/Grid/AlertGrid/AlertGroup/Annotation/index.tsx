@@ -65,9 +65,7 @@ const RenderNonLinkAnnotation: FC<{
                   <span
                     ref={(node) => {
                       ref(node);
-                      (
-                        nodeRef as React.MutableRefObject<HTMLElement | null>
-                      ).current = node;
+                      nodeRef.current = node;
                     }}
                     dangerouslySetInnerHTML={{ __html: value }}
                   ></span>
@@ -75,9 +73,7 @@ const RenderNonLinkAnnotation: FC<{
                   <span
                     ref={(node) => {
                       ref(node);
-                      (
-                        nodeRef as React.MutableRefObject<HTMLElement | null>
-                      ).current = node;
+                      nodeRef.current = node;
                     }}
                   >
                     {value}

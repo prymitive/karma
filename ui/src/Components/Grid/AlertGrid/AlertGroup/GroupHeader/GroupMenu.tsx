@@ -50,8 +50,8 @@ const onSilenceClick = (
 };
 
 const MenuContent: FC<{
-  x: number | null;
-  y: number | null;
+  x: number;
+  y: number;
   floating: Ref<HTMLDivElement> | null;
   strategy: CSSProperties["position"];
   group: APIAlertGroupT;
@@ -93,8 +93,8 @@ const MenuContent: FC<{
         ref={floating}
         style={{
           position: strategy,
-          top: y ?? "",
-          left: x ?? "",
+          top: y,
+          left: x,
         }}
       >
         {actions.length ? (

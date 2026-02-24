@@ -37,7 +37,7 @@ const MainModal: FC<{
             className="nav-link cursor-pointer"
             onClick={toggle}
           >
-            <FontAwesomeIcon icon={faSlidersH} fixedWidth />
+            <FontAwesomeIcon icon={faSlidersH} className="fa-fw" />
           </span>
         </TooltipWrapper>
       </li>

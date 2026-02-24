@@ -135,6 +135,23 @@ describe("useFetchDelete", () => {
     expect(result.current.isDeleting).toBe(false);
   });
 
+  it("sets fallback message when thrown value is not Error", async () => {
+    // Scenario: fetch rejects with a plain value so the hook must use fallback message formatting
+    fetchMock.route("http://localhost/non-error", {
+      throws: "boom" as unknown as Error,
+    });
+
+    const { result } = renderHook(() =>
+      useFetchDelete("http://localhost/non-error", EmptyOptions),
+    );
+
+    await waitFor(() => expect(result.current.isDeleting).toBe(false));
+
+    expect(result.current.response).toBe(null);
+    expect(result.current.error).toBe("unknown error: boom");
+    expect(result.current.isDeleting).toBe(false);
+  });
+
   it("doesn't update response after cleanup", async () => {
     fetchMock.route(
       "http://localhost/slow/ok",
@@ -213,6 +230,30 @@ describe("useFetchDelete", () => {
     act(() => {
       const { unmount } = render(<Component />);
       unmount();
+    });
+
+    await fetchMock.callHistory.flush(true);
+  });
+
+  it("ignores rejection if fetch fails after cleanup", async () => {
+    let rejectFn: (reason?: unknown) => void = () => {};
+    fetchMock.route(
+      "http://localhost/slow/reject",
+      new Promise((_resolve, reject) => {
+        rejectFn = reject;
+      }),
+    );
+
+    const { unmount } = renderHook(() =>
+      useFetchDelete("http://localhost/slow/reject", EmptyOptions),
+    );
+
+    await waitFor(() => expect(fetchMock.callHistory.calls()).toHaveLength(1));
+
+    unmount();
+
+    await act(async () => {
+      rejectFn(new Error("boom"));
     });
 
     await fetchMock.callHistory.flush(true);

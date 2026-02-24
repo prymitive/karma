@@ -61,4 +61,17 @@ describe("<UpgradeToastMessage />", () => {
     fireEvent.animationEnd(progressbar!);
     expect(alertStore.info.upgradeNeeded).toBe(true);
   });
+
+  it("animation end while paused still flag upgrade", () => {
+    // Scenario: user paused auto-reload but animationEnd still fires to set upgrade needed
+    const { container } = render(
+      <UpgradeToastMessage alertStore={alertStore} />,
+    );
+    const button = screen.getByRole("button");
+    fireEvent.click(button);
+    expect(alertStore.info.upgradeNeeded).toBe(false);
+    const progressbar = container.querySelector("div.progress-bar");
+    fireEvent.animationEnd(progressbar!);
+    expect(alertStore.info.upgradeNeeded).toBe(true);
+  });
 });

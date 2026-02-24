@@ -1,0 +1,84 @@
+const path = require("path");
+
+const config = {
+  root: true,
+  parser: "@typescript-eslint/parser",
+  parserOptions: {
+    ecmaVersion: 2022,
+    sourceType: "module",
+    ecmaFeatures: {
+      jsx: true,
+    },
+    project: ["./tsconfig.json"],
+    tsconfigRootDir: __dirname,
+  },
+  plugins: [
+    "@typescript-eslint",
+    "prettier",
+    "react",
+    "react-hooks",
+    "jest",
+  ],
+  extends: [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:jest/recommended",
+    "prettier",
+  ],
+  settings: {
+    react: {
+      version: "detect",
+    },
+  },
+  env: {
+    browser: true,
+    es2022: true,
+    jest: true,
+    node: true,
+  },
+  rules: {
+    "react/prop-types": "off",
+    "react/display-name": "off",
+    "react/react-in-jsx-scope": "off",
+    "@typescript-eslint/no-empty-function": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-deprecated": "error",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        argsIgnorePattern: "^_",
+        varsIgnorePattern: "^_",
+      },
+    ],
+    "@typescript-eslint/no-unused-expressions": [
+      "error",
+      {
+        allowShortCircuit: true,
+        allowTernary: true,
+      },
+    ],
+  },
+  overrides: [
+    {
+      files: [
+        "**/__mocks__/*.ts",
+        "**/__mocks__/**/*.ts",
+        "**/*.test.ts",
+        "**/*.test.tsx",
+      ],
+      rules: {
+        "@typescript-eslint/no-var-requires": "off",
+        "@typescript-eslint/no-require-imports": "off",
+        "@typescript-eslint/no-empty-function": "off",
+        "@typescript-eslint/explicit-module-boundary-types": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-non-null-assertion": "off",
+        "jest/expect-expect": "off",
+      },
+    },
+  ],
+};
+
+module.exports = config;

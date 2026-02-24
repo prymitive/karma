@@ -1,4 +1,4 @@
-import { FC, useEffect, useState, MouseEvent, FormEvent } from "react";
+import { FC, useEffect, useState, MouseEvent, SyntheticEvent } from "react";
 
 import { observer } from "mobx-react-lite";
 
@@ -177,7 +177,7 @@ const SilenceForm: FC<{
     silenceFormStore.data.setComment(comment);
   };
 
-  const handleSubmit = (event: FormEvent) => {
+  const handleSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const rbc: { [label: string]: ClusterRequestT } = {};
@@ -221,7 +221,7 @@ const SilenceForm: FC<{
             className="btn btn-sm btn-outline-secondary"
             onClick={addMore}
           >
-            <FontAwesomeIcon icon={faPlus} fixedWidth />
+            <FontAwesomeIcon icon={faPlus} className="fa-fw" />
           </button>
         </TooltipWrapper>
       </div>

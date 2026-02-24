@@ -1,4 +1,4 @@
-import { act } from "react";
+import { act, createRef } from "react";
 
 import { render, fireEvent } from "@testing-library/react";
 
@@ -289,5 +289,89 @@ describe("<MenuContent />", () => {
     expect(copy).toHaveBeenCalledWith(
       JSON.stringify(alertToJSON(group, alert)),
     );
+  });
+
+  it("supports floating callback refs", () => {
+    const floatingRef = jest.fn();
+    const forwardedRef = createRef<HTMLDivElement>();
+
+    render(
+      <MenuContent
+        ref={forwardedRef}
+        x={123}
+        y={456}
+        floating={floatingRef}
+        strategy="absolute"
+        group={group}
+        alert={alert}
+        afterClick={MockAfterClick}
+        alertStore={alertStore}
+        silenceFormStore={silenceFormStore}
+      />,
+    );
+
+    expect(floatingRef).toHaveBeenCalledWith(expect.any(HTMLDivElement));
+    expect(forwardedRef.current).toBeInstanceOf(HTMLDivElement);
+  });
+
+  it("supports floating object refs", () => {
+    const floatingObjectRef = createRef<HTMLDivElement>();
+    const forwardedRef = createRef<HTMLDivElement>();
+
+    render(
+      <MenuContent
+        ref={forwardedRef}
+        x={321}
+        y={654}
+        floating={floatingObjectRef}
+        strategy="absolute"
+        group={group}
+        alert={alert}
+        afterClick={MockAfterClick}
+        alertStore={alertStore}
+        silenceFormStore={silenceFormStore}
+      />,
+    );
+
+    expect(floatingObjectRef.current).toBeInstanceOf(HTMLDivElement);
+    expect(forwardedRef.current).toBeInstanceOf(HTMLDivElement);
+  });
+
+  it("invokes forwarded callback refs", () => {
+    const floatingObjectRef = createRef<HTMLDivElement>();
+    const forwardedRef = jest.fn();
+
+    render(
+      <MenuContent
+        ref={forwardedRef}
+        x={11}
+        y={22}
+        floating={floatingObjectRef}
+        strategy="absolute"
+        group={group}
+        alert={alert}
+        afterClick={MockAfterClick}
+        alertStore={alertStore}
+        silenceFormStore={silenceFormStore}
+      />,
+    );
+
+    expect(forwardedRef).toHaveBeenCalledWith(expect.any(HTMLDivElement));
+    expect(floatingObjectRef.current).toBeInstanceOf(HTMLDivElement);
+  });
+
+  it("ignores silence click when all clusters are read-only", () => {
+    const upstreams = generateUpstreams();
+    upstreams.instances.forEach((instance) => {
+      instance.readonly = true;
+    });
+    alertStore.data.setUpstreams(upstreams);
+
+    const { container } = renderMenuContent(group);
+    const buttons = container.querySelectorAll(".dropdown-item");
+    fireEvent.click(buttons[2]);
+
+    expect(silenceFormStore.toggle.visible).toBe(false);
+    expect(MockAfterClick).not.toHaveBeenCalled();
   });
 });

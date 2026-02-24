@@ -63,8 +63,8 @@ export const SelectableSilence: FC<{
 };
 
 const SilenceDeleteMenu: FC<{
-  x: number | null;
-  y: number | null;
+  x: number;
+  y: number;
   floating: Ref<HTMLDivElement> | null;
   strategy: CSSProperties["position"];
   maxHeight: number | null;
@@ -76,8 +76,8 @@ const SilenceDeleteMenu: FC<{
       ref={floating}
       style={{
         position: strategy,
-        top: y ?? "",
-        left: x ?? "",
+        top: y,
+        left: x,
         maxHeight: maxHeight ?? "",
       }}
     >

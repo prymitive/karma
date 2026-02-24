@@ -345,6 +345,90 @@ describe("<Grid />", () => {
     ).toHaveLength(10);
   });
 
+  it("dispatches alertGridCollapse event on alt + click", () => {
+    jest.useFakeTimers();
+
+    MockGroupList(5, 1);
+    alertStore.data.setGrids([
+      {
+        ...alertStore.data.grids[0],
+        labelName: "foo",
+        labelValue: "bar",
+      },
+    ]);
+    const dispatchSpy = jest.spyOn(window, "dispatchEvent");
+    const { container } = render(
+      <ThemeContext.Provider value={MockThemeContext}>
+        <Grid
+          alertStore={alertStore}
+          silenceFormStore={silenceFormStore}
+          settingsStore={settingsStore}
+          gridSizesConfig={GridSizesConfig(420)}
+          groupWidth={420}
+          grid={alertStore.data.grids[0]}
+          outerPadding={0}
+          paddingTop={0}
+          zIndex={101}
+        />
+      </ThemeContext.Provider>,
+    );
+
+    const toggles = container.querySelectorAll("span.cursor-pointer");
+    fireEvent.click(toggles[1], { altKey: true });
+
+    const collapseEvent = dispatchSpy.mock.calls
+      .map((call) => call[0] as Event)
+      .find((evt) => evt.type === "alertGridCollapse") as CustomEvent;
+    expect(collapseEvent).toBeDefined();
+    expect(collapseEvent.detail).toBe(false);
+
+    dispatchSpy.mockRestore();
+  });
+
+  it("reacts to alertGridCollapse events", () => {
+    jest.useFakeTimers();
+
+    MockGroupList(3, 1);
+    const grid = {
+      ...alertStore.data.grids[0],
+      labelName: "foo",
+      labelValue: "bar",
+    };
+    alertStore.data.setGrids([grid]);
+    const { container } = render(
+      <ThemeContext.Provider value={MockThemeContext}>
+        <Grid
+          alertStore={alertStore}
+          silenceFormStore={silenceFormStore}
+          settingsStore={settingsStore}
+          gridSizesConfig={GridSizesConfig(420)}
+          groupWidth={420}
+          grid={grid}
+          outerPadding={0}
+          paddingTop={0}
+          zIndex={101}
+        />
+      </ThemeContext.Provider>,
+    );
+
+    expect(
+      container.querySelectorAll("div.components-grid-alertgrid-alertgroup"),
+    ).toHaveLength(3);
+
+    act(() => {
+      window.dispatchEvent(
+        new CustomEvent("alertGridCollapse", { detail: false }),
+      );
+    });
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
+
+    expect(
+      container.querySelectorAll("div.components-grid-alertgrid-alertgroup"),
+    ).toHaveLength(0);
+  });
+
   it("renders filter badge for grids with a value", () => {
     MockGroupList(1, 1);
     const grid = MockGrid();

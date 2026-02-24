@@ -71,7 +71,7 @@ const TabContentStart: FC<{
         disabled={isSameMonth(today, month)}
         onClick={() => setMonth(today)}
       >
-        <FontAwesomeIcon icon={faCalendarDay} className="me-1" fixedWidth />
+        <FontAwesomeIcon icon={faCalendarDay} className="me-1 fa-fw" />
         Today
       </button>
     </div>
@@ -130,7 +130,7 @@ const TabContentEnd: FC<{ silenceFormStore: SilenceFormStore }> = observer(
           disabled={isSameMonth(today, month)}
           onClick={() => setMonth(today)}
         >
-          <FontAwesomeIcon icon={faCalendarDay} className="me-1" fixedWidth />
+          <FontAwesomeIcon icon={faCalendarDay} className="me-1 fa-fw" />
           Today
         </button>
       </div>

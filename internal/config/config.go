@@ -17,7 +17,7 @@ import (
 	"github.com/go-viper/mapstructure/v2"
 	yamlParser "github.com/knadh/koanf/parsers/yaml"
 	"github.com/knadh/koanf/providers/confmap"
-	"github.com/knadh/koanf/providers/env"
+	"github.com/knadh/koanf/providers/env/v2"
 	"github.com/knadh/koanf/providers/file"
 	"github.com/knadh/koanf/providers/posflag"
 	"github.com/knadh/koanf/v2"
@@ -212,51 +212,53 @@ func readEnvVariables(k *koanf.Koanf) {
 		}
 	}
 
-	_ = k.Load(env.Provider("", ".", func(s string) string {
-		switch s {
-		case "ALERTMANAGER_EXTERNAL_URI":
-			return "alertmanager.external_uri"
-		case "ALERTMANAGER_TLS_INSECURE_SKIP_VERIFY":
-			return "alertmanager.tls.insecureSkipVerify"
-		case "ALERTACKNOWLEDGEMENT_ENABLED":
-			return "alertAcknowledgement.enabled"
-		case "ALERTACKNOWLEDGEMENT_DURATION":
-			return "alertAcknowledgement.duration"
-		case "ALERTACKNOWLEDGEMENT_AUTHOR":
-			return "alertAcknowledgement.author"
-		case "ALERTACKNOWLEDGEMENT_COMMENT":
-			return "alertAcknowledgement.comment"
-		case "ANNOTATIONS_ENABLEINSECUREHTML":
-			return "annotations.enableInsecureHTML"
-		case "AUTHENTICATION_HEADER_VALUE_RE":
-			return "authentication.header.value_re"
-		case "GRID_GROUPLIMIT":
-			return "grid.groupLimit"
-		case "LABELS_KEEP_RE":
-			return "labels.keep_re"
-		case "LABELS_STRIP_RE":
-			return "labels.strip_re"
-		case "LABELS_VALUEONLY":
-			return "labels.valueOnly"
-		case "LABELS_VALUEONLY_RE":
-			return "labels.valueOnly_re"
-		case "SILENCEFORM_STRIP_LABELS":
-			return "silenceForm.strip.labels"
-		case "SILENCEFORM_DEFAULTALERTMANAGERS":
-			return "silenceForm.defaultAlertmanagers"
-		case "UI_HIDEFILTERSWHENIDLE":
-			return "ui.hideFiltersWhenIdle"
-		case "UI_COLORTITLEBAR":
-			return "ui.colorTitlebar"
-		case "UI_MINIMALGROUPWIDTH":
-			return "ui.minimalGroupWidth"
-		case "UI_ALERTSPERGROUP":
-			return "ui.alertsPerGroup"
-		case "UI_COLLAPSEGROUPS":
-			return "ui.collapseGroups"
-		default:
-			return strings.ReplaceAll(strings.ToLower(s), "_", ".")
-		}
+	_ = k.Load(env.Provider(".", env.Opt{
+		TransformFunc: func(s, v string) (string, any) {
+			switch s {
+			case "ALERTMANAGER_EXTERNAL_URI":
+				return "alertmanager.external_uri", v
+			case "ALERTMANAGER_TLS_INSECURE_SKIP_VERIFY":
+				return "alertmanager.tls.insecureSkipVerify", v
+			case "ALERTACKNOWLEDGEMENT_ENABLED":
+				return "alertAcknowledgement.enabled", v
+			case "ALERTACKNOWLEDGEMENT_DURATION":
+				return "alertAcknowledgement.duration", v
+			case "ALERTACKNOWLEDGEMENT_AUTHOR":
+				return "alertAcknowledgement.author", v
+			case "ALERTACKNOWLEDGEMENT_COMMENT":
+				return "alertAcknowledgement.comment", v
+			case "ANNOTATIONS_ENABLEINSECUREHTML":
+				return "annotations.enableInsecureHTML", v
+			case "AUTHENTICATION_HEADER_VALUE_RE":
+				return "authentication.header.value_re", v
+			case "GRID_GROUPLIMIT":
+				return "grid.groupLimit", v
+			case "LABELS_KEEP_RE":
+				return "labels.keep_re", v
+			case "LABELS_STRIP_RE":
+				return "labels.strip_re", v
+			case "LABELS_VALUEONLY":
+				return "labels.valueOnly", v
+			case "LABELS_VALUEONLY_RE":
+				return "labels.valueOnly_re", v
+			case "SILENCEFORM_STRIP_LABELS":
+				return "silenceForm.strip.labels", v
+			case "SILENCEFORM_DEFAULTALERTMANAGERS":
+				return "silenceForm.defaultAlertmanagers", v
+			case "UI_HIDEFILTERSWHENIDLE":
+				return "ui.hideFiltersWhenIdle", v
+			case "UI_COLORTITLEBAR":
+				return "ui.colorTitlebar", v
+			case "UI_MINIMALGROUPWIDTH":
+				return "ui.minimalGroupWidth", v
+			case "UI_ALERTSPERGROUP":
+				return "ui.alertsPerGroup", v
+			case "UI_COLLAPSEGROUPS":
+				return "ui.collapseGroups", v
+			default:
+				return strings.ReplaceAll(strings.ToLower(s), "_", "."), v
+			}
+		},
 	}), nil)
 }
 

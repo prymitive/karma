@@ -2,7 +2,7 @@ import { act } from "react";
 
 import { render, screen, fireEvent } from "@testing-library/react";
 
-import { TooltipWrapper } from ".";
+import { TooltipWrapper, TooltipContent } from ".";
 
 describe("TooltipWrapper", () => {
   beforeEach(() => {
@@ -117,5 +117,20 @@ describe("TooltipWrapper", () => {
     act(() => {
       jest.runAllTimers();
     });
+  });
+
+  it("TooltipContent renders with empty coordinates when x and y are null", () => {
+    const { container } = render(
+      <TooltipContent
+        title="my title"
+        setFloating={jest.fn()}
+        strategy="absolute"
+        x={null}
+        y={null}
+      />,
+    );
+    const tooltip = container.querySelector(".tooltip") as HTMLElement;
+    expect(tooltip.style.top).toBe("");
+    expect(tooltip.style.left).toBe("");
   });
 });

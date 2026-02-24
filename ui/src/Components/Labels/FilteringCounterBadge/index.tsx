@@ -74,8 +74,7 @@ const FilteringCounterBadge: FC<{
         <span
           ref={(node) => {
             ref(node);
-            (nodeRef as React.MutableRefObject<HTMLElement | null>).current =
-              node;
+            nodeRef.current = node;
           }}
           className={
             themed

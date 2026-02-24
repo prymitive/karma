@@ -44,16 +44,18 @@ const InlineEdit: FC<{
   };
 
   const onInput = (event: ChangeEvent<HTMLInputElement>) => {
-    setEditedValue(event.target.value.trim());
+    setEditedValue(event.target.value);
   };
 
   const onKeyDown = (event: KeyboardEvent) => {
-    if (event.keyCode === 13) {
-      if (editedValue) {
-        onChange(editedValue);
+    if (event.key === "Enter") {
+      if (editedValue !== null && editedValue.trim() !== "") {
+        onChange(editedValue.trim());
+      } else if (editedValue === "") {
+        onChange("");
       }
       doneEditing();
-    } else if (event.keyCode === 27) {
+    } else if (event.key === "Escape") {
       doneEditing();
     }
   };

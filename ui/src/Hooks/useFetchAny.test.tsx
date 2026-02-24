@@ -4,7 +4,7 @@ import { renderHook, render, waitFor } from "@testing-library/react";
 
 import fetchMock from "@fetch-mock/jest";
 
-import { useFetchAny, UpstreamT } from "./useFetchAny";
+import { useFetchAny, UpstreamT, FetchFunctionT } from "./useFetchAny";
 
 describe("useFetchAny", () => {
   beforeEach(() => {
@@ -270,6 +270,65 @@ describe("useFetchAny", () => {
     await fetchMock.callHistory.flush(true);
   });
 
+  it("skips updating state when unmounted during body parsing", async () => {
+    let resolveJson: (value: unknown) => void = () => {};
+    const jsonSpy = jest.fn(
+      () =>
+        new Promise((resolve) => {
+          resolveJson = resolve;
+        }),
+    );
+    const mockResponse = {
+      headers: new Headers({ "content-type": "application/json" }),
+      json: jsonSpy,
+    } as unknown as Response;
+
+    const fetcher = jest.fn() as jest.MockedFunction<FetchFunctionT>;
+    fetcher.mockResolvedValue(mockResponse);
+
+    const upstreams = [{ uri: "http://localhost/cancel/json", options: {} }];
+    const { result, unmount } = renderHook(() =>
+      useFetchAny<string>(upstreams, { fetcher }),
+    );
+
+    await waitFor(() => expect(jsonSpy.mock.calls.length).toBe(1));
+
+    unmount();
+
+    await act(async () => {
+      resolveJson({ data: "late" });
+    });
+
+    expect(fetcher.mock.calls.length).toBe(1);
+    expect(result.current.response).toBeNull();
+    expect(result.current.error).toBeNull();
+  });
+
+  it("skips error updates when unmounted before rejection settles", async () => {
+    let rejectFetch: (reason?: unknown) => void = () => {};
+    const fetcher = jest.fn() as jest.MockedFunction<FetchFunctionT>;
+    fetcher.mockImplementation(
+      () =>
+        new Promise<Response>((_, reject) => {
+          rejectFetch = reject;
+        }),
+    );
+
+    const upstreams = [{ uri: "http://localhost/cancel/error", options: {} }];
+    const { result, unmount } = renderHook(() =>
+      useFetchAny<string>(upstreams, { fetcher }),
+    );
+
+    unmount();
+
+    await act(async () => {
+      rejectFetch(new Error("late boom"));
+    });
+
+    expect(fetcher.mock.calls.length).toBe(1);
+    expect(result.current.error).toBeNull();
+  });
+
   it("doesn't retry on success", async () => {
     const upstreams = [
       { uri: "http://localhost/ok", options: {} },
@@ -346,6 +405,109 @@ describe("useFetchAny", () => {
     expect(result.current.response).toBe(null);
     expect(result.current.error).toBe("fake error");
     expect(result.current.inProgress).toBe(false);
+    expect(result.current.responseURI).toBe(null);
+  });
+
+  it("parses JSON from the final upstream even after failures", async () => {
+    const upstreams = [
+      { uri: "http://localhost/500", options: {} },
+      { uri: "http://localhost/ok/json", options: {} },
+    ];
+    const { result } = renderHook(() => useFetchAny(upstreams));
+
+    await waitFor(() => expect(result.current.inProgress).toBe(false));
+
+    expect(fetchMock.callHistory.calls()).toHaveLength(2);
+    expect(result.current.response).toMatchObject({ status: "ok" });
+    expect(result.current.responseURI).toBe("http://localhost/ok/json");
+    expect(result.current.error).toBe(null);
+  });
+
+  it("propagates error from custom fetcher on last upstream", async () => {
+    const failingFetcher = jest
+      .fn()
+      .mockResolvedValueOnce(new Response("", { status: 500 }))
+      .mockRejectedValueOnce(new Error("boom"));
+
+    const upstreams = [
+      { uri: "http://localhost/500", options: {} },
+      { uri: "http://localhost/error", options: {} },
+    ];
+
+    const { result } = renderHook(() =>
+      useFetchAny<string>(upstreams, { fetcher: failingFetcher }),
+    );
+
+    await waitFor(() => expect(result.current.inProgress).toBe(false));
+
+    expect(failingFetcher.mock.calls.length).toBe(2);
+    expect(result.current.response).toBe(null);
+    expect(result.current.error).toBe("boom");
+    expect(result.current.responseURI).toBe(null);
+  });
+
+  it("reset clears previous response state without triggering another fetch", async () => {
+    // Scenario: consumer wants to drop stale successful data but keeps the same upstream list
+    const upstreams = [{ uri: "http://localhost/ok", options: {} }];
+    const { result } = renderHook(() => useFetchAny<string>(upstreams));
+
+    await waitFor(() => expect(result.current.inProgress).toBe(false));
+
+    expect(result.current.response).toBe("body ok");
+    expect(fetchMock.callHistory.calls()).toHaveLength(1);
+
+    act(() => {
+      result.current.reset();
+    });
+
+    expect(result.current.response).toBe(null);
+    expect(result.current.error).toBe(null);
+    expect(result.current.responseURI).toBe(null);
+    expect(result.current.inProgress).toBe(false);
+    expect(fetchMock.callHistory.calls()).toHaveLength(1);
+  });
+
+  it("reset restarts fetching when previous failures advanced through upstreams", async () => {
+    // Scenario: previous attempts exhausted the list so the hook should return to the first URI after reset
+    const upstreams = [
+      { uri: "http://localhost/500", options: {} },
+      { uri: "http://localhost/error", options: {} },
+    ];
+    const { result } = renderHook(() => useFetchAny<string>(upstreams));
+
+    await waitFor(() => expect(result.current.inProgress).toBe(false));
+
+    expect(fetchMock.callHistory.calls()).toHaveLength(2);
+
+    act(() => {
+      result.current.reset();
+    });
+
+    await waitFor(() => expect(fetchMock.callHistory.calls()).toHaveLength(4));
+    await waitFor(() => expect(result.current.inProgress).toBe(false));
+
+    expect(fetchMock.callHistory.calls()[2]?.url).toBe("http://localhost/500");
+    expect(fetchMock.callHistory.calls()[3]?.url).toBe(
+      "http://localhost/error",
+    );
+    expect(result.current.response).toBe(null);
+    expect(result.current.error).toBe("failed to fetch");
+    expect(result.current.responseURI).toBe(null);
+  });
+
+  it("sets fallback message when thrown value is not Error", async () => {
+    // Scenario: fetch rejects with a plain object so the hook must surface the fallback error text
+    fetchMock.route("http://localhost/non-error", {
+      throws: { foo: "bar" } as unknown as Error,
+    });
+
+    const upstreams = [{ uri: "http://localhost/non-error", options: {} }];
+    const { result } = renderHook(() => useFetchAny<string>(upstreams));
+
+    await waitFor(() => expect(result.current.inProgress).toBe(false));
+
+    expect(result.current.response).toBe(null);
+    expect(result.current.error).toBe("unknown error: [object Object]");
     expect(result.current.responseURI).toBe(null);
   });
 });

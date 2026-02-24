@@ -4,7 +4,7 @@ import { render, screen, fireEvent } from "@testing-library/react";
 
 import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
-import { History } from "./History";
+import { History, HistoryMenu, ReduceFilter } from "./History";
 
 let alertStore: AlertStore;
 let settingsStore: Settings;
@@ -261,7 +261,6 @@ describe("<HistoryMenu />", () => {
   });
 
   it("clicking on 'Clear history' button triggers clear action", async () => {
-    // Verifies that clicking Clear history button calls the onClear callback
     const promise = Promise.resolve();
     const { container } = renderHistory();
 
@@ -272,24 +271,54 @@ describe("<HistoryMenu />", () => {
     const toggle = container.querySelector("button.cursor-pointer");
     fireEvent.click(toggle!);
 
-    // Verify history has items before clearing
     const historyItemsBefore = document.body.querySelectorAll(
       ".components-navbar-historymenu-labels",
     );
     expect(historyItemsBefore.length).toBeGreaterThan(0);
 
-    // Click clear history button - this calls history.setFilters([])
     const clearButton = screen.getByText("Clear history");
     fireEvent.click(clearButton);
     act(() => {
       jest.runOnlyPendingTimers();
     });
 
-    // Menu should close after clicking clear (afterClick is called)
     expect(
       container.querySelector("div.dropdown-menu"),
     ).not.toBeInTheDocument();
 
     await act(() => promise);
+  });
+
+  it("HistoryMenu renders correctly with null coordinates", () => {
+    render(
+      <HistoryMenu
+        x={null}
+        y={null}
+        floating={null}
+        strategy="absolute"
+        maxHeight={null}
+        filters={[]}
+        alertStore={alertStore}
+        settingsStore={settingsStore}
+        afterClick={jest.fn()}
+        onClear={jest.fn()}
+      />,
+    );
+    const menu = document.body.querySelector(
+      ".components-navbar-historymenu",
+    ) as HTMLElement;
+    expect(menu.style.top).toBe("");
+    expect(menu.style.left).toBe("");
+  });
+
+  it("ReduceFilter returns a reduced filter object", () => {
+    const filter = AppliedFilter("foo", "=", "bar");
+    const reduced = ReduceFilter(filter);
+    expect(reduced).toEqual({
+      raw: "foo=bar",
+      name: "foo",
+      matcher: "=",
+      value: "bar",
+    });
   });
 });

@@ -114,7 +114,7 @@ const NavBar: FC<{
           ref={(el) => {
             observe(el as HTMLElement);
             ref.current = el as HTMLElement;
-            (navRef as React.MutableRefObject<HTMLElement | null>).current = el;
+            navRef.current = el;
           }}
           className={`navbar navbar-expand navbar-dark p-1 bg-primary-transparent d-flex ${
             fixedTop ? "fixed-top" : "w-100"

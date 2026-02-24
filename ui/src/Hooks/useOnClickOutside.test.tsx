@@ -30,8 +30,10 @@ describe("useOnClickOutside", () => {
     render(<Component enabled />);
     expect(screen.getByText("Open")).toBeInTheDocument();
 
-    const clickEvent = document.createEvent("MouseEvents");
-    clickEvent.initEvent("mousedown", true, true);
+    const clickEvent = new MouseEvent("mousedown", {
+      bubbles: true,
+      cancelable: true,
+    });
     act(() => {
       document.dispatchEvent(clickEvent);
     });
@@ -43,8 +45,10 @@ describe("useOnClickOutside", () => {
     render(<Component enabled />);
     expect(screen.getByText("Open")).toBeInTheDocument();
 
-    const clickEvent = document.createEvent("MouseEvents");
-    clickEvent.initEvent("mousedown", true, true);
+    const clickEvent = new MouseEvent("mousedown", {
+      bubbles: true,
+      cancelable: true,
+    });
     act(() => {
       document.dispatchEvent(clickEvent);
     });
@@ -66,8 +70,10 @@ describe("useOnClickOutside", () => {
     const { rerender } = render(<Component enabled={false} />);
     expect(screen.getByText("Open")).toBeInTheDocument();
 
-    const clickEvent = document.createEvent("MouseEvents");
-    clickEvent.initEvent("mousedown", true, true);
+    const clickEvent = new MouseEvent("mousedown", {
+      bubbles: true,
+      cancelable: true,
+    });
     act(() => {
       document.dispatchEvent(clickEvent);
     });

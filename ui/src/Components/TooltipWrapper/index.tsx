@@ -29,8 +29,7 @@ const TooltipContent: FC<{
         className="tooltip tooltip-inner"
         ref={(el) => {
           setFloating(el);
-          (nodeRef as React.MutableRefObject<HTMLDivElement | null>).current =
-            el;
+          nodeRef.current = el;
         }}
         style={{
           position: strategy,
@@ -116,4 +115,4 @@ const TooltipWrapper: FC<{
   );
 };
 
-export { TooltipWrapper };
+export { TooltipWrapper, TooltipContent };

@@ -172,13 +172,13 @@ const AlertAck: FC<{
         }}
       >
         {!isAcking && error ? (
-          <FontAwesomeIcon icon={faExclamationCircle} fixedWidth />
+          <FontAwesomeIcon icon={faExclamationCircle} className="fa-fw" />
         ) : !isAcking && response ? (
-          <FontAwesomeIcon icon={faCheckCircle} fixedWidth />
+          <FontAwesomeIcon icon={faCheckCircle} className="fa-fw" />
         ) : isAcking ? (
-          <FontAwesomeIcon icon={faSpinner} fixedWidth spin />
+          <FontAwesomeIcon icon={faSpinner} spin className="fa-fw" />
         ) : (
-          <FontAwesomeIcon icon={faCheck} fixedWidth />
+          <FontAwesomeIcon icon={faCheck} className="fa-fw" />
         )}
       </span>
     </TooltipWrapper>

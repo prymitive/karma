@@ -31,9 +31,8 @@ const PauseButton: FC<{ alertStore: AlertStore }> = ({ alertStore }) => {
       >
         <span ref={nodeRef} className="d-inline-block">
           <FontAwesomeIcon
-            className="cursor-pointer text-muted components-fetcher-icon mx-2"
+            className="cursor-pointer text-muted components-fetcher-icon mx-2 fa-fw"
             icon={faPause}
-            fixedWidth
             onClick={alertStore.status.resume}
           />
         </span>
@@ -56,9 +55,8 @@ const PlayButton: FC<{ alertStore: AlertStore }> = ({ alertStore }) => {
       >
         <span ref={nodeRef} className="d-inline-block">
           <FontAwesomeIcon
-            className="cursor-pointer text-muted components-fetcher-icon mx-2"
+            className="cursor-pointer text-muted components-fetcher-icon mx-2 fa-fw"
             icon={faPlay}
-            fixedWidth
             onClick={alertStore.status.pause}
           />
         </span>

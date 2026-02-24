@@ -64,8 +64,8 @@ const onSilenceClick = (
 };
 
 interface MenuContentProps {
-  x: number | null;
-  y: number | null;
+  x: number;
+  y: number;
   floating: Ref<HTMLDivElement> | null;
   strategy: CSSProperties["position"];
   group: APIAlertGroupT;
@@ -104,25 +104,21 @@ const MenuContent = forwardRef<HTMLDivElement, MenuContentProps>(
         <div
           className="dropdown-menu d-block shadow m-0"
           ref={(node) => {
-            // Handle both the floating ref and the forwarded ref
             if (typeof floating === "function") {
               floating(node);
             } else if (floating) {
-              (
-                floating as React.MutableRefObject<HTMLDivElement | null>
-              ).current = node;
+              floating.current = node;
             }
             if (typeof ref === "function") {
               ref(node);
             } else if (ref) {
-              (ref as React.MutableRefObject<HTMLDivElement | null>).current =
-                node;
+              ref.current = node;
             }
           }}
           style={{
             position: strategy,
-            top: y ?? "",
-            left: x ?? "",
+            top: y,
+            left: x,
           }}
         >
           <h6 className="dropdown-header">Alert source links:</h6>

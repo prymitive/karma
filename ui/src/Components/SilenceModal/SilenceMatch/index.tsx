@@ -88,7 +88,7 @@ const SilenceMatch: FC<{
                 className="btn btn-sm btn-outline-danger"
                 onClick={onDelete}
               >
-                <FontAwesomeIcon icon={faTrash} fixedWidth />
+                <FontAwesomeIcon icon={faTrash} className="fa-fw" />
               </button>
             </TooltipWrapper>
           ) : null}

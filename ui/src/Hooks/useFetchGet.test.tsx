@@ -272,6 +272,82 @@ describe("useFetchGet", () => {
     expect(result.current.isRetrying).toBe(false);
   });
 
+  it("stops retrying when cancelGet is called before a rejection settles", async () => {
+    let rejectFetch: (reason?: unknown) => void = () => {};
+    const fetcher = jest.fn(
+      () =>
+        new Promise<Response>((_, reject) => {
+          rejectFetch = reject;
+        }),
+    );
+
+    const { result } = renderHook(() =>
+      useFetchGet<string>("http://localhost/cancel/retry", {
+        fetcher,
+        autorun: false,
+      }),
+    );
+
+    act(() => {
+      result.current.get();
+    });
+    await waitFor(() => expect(fetcher.mock.calls.length).toBe(1));
+
+    act(() => {
+      result.current.cancelGet();
+    });
+
+    await act(async () => {
+      rejectFetch(new Error("boom"));
+    });
+
+    expect(fetcher.mock.calls.length).toBe(1);
+    expect(result.current.isRetrying).toBe(false);
+    expect(result.current.retryCount).toBe(0);
+    expect(result.current.error).toBeNull();
+  });
+
+  it("skips response processing when cancelled before body parsing", async () => {
+    let resolveFetch: (value: Response) => void = () => {};
+    const fetcher = jest.fn(
+      () =>
+        new Promise<Response>((resolve) => {
+          resolveFetch = resolve;
+        }),
+    );
+
+    const textSpy = jest.fn(async () => "late body");
+    const response = {
+      ok: true,
+      headers: new Headers({ "content-type": "text/plain" }),
+      text: textSpy,
+    } as unknown as Response;
+
+    const { result } = renderHook(() =>
+      useFetchGet<string>("http://localhost/cancel/success", {
+        fetcher,
+        autorun: false,
+      }),
+    );
+
+    act(() => {
+      result.current.get();
+    });
+    await waitFor(() => expect(fetcher.mock.calls.length).toBe(1));
+
+    act(() => {
+      result.current.cancelGet();
+    });
+
+    await act(async () => {
+      resolveFetch(response);
+    });
+
+    expect(textSpy.mock.calls.length).toBe(0);
+    expect(result.current.response).toBeNull();
+    expect(result.current.error).toBeNull();
+  });
+
   it("doesn't update response on 200 response after cleanup", async () => {
     fetchMock.route("http://localhost/slow/ok", {
       delay: 1000,

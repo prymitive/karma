@@ -37,7 +37,7 @@ const SilenceModal: FC<{
             className="nav-link cursor-pointer"
             onClick={silenceFormStore.toggle.toggle}
           >
-            <FontAwesomeIcon icon={faBellSlash} fixedWidth />
+            <FontAwesomeIcon icon={faBellSlash} className="fa-fw" />
           </span>
         </TooltipWrapper>
       </li>

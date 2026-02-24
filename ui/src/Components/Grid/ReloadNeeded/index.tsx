@@ -6,12 +6,16 @@ import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
 
 import { CenteredMessage } from "Components/CenteredMessage";
 
+const clearReloadTimer = (timer: NodeJS.Timeout): void => {
+  clearTimeout(timer);
+};
+
 const ReloadNeeded: FC<{
   reloadAfter: number;
 }> = ({ reloadAfter }) => {
   useEffect(() => {
     const timer = setTimeout(() => window.location.reload(), reloadAfter);
-    return () => clearTimeout(timer);
+    return () => clearReloadTimer(timer);
   }, [reloadAfter]);
 
   return (

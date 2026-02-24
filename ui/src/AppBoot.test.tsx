@@ -78,6 +78,15 @@ describe("ParseDefaultFilters()", () => {
     const filters = FiltersSetting("foo=bar");
     expect(filters).toHaveLength(0);
   });
+
+  it("ignores template placeholder values", () => {
+    // Scenario: default filters attribute rendered with the literal template placeholder should be ignored
+    const settings = document.createElement("span");
+    (settings as any).dataset = {
+      defaultFiltersBase64: "{{ .DefaultFilter }}",
+    };
+    expect(ParseDefaultFilters(settings)).toHaveLength(0);
+  });
 });
 
 describe("ParseUIDefaults()", () => {
@@ -98,5 +107,17 @@ describe("ParseUIDefaults()", () => {
       innerHTML: "e3h4eC9mZgo=",
     } as HTMLElement);
     expect(uiDefaults).toBeNull();
+  });
+
+  it("returns null when base64 decoding fails", () => {
+    // Scenario: malformed base64 input results in an exception during decoding
+    const atobSpy = jest.spyOn(window, "atob").mockImplementation(() => {
+      throw new Error("boom");
+    });
+    const uiDefaults = ParseUIDefaults({
+      innerHTML: "###",
+    } as HTMLElement);
+    expect(uiDefaults).toBeNull();
+    atobSpy.mockRestore();
   });
 });

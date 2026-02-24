@@ -6,6 +6,7 @@ import fetchMock from "@fetch-mock/jest";
 
 import { useIdleTimer } from "react-idle-timer";
 
+import { IsMobile } from "Common/Device";
 import { MockThemeContext } from "__fixtures__/Theme";
 import { EmptyAPIResponse } from "__fixtures__/Fetch";
 import { AlertStore } from "Stores/AlertStore";
@@ -15,6 +16,7 @@ import { ThemeContext } from "Components/Theme";
 import NavBar from ".";
 
 jest.mock("react-idle-timer");
+jest.mock("Common/Device");
 
 let alertStore: AlertStore;
 let settingsStore: Settings;
@@ -244,5 +246,20 @@ describe("<NavBar />", () => {
         .getComputedStyle(document.body, null)
         .getPropertyValue("padding-top"),
     ).toBe("44px");
+  });
+
+  it("uses mobile idle timeout when IsMobile returns true", () => {
+    // Verifies that MobileIdleTimeout is used when IsMobile() returns true (line 61)
+    (IsMobile as jest.Mock).mockReturnValue(true);
+    renderNavbar();
+
+    expect(useIdleTimer).toHaveBeenCalledWith(
+      expect.objectContaining({
+        timeout: expect.any(Number),
+      }),
+    );
+
+    const callArgs = (useIdleTimer as jest.Mock).mock.calls[0][0];
+    expect(callArgs.timeout).toBeGreaterThan(0);
   });
 });

@@ -1077,4 +1077,91 @@ describe("<SilenceDelete />", () => {
 
     await act(() => promise);
   });
+
+  it("closes modal when close button is clicked", async () => {
+    // Verifies the onHide callback is invoked when the modal close button is clicked
+    const promise = Promise.resolve();
+
+    const newSilence = (id: string): APISilenceT => {
+      const s = MockSilence();
+      s.id = id;
+      return s;
+    };
+
+    useFetchGetMock.fetch.setMockedData({
+      response: [
+        {
+          cluster: cluster,
+          alertCount: 1,
+          silence: newSilence("1"),
+          isExpired: false,
+        },
+      ],
+      error: null,
+      isLoading: false,
+      isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
+    });
+
+    const { container } = renderBrowser();
+
+    const checkboxes = container.querySelectorAll("input.form-check-input");
+    fireEvent.click(checkboxes[1]);
+
+    const deleteButtons = container.querySelectorAll("button.btn-danger");
+    const trashBtn = deleteButtons[0];
+    fireEvent.click(trashBtn);
+
+    let closeBtn = document.querySelector(".btn-close") as HTMLElement;
+    expect(closeBtn).toBeInTheDocument();
+    fireEvent.click(closeBtn);
+
+    act(() => {
+      jest.advanceTimersByTime(300);
+    });
+
+    closeBtn = document.querySelector(".btn-close") as HTMLElement;
+    expect(closeBtn).not.toBeInTheDocument();
+
+    await act(() => promise);
+  });
+
+  it("renders dropdown menu", async () => {
+    // Verifies the SilenceDeleteMenu renders when dropdown is opened
+    const newSilence = (id: string): APISilenceT => {
+      const s = MockSilence();
+      s.id = id;
+      return s;
+    };
+
+    useFetchGetMock.fetch.setMockedData({
+      response: [
+        {
+          cluster: cluster,
+          alertCount: 1,
+          silence: newSilence("1"),
+          isExpired: false,
+        },
+      ],
+      error: null,
+      isLoading: false,
+      isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
+    });
+
+    const { container } = renderBrowser();
+
+    const checkboxes = container.querySelectorAll("input.form-check-input");
+    fireEvent.click(checkboxes[1]);
+
+    const dropdownToggles = container.querySelectorAll(".btn.dropdown-toggle");
+    fireEvent.click(dropdownToggles[dropdownToggles.length - 1]);
+
+    const dropdownMenu = container.querySelector(".dropdown-menu");
+    expect(dropdownMenu).toBeInTheDocument();
+  });
 });

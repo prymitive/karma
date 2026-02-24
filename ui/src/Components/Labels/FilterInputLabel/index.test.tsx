@@ -199,6 +199,32 @@ describe("<FilterInputLabel /> onChange", () => {
     expect(alertStore.filters.values).toHaveLength(1);
     expect(alertStore.filters.values[0].raw).toBe("foo=newvalue");
   });
+
+  it("editing filter to empty value removes it from alertStore", () => {
+    // Verifies that onChange removes filter when edited to empty string (line 24)
+    const filter1 = createFilter("=", true, true, 1);
+    const filter2 = NewUnappliedFilter("baz=qux");
+    alertStore.filters.setFilterValues([filter1, filter2]);
+
+    const { container } = render(
+      <FilterInputLabel
+        alertStore={alertStore}
+        filter={alertStore.filters.values[0]}
+      />,
+    );
+
+    const editSpan = container.querySelector(
+      ".components-filteredinputlabel-text span",
+    );
+    fireEvent.click(editSpan!);
+
+    const input = container.querySelector("input");
+    fireEvent.change(input!, { target: { value: "" } });
+    fireEvent.keyDown(input!, { keyCode: 13 });
+
+    expect(alertStore.filters.values).toHaveLength(1);
+    expect(alertStore.filters.values[0].raw).toBe("baz=qux");
+  });
 });
 
 describe("<FilterInputLabel /> render", () => {

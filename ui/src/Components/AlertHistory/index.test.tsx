@@ -586,8 +586,8 @@ describe("<AlertHistory />", () => {
         await fetchMock.callHistory.flush(true);
       });
 
-      const rects = Array.from(container.querySelectorAll("rect")).map(
-        (r) => r.className.baseVal,
+      const rects = Array.from(container.querySelectorAll("rect")).map((r) =>
+        r.getAttribute("class"),
       );
       expect(rects).toStrictEqual(testCase.values);
       unmount();

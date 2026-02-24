@@ -89,8 +89,8 @@ const GridLabelNameSelect: FC<{
 };
 
 const Dropdown: FC<{
-  x: number | null;
-  y: number | null;
+  x: number;
+  y: number;
   floating: Ref<HTMLDivElement> | null;
   strategy: CSSProperties["position"];
   alertStore: AlertStore;
@@ -115,8 +115,8 @@ const Dropdown: FC<{
         fontSize: "1rem",
         fontWeight: "normal",
         position: strategy,
-        top: y ?? "",
-        left: x ?? "",
+        top: y,
+        left: x,
       }}
     >
       <GridLabelNameSelect

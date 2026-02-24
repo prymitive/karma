@@ -37,8 +37,7 @@ const OverviewModal: FC<{
           <div
             ref={(node) => {
               ref(node);
-              (nodeRef as React.MutableRefObject<HTMLElement | null>).current =
-                node;
+              nodeRef.current = node;
             }}
             className={`text-center d-inline-block cursor-pointer navbar-brand m-0 components-navbar-button  ${
               isVisible ? "border-info" : ""
