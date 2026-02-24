@@ -3,6 +3,20 @@ import fetchMock from "@fetch-mock/jest";
 import { EmptyAPIResponse } from "__fixtures__/Fetch";
 import { mockMatchMedia } from "__fixtures__/matchMedia";
 
+// Mock react-cool-dimensions for this test file only since we're testing
+// ResizeObserver polyfill loading and react-cool-dimensions logs an error
+// before the polyfill is loaded
+jest.mock("react-cool-dimensions", () => ({
+  __esModule: true,
+  default: () => ({
+    observe: jest.fn(),
+    unobserve: jest.fn(),
+    width: 1000,
+    height: 500,
+    entry: undefined,
+  }),
+}));
+
 declare let global: any;
 declare let window: any;
 
@@ -12,6 +26,8 @@ const settingsElement = {
   },
 };
 
+let root: HTMLDivElement;
+
 beforeEach(() => {
   window.matchMedia = mockMatchMedia({});
 
@@ -19,12 +35,32 @@ beforeEach(() => {
     disconnect() {}
     observe() {}
   };
+  // Remove ResizeObserver polyfill from testEnvironment.ts to test polyfill loading
+  delete global.ResizeObserver;
+
+  root = document.createElement("div");
+  root.id = "root";
+  document.body.appendChild(root);
+});
+
+afterEach(async () => {
+  // Clean up React root to prevent async operations after test ends
+  // Clear innerHTML first to trigger React cleanup
+  if (root) {
+    root.innerHTML = "";
+  }
+  // Wait for any pending React updates to complete
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  if (root && root.parentNode) {
+    root.parentNode.removeChild(root);
+  }
+  jest.resetModules();
 });
 
 it("loads ResizeObserver polyfill if needed", () => {
+  // Verifies app loads ResizeObserver polyfill when not available
   expect(window.ResizeObserver).toBeFalsy();
 
-  const root = document.createElement("div");
   jest.spyOn(global.document, "getElementById").mockImplementation((name) => {
     return name === "settings"
       ? settingsElement

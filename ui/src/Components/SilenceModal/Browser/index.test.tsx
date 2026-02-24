@@ -1,4 +1,4 @@
-import { act } from "react-dom/test-utils";
+import { act } from "react";
 
 import { render, fireEvent } from "@testing-library/react";
 
@@ -954,6 +954,126 @@ describe("<SilenceDelete />", () => {
     const errorDisplay = document.body.querySelector(".bg-dark.text-white");
     expect(errorDisplay).toBeInTheDocument();
     expect(errorDisplay?.querySelector("samp")).toBeInTheDocument();
+
+    await act(() => promise);
+  });
+
+  it("deselects a silence when clicking checkbox again", async () => {
+    // Verifies the onSelect callback handles unchecking (lines 127-128)
+    const promise = Promise.resolve();
+
+    const newSilence = (id: string): APISilenceT => {
+      const s = MockSilence();
+      s.id = id;
+      return s;
+    };
+
+    useFetchGetMock.fetch.setMockedData({
+      response: [
+        {
+          cluster: cluster,
+          alertCount: 1,
+          silence: newSilence("1"),
+          isExpired: false,
+        },
+        {
+          cluster: cluster,
+          alertCount: 2,
+          silence: newSilence("2"),
+          isExpired: false,
+        },
+      ],
+      error: null,
+      isLoading: false,
+      isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
+    });
+
+    const { container } = renderBrowser();
+
+    const checkboxes = container.querySelectorAll(
+      "input.form-check-input[type='checkbox']",
+    );
+
+    // Select first silence
+    act(() => {
+      fireEvent.click(checkboxes[1]);
+    });
+    expect((checkboxes[1] as HTMLInputElement).checked).toBe(true);
+
+    // Deselect first silence
+    act(() => {
+      fireEvent.click(checkboxes[1]);
+    });
+    expect((checkboxes[1] as HTMLInputElement).checked).toBe(false);
+
+    await act(() => promise);
+  });
+
+  it("clicking 'Select none' deselects all silences", async () => {
+    // Verifies the setSelected([]) branch (line 233)
+    const promise = Promise.resolve();
+
+    const newSilence = (id: string): APISilenceT => {
+      const s = MockSilence();
+      s.id = id;
+      return s;
+    };
+
+    useFetchGetMock.fetch.setMockedData({
+      response: [
+        {
+          cluster: cluster,
+          alertCount: 1,
+          silence: newSilence("1"),
+          isExpired: false,
+        },
+        {
+          cluster: cluster,
+          alertCount: 2,
+          silence: newSilence("2"),
+          isExpired: false,
+        },
+      ],
+      error: null,
+      isLoading: false,
+      isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
+    });
+
+    const { container } = renderBrowser();
+
+    // First select all
+    const dropdownToggles = container.querySelectorAll(".btn.dropdown-toggle");
+    fireEvent.click(dropdownToggles[dropdownToggles.length - 1]);
+    let dropdownItems = container.querySelectorAll(".dropdown-item");
+    expect(dropdownItems[dropdownItems.length - 1].textContent).toBe(
+      "Select all",
+    );
+    fireEvent.click(dropdownItems[dropdownItems.length - 1]);
+
+    // Verify all are selected
+    const checkboxes = container.querySelectorAll(
+      "input.form-check-input[type='checkbox']",
+    );
+    expect((checkboxes[1] as HTMLInputElement).checked).toBe(true);
+    expect((checkboxes[2] as HTMLInputElement).checked).toBe(true);
+
+    // Now click 'Select none'
+    fireEvent.click(dropdownToggles[dropdownToggles.length - 1]);
+    dropdownItems = container.querySelectorAll(".dropdown-item");
+    expect(dropdownItems[dropdownItems.length - 1].textContent).toBe(
+      "Select none",
+    );
+    fireEvent.click(dropdownItems[dropdownItems.length - 1]);
+
+    // Verify all are deselected
+    expect((checkboxes[1] as HTMLInputElement).checked).toBe(false);
+    expect((checkboxes[2] as HTMLInputElement).checked).toBe(false);
 
     await act(() => promise);
   });

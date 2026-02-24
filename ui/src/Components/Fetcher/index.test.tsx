@@ -1,4 +1,4 @@
-import { act } from "react-dom/test-utils";
+import { act } from "react";
 
 import { render, fireEvent } from "@testing-library/react";
 
@@ -401,12 +401,15 @@ describe("<Fetcher />", () => {
   });
 
   it("fetches on update when resumed", () => {
+    // Verifies fetch is triggered when settings change after resume
     alertStore.status.pause();
     render(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
-    alertStore.status.resume();
-    settingsStore.gridConfig.setSortReverse(
-      !settingsStore.gridConfig.config.reverseSort,
-    );
+    act(() => {
+      alertStore.status.resume();
+      settingsStore.gridConfig.setSortReverse(
+        !settingsStore.gridConfig.config.reverseSort,
+      );
+    });
     act(() => {
       jest.runOnlyPendingTimers();
     });
@@ -414,9 +417,12 @@ describe("<Fetcher />", () => {
   });
 
   it("fetches on resume", () => {
+    // Verifies fetch is triggered on resume after pause
     alertStore.status.pause();
     render(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
-    alertStore.status.resume();
+    act(() => {
+      alertStore.status.resume();
+    });
     jest.setSystemTime(
       new Date(Date.UTC(2000, 1, 1, 0, 0, 0)).getTime() + 2 * 1000,
     );

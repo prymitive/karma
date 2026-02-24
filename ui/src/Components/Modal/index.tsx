@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from "react";
+import React, { FC, useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 
 import { CSSTransition } from "react-transition-group";
@@ -13,6 +13,7 @@ const ModalInner: FC<{
   size: "modal-lg" | "modal-xl";
   isUpper: boolean;
   toggleOpen: () => void;
+  children: React.ReactNode;
 }> = ({ size, isUpper, toggleOpen, children }) => {
   // needed for tests to spy on useRef
   const ref = React.useRef<HTMLDivElement | null>(null);
@@ -54,6 +55,7 @@ const Modal: FC<{
   isUpper?: boolean;
   toggleOpen: () => void;
   onExited?: () => void;
+  children: React.ReactNode;
 }> = ({
   size = "modal-lg",
   isOpen,
@@ -63,6 +65,9 @@ const Modal: FC<{
   children,
 }) => {
   const context = React.useContext(ThemeContext);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const backdropRef = useRef<HTMLDivElement>(null);
+
   return ReactDOM.createPortal(
     <>
       <CSSTransition
@@ -75,10 +80,13 @@ const Modal: FC<{
         enter
         exit
         unmountOnExit
+        nodeRef={modalRef}
       >
-        <ModalInner size={size} isUpper={isUpper} toggleOpen={toggleOpen}>
-          {children}
-        </ModalInner>
+        <div ref={modalRef}>
+          <ModalInner size={size} isUpper={isUpper} toggleOpen={toggleOpen}>
+            {children}
+          </ModalInner>
+        </div>
       </CSSTransition>
       <CSSTransition
         in={isOpen && !isUpper}
@@ -87,8 +95,9 @@ const Modal: FC<{
         enter
         exit
         unmountOnExit
+        nodeRef={backdropRef}
       >
-        <div className="modal-backdrop d-block" />
+        <div ref={backdropRef} className="modal-backdrop d-block" />
       </CSSTransition>
     </>,
     document.body,

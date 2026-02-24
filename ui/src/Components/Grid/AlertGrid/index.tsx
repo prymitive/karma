@@ -21,7 +21,7 @@ const AlertGrid: FC<{
   silenceFormStore: SilenceFormStore;
   settingsStore: Settings;
 }> = ({ alertStore, settingsStore, silenceFormStore }) => {
-  const ref = useRef<HTMLDivElement>();
+  const ref = useRef<HTMLDivElement>(null);
   const { width: windowWidth } = useWindowSize();
   const { observe, width: bodyWidth } = useDimensions();
 
@@ -58,8 +58,8 @@ const AlertGrid: FC<{
   useHotkeys("alt+space", alertStore.status.togglePause);
 
   const [paddingTop, setPaddingTop] = useState<number>(0);
-  const onNavbarResize = useCallback((event) => {
-    setPaddingTop(event.detail);
+  const onNavbarResize = useCallback((event: Event) => {
+    setPaddingTop((event as CustomEvent).detail);
   }, []);
   useEffect(() => {
     window.addEventListener("navbarResize", onNavbarResize);

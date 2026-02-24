@@ -32,7 +32,7 @@ const FilteringCounterBadge: FC<{
   defaultColor = "bg-light",
   isAppend = true,
 }) => {
-  const { ref, props } = useFlashTransition(counter);
+  const { ref, props, nodeRef } = useFlashTransition(counter);
 
   const handleClick = useCallback(
     (event: MouseEvent) => {
@@ -72,7 +72,11 @@ const FilteringCounterBadge: FC<{
     >
       <CSSTransition {...props}>
         <span
-          ref={ref}
+          ref={(node) => {
+            ref(node);
+            (nodeRef as React.MutableRefObject<HTMLElement | null>).current =
+              node;
+          }}
           className={
             themed
               ? cs.className

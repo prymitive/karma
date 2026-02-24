@@ -1,3 +1,19 @@
+// Mock react-cool-dimensions to avoid ResizeObserver console.error
+jest.mock("react-cool-dimensions", () => ({
+  __esModule: true,
+  default: () => ({
+    observe: jest.fn(),
+    unobserve: jest.fn(),
+    width: 1000,
+    height: 500,
+    entry: undefined,
+  }),
+}));
+
+import { act } from "react";
+
+import { waitFor } from "@testing-library/react";
+
 import fetchMock from "@fetch-mock/jest";
 
 import { EmptyAPIResponse } from "__fixtures__/Fetch";
@@ -18,7 +34,8 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
-it("renders without crashing with missing defaults div", () => {
+it("renders without crashing with missing defaults div", async () => {
+  // Verifies app renders with default theme when defaults div is missing
   const root = document.createElement("div");
   jest
     .spyOn(global.document, "getElementById")
@@ -39,12 +56,16 @@ it("renders without crashing with missing defaults div", () => {
     body: JSON.stringify(response),
   });
 
-  const Index = require("./index.tsx");
-  expect(Index).toBeTruthy();
-  expect(root.innerHTML).toMatch(/data-theme="auto"/);
+  await act(async () => {
+    require("./index.tsx");
+  });
+  await waitFor(() => {
+    expect(root.innerHTML).toMatch(/data-theme="auto"/);
+  });
 });
 
-it("renders without crashing with defaults present", () => {
+it("renders without crashing with defaults present", async () => {
+  // Verifies app renders when defaults div is present
   const root = document.createElement("div");
   jest
     .spyOn(global.document, "getElementById")
@@ -67,6 +88,7 @@ it("renders without crashing with defaults present", () => {
     body: JSON.stringify(response),
   });
 
-  const Index = require("./index.tsx");
-  expect(Index).toBeTruthy();
+  await act(async () => {
+    require("./index.tsx");
+  });
 });

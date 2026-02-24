@@ -1,7 +1,6 @@
 import type { FC, Ref } from "react";
 
-import { renderHook } from "@testing-library/react-hooks";
-import { render, fireEvent } from "@testing-library/react";
+import { renderHook, render, fireEvent } from "@testing-library/react";
 
 import { useGrid } from "./useGrid";
 

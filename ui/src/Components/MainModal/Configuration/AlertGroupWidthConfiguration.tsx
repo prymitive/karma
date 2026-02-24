@@ -27,16 +27,26 @@ const AlertGroupWidthConfiguration: FC<{
         values={groupWidth}
         onChange={(values) => setGroupWidth(values)}
         onFinalChange={(values) => onChangeComplete(values[0])}
-        renderTrack={({ props, children }) => (
-          <div className="input-range-track" {...props}>
-            {children}
-          </div>
-        )}
-        renderThumb={({ props }) => (
-          <div className="input-range-thumb" {...props}>
-            {groupWidth}
-          </div>
-        )}
+        renderTrack={({ props, children }) => {
+          const { key, ...restProps } = props as typeof props & {
+            key?: string;
+          };
+          return (
+            <div key={key} className="input-range-track" {...restProps}>
+              {children}
+            </div>
+          );
+        }}
+        renderThumb={({ props }) => {
+          const { key, ...restProps } = props as typeof props & {
+            key?: string;
+          };
+          return (
+            <div key={key} className="input-range-thumb" {...restProps}>
+              {groupWidth}
+            </div>
+          );
+        }}
       />
     </div>
   );

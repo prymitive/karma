@@ -1,3 +1,5 @@
+import { act } from "react";
+
 import { render, fireEvent } from "@testing-library/react";
 
 import { MockThemeContext } from "__fixtures__/Theme";
@@ -90,21 +92,27 @@ describe("<AlertManagerInput />", () => {
   });
 
   it("doesn't render ValidationError after passed validation", () => {
+    // Verifies no validation error when alertmanagers are selected and validated
     const { container } = renderAlertManagerInput();
-    silenceFormStore.data.setWasValidated(true);
+    act(() => {
+      silenceFormStore.data.setWasValidated(true);
+    });
     expect(container.innerHTML).not.toMatch(/fa-circle-exclamation/);
     expect(container.innerHTML).not.toMatch(/Required/);
   });
 
   it("renders ValidationError after failed validation", () => {
+    // Verifies validation error is shown when alertmanagers is empty and validated
     const { container } = renderAlertManagerInput();
     const removeButtons = container.querySelectorAll(
       "div.react-select__multi-value__remove",
     );
     fireEvent.click(removeButtons[0]);
     fireEvent.click(removeButtons[0]);
-    silenceFormStore.data.setAlertmanagers([]);
-    silenceFormStore.data.setWasValidated(true);
+    act(() => {
+      silenceFormStore.data.setAlertmanagers([]);
+      silenceFormStore.data.setWasValidated(true);
+    });
     expect(container.innerHTML).toMatch(/fa-circle-exclamation/);
     expect(container.innerHTML).toMatch(/Required/);
   });
@@ -161,9 +169,12 @@ describe("<AlertManagerInput />", () => {
   });
 
   it("silenceFormStore.data.alertmanagers gets updated from alertStore.data.upstreams.instances on mismatch", () => {
+    // Verifies alertmanagers are updated when clusters change
     renderAlertManagerInput();
-    alertStore.data.setClusters({
-      amNew: ["amNew"],
+    act(() => {
+      alertStore.data.setClusters({
+        amNew: ["amNew"],
+      });
     });
     expect(silenceFormStore.data.alertmanagers).toContainEqual({
       label: "amNew",
@@ -204,11 +215,14 @@ describe("<AlertManagerInput />", () => {
   });
 
   it("doesn't include readonly instances", () => {
+    // Verifies readonly instances are excluded from alertmanagers
     const upstreams = generateUpstreams();
     upstreams.instances[0].readonly = true;
     upstreams.instances[2].readonly = true;
     renderAlertManagerInput();
-    alertStore.data.setUpstreams(upstreams);
+    act(() => {
+      alertStore.data.setUpstreams(upstreams);
+    });
     expect(silenceFormStore.data.alertmanagers).toHaveLength(1);
     expect(silenceFormStore.data.alertmanagers).toContainEqual({
       label: "am2",
@@ -217,6 +231,7 @@ describe("<AlertManagerInput />", () => {
   });
 
   it("uses default alertmanagers to select the cluster", () => {
+    // Verifies default alertmanagers setting selects the correct cluster
     const upstreams = generateUpstreams();
     alertStore.settings.setValues({
       ...alertStore.settings.values,
@@ -230,7 +245,9 @@ describe("<AlertManagerInput />", () => {
       },
     });
     renderAlertManagerInput();
-    alertStore.data.setUpstreams(upstreams);
+    act(() => {
+      alertStore.data.setUpstreams(upstreams);
+    });
     expect(silenceFormStore.data.alertmanagers).toHaveLength(1);
     expect(silenceFormStore.data.alertmanagers).toContainEqual({
       label: "Cluster: HA",
@@ -239,6 +256,7 @@ describe("<AlertManagerInput />", () => {
   });
 
   it("uses default alertmanagers to select the instance", () => {
+    // Verifies default alertmanagers setting selects the correct instance
     const upstreams = generateUpstreams();
     alertStore.settings.setValues({
       ...alertStore.settings.values,
@@ -252,7 +270,9 @@ describe("<AlertManagerInput />", () => {
       },
     });
     renderAlertManagerInput();
-    alertStore.data.setUpstreams(upstreams);
+    act(() => {
+      alertStore.data.setUpstreams(upstreams);
+    });
     expect(silenceFormStore.data.alertmanagers).toHaveLength(1);
     expect(silenceFormStore.data.alertmanagers).toContainEqual({
       label: "am3",

@@ -4,7 +4,7 @@ type Handler = (event: MouseEvent | TouchEvent) => void;
 
 // https://usehooks.com/useOnClickOutside/
 function useOnClickOutside(
-  ref: RefObject<HTMLElement>,
+  ref: RefObject<HTMLElement | null>,
   handler: Handler,
   enabled: boolean,
 ): void {

@@ -26,14 +26,20 @@ const OverviewModal: FC<{
 
   const toggle = useCallback(() => setIsVisible(!isVisible), [isVisible]);
 
-  const { ref, props } = useFlashTransition(alertStore.info.totalAlerts);
+  const { ref, props, nodeRef } = useFlashTransition(
+    alertStore.info.totalAlerts,
+  );
 
   return (
     <>
       <TooltipWrapper title="Show alert overview">
         <CSSTransition {...props}>
           <div
-            ref={ref}
+            ref={(node) => {
+              ref(node);
+              (nodeRef as React.MutableRefObject<HTMLElement | null>).current =
+                node;
+            }}
             className={`text-center d-inline-block cursor-pointer navbar-brand m-0 components-navbar-button  ${
               isVisible ? "border-info" : ""
             }`}

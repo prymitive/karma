@@ -1,3 +1,5 @@
+import { act } from "react";
+
 import { render, screen } from "@testing-library/react";
 
 import { ErrorBoundary } from "./ErrorBoundary";
@@ -60,10 +62,14 @@ describe("<ErrorBoundary />", () => {
     renderFailingComponent();
     expect(screen.getByText(/auto refresh in 60s/)).toBeInTheDocument();
 
-    jest.advanceTimersByTime(1000);
+    act(() => {
+      jest.advanceTimersByTime(1000);
+    });
     expect(screen.getByText(/auto refresh in 59s/)).toBeInTheDocument();
 
-    jest.advanceTimersByTime(1000);
+    act(() => {
+      jest.advanceTimersByTime(1000);
+    });
     expect(screen.getByText(/auto refresh in 58s/)).toBeInTheDocument();
   });
 });

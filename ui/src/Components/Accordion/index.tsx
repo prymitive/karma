@@ -25,6 +25,6 @@ export const AccordionItem: FC<{
   );
 };
 
-export const Accordion: FC = ({ children }) => {
+export const Accordion: FC<{ children: ReactNode }> = ({ children }) => {
   return <div className="accordion">{children}</div>;
 };

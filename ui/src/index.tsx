@@ -1,7 +1,7 @@
 // MUST be first thing we import
 import "./polyfills";
 
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 
 import {
   SettingsElement,
@@ -11,10 +11,10 @@ import {
 import { App } from "./App";
 
 // https://wetainment.com/testing-indexjs/
-export default ReactDOM.render(
+const root = createRoot(document.getElementById("root")!);
+root.render(
   <App
     defaultFilters={ParseDefaultFilters(SettingsElement())}
     uiDefaults={ParseUIDefaults(document.getElementById("defaults"))}
   />,
-  document.getElementById("root"),
 );

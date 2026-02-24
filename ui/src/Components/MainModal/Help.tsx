@@ -8,6 +8,7 @@ import { Accordion, AccordionItem } from "Components/Accordion";
 const FilterOperatorHelp: FC<{
   operator: string;
   description: string;
+  children?: ReactNode;
 }> = ({ operator, description, children }) => (
   <>
     <dt>
@@ -31,6 +32,7 @@ const QueryHelp: FC<{
   title: string;
   operators: string[];
   warning?: ReactNode;
+  children: ReactNode;
 }> = ({ title, operators, warning, children }) => (
   <>
     <dt>{title}</dt>
@@ -57,6 +59,7 @@ const QueryHelp: FC<{
 
 const FilterExample: FC<{
   example: string;
+  children: ReactNode;
 }> = ({ example, children }) => (
   <li>
     <div>

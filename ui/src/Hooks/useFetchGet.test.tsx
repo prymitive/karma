@@ -1,7 +1,6 @@
-import { act as actReact } from "react-dom/test-utils";
+import { act } from "react";
 
-import { renderHook, act } from "@testing-library/react-hooks";
-import { render } from "@testing-library/react";
+import { renderHook, render, waitFor } from "@testing-library/react";
 
 import fetchMock from "@fetch-mock/jest";
 
@@ -32,11 +31,9 @@ describe("useFetchGet", () => {
   });
 
   it("sends a GET request", async () => {
-    const { waitForNextUpdate } = renderHook(() =>
-      useFetchGet<string>("http://localhost/ok"),
-    );
+    renderHook(() => useFetchGet<string>("http://localhost/ok"));
 
-    await waitForNextUpdate();
+    await waitFor(() => expect(fetchMock.callHistory.calls()).toHaveLength(1));
 
     expect(fetchMock.callHistory.calls()).toHaveLength(1);
     expect(fetchMock.callHistory.lastCall()?.url).toBe("http://localhost/ok");
@@ -46,11 +43,9 @@ describe("useFetchGet", () => {
   });
 
   it("sends correct headers", async () => {
-    const { waitForNextUpdate } = renderHook(() =>
-      useFetchGet<string>("http://localhost/ok"),
-    );
+    renderHook(() => useFetchGet<string>("http://localhost/ok"));
 
-    await waitForNextUpdate();
+    await waitFor(() => expect(fetchMock.callHistory.calls()).toHaveLength(1));
 
     expect(fetchMock.callHistory.calls()).toHaveLength(1);
     expect(fetchMock.callHistory.lastCall()?.url).toBe("http://localhost/ok");
@@ -62,7 +57,7 @@ describe("useFetchGet", () => {
   });
 
   it("doesn't send any request if autorun=false", async () => {
-    const { result, waitForNextUpdate } = renderHook(() =>
+    const { result } = renderHook(() =>
       useFetchGet<string>("http://localhost/ok", { autorun: false }),
     );
 
@@ -71,14 +66,14 @@ describe("useFetchGet", () => {
     act(() => {
       result.current.get();
     });
-    await waitForNextUpdate();
+    await waitFor(() => expect(fetchMock.callHistory.calls()).toHaveLength(1));
 
     expect(fetchMock.callHistory.calls()).toHaveLength(1);
     expect(fetchMock.callHistory.lastCall()?.url).toBe("http://localhost/ok");
   });
 
   it("will retry failed requests", async () => {
-    const { result, waitForNextUpdate } = renderHook(() =>
+    const { result } = renderHook(() =>
       useFetchGet<string>("http://localhost/error"),
     );
 
@@ -90,7 +85,7 @@ describe("useFetchGet", () => {
     expect(result.current.retryCount).toBe(0);
 
     // first failed request
-    await waitForNextUpdate();
+    await waitFor(() => expect(result.current.retryCount).toBe(1));
     expect(result.current.response).toBe(null);
     expect(result.current.error).toBe(null);
     expect(result.current.isLoading).toBe(true);
@@ -100,7 +95,7 @@ describe("useFetchGet", () => {
     // run all retries
     for (let i = 2; i <= FetchRetryConfig.retries; i++) {
       jest.runOnlyPendingTimers();
-      await waitForNextUpdate();
+      await waitFor(() => expect(result.current.retryCount).toBe(i));
 
       expect(result.current.response).toBe(null);
       expect(result.current.error).toBe(null);
@@ -111,7 +106,7 @@ describe("useFetchGet", () => {
 
     // final update
     jest.runOnlyPendingTimers();
-    await waitForNextUpdate();
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
     expect(result.current.response).toBe(null);
     expect(result.current.error).toBe("failed to fetch");
     expect(result.current.isLoading).toBe(false);
@@ -136,7 +131,7 @@ describe("useFetchGet", () => {
   });
 
   it("response is updated after successful fetch", async () => {
-    const { result, waitForNextUpdate } = renderHook(() =>
+    const { result } = renderHook(() =>
       useFetchGet<string>("http://localhost/ok"),
     );
 
@@ -145,7 +140,7 @@ describe("useFetchGet", () => {
     expect(result.current.isLoading).toBe(true);
     expect(result.current.isRetrying).toBe(false);
 
-    await waitForNextUpdate();
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
 
     expect(result.current.response).toMatchObject({ status: "ok" });
     expect(result.current.error).toBe(null);
@@ -160,11 +155,11 @@ describe("useFetchGet", () => {
       body: JSON.stringify({ status: "error" }),
     });
 
-    const { result, waitForNextUpdate } = renderHook(() =>
+    const { result } = renderHook(() =>
       useFetchGet<string>("http://localhost/500/json"),
     );
 
-    await waitForNextUpdate();
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
 
     expect(result.current.response).toBe(null);
     expect(result.current.error).toMatchObject({ status: "error" });
@@ -178,11 +173,11 @@ describe("useFetchGet", () => {
       body: "error",
     });
 
-    const { result, waitForNextUpdate } = renderHook(() =>
+    const { result } = renderHook(() =>
       useFetchGet<string>("http://localhost/500/text"),
     );
 
-    await waitForNextUpdate();
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
 
     expect(result.current.response).toBe(null);
     expect(result.current.error).toBe("error");
@@ -191,7 +186,7 @@ describe("useFetchGet", () => {
   });
 
   it("error is updated after 401 error", async () => {
-    const { result, waitForNextUpdate } = renderHook(() =>
+    const { result } = renderHook(() =>
       useFetchGet<string>("http://localhost/401"),
     );
 
@@ -201,7 +196,7 @@ describe("useFetchGet", () => {
     expect(result.current.isRetrying).toBe(false);
 
     jest.runOnlyPendingTimers();
-    await waitForNextUpdate();
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
 
     expect(result.current.response).toBe(null);
     expect(result.current.error).toBe("401 Unauthorized");
@@ -210,7 +205,7 @@ describe("useFetchGet", () => {
   });
 
   it("error is updated after failed fetch", async () => {
-    const { result, waitForNextUpdate } = renderHook(() =>
+    const { result } = renderHook(() =>
       useFetchGet<string>("http://localhost/error"),
     );
 
@@ -221,8 +216,8 @@ describe("useFetchGet", () => {
 
     for (let i = 0; i <= FetchRetryConfig.retries; i++) {
       jest.runOnlyPendingTimers();
-      await waitForNextUpdate();
     }
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
 
     expect(result.current.response).toBe(null);
     expect(result.current.error).toBe("failed to fetch");
@@ -231,7 +226,7 @@ describe("useFetchGet", () => {
   });
 
   it("error is updated after unknown error", async () => {
-    const { result, waitForNextUpdate } = renderHook(() =>
+    const { result } = renderHook(() =>
       useFetchGet<string>("http://localhost/unknown"),
     );
 
@@ -242,8 +237,8 @@ describe("useFetchGet", () => {
 
     for (let i = 0; i <= FetchRetryConfig.retries; i++) {
       jest.runOnlyPendingTimers();
-      await waitForNextUpdate();
     }
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
 
     expect(result.current.response).toBe(null);
     expect(result.current.error).toBe("foo");
@@ -257,7 +252,7 @@ describe("useFetchGet", () => {
       body: "this is not a valid JSON body",
     });
 
-    const { result, waitForNextUpdate } = renderHook(() =>
+    const { result } = renderHook(() =>
       useFetchGet<string>("http://localhost/json/invalid"),
     );
 
@@ -267,7 +262,7 @@ describe("useFetchGet", () => {
     expect(result.current.isRetrying).toBe(false);
 
     jest.runOnlyPendingTimers();
-    await waitForNextUpdate();
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
 
     expect(result.current.response).toBe(null);
     expect(result.current.error).toBe(
@@ -296,7 +291,7 @@ describe("useFetchGet", () => {
       );
     };
 
-    actReact(() => {
+    act(() => {
       const { unmount } = render(<Component />);
       unmount();
     });
@@ -327,7 +322,7 @@ describe("useFetchGet", () => {
       );
     };
 
-    actReact(() => {
+    act(() => {
       const { unmount } = render(<Component />);
       unmount();
     });
@@ -357,7 +352,7 @@ describe("useFetchGet", () => {
       );
     };
 
-    actReact(() => {
+    act(() => {
       const { unmount } = render(<Component />);
       unmount();
     });
@@ -388,7 +383,7 @@ describe("useFetchGet", () => {
       );
     };
 
-    actReact(() => {
+    act(() => {
       const { unmount } = render(<Component />);
       unmount();
     });
@@ -416,7 +411,7 @@ describe("useFetchGet", () => {
       );
     };
 
-    actReact(() => {
+    act(() => {
       const { unmount } = render(<Component />);
       unmount();
     });
@@ -435,7 +430,7 @@ describe("useFetchGet", () => {
           get: () => "text/plain",
         },
         text: async () => {
-          actReact(() => {
+          act(() => {
             if (unmountFn) unmountFn();
           });
           return "ok";
@@ -457,7 +452,7 @@ describe("useFetchGet", () => {
       );
     };
 
-    actReact(() => {
+    act(() => {
       const { unmount } = render(<Component />);
       unmountFn = unmount;
     });

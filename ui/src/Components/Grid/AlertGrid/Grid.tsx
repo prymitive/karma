@@ -4,7 +4,9 @@ import React, {
   useState,
   useCallback,
   useMemo,
+  useRef,
   MouseEvent,
+  ReactNode,
 } from "react";
 
 import { observer } from "mobx-react-lite";
@@ -30,6 +32,84 @@ import { ThemeContext } from "Components/Theme";
 import { DefaultDetailsCollapseValue } from "./AlertGroup/DetailsToggle";
 import AlertGroup from "./AlertGroup";
 import { Swimlane } from "./Swimlane";
+
+const SwimlaneTransition: FC<{
+  children: React.ReactElement<{ ref?: React.Ref<HTMLHeadingElement> }>;
+  labelValue: string;
+  inProp: boolean;
+  timeout: number;
+}> = ({ children, labelValue, inProp, timeout }) => {
+  const nodeRef = useRef<HTMLHeadingElement>(null);
+  return (
+    <CSSTransition
+      key={labelValue}
+      in={inProp}
+      classNames="components-animation-fade"
+      timeout={timeout}
+      appear
+      unmountOnExit
+      nodeRef={nodeRef}
+    >
+      {React.cloneElement(children, { ref: nodeRef })}
+    </CSSTransition>
+  );
+};
+
+const AlertGroupTransition: FC<{
+  children: React.ReactElement<{ ref?: React.Ref<HTMLDivElement> }>;
+  groupId: string;
+  classNames: string;
+  timeout: number;
+  onEntering: () => void;
+  onExited: () => void;
+  in?: boolean;
+  appear?: boolean;
+}> = ({
+  children,
+  groupId,
+  classNames,
+  timeout,
+  onEntering,
+  onExited,
+  in: inProp,
+  appear,
+}) => {
+  const nodeRef = useRef<HTMLDivElement>(null);
+  return (
+    <CSSTransition
+      key={groupId}
+      classNames={classNames}
+      timeout={timeout}
+      onEntering={onEntering}
+      onExited={onExited}
+      unmountOnExit
+      nodeRef={nodeRef}
+      in={inProp}
+      appear={appear}
+    >
+      {React.cloneElement(children, { ref: nodeRef })}
+    </CSSTransition>
+  );
+};
+
+const LoadMoreTransition: FC<{
+  children: ReactNode;
+  timeout: number;
+  in?: boolean;
+}> = ({ children, timeout, in: inProp }) => {
+  const nodeRef = useRef<HTMLDivElement>(null);
+  return (
+    <CSSTransition
+      classNames="components-animation-fade"
+      timeout={timeout}
+      unmountOnExit
+      nodeRef={nodeRef}
+      in={inProp}
+    >
+      <div ref={nodeRef}>{children}</div>
+    </CSSTransition>
+  );
+};
 
 const Grid: FC<{
   alertStore: AlertStore;
@@ -79,8 +159,8 @@ const Grid: FC<{
   };
 
   const onAlertGridCollapseEvent = useCallback(
-    (event) => {
-      setIsExpanded(event.detail);
+    (event: Event) => {
+      setIsExpanded((event as CustomEvent).detail);
       debouncedRepack();
     },
     [debouncedRepack],
@@ -118,13 +198,10 @@ const Grid: FC<{
         zIndex: zIndex,
       }}
     >
-      <CSSTransition
-        key={grid.labelValue}
-        in={grid.labelName !== ""}
-        classNames="components-animation-fade"
+      <SwimlaneTransition
+        labelValue={grid.labelValue}
+        inProp={grid.labelName !== ""}
         timeout={context.animations.duration}
-        appear
-        unmountOnExit
       >
         <Swimlane
           alertStore={alertStore}
@@ -134,7 +211,7 @@ const Grid: FC<{
           onToggle={onCollapseClick}
           paddingTop={paddingTop}
         />
-      </CSSTransition>
+      </SwimlaneTransition>
       <div
         className="components-grid"
         ref={ref}
@@ -147,8 +224,9 @@ const Grid: FC<{
         <TransitionGroup component={null} appear enter exit>
           {isExpanded || grid.labelName === ""
             ? grid.alertGroups.map((group) => (
-                <CSSTransition
+                <AlertGroupTransition
                   key={group.id}
+                  groupId={group.id}
                   classNames={
                     context.animations.duration
                       ? "components-animation-alergroup"
@@ -157,7 +235,6 @@ const Grid: FC<{
                   timeout={context.animations.duration}
                   onEntering={repack}
                   onExited={debouncedRepack}
-                  unmountOnExit
                 >
                   <AlertGroup
                     grid={grid}
@@ -169,18 +246,14 @@ const Grid: FC<{
                     groupWidth={groupWidth}
                     gridLabelValue={grid.labelValue}
                   />
-                </CSSTransition>
+                </AlertGroupTransition>
               ))
             : []}
         </TransitionGroup>
       </div>
       <TransitionGroup component={null} enter exit>
         {isExpanded && grid.totalGroups > grid.alertGroups.length && (
-          <CSSTransition
-            classNames="components-animation-fade"
-            timeout={context.animations.duration}
-            unmountOnExit
-          >
+          <LoadMoreTransition timeout={context.animations.duration}>
             <div className="d-flex flex-row justify-content-between">
               <div className="flex-shrink-1 flex-grow-1 text-center">
                 <button
@@ -200,7 +273,7 @@ const Grid: FC<{
                 </button>
               </div>
             </div>
-          </CSSTransition>
+          </LoadMoreTransition>
         )}
       </TransitionGroup>
     </div>

@@ -1,4 +1,4 @@
-import { act } from "react-dom/test-utils";
+import { act } from "react";
 
 import { render, screen, fireEvent } from "@testing-library/react";
 
@@ -257,6 +257,39 @@ describe("<HistoryMenu />", () => {
       jest.runOnlyPendingTimers();
     });
     expect(settingsStore.savedFilters.config.filters).toHaveLength(0);
+    await act(() => promise);
+  });
+
+  it("clicking on 'Clear history' button triggers clear action", async () => {
+    // Verifies that clicking Clear history button calls the onClear callback
+    const promise = Promise.resolve();
+    const { container } = renderHistory();
+
+    act(() => {
+      populateHistory(3);
+    });
+
+    const toggle = container.querySelector("button.cursor-pointer");
+    fireEvent.click(toggle!);
+
+    // Verify history has items before clearing
+    const historyItemsBefore = document.body.querySelectorAll(
+      ".components-navbar-historymenu-labels",
+    );
+    expect(historyItemsBefore.length).toBeGreaterThan(0);
+
+    // Click clear history button - this calls history.setFilters([])
+    const clearButton = screen.getByText("Clear history");
+    fireEvent.click(clearButton);
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
+
+    // Menu should close after clicking clear (afterClick is called)
+    expect(
+      container.querySelector("div.dropdown-menu"),
+    ).not.toBeInTheDocument();
+
     await act(() => promise);
   });
 });

@@ -1,4 +1,11 @@
-import { FC, Ref, CSSProperties, useRef, useState, useCallback } from "react";
+import {
+  forwardRef,
+  Ref,
+  CSSProperties,
+  useRef,
+  useState,
+  useCallback,
+} from "react";
 
 import { observer } from "mobx-react-lite";
 
@@ -56,7 +63,7 @@ const onSilenceClick = (
   silenceFormStore.toggle.show();
 };
 
-const MenuContent: FC<{
+interface MenuContentProps {
   x: number | null;
   y: number | null;
   floating: Ref<HTMLDivElement> | null;
@@ -66,102 +73,126 @@ const MenuContent: FC<{
   afterClick: () => void;
   alertStore: AlertStore;
   silenceFormStore: SilenceFormStore;
-}> = ({
-  x,
-  y,
-  floating,
-  strategy,
-  group,
-  alert,
-  afterClick,
-  alertStore,
-  silenceFormStore,
-}) => {
-  const actions: APIAnnotationT[] = [
-    ...alert.annotations
-      .filter((a) => a.isLink === true)
-      .filter((a) => a.isAction === true),
-    ...group.shared.annotations
-      .filter((a) => a.isLink === true)
-      .filter((a) => a.isAction === true),
-  ];
+}
 
-  return (
-    <FetchPauser alertStore={alertStore}>
-      <div
-        className="dropdown-menu d-block shadow m-0"
-        ref={floating}
-        style={{
-          position: strategy,
-          top: y ?? "",
-          left: x ?? "",
-        }}
-      >
-        <h6 className="dropdown-header">Alert source links:</h6>
-        {alert.alertmanager.map((am) => (
-          <MenuLink
-            key={am.name}
-            icon={faExternalLinkAlt}
-            text={am.name}
-            uri={am.source}
-            afterClick={afterClick}
-          />
-        ))}
-        <div className="dropdown-divider" />
+const MenuContent = forwardRef<HTMLDivElement, MenuContentProps>(
+  (
+    {
+      x,
+      y,
+      floating,
+      strategy,
+      group,
+      alert,
+      afterClick,
+      alertStore,
+      silenceFormStore,
+    },
+    ref,
+  ) => {
+    const actions: APIAnnotationT[] = [
+      ...alert.annotations
+        .filter((a) => a.isLink === true)
+        .filter((a) => a.isAction === true),
+      ...group.shared.annotations
+        .filter((a) => a.isLink === true)
+        .filter((a) => a.isAction === true),
+    ];
+
+    return (
+      <FetchPauser alertStore={alertStore}>
         <div
-          className="dropdown-item cursor-pointer"
-          onClick={() => {
-            copy(JSON.stringify(alertToJSON(group, alert)));
-            afterClick();
-          }}
-        >
-          <FontAwesomeIcon className="me-1" icon={faCopy} />
-          Copy to clipboard
-        </div>
-        {actions.length ? (
-          <>
-            <div className="dropdown-divider" />
-            <h6 className="dropdown-header">Actions:</h6>
-            {actions.map((action) => (
-              <MenuLink
-                key={action.name}
-                icon={faWrench}
-                text={action.name}
-                uri={action.value}
-                afterClick={afterClick}
-              />
-            ))}
-          </>
-        ) : null}
-        <div className="dropdown-divider" />
-        <div
-          className={`dropdown-item ${
-            Object.keys(alertStore.data.clustersWithoutReadOnly).length === 0
-              ? "disabled"
-              : "cursor-pointer"
-          }`}
-          onClick={() => {
-            if (Object.keys(alertStore.data.clustersWithoutReadOnly).length) {
-              onSilenceClick(alertStore, silenceFormStore, group, alert);
-              afterClick();
+          className="dropdown-menu d-block shadow m-0"
+          ref={(node) => {
+            // Handle both the floating ref and the forwarded ref
+            if (typeof floating === "function") {
+              floating(node);
+            } else if (floating) {
+              (
+                floating as React.MutableRefObject<HTMLDivElement | null>
+              ).current = node;
+            }
+            if (typeof ref === "function") {
+              ref(node);
+            } else if (ref) {
+              (ref as React.MutableRefObject<HTMLDivElement | null>).current =
+                node;
             }
           }}
+          style={{
+            position: strategy,
+            top: y ?? "",
+            left: x ?? "",
+          }}
         >
-          <FontAwesomeIcon className="me-1" icon={faBellSlash} />
-          Silence this alert
+          <h6 className="dropdown-header">Alert source links:</h6>
+          {alert.alertmanager.map((am) => (
+            <MenuLink
+              key={am.name}
+              icon={faExternalLinkAlt}
+              text={am.name}
+              uri={am.source}
+              afterClick={afterClick}
+            />
+          ))}
+          <div className="dropdown-divider" />
+          <div
+            className="dropdown-item cursor-pointer"
+            onClick={() => {
+              copy(JSON.stringify(alertToJSON(group, alert)));
+              afterClick();
+            }}
+          >
+            <FontAwesomeIcon className="me-1" icon={faCopy} />
+            Copy to clipboard
+          </div>
+          {actions.length ? (
+            <>
+              <div className="dropdown-divider" />
+              <h6 className="dropdown-header">Actions:</h6>
+              {actions.map((action) => (
+                <MenuLink
+                  key={action.name}
+                  icon={faWrench}
+                  text={action.name}
+                  uri={action.value}
+                  afterClick={afterClick}
+                />
+              ))}
+            </>
+          ) : null}
+          <div className="dropdown-divider" />
+          <div
+            className={`dropdown-item ${
+              Object.keys(alertStore.data.clustersWithoutReadOnly).length === 0
+                ? "disabled"
+                : "cursor-pointer"
+            }`}
+            onClick={() => {
+              if (Object.keys(alertStore.data.clustersWithoutReadOnly).length) {
+                onSilenceClick(alertStore, silenceFormStore, group, alert);
+                afterClick();
+              }
+            }}
+          >
+            <FontAwesomeIcon className="me-1" icon={faBellSlash} />
+            Silence this alert
+          </div>
         </div>
-      </div>
-    </FetchPauser>
-  );
-};
+      </FetchPauser>
+    );
+  },
+);
 
-const AlertMenu: FC<{
+interface AlertMenuProps {
   group: APIAlertGroupT;
   alert: APIAlertT;
   alertStore: AlertStore;
   silenceFormStore: SilenceFormStore;
   setIsMenuOpen: (isOpen: boolean) => void;
-}> = observer(
+}
+
+const AlertMenu = observer<AlertMenuProps>(
   ({ group, alert, alertStore, silenceFormStore, setIsMenuOpen }) => {
     const [isHidden, setIsHidden] = useState<boolean>(true);
 

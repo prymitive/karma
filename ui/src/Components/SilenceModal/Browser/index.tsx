@@ -1,4 +1,11 @@
-import React, { FC, useState, useEffect, ReactNode, useCallback } from "react";
+import React, {
+  FC,
+  useState,
+  useEffect,
+  ReactNode,
+  useCallback,
+  useRef,
+} from "react";
 
 import { observer } from "mobx-react-lite";
 
@@ -40,6 +47,7 @@ const Placeholder: FC<{
   content: ReactNode;
 }> = ({ content }) => {
   const context = React.useContext(ThemeContext);
+  const nodeRef = useRef<HTMLDivElement>(null);
 
   return (
     <CSSTransition
@@ -47,8 +55,9 @@ const Placeholder: FC<{
       appear={true}
       classNames="components-animation-fade"
       timeout={context.animations.duration}
+      nodeRef={nodeRef}
     >
-      <div className="px-2 py-5 bg-transparent">
+      <div ref={nodeRef} className="px-2 py-5 bg-transparent">
         <h1 className="display-5 text-placeholder text-center">{content}</h1>
       </div>
     </CSSTransition>

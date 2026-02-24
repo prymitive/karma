@@ -1,4 +1,4 @@
-import { act } from "react-dom/test-utils";
+import { act } from "react";
 
 import { render, fireEvent, screen, waitFor } from "@testing-library/react";
 

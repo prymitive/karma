@@ -1,4 +1,16 @@
-import { act } from "react-dom/test-utils";
+// Mock react-cool-dimensions to avoid ResizeObserver console.error
+jest.mock("react-cool-dimensions", () => ({
+  __esModule: true,
+  default: () => ({
+    observe: jest.fn(),
+    unobserve: jest.fn(),
+    width: 1000,
+    height: 500,
+    entry: undefined,
+  }),
+}));
+
+import { act } from "react";
 
 import { render, screen, fireEvent } from "@testing-library/react";
 
@@ -30,23 +42,29 @@ afterEach(() => {
   document.body.className = "";
 });
 
-const renderMainModal = () => {
-  return render(
-    <ThemeContext.Provider value={MockThemeContext}>
-      <MainModal alertStore={alertStore} settingsStore={settingsStore} />
-    </ThemeContext.Provider>,
-  );
+const renderMainModal = async () => {
+  let result: ReturnType<typeof render>;
+  await act(async () => {
+    result = render(
+      <ThemeContext.Provider value={MockThemeContext}>
+        <MainModal alertStore={alertStore} settingsStore={settingsStore} />
+      </ThemeContext.Provider>,
+    );
+  });
+  return result!;
 };
 
 describe("<MainModal />", () => {
-  it("only renders FontAwesomeIcon when modal is not shown", () => {
-    const { container } = renderMainModal();
+  it("only renders FontAwesomeIcon when modal is not shown", async () => {
+    // Verifies only toggle icon is rendered when modal is closed
+    const { container } = await renderMainModal();
     expect(container.querySelectorAll("svg")).toHaveLength(1);
     expect(screen.queryByText("Configuration")).not.toBeInTheDocument();
   });
 
-  it("renders a spinner placeholder while modal content is loading", () => {
-    const { container } = renderMainModal();
+  it("renders a spinner placeholder while modal content is loading", async () => {
+    // Verifies spinner is shown while lazy content loads
+    const { container } = await renderMainModal();
     const toggle = container.querySelector(".nav-link");
     fireEvent.click(toggle!);
     expect(
@@ -54,15 +72,19 @@ describe("<MainModal />", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders modal content if fallback is not used", () => {
-    const { container } = renderMainModal();
+  it("renders modal content if fallback is not used", async () => {
+    // Verifies modal content is rendered after lazy loading
+    const { container } = await renderMainModal();
     const toggle = container.querySelector(".nav-link");
-    fireEvent.click(toggle!);
+    await act(async () => {
+      fireEvent.click(toggle!);
+    });
     expect(screen.getByText("Configuration")).toBeInTheDocument();
   });
 
-  it("hides the modal when toggle() is called twice", () => {
-    const { container } = renderMainModal();
+  it("hides the modal when toggle() is called twice", async () => {
+    // Verifies modal closes when toggle is clicked twice
+    const { container } = await renderMainModal();
     const toggle = container.querySelector(".nav-link");
 
     fireEvent.click(toggle!);
@@ -78,8 +100,9 @@ describe("<MainModal />", () => {
     expect(screen.queryByText("Configuration")).not.toBeInTheDocument();
   });
 
-  it("hides the modal when button.btn-close is clicked", () => {
-    const { container } = renderMainModal();
+  it("hides the modal when button.btn-close is clicked", async () => {
+    // Verifies modal closes when close button is clicked
+    const { container } = await renderMainModal();
     const toggle = container.querySelector(".nav-link");
 
     fireEvent.click(toggle!);
@@ -93,15 +116,17 @@ describe("<MainModal />", () => {
     expect(screen.queryByText("Configuration")).not.toBeInTheDocument();
   });
 
-  it("'modal-open' class is appended to body node when modal is visible", () => {
-    const { container } = renderMainModal();
+  it("'modal-open' class is appended to body node when modal is visible", async () => {
+    // Verifies modal-open class is added to body when modal opens
+    const { container } = await renderMainModal();
     const toggle = container.querySelector(".nav-link");
     fireEvent.click(toggle!);
     expect(document.body.className.split(" ")).toContain("modal-open");
   });
 
-  it("'modal-open' class is removed from body node after modal is hidden", () => {
-    const { container } = renderMainModal();
+  it("'modal-open' class is removed from body node after modal is hidden", async () => {
+    // Verifies modal-open class is removed from body when modal closes
+    const { container } = await renderMainModal();
     const toggle = container.querySelector(".nav-link");
 
     fireEvent.click(toggle!);
@@ -114,8 +139,9 @@ describe("<MainModal />", () => {
     expect(document.body.className.split(" ")).not.toContain("modal-open");
   });
 
-  it("'modal-open' class is removed from body node after modal is unmounted", () => {
-    const { container, unmount } = renderMainModal();
+  it("'modal-open' class is removed from body node after modal is unmounted", async () => {
+    // Verifies modal-open class is removed from body when component unmounts
+    const { container, unmount } = await renderMainModal();
     const toggle = container.querySelector(".nav-link");
     fireEvent.click(toggle!);
     unmount();

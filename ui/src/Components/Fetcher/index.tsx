@@ -19,6 +19,7 @@ import { TooltipWrapper } from "Components/TooltipWrapper";
 
 const PauseButton: FC<{ alertStore: AlertStore }> = ({ alertStore }) => {
   const context = React.useContext(ThemeContext);
+  const nodeRef = useRef<HTMLSpanElement>(null);
   return (
     <TooltipWrapper title="Click to resume updates">
       <CSSTransition
@@ -26,13 +27,16 @@ const PauseButton: FC<{ alertStore: AlertStore }> = ({ alertStore }) => {
         appear={true}
         classNames="components-animation-fade"
         timeout={context.animations.duration}
+        nodeRef={nodeRef}
       >
-        <FontAwesomeIcon
-          className="cursor-pointer text-muted components-fetcher-icon mx-2"
-          icon={faPause}
-          fixedWidth
-          onClick={alertStore.status.resume}
-        />
+        <span ref={nodeRef} className="d-inline-block">
+          <FontAwesomeIcon
+            className="cursor-pointer text-muted components-fetcher-icon mx-2"
+            icon={faPause}
+            fixedWidth
+            onClick={alertStore.status.resume}
+          />
+        </span>
       </CSSTransition>
     </TooltipWrapper>
   );
@@ -40,6 +44,7 @@ const PauseButton: FC<{ alertStore: AlertStore }> = ({ alertStore }) => {
 
 const PlayButton: FC<{ alertStore: AlertStore }> = ({ alertStore }) => {
   const context = React.useContext(ThemeContext);
+  const nodeRef = useRef<HTMLSpanElement>(null);
   return (
     <TooltipWrapper title="Click to pause updates">
       <CSSTransition
@@ -47,13 +52,16 @@ const PlayButton: FC<{ alertStore: AlertStore }> = ({ alertStore }) => {
         appear={true}
         classNames="components-animation-fade"
         timeout={context.animations.duration}
+        nodeRef={nodeRef}
       >
-        <FontAwesomeIcon
-          className="cursor-pointer text-muted components-fetcher-icon mx-2"
-          icon={faPlay}
-          fixedWidth
-          onClick={alertStore.status.pause}
-        />
+        <span ref={nodeRef} className="d-inline-block">
+          <FontAwesomeIcon
+            className="cursor-pointer text-muted components-fetcher-icon mx-2"
+            icon={faPlay}
+            fixedWidth
+            onClick={alertStore.status.pause}
+          />
+        </span>
       </CSSTransition>
     </TooltipWrapper>
   );

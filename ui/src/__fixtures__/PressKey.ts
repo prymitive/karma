@@ -1,4 +1,4 @@
-import { act } from "react-dom/test-utils";
+import { act } from "react";
 
 function PressKey(key: string, code: number): void {
   act(() => {

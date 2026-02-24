@@ -1,15 +1,16 @@
-import React, { FC, ReactNode } from "react";
+import React, { FC, useRef } from "react";
 
 import { CSSTransition } from "react-transition-group";
 
 import { ThemeContext } from "Components/Theme";
 
 const DropdownSlide: FC<{
-  children: ReactNode;
+  children: React.ReactElement<{ ref?: React.Ref<HTMLDivElement> }>;
   in?: boolean;
   unmountOnExit?: boolean;
 }> = ({ children, ...props }) => {
   const context = React.useContext(ThemeContext);
+  const nodeRef = useRef<HTMLDivElement>(null);
 
   return (
     <CSSTransition
@@ -17,9 +18,10 @@ const DropdownSlide: FC<{
       timeout={context.animations.duration ? 150 : 0}
       appear={true}
       exit={true}
+      nodeRef={nodeRef}
       {...props}
     >
-      {children}
+      {React.cloneElement(children, { ref: nodeRef })}
     </CSSTransition>
   );
 };

@@ -1016,6 +1016,29 @@ describe("SilenceFormStore.data", () => {
     expect(store.data.matchers).toMatchObject([]);
     expect(store.data.comment).toBe("foo");
   });
+
+  it("fromBase64 returns false and logs error for invalid JSON", () => {
+    // Verifies error handling when JSON.parse fails (lines 435-436)
+    const consoleSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+
+    store.data.setMatchers([]);
+    store.data.setComment("original");
+
+    // Invalid base64 that decodes to invalid JSON
+    const invalidB64 = window.btoa("not valid json {{{");
+    const result = store.data.fromBase64(invalidB64);
+
+    expect(result).toBe(false);
+    expect(consoleSpy).toHaveBeenCalledWith(
+      expect.stringContaining("Failed to parse JSON"),
+    );
+    // Original data should be unchanged
+    expect(store.data.comment).toBe("original");
+
+    consoleSpy.mockRestore();
+  });
 });
 
 describe("SilenceFormStore.data.isValid", () => {

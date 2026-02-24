@@ -11,21 +11,21 @@ $easing-exit: ease-in;
   will-change: opacity, transform;
   transform: translateZ(0) scale(1);
 }
-.components-animation-modal-enter > .modal > .modal-dialog {
+.components-animation-modal-enter .modal-dialog {
   opacity: $opacity-modal;
   transform: translate(0, $move) scale(0.95);
 }
-.components-animation-modal-enter-active > .modal > .modal-dialog {
+.components-animation-modal-enter-active .modal-dialog {
   opacity: 1;
   transition: transform $duration-modal $easing-enter,
     opacity $duration-modal $easing-enter;
   transform: translate(0, 0) scale(1);
 }
-.components-animation-modal-exit > .modal > .modal-dialog {
+.components-animation-modal-exit .modal-dialog {
   opacity: 1;
   transform: translate(0, 0) scale(1);
 }
-.components-animation-modal-exit-active > .modal > .modal-dialog {
+.components-animation-modal-exit-active .modal-dialog {
   opacity: $opacity-modal;
   transform: translate(0, $move) scale(0.95);
   transition: transform $duration-modal $easing-enter,

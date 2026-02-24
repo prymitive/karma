@@ -1,4 +1,16 @@
-import { act } from "react-dom/test-utils";
+// Mock react-cool-dimensions to avoid ResizeObserver console.error
+jest.mock("react-cool-dimensions", () => ({
+  __esModule: true,
+  default: () => ({
+    observe: jest.fn(),
+    unobserve: jest.fn(),
+    width: 1000,
+    height: 500,
+    entry: undefined,
+  }),
+}));
+
+import { act } from "react";
 
 import { render, fireEvent } from "@testing-library/react";
 
@@ -116,6 +128,7 @@ describe("<SilenceModal />", () => {
   });
 
   it("hides the modal when hide() is called", () => {
+    // Verifies modal closes when hide() is called on the toggle store
     const { container } = renderSilenceModal();
     const toggle = container.querySelector(".nav-link");
 
@@ -125,7 +138,9 @@ describe("<SilenceModal />", () => {
     });
     expect(document.body.querySelector(".modal-content")).toBeInTheDocument();
 
-    silenceFormStore.toggle.hide();
+    act(() => {
+      silenceFormStore.toggle.hide();
+    });
     act(() => {
       jest.runOnlyPendingTimers();
     });

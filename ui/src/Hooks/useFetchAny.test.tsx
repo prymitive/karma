@@ -1,7 +1,6 @@
-import { act } from "react-dom/test-utils";
+import { act } from "react";
 
-import { renderHook } from "@testing-library/react-hooks";
-import { render } from "@testing-library/react";
+import { renderHook, render, waitFor } from "@testing-library/react";
 
 import fetchMock from "@fetch-mock/jest";
 
@@ -42,9 +41,9 @@ describe("useFetchAny", () => {
 
   it("sends a GET request by default", async () => {
     const upstreams = [{ uri: "http://localhost/ok", options: {} }];
-    const { waitForNextUpdate } = renderHook(() => useFetchAny(upstreams));
+    renderHook(() => useFetchAny(upstreams));
 
-    await waitForNextUpdate();
+    await waitFor(() => expect(fetchMock.callHistory.calls()).toHaveLength(1));
 
     expect(fetchMock.callHistory.calls()).toHaveLength(1);
     expect(fetchMock.callHistory.lastCall()?.url).toBe("http://localhost/ok");
@@ -63,9 +62,9 @@ describe("useFetchAny", () => {
         options: { method: "post", credentials: "same-origin" },
       },
     ];
-    const { waitForNextUpdate } = renderHook(() => useFetchAny(upstreams));
+    renderHook(() => useFetchAny(upstreams));
 
-    await waitForNextUpdate();
+    await waitFor(() => expect(fetchMock.callHistory.calls()).toHaveLength(1));
 
     expect(fetchMock.callHistory.calls()).toHaveLength(1);
     expect(fetchMock.callHistory.lastCall()?.url).toBe("http://localhost/ok");
@@ -79,9 +78,9 @@ describe("useFetchAny", () => {
 
   it("sends correct headers", async () => {
     const upstreams = [{ uri: "http://localhost/ok", options: {} }];
-    const { waitForNextUpdate } = renderHook(() => useFetchAny(upstreams));
+    renderHook(() => useFetchAny(upstreams));
 
-    await waitForNextUpdate();
+    await waitFor(() => expect(fetchMock.callHistory.calls()).toHaveLength(1));
 
     expect(fetchMock.callHistory.calls()).toHaveLength(1);
     expect(fetchMock.callHistory.lastCall()?.url).toBe("http://localhost/ok");
@@ -94,16 +93,14 @@ describe("useFetchAny", () => {
 
   it("plain response is updated after successful fetch", async () => {
     const upstreams = [{ uri: "http://localhost/ok", options: {} }];
-    const { result, waitForNextUpdate } = renderHook(() =>
-      useFetchAny(upstreams),
-    );
+    const { result } = renderHook(() => useFetchAny(upstreams));
 
     expect(result.current.response).toBe(null);
     expect(result.current.error).toBe(null);
     expect(result.current.inProgress).toBe(true);
     expect(result.current.responseURI).toBe(null);
 
-    await waitForNextUpdate();
+    await waitFor(() => expect(result.current.inProgress).toBe(false));
 
     expect(result.current.response).toBe("body ok");
     expect(result.current.error).toBe(null);
@@ -113,16 +110,14 @@ describe("useFetchAny", () => {
 
   it("JSON response is updated after successful fetch", async () => {
     const upstreams = [{ uri: "http://localhost/ok/json", options: {} }];
-    const { result, waitForNextUpdate } = renderHook(() =>
-      useFetchAny(upstreams),
-    );
+    const { result } = renderHook(() => useFetchAny(upstreams));
 
     expect(result.current.response).toBe(null);
     expect(result.current.error).toBe(null);
     expect(result.current.inProgress).toBe(true);
     expect(result.current.responseURI).toBe(null);
 
-    await waitForNextUpdate();
+    await waitFor(() => expect(result.current.inProgress).toBe(false));
 
     expect(result.current.response).toMatchObject({ status: "ok" });
     expect(result.current.error).toBe(null);
@@ -132,16 +127,14 @@ describe("useFetchAny", () => {
 
   it("error is using status code if body is empty", async () => {
     const upstreams = [{ uri: "http://localhost/401", options: {} }];
-    const { result, waitForNextUpdate } = renderHook(() =>
-      useFetchAny(upstreams),
-    );
+    const { result } = renderHook(() => useFetchAny(upstreams));
 
     expect(result.current.response).toBe(null);
     expect(result.current.error).toBe(null);
     expect(result.current.inProgress).toBe(true);
     expect(result.current.responseURI).toBe(null);
 
-    await waitForNextUpdate();
+    await waitFor(() => expect(result.current.inProgress).toBe(false));
 
     expect(result.current.response).toBe(null);
     expect(result.current.error).toBe("401 Unauthorized");
@@ -151,16 +144,14 @@ describe("useFetchAny", () => {
 
   it("error is updated after 500 error", async () => {
     const upstreams = [{ uri: "http://localhost/500", options: {} }];
-    const { result, waitForNextUpdate } = renderHook(() =>
-      useFetchAny(upstreams),
-    );
+    const { result } = renderHook(() => useFetchAny(upstreams));
 
     expect(result.current.response).toBe(null);
     expect(result.current.error).toBe(null);
     expect(result.current.inProgress).toBe(true);
     expect(result.current.responseURI).toBe(null);
 
-    await waitForNextUpdate();
+    await waitFor(() => expect(result.current.inProgress).toBe(false));
 
     expect(result.current.response).toBe(null);
     expect(result.current.error).toBe("fake error");
@@ -170,16 +161,14 @@ describe("useFetchAny", () => {
 
   it("error is updated after an exception", async () => {
     const upstreams = [{ uri: "http://localhost/error", options: {} }];
-    const { result, waitForNextUpdate } = renderHook(() =>
-      useFetchAny(upstreams),
-    );
+    const { result } = renderHook(() => useFetchAny(upstreams));
 
     expect(result.current.response).toBe(null);
     expect(result.current.error).toBe(null);
     expect(result.current.inProgress).toBe(true);
     expect(result.current.responseURI).toBe(null);
 
-    await waitForNextUpdate();
+    await waitFor(() => expect(result.current.inProgress).toBe(false));
 
     expect(result.current.response).toBe(null);
     expect(result.current.error).toBe("failed to fetch");
@@ -189,16 +178,14 @@ describe("useFetchAny", () => {
 
   it("error is updated after unknown error", async () => {
     const upstreams = [{ uri: "http://localhost/unknown", options: {} }];
-    const { result, waitForNextUpdate } = renderHook(() =>
-      useFetchAny(upstreams),
-    );
+    const { result } = renderHook(() => useFetchAny(upstreams));
 
     expect(result.current.response).toBe(null);
     expect(result.current.error).toBe(null);
     expect(result.current.inProgress).toBe(true);
     expect(result.current.responseURI).toBe(null);
 
-    await waitForNextUpdate();
+    await waitFor(() => expect(result.current.inProgress).toBe(false));
 
     expect(result.current.response).toBe(null);
     expect(result.current.error).toBe("foo");
@@ -289,11 +276,9 @@ describe("useFetchAny", () => {
       { uri: "http://localhost/500", options: {} },
       { uri: "http://localhost/error", options: {} },
     ];
-    const { result, waitForNextUpdate } = renderHook(() =>
-      useFetchAny(upstreams),
-    );
+    const { result } = renderHook(() => useFetchAny(upstreams));
 
-    await waitForNextUpdate();
+    await waitFor(() => expect(result.current.inProgress).toBe(false));
 
     expect(fetchMock.callHistory.calls()).toHaveLength(1);
     expect(fetchMock.callHistory.calls()[0]?.url).toBe("http://localhost/ok");
@@ -310,11 +295,9 @@ describe("useFetchAny", () => {
       { uri: "http://localhost/error", options: {} },
       { uri: "http://localhost/ok", options: {} },
     ];
-    const { result, waitForNextUpdate } = renderHook(() =>
-      useFetchAny(upstreams),
-    );
+    const { result } = renderHook(() => useFetchAny(upstreams));
 
-    await waitForNextUpdate();
+    await waitFor(() => expect(result.current.inProgress).toBe(false));
 
     expect(fetchMock.callHistory.calls()).toHaveLength(3);
     expect(fetchMock.callHistory.calls()[0]?.url).toBe("http://localhost/500");
@@ -335,11 +318,9 @@ describe("useFetchAny", () => {
       { uri: "http://localhost/ok/json", options: {} },
       { uri: "http://localhost/error", options: {} },
     ];
-    const { result, waitForNextUpdate } = renderHook(() =>
-      useFetchAny(upstreams),
-    );
+    const { result } = renderHook(() => useFetchAny(upstreams));
 
-    await waitForNextUpdate();
+    await waitFor(() => expect(result.current.inProgress).toBe(false));
 
     expect(fetchMock.callHistory.calls()).toHaveLength(2);
     expect(fetchMock.callHistory.calls()[0]?.url).toBe("http://localhost/500");
@@ -358,11 +339,9 @@ describe("useFetchAny", () => {
       { uri: "http://localhost/error", options: {} },
       { uri: "http://localhost/500", options: {} },
     ];
-    const { result, waitForNextUpdate } = renderHook(() =>
-      useFetchAny(upstreams),
-    );
+    const { result } = renderHook(() => useFetchAny(upstreams));
 
-    await waitForNextUpdate();
+    await waitFor(() => expect(result.current.inProgress).toBe(false));
 
     expect(result.current.response).toBe(null);
     expect(result.current.error).toBe("fake error");

@@ -1,5 +1,5 @@
 import React from "react";
-import { act } from "react-dom/test-utils";
+import { act } from "react";
 
 import { render } from "@testing-library/react";
 
@@ -151,16 +151,24 @@ describe("<ModalInner />", () => {
       }),
     );
     const { rerender } = render(
-      <ModalInner size="modal-lg" isUpper toggleOpen={fakeToggle} />,
+      <ModalInner size="modal-lg" isUpper toggleOpen={fakeToggle}>
+        <div>test</div>
+      </ModalInner>,
     );
     rerender(
-      <ModalInner size="modal-lg" isUpper={false} toggleOpen={fakeToggle} />,
+      <ModalInner size="modal-lg" isUpper={false} toggleOpen={fakeToggle}>
+        <div>test</div>
+      </ModalInner>,
     );
     rerender(
-      <ModalInner size="modal-lg" isUpper={true} toggleOpen={fakeToggle} />,
+      <ModalInner size="modal-lg" isUpper={true} toggleOpen={fakeToggle}>
+        <div>test</div>
+      </ModalInner>,
     );
     rerender(
-      <ModalInner size="modal-lg" isUpper={false} toggleOpen={fakeToggle} />,
+      <ModalInner size="modal-lg" isUpper={false} toggleOpen={fakeToggle}>
+        <div>test</div>
+      </ModalInner>,
     );
     expect(useRefSpy).toHaveBeenCalled();
     expect(document.body.className.split(" ")).not.toContain("modal-open");

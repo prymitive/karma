@@ -1,4 +1,16 @@
-import { act } from "react-dom/test-utils";
+// Mock react-cool-dimensions to avoid ResizeObserver console.error
+jest.mock("react-cool-dimensions", () => ({
+  __esModule: true,
+  default: () => ({
+    observe: jest.fn(),
+    unobserve: jest.fn(),
+    width: 1000,
+    height: 500,
+    entry: undefined,
+  }),
+}));
+
+import { act } from "react";
 
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 

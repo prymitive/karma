@@ -46,7 +46,7 @@ const ShareButton: FC<{
     window.location.pathname,
   ].join("");
 
-  const { ref, props } = useFlashTransition(clickCount);
+  const { ref, props, nodeRef } = useFlashTransition(clickCount);
 
   return (
     <div className="input-group mb-3">
@@ -71,7 +71,12 @@ const ShareButton: FC<{
       >
         <TooltipWrapper title="Copy to clipboard">
           <CSSTransition {...props}>
-            <FontAwesomeIcon icon={faCopy} />
+            <span
+              ref={nodeRef as React.RefObject<HTMLSpanElement>}
+              className="d-inline-block"
+            >
+              <FontAwesomeIcon icon={faCopy} />
+            </span>
           </CSSTransition>
         </TooltipWrapper>
       </span>

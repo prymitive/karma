@@ -32,11 +32,11 @@ const NavBar: FC<{
 
   const context = React.useContext(ThemeContext);
 
-  const ref = useRef<HTMLElement>();
+  const ref = useRef<HTMLElement>(null);
   const { observe, height } = useDimensions({});
 
   const updateBodyPaddingTop = useCallback(
-    (idle) => {
+    (idle: boolean) => {
       const paddingTop = idle ? 0 : height + 8;
       document.body.style.paddingTop = `${paddingTop}px`;
       setContainerClass(idle ? "invisible" : "visible");
@@ -96,6 +96,8 @@ const NavBar: FC<{
     [], // eslint-disable-line react-hooks/exhaustive-deps
   );
 
+  const navRef = useRef<HTMLElement>(null);
+
   return (
     <div className={`container p-0 m-0 mw-100 ${containerClass}`}>
       <CSSTransition
@@ -106,11 +108,13 @@ const NavBar: FC<{
         onExited={() => {}}
         enter
         exit
+        nodeRef={navRef}
       >
         <nav
           ref={(el) => {
             observe(el as HTMLElement);
             ref.current = el as HTMLElement;
+            (navRef as React.MutableRefObject<HTMLElement | null>).current = el;
           }}
           className={`navbar navbar-expand navbar-dark p-1 bg-primary-transparent d-flex ${
             fixedTop ? "fixed-top" : "w-100"

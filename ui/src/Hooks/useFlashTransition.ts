@@ -1,10 +1,10 @@
-import { useState, useEffect, useRef, ReactNode } from "react";
+import { useState, useEffect, useRef, ReactNode, RefObject } from "react";
 
-import type { TransitionProps } from "react-transition-group/Transition";
+import type { CSSTransitionProps } from "react-transition-group/CSSTransition";
 
 import { useInView } from "react-intersection-observer";
 
-const defaultProps: TransitionProps = {
+const defaultProps: CSSTransitionProps = {
   in: false,
   classNames: "components-animation-flash",
   timeout: 800,
@@ -15,11 +15,16 @@ const defaultProps: TransitionProps = {
 
 const useFlashTransition = (
   flashOn: ReactNode,
-): { ref: (node?: Element | null) => void; props: TransitionProps } => {
+): {
+  ref: (node?: Element | null) => void;
+  props: CSSTransitionProps;
+  nodeRef: RefObject<HTMLElement | null>;
+} => {
   const mountRef = useRef<boolean>(false);
+  const nodeRef = useRef<HTMLElement | null>(null);
   const [ref, inView] = useInView();
   const [isPending, setIsPending] = useState<boolean>(false);
-  const [props, setProps] = useState<TransitionProps>(defaultProps);
+  const [props, setProps] = useState<CSSTransitionProps>(defaultProps);
 
   useEffect(() => {
     if (mountRef.current) {
@@ -35,10 +40,12 @@ const useFlashTransition = (
       in: isPending && inView,
       enter: isPending && inView,
       onEntered: () => setIsPending(false),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      nodeRef: nodeRef as any,
     });
   }, [inView, isPending]);
 
-  return { ref, props };
+  return { ref, props, nodeRef };
 };
 
 export { useFlashTransition, defaultProps };

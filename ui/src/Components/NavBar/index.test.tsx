@@ -1,4 +1,4 @@
-import { act } from "react-dom/test-utils";
+import { act } from "react";
 
 import { render, screen } from "@testing-library/react";
 
@@ -42,6 +42,11 @@ beforeEach(() => {
   global.ResizeObserverEntry = jest.fn();
 
   alertStore = new AlertStore([]);
+  // Mock fetchWithThrottle to prevent async state updates outside of act()
+  jest.spyOn(alertStore, "fetchWithThrottle").mockImplementation(() => {
+    alertStore.status.setIdle();
+    return Promise.resolve();
+  });
   settingsStore = new Settings(null);
   silenceFormStore = new SilenceFormStore();
   settingsStore.filterBarConfig.setAutohide(true);
@@ -113,6 +118,21 @@ describe("<NavBar />", () => {
     expect(alertStore.ui.isIdle).toBe(true);
   });
 
+  it("sets isIdle to false when user becomes active", () => {
+    // Verifies that onActive callback from react-idle-timer sets isIdle to false
+    renderNavbar();
+
+    act(() => {
+      idleTimerCallbacks.onIdle?.();
+    });
+    expect(alertStore.ui.isIdle).toBe(true);
+
+    act(() => {
+      idleTimerCallbacks.onActive?.();
+    });
+    expect(alertStore.ui.isIdle).toBe(false);
+  });
+
   it("navbar becomes invisible when idle", () => {
     // Verifies that navbar container class changes to invisible when idle
     const { container } = renderNavbar();
@@ -122,10 +142,14 @@ describe("<NavBar />", () => {
 
     act(() => {
       idleTimerCallbacks.onIdle?.();
-      jest.advanceTimersByTime(1000);
     });
 
     expect(alertStore.ui.isIdle).toBe(true);
+
+    act(() => {
+      jest.advanceTimersByTime(600);
+    });
+
     expect(container.querySelector(".invisible")).toBeInTheDocument();
   });
 
@@ -133,7 +157,9 @@ describe("<NavBar />", () => {
     // Verifies that idle timer is paused when alerts are paused
     renderNavbar();
 
-    alertStore.status.pause();
+    act(() => {
+      alertStore.status.pause();
+    });
 
     act(() => {
       jest.advanceTimersByTime(1000 * 60 * 3 + 1000);

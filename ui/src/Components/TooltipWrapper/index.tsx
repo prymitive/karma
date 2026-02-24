@@ -1,4 +1,4 @@
-import { useState, useEffect, ReactNode, FC } from "react";
+import { useState, useEffect, ReactNode, FC, useRef } from "react";
 import { createPortal } from "react-dom";
 
 import { CSSTransition } from "react-transition-group";
@@ -6,6 +6,43 @@ import { CSSTransition } from "react-transition-group";
 import { useFloating, shift, flip } from "@floating-ui/react-dom";
 
 import { useSupportsTouch } from "Hooks/useSupportsTouch";
+
+const TooltipContent: FC<{
+  title: ReactNode;
+  setFloating: (node: HTMLElement | null) => void;
+  strategy: "absolute" | "fixed";
+  x: number | null;
+  y: number | null;
+}> = ({ title, setFloating, strategy, x, y }) => {
+  const nodeRef = useRef<HTMLDivElement>(null);
+  return (
+    <CSSTransition
+      classNames="components-animation-tooltip"
+      timeout={200}
+      appear
+      enter
+      in
+      unmountOnExit
+      nodeRef={nodeRef}
+    >
+      <div
+        className="tooltip tooltip-inner"
+        ref={(el) => {
+          setFloating(el);
+          (nodeRef as React.MutableRefObject<HTMLDivElement | null>).current =
+            el;
+        }}
+        style={{
+          position: strategy,
+          top: y ?? "",
+          left: x ?? "",
+        }}
+      >
+        {title}
+      </div>
+    </CSSTransition>
+  );
+};
 
 const TooltipWrapper: FC<{
   title: ReactNode;
@@ -65,26 +102,13 @@ const TooltipWrapper: FC<{
       </div>
       {isVisible
         ? createPortal(
-            <CSSTransition
-              classNames="components-animation-tooltip"
-              timeout={200}
-              appear
-              enter
-              in
-              unmountOnExit
-            >
-              <div
-                className="tooltip tooltip-inner"
-                ref={refs.setFloating}
-                style={{
-                  position: strategy,
-                  top: y ?? "",
-                  left: x ?? "",
-                }}
-              >
-                {title}
-              </div>
-            </CSSTransition>,
+            <TooltipContent
+              title={title}
+              setFloating={refs.setFloating}
+              strategy={strategy}
+              x={x}
+              y={y}
+            />,
             document.body,
           )
         : null}

@@ -38,6 +38,18 @@ FetchRetryConfig.maxTimeout = 10;
 // floating-ui uses useLayoutEffect
 React.useLayoutEffect = React.useEffect;
 
+// Fail tests on console.error to catch React warnings
+const originalConsoleError = console.error;
+console.error = (...args: unknown[]) => {
+  const message = String(args[0]);
+  // Allow React.lazy suspended resource warnings (React 19 testing limitation)
+  if (message.includes("suspended resource finished loading")) {
+    return;
+  }
+  originalConsoleError(...args);
+  throw new Error(`console.error was called: ${args[0]}`);
+};
+
 beforeEach(() => {
   useFetchGetMock.fetch.reset();
   (useFetchGet as jest.MockedFunction<typeof useFetchGetMock>).mockRestore();

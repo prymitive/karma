@@ -32,11 +32,11 @@ build: dist/index.html
 
 .PHONY: test-js
 test-js: $(NODE_PATH)/vite $(NODE_PATH)/jest
-	CI=true NODE_OPTIONS="--unhandled-rejections=strict" npm test -- --coverage
+	CI=true npm test -- --coverage
 
 .PHONY: update-snapshots
 update-snapshots: $(NODE_PATH)/vite $(NODE_PATH)/jest
-	CI=true NODE_OPTIONS="--unhandled-rejections=strict" npm test -- -u
+	CI=true npm test -- -u
 
 .PHONY: lint-js
 lint-js: $(NODE_PATH)/eslint
