@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.125
+
+### Changed
+
+- No changes in this release, only fixes for the release process.
+
 ## v0.124
 
 ### Changed
