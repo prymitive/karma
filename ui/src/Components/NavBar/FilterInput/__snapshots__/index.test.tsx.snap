@@ -35,21 +35,21 @@ exports[`<FilterInput /> matches snapshot with no filters 1`] = `
           <input
             aria-activedescendant=""
             aria-autocomplete="list"
-            aria-controls="downshift-«r0»-menu"
+            aria-controls="downshift-_r_0_-menu"
             aria-expanded="false"
-            aria-labelledby="downshift-«r0»-label"
+            aria-labelledby="downshift-_r_0_-label"
             autocomplete="off"
             class="components-filterinput-wrapper text-white mw-100"
-            id="downshift-«r0»-input"
+            id="downshift-_r_0_-input"
             role="combobox"
             size="1"
             value=""
           />
         </div>
         <span
-          aria-labelledby="downshift-«r0»-label"
+          aria-labelledby="downshift-_r_0_-label"
           class="dropdown"
-          id="downshift-«r0»-menu"
+          id="downshift-_r_0_-menu"
           role="listbox"
         />
       </div>
@@ -183,21 +183,21 @@ exports[`<FilterInput /> matches snapshot with some filters 1`] = `
           <input
             aria-activedescendant=""
             aria-autocomplete="list"
-            aria-controls="downshift-«r1»-menu"
+            aria-controls="downshift-_r_1_-menu"
             aria-expanded="false"
-            aria-labelledby="downshift-«r1»-label"
+            aria-labelledby="downshift-_r_1_-label"
             autocomplete="off"
             class="components-filterinput-wrapper text-white mw-100"
-            id="downshift-«r1»-input"
+            id="downshift-_r_1_-input"
             role="combobox"
             size="1"
             value=""
           />
         </div>
         <span
-          aria-labelledby="downshift-«r1»-label"
+          aria-labelledby="downshift-_r_1_-label"
           class="dropdown"
-          id="downshift-«r1»-menu"
+          id="downshift-_r_1_-menu"
           role="listbox"
         />
       </div>
