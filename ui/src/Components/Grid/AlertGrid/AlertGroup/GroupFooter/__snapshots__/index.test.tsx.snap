@@ -133,7 +133,7 @@ exports[`<GroupFooter /> matches snapshot 1`] = `
     >
       <svg
         aria-hidden="true"
-        class="svg-inline--fa fa-up-right-from-square "
+        class="svg-inline--fa fa-up-right-from-square"
         data-icon="up-right-from-square"
         data-prefix="fas"
         role="img"
@@ -283,7 +283,7 @@ exports[`<GroupFooter /> matches snapshot when silence is rendered 1`] = `
     >
       <svg
         aria-hidden="true"
-        class="svg-inline--fa fa-up-right-from-square "
+        class="svg-inline--fa fa-up-right-from-square"
         data-icon="up-right-from-square"
         data-prefix="fas"
         role="img"
@@ -363,7 +363,7 @@ exports[`<GroupFooter /> matches snapshot when silence is rendered 1`] = `
                 >
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-chevron-down fa-rotate-180 m-auto text-muted cursor-pointer"
+                    class="svg-inline--fa fa-chevron-down m-auto text-muted cursor-pointer fa-rotate-180"
                     data-icon="chevron-down"
                     data-prefix="fas"
                     role="img"

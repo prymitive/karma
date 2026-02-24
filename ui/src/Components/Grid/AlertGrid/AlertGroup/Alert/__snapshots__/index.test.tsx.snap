@@ -155,7 +155,7 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
     >
       <svg
         aria-hidden="true"
-        class="svg-inline--fa fa-up-right-from-square "
+        class="svg-inline--fa fa-up-right-from-square"
         data-icon="up-right-from-square"
         data-prefix="fas"
         role="img"
@@ -306,7 +306,7 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
     >
       <svg
         aria-hidden="true"
-        class="svg-inline--fa fa-up-right-from-square "
+        class="svg-inline--fa fa-up-right-from-square"
         data-icon="up-right-from-square"
         data-prefix="fas"
         role="img"

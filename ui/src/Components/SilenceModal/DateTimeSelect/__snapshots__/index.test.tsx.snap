@@ -80,7 +80,7 @@ exports[`<DateTimeSelect /> 'Duration' tab matches snapshot 1`] = `
                 <span>
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-angle-up fa-2x text-muted cursor-pointer"
+                    class="svg-inline--fa fa-angle-up text-muted cursor-pointer fa-2x"
                     data-icon="angle-up"
                     data-prefix="fas"
                     role="img"
@@ -122,7 +122,7 @@ exports[`<DateTimeSelect /> 'Duration' tab matches snapshot 1`] = `
                 <span>
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-angle-down fa-2x text-muted cursor-pointer"
+                    class="svg-inline--fa fa-angle-down text-muted cursor-pointer fa-2x"
                     data-icon="angle-down"
                     data-prefix="fas"
                     role="img"
@@ -156,7 +156,7 @@ exports[`<DateTimeSelect /> 'Duration' tab matches snapshot 1`] = `
                 <span>
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-angle-up fa-2x text-muted cursor-pointer"
+                    class="svg-inline--fa fa-angle-up text-muted cursor-pointer fa-2x"
                     data-icon="angle-up"
                     data-prefix="fas"
                     role="img"
@@ -198,7 +198,7 @@ exports[`<DateTimeSelect /> 'Duration' tab matches snapshot 1`] = `
                 <span>
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-angle-down fa-2x text-muted cursor-pointer"
+                    class="svg-inline--fa fa-angle-down text-muted cursor-pointer fa-2x"
                     data-icon="angle-down"
                     data-prefix="fas"
                     role="img"
@@ -232,7 +232,7 @@ exports[`<DateTimeSelect /> 'Duration' tab matches snapshot 1`] = `
                 <span>
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-angle-up fa-2x text-muted cursor-pointer"
+                    class="svg-inline--fa fa-angle-up text-muted cursor-pointer fa-2x"
                     data-icon="angle-up"
                     data-prefix="fas"
                     role="img"
@@ -274,7 +274,7 @@ exports[`<DateTimeSelect /> 'Duration' tab matches snapshot 1`] = `
                 <span>
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-angle-down fa-2x text-muted cursor-pointer"
+                    class="svg-inline--fa fa-angle-down text-muted cursor-pointer fa-2x"
                     data-icon="angle-down"
                     data-prefix="fas"
                     role="img"
@@ -983,7 +983,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-calendar-day fa-fw me-1"
+                  class="svg-inline--fa fa-calendar-day me-1 fa-fw"
                   data-icon="calendar-day"
                   data-prefix="fas"
                   role="img"
@@ -1014,7 +1014,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <span>
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-angle-up fa-2x text-muted cursor-pointer"
+                    class="svg-inline--fa fa-angle-up text-muted cursor-pointer fa-2x"
                     data-icon="angle-up"
                     data-prefix="fas"
                     role="img"
@@ -1034,7 +1034,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <span>
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-angle-up fa-2x text-muted cursor-pointer"
+                    class="svg-inline--fa fa-angle-up text-muted cursor-pointer fa-2x"
                     data-icon="angle-up"
                     data-prefix="fas"
                     role="img"
@@ -1078,7 +1078,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <span>
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-angle-down fa-2x text-muted cursor-pointer"
+                    class="svg-inline--fa fa-angle-down text-muted cursor-pointer fa-2x"
                     data-icon="angle-down"
                     data-prefix="fas"
                     role="img"
@@ -1098,7 +1098,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <span>
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-angle-down fa-2x text-muted cursor-pointer"
+                    class="svg-inline--fa fa-angle-down text-muted cursor-pointer fa-2x"
                     data-icon="angle-down"
                     data-prefix="fas"
                     role="img"
@@ -1876,7 +1876,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-calendar-day fa-fw me-1"
+                  class="svg-inline--fa fa-calendar-day me-1 fa-fw"
                   data-icon="calendar-day"
                   data-prefix="fas"
                   role="img"
@@ -1907,7 +1907,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <span>
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-angle-up fa-2x text-muted cursor-pointer"
+                    class="svg-inline--fa fa-angle-up text-muted cursor-pointer fa-2x"
                     data-icon="angle-up"
                     data-prefix="fas"
                     role="img"
@@ -1927,7 +1927,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <span>
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-angle-up fa-2x text-muted cursor-pointer"
+                    class="svg-inline--fa fa-angle-up text-muted cursor-pointer fa-2x"
                     data-icon="angle-up"
                     data-prefix="fas"
                     role="img"
@@ -1971,7 +1971,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <span>
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-angle-down fa-2x text-muted cursor-pointer"
+                    class="svg-inline--fa fa-angle-down text-muted cursor-pointer fa-2x"
                     data-icon="angle-down"
                     data-prefix="fas"
                     role="img"
@@ -1991,7 +1991,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <span>
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-angle-down fa-2x text-muted cursor-pointer"
+                    class="svg-inline--fa fa-angle-down text-muted cursor-pointer fa-2x"
                     data-icon="angle-down"
                     data-prefix="fas"
                     role="img"

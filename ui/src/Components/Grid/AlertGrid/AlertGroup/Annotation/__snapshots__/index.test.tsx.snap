@@ -10,7 +10,7 @@ exports[`<RenderLinkAnnotation /> matches snapshot 1`] = `
   >
     <svg
       aria-hidden="true"
-      class="svg-inline--fa fa-up-right-from-square "
+      class="svg-inline--fa fa-up-right-from-square"
       data-icon="up-right-from-square"
       data-prefix="fas"
       role="img"

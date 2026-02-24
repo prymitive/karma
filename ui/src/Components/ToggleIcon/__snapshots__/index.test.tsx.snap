@@ -4,7 +4,7 @@ exports[`<ToggleIcon /> matches snapshot when closed 1`] = `
 <DocumentFragment>
   <svg
     aria-hidden="true"
-    class="svg-inline--fa fa-chevron-down fa-rotate-180 "
+    class="svg-inline--fa fa-chevron-down fa-rotate-180"
     data-icon="chevron-down"
     data-prefix="fas"
     role="img"
@@ -23,7 +23,7 @@ exports[`<ToggleIcon /> matches snapshot when open 1`] = `
 <DocumentFragment>
   <svg
     aria-hidden="true"
-    class="svg-inline--fa fa-chevron-down "
+    class="svg-inline--fa fa-chevron-down"
     data-icon="chevron-down"
     data-prefix="fas"
     role="img"

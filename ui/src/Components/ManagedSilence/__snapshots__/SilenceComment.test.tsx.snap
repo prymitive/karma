@@ -69,7 +69,7 @@ exports[`<SilenceComment /> Matches snapshot when collapsed 1`] = `
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-chevron-down fa-rotate-180 m-auto text-muted cursor-pointer"
+            class="svg-inline--fa fa-chevron-down m-auto text-muted cursor-pointer fa-rotate-180"
             data-icon="chevron-down"
             data-prefix="fas"
             role="img"
@@ -162,7 +162,7 @@ exports[`<SilenceComment /> Matches snapshot when collapsed and multiple cluster
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-chevron-down fa-rotate-180 m-auto text-muted cursor-pointer"
+            class="svg-inline--fa fa-chevron-down m-auto text-muted cursor-pointer fa-rotate-180"
             data-icon="chevron-down"
             data-prefix="fas"
             role="img"

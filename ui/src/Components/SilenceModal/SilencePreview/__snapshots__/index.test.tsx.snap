@@ -30,7 +30,7 @@ exports[`<SilencePreview /> matches snapshot 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="svg-inline--fa fa-angle-left "
+                class="svg-inline--fa fa-angle-left"
                 data-icon="angle-left"
                 data-prefix="fas"
                 role="img"
@@ -78,7 +78,7 @@ exports[`<SilencePreview /> matches snapshot 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="svg-inline--fa fa-angle-right "
+                class="svg-inline--fa fa-angle-right"
                 data-icon="angle-right"
                 data-prefix="fas"
                 role="img"

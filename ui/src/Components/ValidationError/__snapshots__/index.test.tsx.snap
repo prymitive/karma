@@ -7,7 +7,7 @@ exports[`<ValidationError /> matches snapshot 1`] = `
   >
     <svg
       aria-hidden="true"
-      class="svg-inline--fa fa-circle-exclamation "
+      class="svg-inline--fa fa-circle-exclamation"
       data-icon="circle-exclamation"
       data-prefix="fas"
       role="img"

@@ -30,7 +30,7 @@ exports[`<UpgradeNeeded /> matches snapshot 1`] = `
       >
         <svg
           aria-hidden="true"
-          class="svg-inline--fa fa-spinner fa-spin me-2"
+          class="svg-inline--fa fa-spinner me-2 fa-spin"
           data-icon="spinner"
           data-prefix="fas"
           role="img"
