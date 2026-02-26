@@ -1,4 +1,4 @@
-FROM node:25.6.1-alpine AS nodejs-builder
+FROM node:25.7.0-alpine AS nodejs-builder
 RUN mkdir -p /src/ui
 COPY ui/package.json ui/package-lock.json /src/ui/
 RUN cd /src/ui && npm ci && touch node_modules/.install
