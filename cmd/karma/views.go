@@ -469,7 +469,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 	}
 
 	sortedGrids := sortGrids(request, gridLabel, grids, request.GridSortReverse)
-	for i := 0; i < len(sortedGrids); i++ {
+	for i := range sortedGrids {
 		sortedGrids[i].TotalGroups = len(sortedGrids[i].AlertGroups)
 
 		limit, found := request.GridLimits[sortedGrids[i].LabelValue]
@@ -477,10 +477,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 			limit = config.Config.Grid.GroupLimit
 		}
 
-		l := sortedGrids[i].TotalGroups
-		if limit < l {
-			l = limit
-		}
+		l := min(limit, sortedGrids[i].TotalGroups)
 		if l < 1 {
 			l = 1
 		}

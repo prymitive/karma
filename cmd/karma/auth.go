@@ -27,7 +27,7 @@ func groupsFromHeaders(r *http.Request, groupName, groupValueRegex, groupValueSe
 	groupRegex := regex.MustCompileAnchored(groupValueRegex)
 	rawGroups := groupRegex.FindAllStringSubmatch(r.Header.Get(groupName), 1)
 	if len(rawGroups) > 0 && len(rawGroups[0]) > 1 {
-		for _, group := range strings.Split(rawGroups[0][1], groupValueSeparator) {
+		for group := range strings.SplitSeq(rawGroups[0][1], groupValueSeparator) {
 			if v := strings.TrimSpace(group); v != "" {
 				groups = append(groups, v)
 			}

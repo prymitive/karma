@@ -4,6 +4,7 @@ import (
 	"crypto/sha1"
 	"encoding/hex"
 	"regexp"
+	"slices"
 )
 
 // StringSliceToSHA1 returns a SHA1 hash computed from a slice of strings
@@ -23,26 +24,14 @@ func StringSliceDiff(slice1, slice2 []string) ([]string, []string) {
 	var found bool
 
 	for _, s1 := range slice1 {
-		found = false
-		for _, s2 := range slice2 {
-			if s1 == s2 {
-				found = true
-				break
-			}
-		}
+		found = slices.Contains(slice2, s1)
 		if !found {
 			missing = append(missing, s1)
 		}
 	}
 
 	for _, s2 := range slice2 {
-		found = false
-		for _, s1 := range slice1 {
-			if s2 == s1 {
-				found = true
-				break
-			}
-		}
+		found = slices.Contains(slice1, s2)
 		if !found {
 			extra = append(extra, s2)
 		}

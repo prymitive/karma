@@ -81,7 +81,7 @@ func alertHistory(historyPoller *historyPoller, w http.ResponseWriter, r *http.R
 		Samples: make([]OffsetSample, 24),
 	}
 	ts := time.Now().Add(time.Hour)
-	for i := 0; i < 24; i++ {
+	for i := range 24 {
 		ts = ts.Add(time.Hour * -1)
 		resp.Samples[i].Timestamp = ts
 	}
@@ -148,11 +148,9 @@ func (hp *historyPoller) run(workers int) {
 	hp.isRunning.Store(true)
 	wg := sync.WaitGroup{}
 	for w := 1; w <= workers; w++ {
-		wg.Add(1)
-		go func() {
-			defer wg.Done()
+		wg.Go(func() {
 			hp.startWorker(w)
-		}()
+		})
 	}
 	wg.Wait()
 }

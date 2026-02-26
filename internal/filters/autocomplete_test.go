@@ -149,7 +149,7 @@ func TestBuildAutocomplete(t *testing.T) {
 func BenchmarkAutocomplete(b *testing.B) {
 	const n = 10000
 	alerts := make([]models.Alert, 0, n)
-	for i := 0; i < n; i++ {
+	for i := range n {
 		alerts = append(alerts, models.Alert{
 			State: models.AlertStateActive,
 			Labels: models.Labels{

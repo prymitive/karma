@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"maps"
 	"math"
 	"slices"
 	"sort"
@@ -103,12 +104,8 @@ func getUpstreams() models.AlertmanagerAPISummary {
 			ClusterMembers:  members,
 		}
 		if !upstream.ProxyRequests {
-			for k, v := range uri.HeadersForBasicAuth(upstream.URI) {
-				u.Headers[k] = v
-			}
-			for k, v := range upstream.HTTPHeaders {
-				u.Headers[k] = v
-			}
+			maps.Copy(u.Headers, uri.HeadersForBasicAuth(upstream.URI))
+			maps.Copy(u.Headers, upstream.HTTPHeaders)
 		}
 		summary.Instances = append(summary.Instances, u)
 

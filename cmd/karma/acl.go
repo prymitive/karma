@@ -121,11 +121,8 @@ func (acl *silenceACL) isAllowed(amName string, silence *models.Silence, groups 
 	}
 
 	amMatch := len(acl.Scope.Alertmanagers) == 0
-	for _, aclAM := range acl.Scope.Alertmanagers {
-		if amName == aclAM {
-			amMatch = true
-			break
-		}
+	if slices.Contains(acl.Scope.Alertmanagers, amName) {
+		amMatch = true
 	}
 
 	filterMatch := true
@@ -144,11 +141,8 @@ func (acl *silenceACL) isAllowed(amName string, silence *models.Silence, groups 
 		case aclActionRequireMatcher:
 			for _, aclM := range acl.Matchers.Required {
 				var wasFound bool
-				for _, m := range silence.Matchers {
-					if aclM.isMatch(m) {
-						wasFound = true
-						break
-					}
+				if slices.ContainsFunc(silence.Matchers, aclM.isMatch) {
+					wasFound = true
 				}
 				if !wasFound {
 					return false, fmt.Errorf("silence blocked by ACL rule: %s", acl.Reason)

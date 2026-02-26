@@ -2,6 +2,7 @@ package alertmanager
 
 import (
 	"fmt"
+	"maps"
 	"net/http"
 	"net/url"
 	"sort"
@@ -405,9 +406,7 @@ func (am *Alertmanager) Silences() map[string]models.Silence {
 	defer am.lock.RUnlock()
 
 	silences := make(map[string]models.Silence, len(am.silences))
-	for id, silence := range am.silences {
-		silences[id] = silence
-	}
+	maps.Copy(silences, am.silences)
 	return silences
 }
 
@@ -447,9 +446,7 @@ func (am *Alertmanager) Colors() models.LabelsColorMap {
 	colors := make(models.LabelsColorMap, len(am.colors))
 	for k, v := range am.colors {
 		colors[k] = make(map[string]models.LabelColors, len(v))
-		for nk, nv := range v {
-			colors[k][nk] = nv
-		}
+		maps.Copy(colors[k], v)
 	}
 	return colors
 }
