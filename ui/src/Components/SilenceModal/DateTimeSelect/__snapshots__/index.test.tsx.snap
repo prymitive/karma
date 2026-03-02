@@ -371,6 +371,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
         <div
           class="rdp-root components-date-range"
           data-mode="range"
+          lang="en-US"
         >
           <div
             class="rdp-months"
@@ -1192,6 +1193,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
         <div
           class="rdp-root components-date-range"
           data-mode="range"
+          lang="en-US"
         >
           <div
             class="rdp-months"
