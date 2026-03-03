@@ -116,6 +116,37 @@ jobs:
           directory: ./ui/coverage
           token: c77c73a6-81e1-4fa1-8372-9170d7953d41
 
+  test-e2e:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v6
+
+      - name: Set up Node JS
+        uses: actions/setup-node@v6
+        with:
+          node-version: 25.7.0
+          cache: "npm"
+          cache-dependency-path: "ui/package-lock.json"
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+        working-directory: ui
+
+      - name: Visual tests
+        run: make -C ui e2e
+        env:
+          NODE_ENV: test
+
+      - name: Upload visual diff artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-regression-diffs
+          path: ui/src/e2e/results/
+          retention-days: 30
+
   lint-js:
     name: Lint JS code
     runs-on: ubuntu-latest

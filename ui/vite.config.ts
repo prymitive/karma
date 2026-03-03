@@ -10,6 +10,20 @@ export default defineConfig({
     open: true,
     port: 3000,
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        silenceDeprecations: [
+          "abs-percent",
+          "import",
+          "if-function",
+          "duplicate-var-flags",
+          "global-builtin",
+          "color-functions",
+        ],
+      },
+    },
+  },
   build: {
     sourcemap: true,
   },

@@ -2,6 +2,7 @@ const path = require("path");
 
 const config = {
   root: true,
+  ignorePatterns: ["playwright.config.ts", "src/e2e/"],
   parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaVersion: 2022,

@@ -49,6 +49,7 @@
   },
   "devDependencies": {
     "@fetch-mock/jest": "0.2.20",
+    "@playwright/test": "1.58.2",
     "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "16.3.2",
     "@testing-library/user-event": "14.6.1",
@@ -98,6 +99,7 @@
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{js,ts,tsx}",
+      "!src/e2e/**",
       "!src/**/*.stories.{js,ts,tsx}",
       "!src/__fixtures__/Stories.{js,ts,tsx}",
       "!src/react-app-env.d.ts",
@@ -112,6 +114,9 @@
     "moduleNameMapper": {
       "\\.(css|less|scss)$": "identity-obj-proxy"
     },
+    "testPathIgnorePatterns": [
+      "<rootDir>/src/e2e/"
+    ],
     "modulePaths": [
       "<rootDir>/src"
     ],
