@@ -18,7 +18,7 @@ import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 
-import { MockGrid } from "__fixtures__/Stories";
+import { MockGrid, MockGroup } from "__fixtures__/Stories";
 import { MockSilence } from "__fixtures__/Alerts";
 
 import { FatalError } from "Components/Grid/FatalError";
@@ -50,7 +50,20 @@ const jsonResponse = (data: unknown): Response =>
 const mockSilenceEntry = (index: number) => {
   const s = MockSilence();
   s.startsAt = "2018-08-14T16:00:00Z";
-  s.endsAt = `2018-08-14T18:${index < 10 ? "0" + index : index}:00Z`;
+  // vary endsAt to cover all progress bar colors on page 1 (indices 1-6):
+  //  1: expired (endsAt before 17:00) -> bg-danger, no progress bar
+  //  2: >90% elapsed (endsAt 17:03)   -> bg-danger progress bar
+  //  3: >75% elapsed (endsAt 17:15)   -> bg-warning progress bar
+  //  4+: <=75% elapsed (endsAt 18:xx) -> bg-success progress bar
+  if (index === 1) {
+    s.endsAt = "2018-08-14T16:50:00Z";
+  } else if (index === 2) {
+    s.endsAt = "2018-08-14T17:03:00Z";
+  } else if (index === 3) {
+    s.endsAt = "2018-08-14T17:15:00Z";
+  } else {
+    s.endsAt = `2018-08-14T18:${index < 10 ? "0" + index : index}:00Z`;
+  }
   s.matchers.push({
     name: "thisIsAveryLongNameToTestMatcherWrapping",
     value: "valueIsAlsoAbitLong",
@@ -236,11 +249,50 @@ const makeReadOnlyAlertStore = (): AlertStore => {
   return alertStore;
 };
 
-const gridStory = (): React.ReactNode => {
+const makeGridAlertStore = (): AlertStore => {
   const alertStore = new AlertStore([]);
+  MockGrid(alertStore);
+
+  const suppressedGroup = MockGroup("suppressed-only", 3, 0, 3);
+  suppressedGroup.id = "id-suppressed";
+  suppressedGroup.stateCount = { active: 0, suppressed: 3, unprocessed: 0 };
+  suppressedGroup.totalAlerts = 3;
+
+  const unprocessedGroup = MockGroup("unprocessed-only", 3, 0, 0);
+  unprocessedGroup.id = "id-unprocessed";
+  unprocessedGroup.stateCount = { active: 0, suppressed: 0, unprocessed: 3 };
+  unprocessedGroup.totalAlerts = 3;
+
+  const grids = alertStore.data.grids;
+  grids[0].alertGroups = [
+    suppressedGroup,
+    unprocessedGroup,
+    ...grids[0].alertGroups,
+  ];
+  grids[0].totalGroups = grids[0].alertGroups.length;
+  alertStore.data.setGrids(grids);
+
+  return alertStore;
+};
+
+const gridStory = (): React.ReactNode => {
+  const alertStore = makeGridAlertStore();
   const settingsStore = new Settings(null);
   const silenceFormStore = new SilenceFormStore();
-  MockGrid(alertStore);
+  return (
+    <Grid
+      alertStore={alertStore}
+      settingsStore={settingsStore}
+      silenceFormStore={silenceFormStore}
+    />
+  );
+};
+
+const gridColorTitleBarStory = (): React.ReactNode => {
+  const alertStore = makeGridAlertStore();
+  const settingsStore = new Settings(null);
+  const silenceFormStore = new SilenceFormStore();
+  settingsStore.alertGroupConfig.setColorTitleBar(true);
   return (
     <Grid
       alertStore={alertStore}
@@ -273,6 +325,41 @@ const navBarStory = (): React.ReactNode => {
     clusters: { dev: ["dev"] },
   });
   alertStore.info.setTotalAlerts(197);
+  settingsStore.filterBarConfig.setAutohide(false);
+  return (
+    <NavBar
+      alertStore={alertStore}
+      settingsStore={settingsStore}
+      silenceFormStore={silenceFormStore}
+      fixedTop={false}
+    />
+  );
+};
+
+const navBarPausedStory = (): React.ReactNode => {
+  const alertStore = new AlertStore([]);
+  const settingsStore = new Settings(null);
+  const silenceFormStore = new SilenceFormStore();
+  alertStore.data.setUpstreams({
+    counters: { total: 1, healthy: 1, failed: 0 },
+    instances: [
+      {
+        name: "dev",
+        cluster: "dev",
+        clusterMembers: ["dev"],
+        uri: "https://am.example.com",
+        publicURI: "https://am.example.com",
+        error: "",
+        readonly: false,
+        headers: {},
+        corsCredentials: "include",
+        version: "",
+      },
+    ],
+    clusters: { dev: ["dev"] },
+  });
+  alertStore.info.setTotalAlerts(197);
+  alertStore.status.pause();
   settingsStore.filterBarConfig.setAutohide(false);
   return (
     <NavBar
@@ -522,7 +609,9 @@ const toastStory = (): React.ReactNode => {
 
 const stories: StoryMap = {
   Grid: gridStory,
+  GridColorTitleBar: gridColorTitleBarStory,
   NavBar: navBarStory,
+  NavBarPaused: navBarPausedStory,
   FatalError: fatalErrorStory,
   UpgradeNeeded: upgradeNeededStory,
   ReloadNeeded: reloadNeededStory,
