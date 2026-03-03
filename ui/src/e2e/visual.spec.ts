@@ -2,7 +2,9 @@ import { test, expect } from "@playwright/test";
 
 const stories: { name: string; waitFor: string }[] = [
   { name: "Grid", waitFor: "#root > div" },
+  { name: "GridColorTitleBar", waitFor: "#root > div" },
   { name: "NavBar", waitFor: "#root > div" },
+  { name: "NavBarPaused", waitFor: "#root > div" },
   { name: "FatalError", waitFor: "#root > div" },
   { name: "UpgradeNeeded", waitFor: "#root > div" },
   { name: "ReloadNeeded", waitFor: "#root > div" },
