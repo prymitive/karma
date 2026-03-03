@@ -34,9 +34,14 @@ build: dist/index.html
 test-js: $(NODE_PATH)/vite $(NODE_PATH)/jest
 	CI=true npm test -- --coverage
 
+.PHONY: e2e
+e2e: $(NODE_PATH)/vite $(NODE_PATH)/playwright
+	npx playwright test
+
 .PHONY: update-snapshots
 update-snapshots: $(NODE_PATH)/vite $(NODE_PATH)/jest
 	CI=true npm test -- -u
+	npx playwright test --update-snapshots
 
 .PHONY: lint-js
 lint-js: $(NODE_PATH)/eslint

@@ -18,4 +18,5 @@ ignores:
   - fetch-mock
   - identity-obj-proxy
   - jest
+  - "@playwright/test"
   - terser
