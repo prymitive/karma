@@ -29,6 +29,7 @@ $navbar-dark-active-color: $gray-200;
 
 // fix active tab color, for some reason it ends up with $primary as bg color
 $nav-tabs-link-active-bg: #fff;
+$nav-tabs-link-active-color: $gray-700;
 
 // pagination tweaks
 $pagination-color: $white;
@@ -59,6 +60,11 @@ $card-cap-bg: inherit;
 
 $kbd-color: $white;
 $kbd-bg: $dark;
+
+// Bootstrap 5.3 changed text-muted from $gray-600 to var(--bs-secondary-color)
+// which defaults to rgba($body-color, .75) - nearly black in light theme.
+// Override to match the old text-muted color.
+$body-secondary-color: $gray-600;
 
 @import "./RebootlessBootstrap";
 @import "bootswatch/dist/flatly/bootswatch";

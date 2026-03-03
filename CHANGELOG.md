@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.126
+
+### Changed
+
+- Upgraded [Bootstrap](https://getbootstrap.com/) to v5.3.8.
+
 ## v0.125
 
 ### Changed
