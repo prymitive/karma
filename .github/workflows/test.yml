@@ -131,7 +131,7 @@ jobs:
           cache-dependency-path: "ui/package-lock.json"
 
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install --with-deps
         working-directory: ui
 
       - name: Visual tests
@@ -288,6 +288,7 @@ jobs:
     needs:
       - test-go
       - test-js
+      - test-e2e
       - lint-go
       - lint-js
       - format-go

@@ -3,7 +3,7 @@ import { defineConfig, devices } from "@playwright/test";
 export default defineConfig({
   testDir: "./src/e2e",
   outputDir: "./src/e2e/results",
-  snapshotPathTemplate: "{testDir}/snapshots/{arg}{ext}",
+  snapshotPathTemplate: "{testDir}/snapshots/{projectName}/{arg}{ext}",
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: 0,
@@ -20,6 +20,20 @@ export default defineConfig({
       name: "chromium",
       use: {
         ...devices["Desktop Chrome"],
+        viewport: { width: 1280, height: 720 },
+      },
+    },
+    {
+      name: "firefox",
+      use: {
+        ...devices["Desktop Firefox"],
+        viewport: { width: 1280, height: 720 },
+      },
+    },
+    {
+      name: "webkit",
+      use: {
+        ...devices["Desktop Safari"],
         viewport: { width: 1280, height: 720 },
       },
     },
