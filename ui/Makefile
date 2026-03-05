@@ -36,6 +36,7 @@ test-js: $(NODE_PATH)/vite $(NODE_PATH)/jest
 
 .PHONY: e2e
 e2e: $(NODE_PATH)/vite $(NODE_PATH)/playwright
+	npx playwright install
 	npx playwright test
 
 .PHONY: update-snapshots
