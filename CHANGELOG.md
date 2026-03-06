@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.127
+
+### Changed
+
+- Refactored light and dark theme to use a single CSS bundle.
+
 ## v0.126
 
 ### Changed

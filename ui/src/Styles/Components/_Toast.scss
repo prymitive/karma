@@ -8,7 +8,7 @@
   max-width: 500px;
 
   code {
-    color: $warning;
+    color: var(--bs-warning);
   }
 }
 
@@ -22,11 +22,11 @@
 
 .bg-toast {
   @supports (backdrop-filter: blur(12px)) {
-    background-color: rgba(darken($dark, 5%), 0.85);
+    background-color: rgba(var(--karma-toast-bg-rgb, 21, 21, 21), 0.85);
     backdrop-filter: saturate(50%) blur(12px);
   }
   @supports not (backdrop-filter: blur(12px)) {
-    background-color: darken($dark, 5%);
+    background-color: var(--karma-toast-bg);
   }
 }
 

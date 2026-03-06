@@ -1,7 +1,6 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 
-import { addHours } from "date-fns/addHours";
 import { addDays } from "date-fns/addDays";
 
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons/faArrowUp";
@@ -39,7 +38,7 @@ import {
   UpgradeToastMessage,
 } from "Components/Toast/ToastMessages";
 
-import "Styles/Percy.scss";
+import "Styles/E2E.scss";
 
 const jsonResponse = (data: unknown): Response =>
   new Response(JSON.stringify(data), {
@@ -440,7 +439,7 @@ const managedSilenceStory = (): React.ReactNode => {
 
   return (
     <div className="modal-dialog modal-lg" role="document">
-      <div className="modal-content p-2">
+      <div className="modal-content p-2" style={{ background: "transparent" }}>
         <ManagedSilence
           cluster="am"
           alertCount={123}
@@ -528,10 +527,8 @@ const silenceModalEditorStory = (): React.ReactNode => {
 
   silenceFormStore.data.setAuthor("me@example.com");
   silenceFormStore.data.setComment("This is a test silence");
-  silenceFormStore.data.setStart(new Date("2018-08-14T17:36:40"));
-  silenceFormStore.data.setEnd(
-    addDays(addHours(new Date("2018-08-14T17:36:40"), 2), 10),
-  );
+  silenceFormStore.data.setStart(new Date("2018-08-14T17:36:40Z"));
+  silenceFormStore.data.setEnd(addDays(new Date("2018-08-14T19:00:00Z"), 5));
   silenceFormStore.tab.setTab("editor");
 
   return (
@@ -642,7 +639,7 @@ const darkTheme: ThemeCtx = {
 
 const StoryRenderer = ({ storyFn }: { storyFn: () => React.ReactNode }) => (
   <div>
-    <div className="theme-light">
+    <div className="theme-light" data-bs-theme="light">
       <ThemeContext.Provider value={lightTheme}>
         {storyFn()}
       </ThemeContext.Provider>
@@ -656,7 +653,7 @@ const StoryRenderer = ({ storyFn }: { storyFn: () => React.ReactNode }) => (
         marginBottom: "4px",
       }}
     />
-    <div className="theme-dark">
+    <div className="theme-dark" data-bs-theme="dark">
       <ThemeContext.Provider value={darkTheme}>
         {storyFn()}
       </ThemeContext.Provider>

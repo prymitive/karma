@@ -2,7 +2,7 @@
   border-top: 0;
   border-left: 0;
   border-right: 0;
-  border-bottom: $border-width solid $filterinput-border;
+  border-bottom: $border-width solid var(--karma-filterinput-border);
 
   .bg-inherit {
     background-color: unset;
@@ -39,10 +39,11 @@ input.components-filterinput-wrapper {
 
 .bg-focused {
   @supports (backdrop-filter: blur(12px)) {
-    background-color: rgba($bg-focused, 0.5);
+    // TODO: why is this hardcoding colors?
+    background-color: rgba(var(--karma-bg-focused-rgb, 81, 113, 132), 0.5);
   }
   @supports not (backdrop-filter: blur(12px)) {
-    background-color: $bg-focused;
+    background-color: var(--karma-bg-focused);
   }
 }
 

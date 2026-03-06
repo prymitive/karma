@@ -1,13 +1,13 @@
 .components-grid-annotation {
   font-size: 0.85rem;
-  color: $body-color;
+  color: var(--bs-body-color);
 }
 
 .components-grid-annotation-link {
   text-decoration: none;
-  color: $link-color;
+  color: var(--karma-link-color);
   &.border {
-    border-color: $annotation-link-border !important;
+    border-color: var(--karma-annotation-link-border) !important;
   }
 }
 .components-grid-annotation-link:hover {

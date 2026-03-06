@@ -11,11 +11,11 @@
 }
 
 .card-footer.components-grid-alertgrid-alertgroup-footer {
-  background-color: $alertgroup-footer-bg;
+  background-color: var(--karma-alertgroup-footer-bg);
 }
 
 .card-body.components-grid-alertgrid-card {
-  background-color: $alertgroup-body-bg !important;
+  background-color: var(--karma-alertgroup-body-bg) !important;
 }
 
 .components-label:not(:last-child),
