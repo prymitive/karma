@@ -50,7 +50,7 @@ jobs:
         with:
           flags: backend
           files: ./coverage.txt
-          token: c77c73a6-81e1-4fa1-8372-9170d7953d41
+          token: de0b9626-c0a3-4004-8723-2ff10f79b040
 
   lint-go:
     name: Lint Go code
