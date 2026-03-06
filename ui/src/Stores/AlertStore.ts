@@ -2,8 +2,6 @@ import { observable, action, computed, toJS } from "mobx";
 
 import throttle from "lodash.throttle";
 
-import qs from "qs";
-
 import { FetchGet } from "Common/Fetch";
 import type {
   APIAlertmanagerUpstreamT,
@@ -18,23 +16,15 @@ import type {
   AlertsRequestT,
 } from "Models/APITypes";
 
-const QueryStringEncodeOptions = {
-  encodeValuesOnly: true, // don't encode q[]
-  indices: false, // go-gin doesn't support parsing q[0]=foo&q[1]=bar
-};
-
 function FormatAlertsQ(filters: string[]): string {
-  return qs.stringify({ q: filters }, QueryStringEncodeOptions);
+  return new URLSearchParams(filters.map((f) => ["q", f])).toString();
 }
 
 // generate URL for the UI with a set of filters
 function FormatAPIFilterQuery(filters: string[]): string {
-  return qs.stringify(
-    Object.assign(DecodeLocationSearch(window.location.search).params, {
-      q: filters,
-    }),
-    QueryStringEncodeOptions,
-  );
+  const params = DecodeLocationSearch(window.location.search).params;
+  const merged = { ...params, q: filters || [] };
+  return new URLSearchParams(merged.q.map((f) => ["q", f])).toString();
 }
 
 // format URI for react UI -> Go backend requests
@@ -46,6 +36,7 @@ function FormatBackendURI(path: string): string {
 // and decodes it into a dict with some extra metadata
 interface QueryParamsT {
   q: string[];
+  m?: string;
 }
 interface DecodeLocationSearchReturnT {
   params: QueryParamsT;
@@ -55,26 +46,32 @@ function DecodeLocationSearch(
   searchString: string,
 ): DecodeLocationSearchReturnT {
   let defaultsUsed = true;
-  let params: QueryParamsT = { q: [] };
+  const params: QueryParamsT = { q: [] };
 
   if (searchString !== "") {
-    const parsed = qs.parse(searchString.split("?")[1]) as {
-      [key: string]: string | string[];
-    };
-    params = Object.assign(params, parsed);
+    const usp = new URLSearchParams(searchString.split("?")[1]);
+    const mValue = usp.get("m");
+    if (mValue !== null) {
+      params.m = mValue;
+    }
+    const qValues = [...usp.getAll("q"), ...usp.getAll("q[]")];
+    let parsedQ: string | string[] | undefined;
+    if (qValues.length > 0) {
+      parsedQ = qValues.length === 1 ? qValues[0] : qValues;
+    }
 
-    if (parsed.q !== undefined) {
+    if (parsedQ !== undefined) {
       defaultsUsed = false;
-      if (parsed.q === "") {
+      if (parsedQ === "") {
         params.q = [];
-      } else if (Array.isArray(parsed.q)) {
+      } else if (Array.isArray(parsedQ)) {
         // first filter out duplicates
         // then filter out empty strings, so 'q=' doesn't end up [""] but rather []
-        params.q = parsed.q
-          .filter((v: string, i: number) => parsed.q.indexOf(v) === i)
+        params.q = parsedQ
+          .filter((v: string, i: number) => parsedQ.indexOf(v) === i)
           .filter((v: string) => v !== "");
       } else {
-        params.q = [parsed.q];
+        params.q = [parsedQ];
       }
     }
   }
