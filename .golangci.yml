@@ -35,11 +35,13 @@ linters:
       - linters:
           - revive
         path: ^internal/parser/utils/
-        text: "var-naming: avoid meaningless package names"
+        text: "package-naming: avoid meaningless package names"
       - linters:
           - revive
         path: ^internal/slices/
-        text: "var-naming: avoid package names that conflict with Go standard library package names"
+        text: "package-naming: avoid package names that conflict with Go standard library package names"
+    paths:
+      - ui/node_modules/
 
 issues:
   max-same-issues: 0
@@ -47,6 +49,9 @@ formatters:
   enable:
     - gofumpt
     - goimports
+  exclusions:
+    paths:
+      - ui/node_modules/
   settings:
     gofumpt:
       extra-rules: true
