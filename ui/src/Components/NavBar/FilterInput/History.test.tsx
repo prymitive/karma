@@ -19,10 +19,6 @@ beforeEach(() => {
   jest.useFakeTimers();
 });
 
-afterEach(() => {
-  localStorage.setItem("history.filters", "");
-});
-
 const renderHistory = () => {
   return render(
     <History alertStore={alertStore} settingsStore={settingsStore} />,
@@ -320,5 +316,207 @@ describe("<HistoryMenu />", () => {
       matcher: "=",
       value: "bar",
     });
+  });
+});
+
+describe("History localStorage", () => {
+  // Verifies that history entries persisted in localStorage by a previous
+  // session are loaded and displayed when the component mounts.
+  it("loads pre-populated localStorage on mount", async () => {
+    const promise = Promise.resolve();
+    const savedFilters = [
+      [{ raw: "cluster=prod", name: "cluster", matcher: "=", value: "prod" }],
+      [{ raw: "env=staging", name: "env", matcher: "=", value: "staging" }],
+    ];
+    localStorage.setItem("filters", JSON.stringify({ filters: savedFilters }));
+
+    const { container } = renderHistory();
+    const toggle = container.querySelector("button.cursor-pointer");
+    fireEvent.click(toggle!);
+
+    expect(screen.getByText("cluster=prod")).toBeInTheDocument();
+    expect(screen.getByText("env=staging")).toBeInTheDocument();
+    expect(container.querySelectorAll("button.dropdown-item")).toHaveLength(2);
+    await act(() => promise);
+  });
+
+  // Verifies that localStored persists observable changes to localStorage
+  // via a delayed reaction (setTimeout 0).
+  it("localStored persists observable changes to localStorage", () => {
+    const { localStored } = require("Common/LocalStore");
+    const { runInAction } = require("mobx");
+    const store = localStored("test_persist_key", { filters: [] as any[] });
+
+    // Flush the initial write (reaction fires via setTimeout 0)
+    jest.runAllTimers();
+    const afterInit = JSON.parse(
+      localStorage.getItem("test_persist_key") || "{}",
+    );
+    expect(afterInit.filters).toEqual([]);
+
+    runInAction(() => {
+      store.value.filters = [
+        [{ raw: "foo=bar", name: "foo", matcher: "=", value: "bar" }],
+      ];
+    });
+
+    // Flush the reaction that persists to localStorage
+    jest.runAllTimers();
+    const afterSet = JSON.parse(
+      localStorage.getItem("test_persist_key") || "{}",
+    );
+    expect(afterSet.filters).toHaveLength(1);
+    expect(afterSet.filters[0]).toEqual([
+      { raw: "foo=bar", name: "foo", matcher: "=", value: "bar" },
+    ]);
+
+    store.destroy();
+    localStorage.removeItem("test_persist_key");
+  });
+
+  // Verifies that all rapid sequential filter changes are captured in
+  // history and none are lost due to timing.
+  it("preserves all sequential filter changes in history", async () => {
+    const promise = Promise.resolve();
+    const { container } = renderHistory();
+
+    act(() => {
+      alertStore.filters.setFilterValues([
+        AppliedFilter("cluster", "=", "prod"),
+      ]);
+      jest.runOnlyPendingTimers();
+    });
+
+    act(() => {
+      alertStore.filters.setFilterValues([
+        AppliedFilter("env", "=", "staging"),
+      ]);
+      jest.runOnlyPendingTimers();
+    });
+
+    act(() => {
+      alertStore.filters.setFilterValues([
+        AppliedFilter("region", "=", "us-east"),
+      ]);
+      jest.runOnlyPendingTimers();
+    });
+
+    const toggle = container.querySelector("button.cursor-pointer");
+    fireEvent.click(toggle!);
+
+    expect(container.querySelectorAll("button.dropdown-item")).toHaveLength(3);
+    expect(screen.getByText("region=us-east")).toBeInTheDocument();
+    expect(screen.getByText("env=staging")).toBeInTheDocument();
+    expect(screen.getByText("cluster=prod")).toBeInTheDocument();
+    await act(() => promise);
+  });
+
+  // Simulates a second browser tab writing to localStorage and firing a
+  // StorageEvent. Verifies the component picks up the cross-tab change.
+  // mobx-stored's propagateChangesToMemory handler calls set(obsVal, newValue)
+  // which replaces the observable state and re-establishes the persistence
+  // autorun, so multiple timer flushes are needed.
+  it("picks up StorageEvent from another tab", async () => {
+    const promise = Promise.resolve();
+    const { container } = renderHistory();
+
+    act(() => {
+      alertStore.filters.setFilterValues([AppliedFilter("foo", "=", "bar")]);
+      jest.runOnlyPendingTimers();
+      jest.runOnlyPendingTimers();
+    });
+
+    const externalFilters = {
+      filters: [
+        [
+          {
+            raw: "external=filter",
+            name: "external",
+            matcher: "=",
+            value: "filter",
+          },
+        ],
+      ],
+    };
+    const newValue = JSON.stringify(externalFilters);
+    localStorage.setItem("filters", newValue);
+    act(() => {
+      window.dispatchEvent(
+        new StorageEvent("storage", {
+          key: "filters",
+          newValue: newValue,
+          storageArea: localStorage,
+        }),
+      );
+      jest.runOnlyPendingTimers();
+      jest.runOnlyPendingTimers();
+    });
+
+    const toggle = container.querySelector("button.cursor-pointer");
+    fireEvent.click(toggle!);
+
+    expect(screen.getByText("external=filter")).toBeInTheDocument();
+    await act(() => promise);
+  });
+
+  // Demonstrates the cross-tab race condition. When tab B receives a
+  // StorageEvent with tab A's history and then tab B's own alertStore
+  // filters change, the History component's autorun rebuilds history
+  // from only what's in its own alertStore. Entries from tab A that
+  // are not in tab B's alertStore are preserved only if they were
+  // already in the in-memory history.config.filters. If the
+  // StorageEvent arrived after the autorun already ran, tab A's
+  // entries could be lost.
+  it("StorageEvent followed by filter change preserves cross-tab history", async () => {
+    const promise = Promise.resolve();
+    const { container } = renderHistory();
+
+    // Simulate tab A writing history with "cluster=prod" to localStorage
+    // and firing a StorageEvent that tab B receives
+    const tabAHistory = {
+      filters: [
+        [
+          {
+            raw: "cluster=prod",
+            name: "cluster",
+            matcher: "=",
+            value: "prod",
+          },
+        ],
+      ],
+    };
+    const tabAValue = JSON.stringify(tabAHistory);
+    localStorage.setItem("filters", tabAValue);
+    act(() => {
+      window.dispatchEvent(
+        new StorageEvent("storage", {
+          key: "filters",
+          newValue: tabAValue,
+          storageArea: localStorage,
+        }),
+      );
+      jest.runOnlyPendingTimers();
+      jest.runOnlyPendingTimers();
+    });
+
+    // Now tab B's own alertStore gets a different filter applied.
+    // The History autorun should merge tab A's "cluster=prod" with
+    // tab B's new "env=staging" in history.
+    act(() => {
+      alertStore.filters.setFilterValues([
+        AppliedFilter("env", "=", "staging"),
+      ]);
+      jest.runOnlyPendingTimers();
+    });
+
+    const toggle = container.querySelector("button.cursor-pointer");
+    fireEvent.click(toggle!);
+
+    // Both tab A's and tab B's filter sets should appear in history.
+    // If "cluster=prod" is missing, the autorun overwrote tab A's data.
+    expect(screen.getByText("env=staging")).toBeInTheDocument();
+    expect(screen.getByText("cluster=prod")).toBeInTheDocument();
+    expect(container.querySelectorAll("button.dropdown-item")).toHaveLength(2);
+    await act(() => promise);
   });
 });

@@ -1,5 +1,6 @@
 import { action } from "mobx";
-import { localStored } from "mobx-stored";
+
+import { localStored } from "Common/LocalStore";
 
 import type { UIDefaults } from "Models/UI";
 import type { OptionT } from "Common/Select";
@@ -9,25 +10,23 @@ interface SavedFiltersStorage {
   present: boolean;
 }
 class SavedFilters {
-  config: SavedFiltersStorage = localStored(
-    "savedFilters",
-    {
-      filters: [],
-      present: false,
-    },
-    {
-      delay: 100,
-    },
-  );
+  private store = localStored<SavedFiltersStorage>("savedFilters", {
+    filters: [],
+    present: false,
+  });
+
+  get config(): SavedFiltersStorage {
+    return this.store.value;
+  }
 
   save = action((newFilters: string[]) => {
-    this.config.filters = newFilters;
-    this.config.present = true;
+    this.store.value.filters = newFilters;
+    this.store.value.present = true;
   });
 
   clear = action(() => {
-    this.config.filters = [];
-    this.config.present = false;
+    this.store.value.filters = [];
+    this.store.value.present = false;
   });
 }
 
@@ -35,15 +34,15 @@ interface FetchConfigStorage {
   interval: number;
 }
 class FetchConfig {
+  private store;
   config: FetchConfigStorage;
   setInterval: (newInterval: number) => void;
 
   constructor(refresh: number) {
-    this.config = localStored(
-      "fetchConfig",
-      { interval: refresh },
-      { delay: 100 },
-    );
+    this.store = localStored<FetchConfigStorage>("fetchConfig", {
+      interval: refresh,
+    });
+    this.config = this.store.value;
 
     this.setInterval = action((newInterval) => {
       this.config.interval = newInterval;
@@ -86,15 +85,12 @@ class AlertGroupConfig {
     collapseState: CollapseStateT,
     colorTitleBar: boolean,
   ) {
-    this.config = localStored(
-      "alertGroupConfig",
-      {
-        defaultRenderCount: renderCount,
-        defaultCollapseState: collapseState,
-        colorTitleBar: colorTitleBar,
-      },
-      { delay: 100 },
-    );
+    const store = localStored<AlertGroupConfigStorage>("alertGroupConfig", {
+      defaultRenderCount: renderCount,
+      defaultCollapseState: collapseState,
+      colorTitleBar: colorTitleBar,
+    });
+    this.config = store.value;
 
     this.setDefaultRenderCount = action((val: number) => {
       this.config.defaultRenderCount = val;
@@ -116,11 +112,10 @@ class SilenceFormConfig {
   saveAuthor: (newAuthor: string) => void;
 
   constructor() {
-    this.config = localStored(
-      "silenceFormConfig",
-      { author: "" },
-      { delay: 100 },
-    );
+    const store = localStored<SilenceFormConfigStorage>("silenceFormConfig", {
+      author: "",
+    });
+    this.config = store.value;
 
     this.saveAuthor = action((newAuthor: string) => {
       this.config.author = newAuthor;
@@ -158,16 +153,13 @@ class GridConfig {
   setGroupWidth: (w: number) => void;
 
   constructor(groupWidth: number) {
-    this.config = localStored(
-      "alertGridConfig",
-      {
-        sortOrder: this.options.default.value,
-        sortLabel: null,
-        reverseSort: null,
-        groupWidth: groupWidth,
-      },
-      { delay: 100 },
-    );
+    const store = localStored<GridConfigStorage>("alertGridConfig", {
+      sortOrder: this.options.default.value as SortOrderT,
+      sortLabel: null,
+      reverseSort: null,
+      groupWidth: groupWidth,
+    });
+    this.config = store.value;
 
     this.setSortOrder = action((o: SortOrderT) => {
       this.config.sortOrder = o;
@@ -192,15 +184,10 @@ class FilterBarConfig {
   setAutohide: (v: boolean) => void;
 
   constructor(autohide: boolean) {
-    this.config = localStored(
-      "filterBarConfig",
-      {
-        autohide: autohide,
-      },
-      {
-        delay: 100,
-      },
-    );
+    const store = localStored<FilterBarConfigStorage>("filterBarConfig", {
+      autohide: autohide,
+    });
+    this.config = store.value;
     this.setAutohide = action((v: boolean) => {
       this.config.autohide = v;
     });
@@ -229,16 +216,11 @@ class ThemeConfig {
       dark: { label: "Dark theme", value: "dark", wasCreated: false },
     });
 
-    this.config = localStored(
-      "themeConfig",
-      {
-        theme: defaultTheme,
-        animations: animations,
-      },
-      {
-        delay: 0,
-      },
-    );
+    const store = localStored<ThemeConfigStorage>("themeConfig", {
+      theme: defaultTheme,
+      animations: animations,
+    });
+    this.config = store.value;
     this.setTheme = action((v: ThemeT) => {
       this.config.theme = v;
     });
@@ -258,16 +240,11 @@ class MultiGridConfig {
   setGridSortReverse: (v: boolean) => void;
 
   constructor(gridLabel: string, gridSortReverse: boolean) {
-    this.config = localStored(
-      "multiGridConfig",
-      {
-        gridLabel: gridLabel,
-        gridSortReverse: gridSortReverse,
-      },
-      {
-        delay: 100,
-      },
-    );
+    const store = localStored<MultiGridConfigStorage>("multiGridConfig", {
+      gridLabel: gridLabel,
+      gridSortReverse: gridSortReverse,
+    });
+    this.config = store.value;
 
     this.setGridLabel = action((l: string) => {
       this.config.gridLabel = l;

@@ -27,7 +27,6 @@
     "lodash.uniqueid": "4.0.1",
     "mobx": "6.15.0",
     "mobx-react-lite": "4.1.1",
-    "mobx-stored": "1.1.0",
     "promise-retry": "2.0.1",
     "react": "19.2.4",
     "react-cool-dimensions": "3.0.1",

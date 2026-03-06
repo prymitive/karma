@@ -51,6 +51,7 @@ console.error = (...args: unknown[]) => {
 };
 
 beforeEach(() => {
+  localStorage.clear();
   useFetchGetMock.fetch.reset();
   (useFetchGet as jest.MockedFunction<typeof useFetchGetMock>).mockRestore();
   (

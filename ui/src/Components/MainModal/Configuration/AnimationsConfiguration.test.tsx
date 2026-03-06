@@ -1,4 +1,10 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import {
+  act,
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+} from "@testing-library/react";
 
 import { Settings } from "Stores/Settings";
 import { AnimationsConfiguration } from "./AnimationsConfiguration";
@@ -26,7 +32,9 @@ describe("<AnimationsConfiguration />", () => {
     renderConfiguration();
     const checkbox = screen.getByRole("checkbox");
 
-    settingsStore.themeConfig.setAnimations(true);
+    act(() => {
+      settingsStore.themeConfig.setAnimations(true);
+    });
     expect(settingsStore.themeConfig.config.animations).toBe(true);
     fireEvent.click(checkbox);
     await waitFor(() => {
@@ -38,7 +46,9 @@ describe("<AnimationsConfiguration />", () => {
     renderConfiguration();
     const checkbox = screen.getByRole("checkbox");
 
-    settingsStore.themeConfig.setAnimations(false);
+    act(() => {
+      settingsStore.themeConfig.setAnimations(false);
+    });
     expect(settingsStore.themeConfig.config.animations).toBe(false);
     fireEvent.click(checkbox);
     await waitFor(() => {
