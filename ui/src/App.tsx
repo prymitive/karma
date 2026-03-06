@@ -16,9 +16,9 @@ import { BodyTheme, ThemeContext } from "Components/Theme";
 import type { UIDefaults } from "Models/UI";
 import { ErrorBoundary } from "./ErrorBoundary";
 
-import "Styles/ResetCSS.scss";
 import "Styles/FontBundle.scss";
 import "Styles/App.scss";
+import "Styles/Theme.scss";
 
 const Grid = React.lazy(() => import("Components/Grid"));
 const NavBar = React.lazy(() => import("Components/NavBar"));

@@ -15,7 +15,7 @@
     pointer-events: none;
     background-image: radial-gradient(
       circle,
-      $with-click-default 10%,
+      var(--karma-with-click-default) 10%,
       transparent 10.01%
     );
     background-repeat: no-repeat;
@@ -28,7 +28,7 @@
   &.with-click-dark:after {
     background-image: radial-gradient(
       circle,
-      $with-click-dark 10%,
+      var(--karma-with-click-dark) 10%,
       transparent 10.01%
     );
   }
@@ -36,7 +36,7 @@
   &.with-click-light:after {
     background-image: radial-gradient(
       circle,
-      $with-click-light 10%,
+      var(--karma-with-click-light) 10%,
       transparent 10.01%
     );
   }

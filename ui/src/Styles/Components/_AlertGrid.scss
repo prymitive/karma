@@ -1,6 +1,6 @@
 .components-grid-swimlane {
   font-size: 1.4rem;
-  background-color: $grid-swimlane-bg;
+  background-color: var(--karma-grid-swimlane-bg);
   color: $white;
   --bs-secondary-color: #{rgba($white, .75)};
   margin-left: 0.3rem;

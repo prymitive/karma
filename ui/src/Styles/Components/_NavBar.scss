@@ -1,5 +1,13 @@
 .navbar {
-  --bs-secondary-color: #{rgba($white, .75)};
+  // TODO: is there a cleaner way to do this? Ideally we should only overwrite what's really needed.
+  // Reset Bootstrap 5.3 color mode inheritance for dropdowns inside navbar
+  --bs-body-bg: #{$white};
+  --bs-body-color: #{$body-color};
+  --bs-dropdown-bg: #{$white};
+  --bs-dropdown-color: #{$body-color};
+  --bs-dropdown-link-color: #{$gray-700};
+  --bs-dropdown-link-hover-color: #{$white};
+  --bs-dropdown-link-hover-bg: #{$primary};
 
   @supports (backdrop-filter: blur(12px)) {
     background-color: rgba($primary, 0.85);
@@ -31,10 +39,10 @@
     &:hover {
       border-radius: 0.4rem;
       @supports (backdrop-filter: blur(12px)) {
-        background-color: rgba($bg-focused, 0.5);
+        background-color: rgba(var(--karma-bg-focused-rgb, 81, 113, 132), 0.5);
       }
       @supports not (backdrop-filter: blur(12px)) {
-        background-color: $bg-focused;
+        background-color: var(--karma-bg-focused);
       }
     }
   }

@@ -1,7 +1,7 @@
 .components-tab-inactive {
   &:hover {
-    color: $white;
-    background-color: $secondary;
+    color: var(--bs-white);
+    background-color: var(--bs-secondary);
   }
 }
 

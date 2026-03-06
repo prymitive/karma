@@ -25,13 +25,13 @@ $pixSize: math.div($fetcherWidth, 5);
   }
 
   &.fetching > .dot {
-    background-color: $warning;
+    background-color: var(--bs-warning);
   }
   &.processing > .dot {
-    background-color: $success;
+    background-color: var(--bs-success);
   }
   &.retrying > .dot {
-    background-color: $danger;
+    background-color: var(--bs-danger);
   }
 
   .dot {
@@ -45,7 +45,7 @@ $pixSize: math.div($fetcherWidth, 5);
     transition-duration: 0.2s;
     transition-timing-function: ease-in-out;
 
-    background-color: $white;
+    background-color: var(--bs-white);
 
     animation-duration: 0.9s;
     animation-iteration-count: infinite;

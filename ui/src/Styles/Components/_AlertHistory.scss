@@ -53,10 +53,10 @@ svg.alert-history {
       }
     }
     &.inactive {
-      fill: $alert-history-inactive;
+      fill: var(--karma-alert-history-inactive);
     }
     &.fetching {
-      fill: $alert-history-inactive;
+      fill: var(--karma-alert-history-inactive);
       animation-timing-function: ease-out;
       animation-duration: 12s;
       animation-iteration-count: infinite;

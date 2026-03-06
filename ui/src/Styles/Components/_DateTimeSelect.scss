@@ -1,8 +1,11 @@
 .components-date-range {
-  --rdp-cell-size: 40px;
-  --rdp-accent-color: #{$secondary};
-  --rdp-selected-border: none;
-  --rdp-range_middle-background-color: #{$light};
+  &.rdp-root {
+    --rdp-cell-size: 40px;
+    --rdp-accent-color: var(--bs-secondary);
+    --rdp-selected-border: none;
+    --rdp-today-color: var(--bs-secondary);
+    --rdp-range_middle-background-color: var(--bs-light);
+  }
 
   .rdp-day_button {
     padding: 0;
@@ -15,7 +18,7 @@
 
   .rdp-button_previous,
   .rdp-button_next {
-    color: $secondary;
+    color: var(--bs-secondary);
   }
 
   .rdp-day {
@@ -34,7 +37,7 @@
     &:hover,
     &:active,
     &:focus {
-      background-color: $light;
+      background-color: var(--bs-light);
     }
 
     &.rdp-disabled {
@@ -59,12 +62,12 @@
     }
 
     &:not(.rdp-disabled):not(.rdp-range_middle):not(.rdp-selected):hover {
-      background-color: $light;
+      background-color: var(--bs-light);
     }
   }
 
   .rdp-day.rdp-disabled .rdp-day_button {
-    color: $secondary;
+    color: var(--bs-secondary);
   }
 
   .rdp-day.rdp-today .rdp-day_button {
@@ -80,12 +83,12 @@
   .rdp-day.rdp-selected.rdp-range_start .rdp-day_button,
   .rdp-day.rdp-selected.rdp-range_end .rdp-day_button {
     font-weight: 600;
-    background-color: $primary;
+    background-color: var(--bs-primary);
 
     &:hover,
     &:active,
     &:focus {
-      background-color: $primary;
+      background-color: var(--bs-primary);
     }
   }
 
@@ -100,12 +103,12 @@
   }
 
   .rdp-day.rdp-selected:not(.rdp-range_middle) .rdp-day_button {
-    background-color: $primary;
-    color: $white;
+    background-color: var(--bs-primary);
+    color: var(--bs-white);
   }
 
   .rdp-day.rdp-selected.rdp-range_middle:not(.rdp-range_start):not(.rdp-range_end) .rdp-day_button {
-    background-color: $light;
-    color: $components-date-range-sub-color;
+    background-color: var(--bs-light);
+    color: var(--karma-components-date-range-sub-color);
   }
 }

@@ -11,13 +11,13 @@
   }
 
   & > .editing {
-    background-color: $filter-input-hoover-bg;
-    color: $filter-input-hoover-color;
+    background-color: var(--karma-filter-input-hoover-bg);
+    color: var(--karma-filter-input-hoover-color);
   }
 
   &:hover {
-    background-color: $filter-input-hoover-bg;
-    color: $filter-input-hoover-color;
+    background-color: var(--karma-filter-input-hoover-bg);
+    color: var(--karma-filter-input-hoover-color);
     border-radius: 0.25rem;
   }
 }
@@ -49,32 +49,31 @@ button.btn.components-filteredinputlabel {
 
 button.components-label.btn {
   &.btn-default:hover {
-    background-color: $color-default;
+    background-color: var(--karma-color-default);
   }
 
   &.btn-primary:hover {
-    background-color: $primary;
+    background-color: var(--bs-primary);
   }
   &.btn-secondary:hover {
-    background-color: $secondary;
+    background-color: var(--bs-secondary);
   }
   &.btn-success:hover {
-    background-color: $success;
+    background-color: var(--bs-success);
   }
   &.btn-info:hover {
-    background-color: $info;
+    background-color: var(--bs-info);
   }
   &.btn-warning:hover {
-    background-color: $warning;
+    background-color: var(--bs-warning);
   }
   &.btn-danger:hover {
-    background-color: $danger;
+    background-color: var(--bs-danger);
   }
   &.btn-light:hover {
-    background-color: $light;
+    background-color: var(--bs-light);
   }
   &.btn-dark:hover {
-    // same as in Theme.scss
-    background-color: $dark;
+    background-color: var(--bs-dark);
   }
 }

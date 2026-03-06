@@ -23,8 +23,6 @@ $(NODE_PATH)/%: $(NODE_INSTALL)
 	@if [ ! -x $@ ]; then echo "missing script: $@" ; exit 1; fi
 
 dist/index.html: $(NODE_INSTALL) $(NODE_PATH)/vite $(call rwildcard, public src, *)
-	@rm -fr node_modules/.cache/eslint-loader
-	sed -e '/:root,/d' -e 's/\[data-bs-theme="light"\] {/* {/' node_modules/bootstrap/scss/_root.scss | sed -n '1,/^}/p' > src/Styles/BootstrapRoot.scss
 	npm run build
 
 .PHONY: build

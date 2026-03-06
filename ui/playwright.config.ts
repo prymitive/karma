@@ -14,6 +14,7 @@ export default defineConfig({
     screenshot: "off",
     video: "off",
     trace: "off",
+    timezoneId: "UTC",
   },
   projects: [
     {
