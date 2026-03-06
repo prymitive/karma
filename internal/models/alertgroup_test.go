@@ -73,7 +73,7 @@ var alertListSortTests = []alertListSortTest{
 }
 
 func TestAlertListSort(t *testing.T) {
-	al := models.AlertList{}
+	al := make(models.AlertList, 0, len(alertListSortTests))
 	for _, testCase := range alertListSortTests {
 		testCase.alert.UpdateFingerprints()
 		al = append(al, testCase.alert)
