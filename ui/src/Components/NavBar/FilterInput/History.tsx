@@ -11,7 +11,6 @@ import {
 
 import { action, autorun } from "mobx";
 import { observer } from "mobx-react-lite";
-import { localStored } from "mobx-stored";
 
 import { useFloating, shift, flip, offset, size } from "@floating-ui/react-dom";
 
@@ -26,6 +25,7 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
 import type { AlertStore, FilterT } from "Stores/AlertStore";
 import type { Settings } from "Stores/Settings";
 import { IsMobile } from "Common/Device";
+import { localStored } from "Common/LocalStore";
 import { DropdownSlide } from "Components/Animations/DropdownSlide";
 import HistoryLabel from "Components/Labels/HistoryLabel";
 import { useOnClickOutside } from "Hooks/useOnClickOutside";
@@ -170,26 +170,27 @@ interface HistoryStorageT {
 }
 
 class HistoryStorage {
-  config: HistoryStorageT = localStored(
-    "filters",
-    {
-      filters: [] as ReduceFilterT[][],
-    },
-    {
-      delay: 100,
-    },
-  );
+  private store = localStored<HistoryStorageT>("filters", {
+    filters: [] as ReduceFilterT[][],
+  });
+
+  get config(): HistoryStorageT {
+    return this.store.value;
+  }
 
   setFilters = action((newFilters: ReduceFilterT[][]) => {
-    this.config.filters = newFilters;
+    this.store.value.filters = newFilters;
   });
+
+  destroy = () => {
+    this.store.destroy();
+  };
 }
 
 const History: FC<{
   alertStore: AlertStore;
   settingsStore: Settings;
 }> = observer(({ alertStore, settingsStore }) => {
-  // this will be dumped to local storage via mobx-stored
   const [history] = useState<HistoryStorage>(new HistoryStorage());
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const [maxHeight, setMaxHeight] = useState<number | null>(null);
@@ -212,38 +213,40 @@ const History: FC<{
 
   // every time this component updates we will rewrite history
   // (if there are changes)
-  useEffect(
-    () =>
-      autorun(() => {
-        // we don't store unapplied (we only have raw text for those, we need
-        // name & value for coloring) or invalid filters
-        // also check for value, name might be missing for fuzzy filters, but
-        // the value should always be set
-        const validAppliedFilters = alertStore.filters.values
-          .filter((f) => f.applied && f.isValid && f.value)
-          .map((f) => ReduceFilter(f));
+  useEffect(() => {
+    const disposeAutorun = autorun(() => {
+      // we don't store unapplied (we only have raw text for those, we need
+      // name & value for coloring) or invalid filters
+      // also check for value, name might be missing for fuzzy filters, but
+      // the value should always be set
+      const validAppliedFilters = alertStore.filters.values
+        .filter((f) => f.applied && f.isValid && f.value)
+        .map((f) => ReduceFilter(f));
 
-        // don't store empty filters in history
-        if (validAppliedFilters.length === 0) return;
-        // make a JSON dump for comparing later with what's already stored
-        const filtersJSON = JSON.stringify(validAppliedFilters);
+      // don't store empty filters in history
+      if (validAppliedFilters.length === 0) return;
+      // make a JSON dump for comparing later with what's already stored
+      const filtersJSON = JSON.stringify(validAppliedFilters);
 
-        // rewrite history putting current filter set on top, this will move
-        // it up if user selects a filter set that was already in history
-        const newHistory = [
-          ...[validAppliedFilters],
-          ...history.config.filters.filter(
-            (f) => JSON.stringify(f) !== filtersJSON,
-          ),
-        ].slice(0, 8);
-        if (
-          JSON.stringify(newHistory) !== JSON.stringify(history.config.filters)
-        ) {
-          history.setFilters(newHistory);
-        }
-      }),
-    [], // eslint-disable-line react-hooks/exhaustive-deps
-  );
+      // rewrite history putting current filter set on top, this will move
+      // it up if user selects a filter set that was already in history
+      const newHistory = [
+        ...[validAppliedFilters],
+        ...history.config.filters.filter(
+          (f) => JSON.stringify(f) !== filtersJSON,
+        ),
+      ].slice(0, 8);
+      if (
+        JSON.stringify(newHistory) !== JSON.stringify(history.config.filters)
+      ) {
+        history.setFilters(newHistory);
+      }
+    });
+    return () => {
+      disposeAutorun();
+      history.destroy();
+    };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const ref = useRef<HTMLSpanElement | null>(null);
   useOnClickOutside(ref, hide, isVisible);
