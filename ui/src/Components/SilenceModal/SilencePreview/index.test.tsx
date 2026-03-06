@@ -47,7 +47,7 @@ describe("<SilencePreview />", () => {
     ]);
     renderSilencePreview();
     expect(useFetchGet).toHaveBeenCalledWith(
-      "./alertList.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28amValue%29%24",
+      "./alertList.json?q=foo%3Dbar&q=%40alertmanager%3D%7E%5E%28amValue%29%24",
     );
   });
 
@@ -57,7 +57,7 @@ describe("<SilencePreview />", () => {
     ]);
     renderSilencePreview();
     expect(useFetchGet).toHaveBeenCalledWith(
-      "./alertList.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28am1%7Cam2%29%24",
+      "./alertList.json?q=foo%3Dbar&q=%40alertmanager%3D%7E%5E%28am1%7Cam2%29%24",
     );
   });
 

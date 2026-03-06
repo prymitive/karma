@@ -146,7 +146,7 @@ describe("<MatchCounter />", () => {
     renderMatchCounter();
     expect(
       (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0],
-    ).toBe("./alertList.json?q=foo%3D~%5Ebar%24");
+    ).toBe("./alertList.json?q=foo%3D%7E%5Ebar%24");
   });
 
   it("sends correct query string for a 'foo=(x)' matcher with wasCreated=true & isRegex=false", () => {
@@ -168,7 +168,7 @@ describe("<MatchCounter />", () => {
     renderMatchCounter();
     expect(
       (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0],
-    ).toBe("./alertList.json?q=foo%3D~%5E%28x%29%24");
+    ).toBe("./alertList.json?q=foo%3D%7E%5E%28x%29%24");
   });
 
   it("sends correct query string for a 'foo=(x)' matcher with wasCreated=false & isRegex=false", () => {
@@ -190,7 +190,7 @@ describe("<MatchCounter />", () => {
     renderMatchCounter();
     expect(
       (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0],
-    ).toBe("./alertList.json?q=foo%3D~%5E%5C%28x%5C%29%24");
+    ).toBe("./alertList.json?q=foo%3D%7E%5E%5C%28x%5C%29%24");
   });
 
   it("sends correct query string for a 'foo=~(bar|baz)' matcher", () => {
@@ -200,7 +200,7 @@ describe("<MatchCounter />", () => {
     renderMatchCounter();
     expect(
       (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0],
-    ).toBe("./alertList.json?q=foo%3D~%5E%28bar%7Cbaz%29%24");
+    ).toBe("./alertList.json?q=foo%3D%7E%5E%28bar%7Cbaz%29%24");
   });
 
   it("selecting one Alertmanager instance appends it to the filters", () => {
@@ -213,7 +213,9 @@ describe("<MatchCounter />", () => {
     renderMatchCounter();
     expect(
       (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0],
-    ).toBe("./alertList.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28am1%29%24");
+    ).toBe(
+      "./alertList.json?q=foo%3Dbar&q=%40alertmanager%3D%7E%5E%28am1%29%24",
+    );
   });
 
   it("selecting two Alertmanager instances appends it correctly to the filters", () => {
@@ -231,7 +233,7 @@ describe("<MatchCounter />", () => {
     expect(
       (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0],
     ).toBe(
-      "./alertList.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28am1%7Cam2%29%24",
+      "./alertList.json?q=foo%3Dbar&q=%40alertmanager%3D%7E%5E%28am1%7Cam2%29%24",
     );
   });
 });
