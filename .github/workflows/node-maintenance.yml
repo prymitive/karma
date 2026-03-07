@@ -24,6 +24,10 @@ jobs:
       - name: Rebuild react app
         run: make -C ui build
 
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+        working-directory: ui
+
       - name: Update snapshots
         run: make -C ui update-snapshots
 
