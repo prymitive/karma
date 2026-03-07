@@ -40,6 +40,10 @@ e2e: $(NODE_PATH)/vite $(NODE_PATH)/playwright
 .PHONY: update-snapshots
 update-snapshots: $(NODE_PATH)/vite $(NODE_PATH)/jest
 	CI=true npm test -- -u
+
+.PHONY: update-e2e
+update-e2e:
+	npx playwright install
 	npx playwright test --update-snapshots
 
 .PHONY: lint-js
