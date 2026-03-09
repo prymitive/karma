@@ -10,6 +10,7 @@ import {
   MockSilence,
   MockAlertmanager,
 } from "__fixtures__/Alerts";
+import { inReactiveContext } from "__fixtures__/MobX";
 import { StringToOption, OptionT, MultiValueOptionT } from "Common/Select";
 import {
   SilenceFormStore,
@@ -826,14 +827,18 @@ describe("SilenceFormStore.data", () => {
 
   it("toAlertmanagerPayload contains id when store.data.silenceID is set", () => {
     store.data.setSilenceID("12345");
-    expect(store.data.toAlertmanagerPayload).toMatchObject({
-      id: "12345",
+    inReactiveContext(() => {
+      expect(store.data.toAlertmanagerPayload).toMatchObject({
+        id: "12345",
+      });
     });
   });
 
   it("toAlertmanagerPayload doesn't contain id when store.data.silenceID is null", () => {
     store.data.setSilenceID(null);
-    expect(store.data.toAlertmanagerPayload.id).toBeUndefined();
+    inReactiveContext(() => {
+      expect(store.data.toAlertmanagerPayload.id).toBeUndefined();
+    });
   });
 
   it("toAlertmanagerPayload creates payload that matches snapshot", () => {
@@ -851,7 +856,9 @@ describe("SilenceFormStore.data", () => {
     store.data.setEnd(new Date(Date.UTC(2000, 1, 1, 1, 0, 0)));
     store.data.setAuthor("me@example.com");
     store.data.setComment("toAlertmanagerPayload test");
-    expect(store.data.toAlertmanagerPayload).toMatchSnapshot();
+    inReactiveContext(() => {
+      expect(store.data.toAlertmanagerPayload).toMatchSnapshot();
+    });
   });
 
   it("toAlertmanagerPayload creates payload that matches snapshot with regex values", () => {
@@ -957,7 +964,9 @@ describe("SilenceFormStore.data", () => {
     store.data.setEnd(new Date(Date.UTC(2000, 1, 1, 1, 0, 0)));
     store.data.setAuthor("me@example.com");
     store.data.setComment("toAlertmanagerPayload test");
-    expect(store.data.toAlertmanagerPayload).toMatchSnapshot();
+    inReactiveContext(() => {
+      expect(store.data.toAlertmanagerPayload).toMatchSnapshot();
+    });
   });
 
   it("dumps to base64 and back", () => {
@@ -970,7 +979,7 @@ describe("SilenceFormStore.data", () => {
     store.data.setStart(new Date());
     store.data.setEnd(addMinutes(addHours(store.data.startsAt, 7), 45));
     store.data.setComment("base64");
-    const b64 = store.data.toBase64;
+    const b64 = inReactiveContext(() => store.data.toBase64);
 
     store.data.setMatchers([]);
     store.data.setComment("");
@@ -1007,7 +1016,7 @@ describe("SilenceFormStore.data", () => {
   it("base64 restore ignores empty matchers", () => {
     store.data.setMatchers([]);
     store.data.setComment("base64");
-    const b64 = store.data.toBase64;
+    const b64 = inReactiveContext(() => store.data.toBase64);
 
     store.data.setMatchers([]);
     store.data.setComment("foo");
@@ -1048,7 +1057,9 @@ describe("SilenceFormStore.data.isValid", () => {
     ]);
     store.data.setAuthor("me@example.com");
     store.data.setComment("fake silence");
-    expect(store.data.isValid).toBe(false);
+    inReactiveContext(() => {
+      expect(store.data.isValid).toBe(false);
+    });
   });
 
   it("isValid returns 'false' if matchers list is empty", () => {
@@ -1056,7 +1067,9 @@ describe("SilenceFormStore.data.isValid", () => {
     store.data.setMatchers([]);
     store.data.setAuthor("me@example.com");
     store.data.setComment("fake silence");
-    expect(store.data.isValid).toBe(false);
+    inReactiveContext(() => {
+      expect(store.data.isValid).toBe(false);
+    });
   });
 
   it("isValid returns 'false' if matchers list is populated when a matcher without any name", () => {
@@ -1066,7 +1079,9 @@ describe("SilenceFormStore.data.isValid", () => {
     ]);
     store.data.setAuthor("me@example.com");
     store.data.setComment("fake silence");
-    expect(store.data.isValid).toBe(false);
+    inReactiveContext(() => {
+      expect(store.data.isValid).toBe(false);
+    });
   });
 
   it("isValid returns 'false' if matchers list is populated when a matcher without any value ([])", () => {
@@ -1074,7 +1089,9 @@ describe("SilenceFormStore.data.isValid", () => {
     store.data.setMatchers([MockMatcher("foo", [])]);
     store.data.setAuthor("me@example.com");
     store.data.setComment("fake silence");
-    expect(store.data.isValid).toBe(false);
+    inReactiveContext(() => {
+      expect(store.data.isValid).toBe(false);
+    });
   });
 
   it("isValid returns 'false' if matchers list is populated when a matcher with empty value ([''])", () => {
@@ -1082,7 +1099,9 @@ describe("SilenceFormStore.data.isValid", () => {
     store.data.setMatchers([MockMatcher("foo", [])]);
     store.data.setAuthor("me@example.com");
     store.data.setComment("fake silence");
-    expect(store.data.isValid).toBe(false);
+    inReactiveContext(() => {
+      expect(store.data.isValid).toBe(false);
+    });
   });
 
   it("isValid returns 'false' if author is empty", () => {
@@ -1092,7 +1111,9 @@ describe("SilenceFormStore.data.isValid", () => {
     ]);
     store.data.setAuthor("");
     store.data.setComment("fake silence");
-    expect(store.data.isValid).toBe(false);
+    inReactiveContext(() => {
+      expect(store.data.isValid).toBe(false);
+    });
   });
 
   it("isValid returns 'false' if comment is empty", () => {
@@ -1102,7 +1123,9 @@ describe("SilenceFormStore.data.isValid", () => {
     ]);
     store.data.setAuthor("me@example.com");
     store.data.setComment("");
-    expect(store.data.isValid).toBe(false);
+    inReactiveContext(() => {
+      expect(store.data.isValid).toBe(false);
+    });
   });
 
   it("isValid returns 'true' if all fields are set", () => {
@@ -1112,7 +1135,9 @@ describe("SilenceFormStore.data.isValid", () => {
     ]);
     store.data.setAuthor("me@example.com");
     store.data.setComment("fake silence");
-    expect(store.data.isValid).toBe(true);
+    inReactiveContext(() => {
+      expect(store.data.isValid).toBe(true);
+    });
   });
 });
 
@@ -1120,30 +1145,36 @@ describe("SilenceFormStore.data startsAt & endsAt validation", () => {
   it("toDuration returns correct duration for 5d 0h 1m", () => {
     store.data.setStart(new Date(2000, 1, 1, 0, 0, 0));
     store.data.setEnd(new Date(2000, 1, 6, 0, 1, 15));
-    expect(store.data.toDuration).toMatchObject({
-      days: 5,
-      hours: 0,
-      minutes: 1,
+    inReactiveContext(() => {
+      expect(store.data.toDuration).toMatchObject({
+        days: 5,
+        hours: 0,
+        minutes: 1,
+      });
     });
   });
 
   it("toDuration returns correct duration for 2h 15m", () => {
     store.data.setStart(new Date(2000, 1, 1, 0, 0, 0));
     store.data.setEnd(new Date(2000, 1, 1, 2, 15, 0));
-    expect(store.data.toDuration).toMatchObject({
-      days: 0,
-      hours: 2,
-      minutes: 15,
+    inReactiveContext(() => {
+      expect(store.data.toDuration).toMatchObject({
+        days: 0,
+        hours: 2,
+        minutes: 15,
+      });
     });
   });
 
   it("toDuration returns correct duration for 59m", () => {
     store.data.setStart(new Date(2000, 1, 1, 0, 10, 0));
     store.data.setEnd(new Date(2000, 1, 1, 1, 9, 0));
-    expect(store.data.toDuration).toMatchObject({
-      days: 0,
-      hours: 0,
-      minutes: 59,
+    inReactiveContext(() => {
+      expect(store.data.toDuration).toMatchObject({
+        days: 0,
+        hours: 0,
+        minutes: 59,
+      });
     });
   });
 

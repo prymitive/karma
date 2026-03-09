@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 
-import { toJS } from "mobx";
+import { action, toJS } from "mobx";
 import { observer } from "mobx-react-lite";
 
 import { addSeconds } from "date-fns/addSeconds";
@@ -47,7 +47,7 @@ const AlertAck: FC<{
   const { response, error, inProgress, reset } =
     useFetchAny<PostResponseT>(upstreams);
 
-  const onACK = () => {
+  const onACK = action(() => {
     setIsAcking(true);
 
     let author =
@@ -95,7 +95,7 @@ const AlertAck: FC<{
       });
     }
     setClusters(c);
-  };
+  });
 
   useEffect(() => {
     if (upstreams.length && !inProgress && (error || response)) {

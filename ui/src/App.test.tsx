@@ -18,6 +18,7 @@ import fetchMock from "@fetch-mock/jest";
 
 import { mockMatchMedia } from "__fixtures__/matchMedia";
 import { EmptyAPIResponse } from "__fixtures__/Fetch";
+import { inReactiveContext } from "__fixtures__/MobX";
 import type { UIDefaults, ThemeT } from "Models/UI";
 import { SilenceFormStore, NewEmptyMatcher } from "Stores/SilenceFormStore";
 import { StringToOption } from "Common/Select";
@@ -198,7 +199,7 @@ describe("<App />", () => {
       store.data.setMatchers([m1, m2]);
       store.data.setComment("base64");
     });
-    const m = store.data.toBase64;
+    const m = inReactiveContext(() => store.data.toBase64);
 
     // Use history.pushState instead of setting window.location to avoid jsdom navigation error
     window.history.pushState({}, "App", `/?q=bar&m=${m}`);
@@ -242,7 +243,7 @@ describe("<App />", () => {
     const store = new SilenceFormStore();
     store.data.setMatchers([m1, m2]);
     store.data.setComment("base64");
-    const m = store.data.toBase64;
+    const m = inReactiveContext(() => store.data.toBase64);
 
     global.window.location = {
       href: `http://localhost/?q=bar&m=${m}`,

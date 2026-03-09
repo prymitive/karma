@@ -1,6 +1,7 @@
 import fetchMock from "@fetch-mock/jest";
 
 import { EmptyAPIResponse } from "__fixtures__/Fetch";
+import { inReactiveContext } from "__fixtures__/MobX";
 import { MockGroup } from "__fixtures__/Stories";
 import {
   AlertStore,
@@ -129,8 +130,10 @@ describe("AlertStore.data", () => {
         },
       ],
     });
-    expect(store.data.clustersWithoutReadOnly).toEqual({
-      default: ["am2", "am1"],
+    inReactiveContext(() => {
+      expect(store.data.clustersWithoutReadOnly).toEqual({
+        default: ["am2", "am1"],
+      });
     });
   });
 
@@ -178,8 +181,10 @@ describe("AlertStore.data", () => {
         },
       ],
     });
-    expect(store.data.clustersWithoutReadOnly).toEqual({
-      default: ["am1", "am2", "am3"],
+    inReactiveContext(() => {
+      expect(store.data.clustersWithoutReadOnly).toEqual({
+        default: ["am1", "am2", "am3"],
+      });
     });
   });
 });

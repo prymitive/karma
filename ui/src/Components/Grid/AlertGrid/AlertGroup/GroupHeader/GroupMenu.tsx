@@ -1,5 +1,7 @@
 import { FC, useRef, useState, useCallback, Ref, CSSProperties } from "react";
 
+import { observer } from "mobx-react-lite";
+
 import copy from "copy-to-clipboard";
 
 import { useFloating, shift, offset } from "@floating-ui/react-dom";
@@ -58,88 +60,90 @@ const MenuContent: FC<{
   afterClick: () => void;
   alertStore: AlertStore;
   silenceFormStore: SilenceFormStore;
-}> = ({
-  x,
-  y,
-  floating,
-  strategy,
-  group,
-  afterClick,
-  alertStore,
-  silenceFormStore,
-}) => {
-  const groupFilters = group.labels.map((label) =>
-    FormatQuery(label.name, QueryOperators.Equal, label.value),
-  );
-  groupFilters.push(
-    FormatQuery(StaticLabels.Receiver, QueryOperators.Equal, group.receiver),
-  );
-  const baseURL = [
-    window.location.protocol,
-    "//",
-    window.location.host,
-    window.location.pathname,
-  ].join("");
-  const groupLink = `${baseURL}?${FormatAlertsQ(groupFilters)}`;
+}> = observer(
+  ({
+    x,
+    y,
+    floating,
+    strategy,
+    group,
+    afterClick,
+    alertStore,
+    silenceFormStore,
+  }) => {
+    const groupFilters = group.labels.map((label) =>
+      FormatQuery(label.name, QueryOperators.Equal, label.value),
+    );
+    groupFilters.push(
+      FormatQuery(StaticLabels.Receiver, QueryOperators.Equal, group.receiver),
+    );
+    const baseURL = [
+      window.location.protocol,
+      "//",
+      window.location.host,
+      window.location.pathname,
+    ].join("");
+    const groupLink = `${baseURL}?${FormatAlertsQ(groupFilters)}`;
 
-  const actions = group.shared.annotations
-    .filter((a) => a.isLink === true)
-    .filter((a) => a.isAction === true);
+    const actions = group.shared.annotations
+      .filter((a) => a.isLink === true)
+      .filter((a) => a.isAction === true);
 
-  return (
-    <FetchPauser alertStore={alertStore}>
-      <div
-        className="dropdown-menu d-block shadow m-0"
-        ref={floating}
-        style={{
-          position: strategy,
-          top: y,
-          left: x,
-        }}
-      >
-        {actions.length ? (
-          <>
-            <h6 className="dropdown-header">Actions:</h6>
-            {actions.map((action) => (
-              <MenuLink
-                key={action.name}
-                icon={faWrench}
-                text={action.name}
-                uri={action.value}
-                afterClick={afterClick}
-              />
-            ))}
-            <div className="dropdown-divider" />
-          </>
-        ) : null}
+    return (
+      <FetchPauser alertStore={alertStore}>
         <div
-          className="dropdown-item cursor-pointer"
-          onClick={() => {
-            copy(groupLink);
-            afterClick();
+          className="dropdown-menu d-block shadow m-0"
+          ref={floating}
+          style={{
+            position: strategy,
+            top: y,
+            left: x,
           }}
         >
-          <FontAwesomeIcon icon={faShareSquare} /> Copy link to this group
-        </div>
-        <div
-          className={`dropdown-item ${
-            Object.keys(alertStore.data.clustersWithoutReadOnly).length === 0
-              ? "disabled"
-              : "cursor-pointer"
-          }`}
-          onClick={() => {
-            if (Object.keys(alertStore.data.clustersWithoutReadOnly).length) {
-              onSilenceClick(alertStore, silenceFormStore, group);
+          {actions.length ? (
+            <>
+              <h6 className="dropdown-header">Actions:</h6>
+              {actions.map((action) => (
+                <MenuLink
+                  key={action.name}
+                  icon={faWrench}
+                  text={action.name}
+                  uri={action.value}
+                  afterClick={afterClick}
+                />
+              ))}
+              <div className="dropdown-divider" />
+            </>
+          ) : null}
+          <div
+            className="dropdown-item cursor-pointer"
+            onClick={() => {
+              copy(groupLink);
               afterClick();
-            }
-          }}
-        >
-          <FontAwesomeIcon icon={faBellSlash} /> Silence this group
+            }}
+          >
+            <FontAwesomeIcon icon={faShareSquare} /> Copy link to this group
+          </div>
+          <div
+            className={`dropdown-item ${
+              Object.keys(alertStore.data.clustersWithoutReadOnly).length === 0
+                ? "disabled"
+                : "cursor-pointer"
+            }`}
+            onClick={() => {
+              if (Object.keys(alertStore.data.clustersWithoutReadOnly).length) {
+                onSilenceClick(alertStore, silenceFormStore, group);
+                afterClick();
+              }
+            }}
+          >
+            <FontAwesomeIcon icon={faBellSlash} /> Silence this group
+          </div>
         </div>
-      </div>
-    </FetchPauser>
-  );
-};
+      </FetchPauser>
+    );
+  },
+);
 
 const GroupMenu: FC<{
   group: APIAlertGroupT;

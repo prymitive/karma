@@ -4,6 +4,7 @@ import { render, screen, fireEvent } from "@testing-library/react";
 
 import { MockSilence } from "__fixtures__/Alerts";
 import { MockThemeContext } from "__fixtures__/Theme";
+import { inReactiveContext } from "__fixtures__/MobX";
 import type { APISilenceT } from "Models/APITypes";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
@@ -88,18 +89,20 @@ describe("<ManagedSilence />", () => {
   });
 
   it("GetAlertmanager() returns alertmanager object from alertStore.data.upstreams.instances", () => {
-    const am = GetAlertmanager(alertStore, cluster);
-    expect(am).toEqual({
-      name: "am1",
-      cluster: "am",
-      clusterMembers: ["am1"],
-      uri: "http://localhost:9093",
-      publicURI: "http://example.com",
-      readonly: false,
-      error: "",
-      version: "0.24.0",
-      headers: {},
-      corsCredentials: "include",
+    inReactiveContext(() => {
+      const am = GetAlertmanager(alertStore, cluster);
+      expect(am).toEqual({
+        name: "am1",
+        cluster: "am",
+        clusterMembers: ["am1"],
+        uri: "http://localhost:9093",
+        publicURI: "http://example.com",
+        readonly: false,
+        error: "",
+        version: "0.24.0",
+        headers: {},
+        corsCredentials: "include",
+      });
     });
   });
 
@@ -135,18 +138,20 @@ describe("<ManagedSilence />", () => {
       clusters: { am: ["am1", "am2"] },
     });
 
-    const am = GetAlertmanager(alertStore, cluster);
-    expect(am).toEqual({
-      name: "am1",
-      cluster: "am",
-      clusterMembers: ["am1"],
-      uri: "http://localhost:9093",
-      publicURI: "http://example.com",
-      readonly: false,
-      error: "",
-      version: "0.24.0",
-      headers: {},
-      corsCredentials: "include",
+    inReactiveContext(() => {
+      const am = GetAlertmanager(alertStore, cluster);
+      expect(am).toEqual({
+        name: "am1",
+        cluster: "am",
+        clusterMembers: ["am1"],
+        uri: "http://localhost:9093",
+        publicURI: "http://example.com",
+        readonly: false,
+        error: "",
+        version: "0.24.0",
+        headers: {},
+        corsCredentials: "include",
+      });
     });
   });
 

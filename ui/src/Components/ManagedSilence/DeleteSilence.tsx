@@ -1,5 +1,7 @@
 import { FC, useEffect, useState, ReactNode } from "react";
 
+import { observer } from "mobx-react-lite";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclamationCircle";
@@ -54,7 +56,7 @@ const DeleteResult: FC<{
   alertStore: AlertStore;
   cluster: string;
   id: string;
-}> = ({ alertStore, cluster, id }) => {
+}> = observer(({ alertStore, cluster, id }) => {
   const [currentTime, setCurrentTime] = useState<number>(
     Math.floor(Date.now()),
   );
@@ -101,7 +103,7 @@ const DeleteResult: FC<{
       ) : null}
     </>
   );
-};
+});
 
 const DeleteSilenceModalContent: FC<{
   alertStore: AlertStore;

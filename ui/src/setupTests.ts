@@ -23,7 +23,7 @@ fetchMock.mockGlobal();
 
 configure({
   enforceActions: "observed",
-  // computedRequiresReaction: true,
+  computedRequiresReaction: true,
   // reactionRequiresObservable: true,
   // observableRequiresReaction: true,
 });
