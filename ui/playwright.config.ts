@@ -38,6 +38,18 @@ export default defineConfig({
         viewport: { width: 1280, height: 720 },
       },
     },
+    {
+      name: "iphone",
+      use: {
+        ...devices["iPhone 15"],
+      },
+    },
+    {
+      name: "android",
+      use: {
+        ...devices["Pixel 7"],
+      },
+    },
   ],
   webServer: {
     command: "npx vite --port 3123 --strictPort",
