@@ -1,6 +1,6 @@
 import React, { use, FC, useEffect } from "react";
 
-import type { StylesConfig } from "react-select/dist/declarations/src/styles";
+import type { StylesConfig } from "react-select";
 
 export interface ThemeCtx {
   isDark: boolean;
