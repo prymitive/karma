@@ -1,7 +1,7 @@
 >= 0.5%
 last 2 major versions
 not dead
-Chrome >= 60
-Firefox >= 60
-Safari >= 13
-iOS >= 13
+Chrome >= 64
+Firefox >= 69
+Safari >= 13.1
+iOS >= 13.4
