@@ -1,7 +1,5 @@
 import { FC, useEffect, useRef } from "react";
 
-import { observer } from "mobx-react-lite";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleUp } from "@fortawesome/free-solid-svg-icons/faAngleUp";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons/faAngleDown";
@@ -11,7 +9,7 @@ const Duration: FC<{
   label: string;
   onInc: () => void;
   onDec: () => void;
-}> = observer(({ value, label, onInc, onDec }) => {
+}> = ({ value, label, onInc, onDec }) => {
   const rootRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -78,6 +76,6 @@ const Duration: FC<{
       </table>
     </div>
   );
-});
+};
 
 export { Duration };

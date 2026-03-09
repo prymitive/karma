@@ -57,14 +57,14 @@ const FilteringCounterBadge: FC<{
     [alertStore.filters, name, value, isAppend],
   );
 
-  if (!alwaysVisible && counter === 0) return null;
-
   const cs = GetClassAndStyle(
     alertStore,
     name,
     value,
     "rounded-pill components-label-with-hover",
   );
+
+  if (!alwaysVisible && counter === 0) return null;
 
   return (
     <TooltipWrapper

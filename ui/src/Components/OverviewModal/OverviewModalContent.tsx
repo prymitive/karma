@@ -64,7 +64,7 @@ const LabelsTable: FC<{
   counters: CountersResponseT;
   showAllLabels: boolean;
   toggleAllLabels: () => void;
-}> = observer(({ alertStore, counters, showAllLabels, toggleAllLabels }) => (
+}> = ({ alertStore, counters, showAllLabels, toggleAllLabels }) => (
   <>
     <table
       className="table table-borderless top-labels"
@@ -104,7 +104,7 @@ const LabelsTable: FC<{
       </tbody>
     </table>
   </>
-));
+);
 
 const NothingToShow: FC = () => (
   <div className="px-2 py-5 bg-transparent">
