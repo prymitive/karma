@@ -1,7 +1,7 @@
 package models_test
 
 import (
-	"sort"
+	"slices"
 	"testing"
 	"time"
 
@@ -83,7 +83,7 @@ func TestAlertListSort(t *testing.T) {
 	iterations := 100
 	failures := 0
 	for i := 1; i <= iterations; i++ {
-		sort.Sort(al)
+		slices.SortFunc(al, models.CompareAlerts)
 		for _, testCase := range alertListSortTests {
 			testCase.alert.UpdateFingerprints()
 			if al[testCase.position].ContentFingerprint() != testCase.alert.ContentFingerprint() {
@@ -202,7 +202,7 @@ func TestAlertGroupContentFingerprint(t *testing.T) {
 				alert.UpdateFingerprints()
 				alerts = append(alerts, alert)
 			}
-			sort.Sort(alerts)
+			slices.SortFunc(alerts, models.CompareAlerts)
 			testCase.ag.Alerts = alerts
 			// get alert group fingerprint
 			fp := testCase.ag.ContentFingerprint()
@@ -229,6 +229,45 @@ func TestFingerprint(t *testing.T) {
 	}
 	if ag.LabelsFingerprint() == ag.ContentFingerprint() {
 		t.Errorf("Expected LabelsFingerprint and ContentFingerprint to return different values")
+	}
+}
+
+func TestLabelsFingerprint(t *testing.T) {
+	// verifies that LabelsFingerprint produces non-empty output when labels are present
+	ag := models.AlertGroup{
+		Receiver: models.NewUniqueString("default"),
+		Labels: models.Labels{
+			{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("bar")},
+			{Name: models.NewUniqueString("baz"), Value: models.NewUniqueString("qux")},
+		},
+	}
+	fp := ag.LabelsFingerprint()
+	if fp == "" {
+		t.Error("LabelsFingerprint() returned empty string for group with labels")
+	}
+
+	// verifies that different labels produce a different fingerprint
+	ag2 := models.AlertGroup{
+		Receiver: models.NewUniqueString("default"),
+		Labels: models.Labels{
+			{Name: models.NewUniqueString("different"), Value: models.NewUniqueString("label")},
+		},
+	}
+	fp2 := ag2.LabelsFingerprint()
+	if fp == fp2 {
+		t.Errorf("LabelsFingerprint() should differ for groups with different labels, both returned %q", fp)
+	}
+
+	// verifies that same receiver and labels produce the same fingerprint
+	ag3 := models.AlertGroup{
+		Receiver: models.NewUniqueString("default"),
+		Labels: models.Labels{
+			{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("bar")},
+			{Name: models.NewUniqueString("baz"), Value: models.NewUniqueString("qux")},
+		},
+	}
+	if ag3.LabelsFingerprint() != fp {
+		t.Errorf("LabelsFingerprint() not stable: %q != %q", ag3.LabelsFingerprint(), fp)
 	}
 }
 

@@ -88,14 +88,14 @@ func DedupAlerts() []models.AlertGroup {
 			continue
 		}
 		ag := agList[0]
-		ag.Labels = transform.StripLables(
+		ag.Labels = transform.StripLabels(
 			config.Config.Labels.Keep, config.Config.Labels.Strip,
 			config.Config.Labels.CompiledKeepRegex, config.Config.Labels.CompiledStripRegex,
 			ag.Labels)
 		ag.Alerts = make(models.AlertList, 0, len(alerts))
 		for _, alert := range alerts {
 			// strip labels and annotations user doesn't want to see in the UI
-			alert.Labels = transform.StripLables(
+			alert.Labels = transform.StripLabels(
 				config.Config.Labels.Keep, config.Config.Labels.Strip,
 				config.Config.Labels.CompiledKeepRegex, config.Config.Labels.CompiledStripRegex,
 				alert.Labels)

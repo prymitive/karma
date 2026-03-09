@@ -1,6 +1,7 @@
 package models
 
 import (
+	"cmp"
 	"fmt"
 	"net/url"
 	"slices"
@@ -28,7 +29,7 @@ type Color struct {
 	Alpha uint8 `json:"alpha"`
 }
 
-func (c *Color) ToString() string {
+func (c *Color) String() string {
 	return fmt.Sprintf("rgba(%d,%d,%d,%d)", c.Red, c.Green, c.Blue, c.Alpha)
 }
 
@@ -55,19 +56,17 @@ type LabelValueStats struct {
 
 type LabelValueStatsList []LabelValueStats
 
-func (lvsl LabelValueStatsList) Len() int {
-	return len(lvsl)
-}
-
-func (lvsl LabelValueStatsList) Swap(i, j int) {
-	lvsl[i], lvsl[j] = lvsl[j], lvsl[i]
-}
-
-func (lvsl LabelValueStatsList) Less(i, j int) bool {
-	if lvsl[i].Hits == lvsl[j].Hits {
-		return sortorder.NaturalLess(lvsl[i].Value, lvsl[j].Value)
+func CompareLabelValueStats(a, b LabelValueStats) int {
+	if a.Hits != b.Hits {
+		return cmp.Compare(b.Hits, a.Hits)
 	}
-	return lvsl[i].Hits > lvsl[j].Hits
+	if sortorder.NaturalLess(a.Value, b.Value) {
+		return -1
+	}
+	if sortorder.NaturalLess(b.Value, a.Value) {
+		return 1
+	}
+	return 0
 }
 
 // LabelNameStats is used in the overview modal, it shows top labels across alerts
@@ -79,19 +78,11 @@ type LabelNameStats struct {
 
 type LabelNameStatsList []LabelNameStats
 
-func (lnsl LabelNameStatsList) Len() int {
-	return len(lnsl)
-}
-
-func (lnsl LabelNameStatsList) Swap(i, j int) {
-	lnsl[i], lnsl[j] = lnsl[j], lnsl[i]
-}
-
-func (lnsl LabelNameStatsList) Less(i, j int) bool {
-	if lnsl[i].Hits == lnsl[j].Hits {
-		return lnsl[i].Name < lnsl[j].Name
+func CompareLabelNameStats(a, b LabelNameStats) int {
+	if a.Hits != b.Hits {
+		return cmp.Compare(b.Hits, a.Hits)
 	}
-	return lnsl[i].Hits > lnsl[j].Hits
+	return cmp.Compare(a.Name, b.Name)
 }
 
 // APIAlertGroupSharedMaps defines shared part of APIAlertGroup
@@ -121,13 +112,8 @@ func (ag *APIAlertGroup) dedupLabels() {
 
 	for _, alert := range ag.Alerts {
 		for _, l := range alert.Labels {
-			key := fmt.Sprintf("%s\n%s", l.Name.Value(), l.Value.Value())
-			_, found := labelCounts[key]
-			if found {
-				labelCounts[key]++
-			} else {
-				labelCounts[key] = 1
-			}
+			key := l.Name.Value() + "\n" + l.Value.Value()
+			labelCounts[key]++
 		}
 	}
 
@@ -136,7 +122,7 @@ func (ag *APIAlertGroup) dedupLabels() {
 	for i, alert := range ag.Alerts {
 		newAlertLabels := Labels{}
 		for _, l := range alert.Labels {
-			key := fmt.Sprintf("%s\n%s", l.Name.Value(), l.Value.Value())
+			key := l.Name.Value() + "\n" + l.Value.Value()
 			if labelCounts[key] == totalAlerts {
 				sharedLabels = sharedLabels.Add(l)
 			} else {
@@ -183,27 +169,22 @@ func (ag *APIAlertGroup) dedupAnnotations() {
 
 	for _, alert := range ag.Alerts {
 		for _, annotation := range alert.Annotations {
-			key := fmt.Sprintf("%s\n%s", annotation.Name.Value(), annotation.Value.Value())
-			_, found := annotationCount[key]
-			if found {
-				annotationCount[key]++
-			} else {
-				annotationCount[key] = 1
-			}
+			key := annotation.Name.Value() + "\n" + annotation.Value.Value()
+			annotationCount[key]++
 		}
 	}
 
 	sharedAnnotations := Annotations{}
-	sharedKeys := []string{}
+	sharedKeys := map[string]struct{}{}
 
 	for i, alert := range ag.Alerts {
 		newAlertAnnotations := Annotations{}
 		for _, annotation := range alert.Annotations {
-			key := fmt.Sprintf("%s\n%s", annotation.Name.Value(), annotation.Value.Value())
+			key := annotation.Name.Value() + "\n" + annotation.Value.Value()
 			if annotationCount[key] == totalAlerts {
-				if !slices.Contains(sharedKeys, key) {
+				if _, ok := sharedKeys[key]; !ok {
 					sharedAnnotations = append(sharedAnnotations, annotation)
-					sharedKeys = append(sharedKeys, key)
+					sharedKeys[key] = struct{}{}
 				}
 			} else {
 				newAlertAnnotations = append(newAlertAnnotations, annotation)
@@ -222,20 +203,15 @@ func (ag *APIAlertGroup) dedupSilences() {
 
 	for _, alert := range ag.Alerts {
 		// process each cluster only once, rather than each alertmanager instance
-		clusters := []string{}
+		clusters := map[string]struct{}{}
 		for _, am := range alert.Alertmanager {
-			if slices.Contains(clusters, am.Cluster) {
+			if _, ok := clusters[am.Cluster]; ok {
 				continue
 			}
-			clusters = append(clusters, am.Cluster)
+			clusters[am.Cluster] = struct{}{}
 			for _, silenceID := range am.SilencedBy {
-				_, ok := silencesByCluster[am.Cluster]
-				if !ok {
+				if _, ok := silencesByCluster[am.Cluster]; !ok {
 					silencesByCluster[am.Cluster] = map[string]int{}
-				}
-				_, ok = silencesByCluster[am.Cluster][silenceID]
-				if !ok {
-					silencesByCluster[am.Cluster][silenceID] = 0
 				}
 				silencesByCluster[am.Cluster][silenceID]++
 			}

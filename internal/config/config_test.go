@@ -310,9 +310,20 @@ func TestUrlSecretTest(t *testing.T) {
 	}
 }
 
-// FIXME check logged values
 func TestLogValues(_ *testing.T) {
 	_, _ = mockConfigRead()
+	// add servers and auth users to exercise sanitization branches in LogValues
+	Config.Alertmanager.Servers = append(Config.Alertmanager.Servers, AlertmanagerConfig{
+		Cluster:     "cluster1",
+		Name:        "am1",
+		URI:         "http://user:pass@localhost:9093",
+		ExternalURI: "http://user:pass@am.example.com",
+		Headers:     map[string]string{"Authorization": "Bearer secret"},
+	})
+	Config.Authentication.BasicAuth.Users = append(Config.Authentication.BasicAuth.Users, AuthenticationUser{
+		Username: "admin",
+		Password: "secret",
+	})
 	Config.LogValues()
 }
 

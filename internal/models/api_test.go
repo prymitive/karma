@@ -3,13 +3,45 @@ package models_test
 import (
 	"bytes"
 	"encoding/json"
-	"sort"
+	"slices"
 	"testing"
 
 	"github.com/beme/abide"
 
 	"github.com/prymitive/karma/internal/models"
 )
+
+func TestColorString(t *testing.T) {
+	type testCaseT struct {
+		color    models.Color
+		expected string
+	}
+
+	testCases := []testCaseT{
+		// verifies zero-value color produces all zeros
+		{
+			color:    models.Color{Red: 0, Green: 0, Blue: 0, Alpha: 0},
+			expected: "rgba(0,0,0,0)",
+		},
+		// verifies max-value color produces all 255s
+		{
+			color:    models.Color{Red: 255, Green: 255, Blue: 255, Alpha: 255},
+			expected: "rgba(255,255,255,255)",
+		},
+		// verifies mixed values are formatted correctly
+		{
+			color:    models.Color{Red: 10, Green: 20, Blue: 30, Alpha: 128},
+			expected: "rgba(10,20,30,128)",
+		},
+	}
+
+	for _, tc := range testCases {
+		result := tc.color.String()
+		if result != tc.expected {
+			t.Errorf("Color.String() returned %q, expected %q", result, tc.expected)
+		}
+	}
+}
 
 func TestDedupSharedMaps(t *testing.T) {
 	ag := models.APIAlertGroup{
@@ -189,6 +221,105 @@ func TestDedupWithBadSource(t *testing.T) {
 	ag.DedupSharedMaps(nil)
 	if len(ag.Shared.Sources) > 0 {
 		t.Errorf("Expected empty sources list, got %v", ag.Shared.Sources)
+	}
+}
+
+func TestDedupSharedMapsWithDropNames(t *testing.T) {
+	// verifies that passing dropNames to DedupSharedMaps removes those labels
+	// from both group labels and alert labels
+	ag := models.APIAlertGroup{
+		AlertGroup: models.AlertGroup{
+			Receiver: models.NewUniqueString("default"),
+			Labels: models.Labels{
+				{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("TestAlert")},
+				{Name: models.NewUniqueString("cluster"), Value: models.NewUniqueString("prod")},
+			},
+			Alerts: models.AlertList{
+				models.Alert{
+					State: models.AlertStateActive,
+					Labels: models.Labels{
+						{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("TestAlert")},
+						{Name: models.NewUniqueString("cluster"), Value: models.NewUniqueString("prod")},
+						{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("1")},
+					},
+				},
+				models.Alert{
+					State: models.AlertStateActive,
+					Labels: models.Labels{
+						{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("TestAlert")},
+						{Name: models.NewUniqueString("cluster"), Value: models.NewUniqueString("prod")},
+						{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("2")},
+					},
+				},
+			},
+		},
+	}
+	ag.DedupSharedMaps([]string{"cluster"})
+
+	// "cluster" should be removed from group labels
+	if ag.Labels.Get("cluster") != nil {
+		t.Error("Expected 'cluster' label to be removed from group labels")
+	}
+	// "alertname" should remain in group labels
+	if ag.Labels.Get("alertname") == nil {
+		t.Error("Expected 'alertname' label to remain in group labels")
+	}
+	// alert labels should not contain "cluster" (dropped) or "alertname" (shared with group)
+	for i, alert := range ag.Alerts {
+		if alert.Labels.Get("cluster") != nil {
+			t.Errorf("Alert[%d]: expected 'cluster' label to be removed", i)
+		}
+		if alert.Labels.Get("alertname") != nil {
+			t.Errorf("Alert[%d]: expected 'alertname' label to be removed (shared with group)", i)
+		}
+	}
+}
+
+func TestCompareLabelValueStats(t *testing.T) {
+	type testCaseT struct {
+		a        models.LabelValueStats
+		b        models.LabelValueStats
+		expected int
+	}
+
+	testCases := []testCaseT{
+		// verifies that higher hits sorts before lower hits
+		{
+			a:        models.LabelValueStats{Value: "a", Hits: 10},
+			b:        models.LabelValueStats{Value: "b", Hits: 5},
+			expected: -1,
+		},
+		// verifies that lower hits sorts after higher hits
+		{
+			a:        models.LabelValueStats{Value: "a", Hits: 5},
+			b:        models.LabelValueStats{Value: "b", Hits: 10},
+			expected: 1,
+		},
+		// verifies that equal hits falls back to natural value ordering (a < b)
+		{
+			a:        models.LabelValueStats{Value: "a", Hits: 5},
+			b:        models.LabelValueStats{Value: "b", Hits: 5},
+			expected: -1,
+		},
+		// verifies that equal hits falls back to natural value ordering (b > a)
+		{
+			a:        models.LabelValueStats{Value: "b", Hits: 5},
+			b:        models.LabelValueStats{Value: "a", Hits: 5},
+			expected: 1,
+		},
+		// verifies that identical hits and values returns 0
+		{
+			a:        models.LabelValueStats{Value: "a", Hits: 5},
+			b:        models.LabelValueStats{Value: "a", Hits: 5},
+			expected: 0,
+		},
+	}
+
+	for _, tc := range testCases {
+		result := models.CompareLabelValueStats(tc.a, tc.b)
+		if result != tc.expected {
+			t.Errorf("CompareLabelValueStats(%v, %v) returned %d, expected %d", tc.a, tc.b, result, tc.expected)
+		}
 	}
 }
 
@@ -400,9 +531,9 @@ func TestNameStatsSort(t *testing.T) {
 	before := string(b)
 
 	for _, n := range nameStats {
-		sort.Sort(n.Values)
+		slices.SortFunc(n.Values, models.CompareLabelValueStats)
 	}
-	sort.Sort(nameStats)
+	slices.SortFunc(nameStats, models.CompareLabelNameStats)
 
 	a, err := json.Marshal(nameStats)
 	if err != nil {

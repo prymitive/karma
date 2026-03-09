@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"net/url"
 	"path"
+	"slices"
 	"sort"
 	"time"
 
@@ -52,7 +53,7 @@ func groups(c *client.AlertmanagerAPI, timeout time.Duration) ([]models.AlertGro
 		for k, v := range group.Labels {
 			ls = ls.Set(k, v)
 		}
-		sort.Sort(ls)
+		slices.SortFunc(ls, models.CompareLabels)
 		g := models.AlertGroup{
 			Receiver: models.NewUniqueString(*group.Receiver.Name),
 			Labels:   ls,
@@ -63,7 +64,7 @@ func groups(c *client.AlertmanagerAPI, timeout time.Duration) ([]models.AlertGro
 			for k, v := range alert.Labels {
 				ls = ls.Set(k, v)
 			}
-			sort.Sort(ls)
+			slices.SortFunc(ls, models.CompareLabels)
 			a := models.Alert{
 				Fingerprint:  *alert.Fingerprint,
 				Receiver:     models.NewUniqueString(*group.Receiver.Name),
