@@ -345,7 +345,7 @@ describe("History localStorage", () => {
   it("localStored persists observable changes to localStorage", () => {
     const { localStored } = require("Common/LocalStore");
     const { runInAction } = require("mobx");
-    const store = localStored("test_persist_key", { filters: [] as any[] });
+    const store = localStored("test_persist_key", { filters: [] as unknown[] });
 
     // Flush the initial write (reaction fires via setTimeout 0)
     jest.runAllTimers();

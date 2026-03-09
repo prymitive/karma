@@ -20,11 +20,12 @@ import { EmptyAPIResponse } from "__fixtures__/Fetch";
 import { DefaultsBase64 } from "__fixtures__/Defaults";
 import { mockMatchMedia } from "__fixtures__/matchMedia";
 
-const settingsElement = {
-  dataset: {
-    defaultFiltersBase64: "WyJmb289YmFyIiwiYmFyPX5iYXoiXQ==",
-  },
-};
+const settingsElement = document.createElement("span");
+settingsElement.dataset.defaultFiltersBase64 =
+  "WyJmb289YmFyIiwiYmFyPX5iYXoiXQ==";
+
+const defaultsElement = document.createElement("span");
+defaultsElement.innerHTML = DefaultsBase64;
 
 beforeEach(() => {
   window.matchMedia = mockMatchMedia({});
@@ -41,7 +42,7 @@ it("renders without crashing with missing defaults div", async () => {
     .spyOn(global.document, "getElementById")
     .mockImplementation((name: string) => {
       return name === "settings"
-        ? (settingsElement as any)
+        ? settingsElement
         : name === "defaults"
           ? null
           : name === "root"
@@ -71,11 +72,9 @@ it("renders without crashing with defaults present", async () => {
     .spyOn(global.document, "getElementById")
     .mockImplementation((name: string) => {
       return name === "settings"
-        ? (settingsElement as any)
+        ? settingsElement
         : name === "defaults"
-          ? {
-              innerHTML: DefaultsBase64,
-            }
+          ? defaultsElement
           : name === "root"
             ? root
             : null;

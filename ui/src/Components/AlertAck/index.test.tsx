@@ -310,7 +310,7 @@ describe("<AlertAck />", () => {
     silenceFormStore.data.setAuthor("karma/ui");
     await renderAndClick();
     expect(
-      JSON.parse((fetchMock.callHistory.lastCall()?.options as any).body),
+      JSON.parse(fetchMock.callHistory.lastCall()!.options.body as string),
     ).toEqual({
       comment: "COMMENT",
       createdBy: "karma/ui",
@@ -342,7 +342,7 @@ describe("<AlertAck />", () => {
     });
     await renderAndClick();
     expect(
-      JSON.parse((fetchMock.callHistory.lastCall()?.options as any).body),
+      JSON.parse(fetchMock.callHistory.lastCall()!.options.body as string),
     ).toEqual({
       comment: "comment",
       createdBy: "me",
@@ -374,7 +374,7 @@ describe("<AlertAck />", () => {
     });
     await renderAndClick();
     expect(
-      JSON.parse((fetchMock.callHistory.lastCall()?.options as any).body),
+      JSON.parse(fetchMock.callHistory.lastCall()!.options.body as string),
     ).toEqual({
       comment:
         "ACK! This alert was acknowledged using karma on Tue, 01 Feb 2000 00:00:00 GMT",
@@ -407,7 +407,7 @@ describe("<AlertAck />", () => {
     });
     await renderAndClick();
     const comment = JSON.parse(
-      (fetchMock.callHistory.lastCall()?.options as any).body,
+      fetchMock.callHistory.lastCall()!.options.body as string,
     ).comment;
     expect(comment).not.toEqual(
       "ACK! This alert was acknowledged using karma on Tue Feb 01 2000 00:00:00 GMT",
@@ -432,7 +432,7 @@ describe("<AlertAck />", () => {
     });
     await renderAndClick();
     expect(
-      JSON.parse((fetchMock.callHistory.lastCall()?.options as any).body),
+      JSON.parse(fetchMock.callHistory.lastCall()!.options.body as string),
     ).toEqual({
       comment: "FOO: bar",
       createdBy: "auth@example.com",
@@ -466,7 +466,7 @@ describe("<AlertAck />", () => {
     silenceFormStore.data.setAuthor("bob@example.com");
     await renderAndClick();
     expect(
-      JSON.parse((fetchMock.callHistory.lastCall()?.options as any).body),
+      JSON.parse(fetchMock.callHistory.lastCall()!.options.body as string),
     ).toEqual({
       comment: "FOO: bar",
       createdBy: "bob@example.com",
@@ -499,7 +499,7 @@ describe("<AlertAck />", () => {
     silenceFormStore.data.setAuthor("");
     await renderAndClick();
     expect(
-      JSON.parse((fetchMock.callHistory.lastCall()?.options as any).body),
+      JSON.parse(fetchMock.callHistory.lastCall()!.options.body as string),
     ).toEqual({
       comment: "FOO: bar",
       createdBy: "me",

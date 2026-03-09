@@ -7,6 +7,11 @@ class ResizeObserverPolyfill {
   disconnect() {}
 }
 
+interface GlobalWithResizeObserver {
+  ResizeObserver: typeof ResizeObserverPolyfill;
+  window: { ResizeObserver: typeof ResizeObserverPolyfill };
+}
+
 export default class CustomTestEnvironment extends TestEnvironment {
   async setup() {
     await super.setup();
@@ -14,11 +19,8 @@ export default class CustomTestEnvironment extends TestEnvironment {
     this.global.Response = Response;
     this.global.ReadableStream = ReadableStream;
     this.global.fetch = fetch;
-    // Polyfill ResizeObserver for react-cool-dimensions (checks window.ResizeObserver)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (this.global as any).ResizeObserver = ResizeObserverPolyfill;
-    // Also set on window for libraries that check window.ResizeObserver
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (this.global as any).window.ResizeObserver = ResizeObserverPolyfill;
+    const g = this.global as unknown as GlobalWithResizeObserver;
+    g.ResizeObserver = ResizeObserverPolyfill;
+    g.window.ResizeObserver = ResizeObserverPolyfill;
   }
 }

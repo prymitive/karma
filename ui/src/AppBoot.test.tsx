@@ -20,18 +20,14 @@ const MockSettings = (defaultFilters: string[]) => {
     const filtersBase64 = btoa(JSON.stringify(defaultFilters));
     const settings = document.createElement("span");
     settings.id = "settings";
-    (settings as any).dataset = {
-      defaultFiltersBase64: filtersBase64,
-    };
+    settings.dataset.defaultFiltersBase64 = filtersBase64;
     return settings;
   });
 };
 
-const FiltersSetting = (filters: any) => {
+const FiltersSetting = (filters: unknown) => {
   const settings = document.createElement("span");
-  (settings as any).dataset = {
-    defaultFiltersBase64: btoa(JSON.stringify(filters)),
-  };
+  settings.dataset.defaultFiltersBase64 = btoa(JSON.stringify(filters));
   return ParseDefaultFilters(settings);
 };
 
@@ -45,20 +41,19 @@ describe("SettingsElement()", () => {
     const spy = MockSettings([]);
     const settings = SettingsElement();
     expect(spy).toHaveBeenCalledTimes(1);
-    expect((settings as any).id).toBe("settings");
+    expect(settings?.id).toBe("settings");
   });
 });
 
 describe("ParseDefaultFilters()", () => {
   it("returns [] on missing filters attr", () => {
     const settings = document.createElement("span");
-    (settings as any).dataset = {};
     expect(ParseDefaultFilters(settings)).toHaveLength(0);
   });
 
   it("returns [] on empty filters attr", () => {
     const settings = document.createElement("span");
-    (settings as any).dataset = { defaultFiltersBase64: "" };
+    settings.dataset.defaultFiltersBase64 = "";
     expect(ParseDefaultFilters(settings)).toHaveLength(0);
   });
 
@@ -82,9 +77,7 @@ describe("ParseDefaultFilters()", () => {
   it("ignores template placeholder values", () => {
     // Scenario: default filters attribute rendered with the literal template placeholder should be ignored
     const settings = document.createElement("span");
-    (settings as any).dataset = {
-      defaultFiltersBase64: "{{ .DefaultFilter }}",
-    };
+    settings.dataset.defaultFiltersBase64 = "{{ .DefaultFilter }}";
     expect(ParseDefaultFilters(settings)).toHaveLength(0);
   });
 });

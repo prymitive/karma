@@ -511,7 +511,7 @@ describe("useFetchGet", () => {
           });
           return "ok";
         },
-      } as any);
+      } as unknown as Response);
     jest.useRealTimers();
 
     const Component = () => {

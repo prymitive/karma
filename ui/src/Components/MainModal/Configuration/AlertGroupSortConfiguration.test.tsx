@@ -2,7 +2,7 @@ import { render, fireEvent } from "@testing-library/react";
 
 import { MockThemeContext } from "__fixtures__/Theme";
 import { useFetchGetMock } from "__fixtures__/useFetchGet";
-import { Settings } from "Stores/Settings";
+import { Settings, type SortOrderT } from "Stores/Settings";
 import { ThemeContext } from "Components/Theme";
 import { AlertGroupSortConfiguration } from "./AlertGroupSortConfiguration";
 
@@ -43,7 +43,7 @@ describe("<AlertGroupSortConfiguration />", () => {
   });
 
   it("invalid sortOrder value is reset on mount", () => {
-    settingsStore.gridConfig.setSortOrder("badValue" as any);
+    settingsStore.gridConfig.setSortOrder("badValue" as unknown as SortOrderT);
     renderConfiguration();
     expect(settingsStore.gridConfig.config.sortOrder).toBe(
       settingsStore.gridConfig.options.default.value,

@@ -145,7 +145,7 @@ describe("<ModalInner />", () => {
 
   it("scroll isn't enabled if ref is null", () => {
     const useRefSpy = jest.spyOn(React, "useRef").mockImplementation(() =>
-      Object.defineProperty({} as any, "current", {
+      Object.defineProperty({} as { current: unknown }, "current", {
         get: () => null,
         set: () => {},
       }),
