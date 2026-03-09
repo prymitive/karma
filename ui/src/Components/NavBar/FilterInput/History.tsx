@@ -228,19 +228,15 @@ const History: FC<{
       // make a JSON dump for comparing later with what's already stored
       const filtersJSON = JSON.stringify(validAppliedFilters);
 
-      // rewrite history putting current filter set on top, this will move
-      // it up if user selects a filter set that was already in history
+      // don't rewrite history if filters haven't changed
+      if (history.config.filters.some((f) => JSON.stringify(f) === filtersJSON))
+        return;
+
       const newHistory = [
         ...[validAppliedFilters],
-        ...history.config.filters.filter(
-          (f) => JSON.stringify(f) !== filtersJSON,
-        ),
+        ...history.config.filters,
       ].slice(0, 8);
-      if (
-        JSON.stringify(newHistory) !== JSON.stringify(history.config.filters)
-      ) {
-        history.setFilters(newHistory);
-      }
+      history.setFilters(newHistory);
     });
     return () => {
       disposeAutorun();

@@ -459,6 +459,80 @@ describe("History localStorage", () => {
     await act(() => promise);
   });
 
+  // Verifies that re-applying the exact same filter set does not cause
+  // a redundant write to history storage.
+  it("does not write to history when filters have not changed", async () => {
+    const promise = Promise.resolve();
+    const { container } = renderHistory();
+
+    // Apply filter set A
+    act(() => {
+      alertStore.filters.setFilterValues([AppliedFilter("foo", "=", "bar")]);
+      jest.runOnlyPendingTimers();
+    });
+
+    const toggle = container.querySelector("button.cursor-pointer");
+    fireEvent.click(toggle!);
+    expect(container.querySelectorAll("button.dropdown-item")).toHaveLength(1);
+    fireEvent.click(toggle!);
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
+
+    // Read localStorage to get the current persisted state
+    const historyBefore = localStorage.getItem("filters");
+
+    // Re-apply the exact same filter set A
+    act(() => {
+      alertStore.filters.setFilterValues([AppliedFilter("foo", "=", "bar")]);
+      jest.runOnlyPendingTimers();
+    });
+
+    // History in localStorage should be identical — no redundant write
+    const historyAfter = localStorage.getItem("filters");
+    expect(historyAfter).toBe(historyBefore);
+    await act(() => promise);
+  });
+
+  // Verifies that re-applying a filter set that already exists in history
+  // does not reorder the history entries.
+  it("does not reorder history when re-applying a filter set already on top", async () => {
+    const promise = Promise.resolve();
+    const { container } = renderHistory();
+
+    // Apply filter set A then B, so history is [B, A]
+    act(() => {
+      alertStore.filters.setFilterValues([
+        AppliedFilter("cluster", "=", "prod"),
+      ]);
+      jest.runOnlyPendingTimers();
+    });
+    act(() => {
+      alertStore.filters.setFilterValues([
+        AppliedFilter("env", "=", "staging"),
+      ]);
+      jest.runOnlyPendingTimers();
+    });
+
+    // Re-apply filter set A — it should NOT jump to the top
+    act(() => {
+      alertStore.filters.setFilterValues([
+        AppliedFilter("cluster", "=", "prod"),
+      ]);
+      jest.runOnlyPendingTimers();
+    });
+
+    const toggle = container.querySelector("button.cursor-pointer");
+    fireEvent.click(toggle!);
+
+    const items = container.querySelectorAll("button.dropdown-item");
+    expect(items).toHaveLength(2);
+    // Order should remain [B, A] — "env=staging" on top
+    expect(items[0].textContent).toBe("env=staging");
+    expect(items[1].textContent).toBe("cluster=prod");
+    await act(() => promise);
+  });
+
   // Demonstrates the cross-tab race condition. When tab B receives a
   // StorageEvent with tab A's history and then tab B's own alertStore
   // filters change, the History component's autorun rebuilds history
