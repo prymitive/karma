@@ -1,5 +1,6 @@
 import { FC, useEffect, useState, MouseEvent, SyntheticEvent } from "react";
 
+import { action } from "mobx";
 import { observer } from "mobx-react-lite";
 
 import copy from "copy-to-clipboard";
@@ -177,7 +178,7 @@ const SilenceForm: FC<{
     silenceFormStore.data.setComment(comment);
   };
 
-  const handleSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
+  const handleSubmit = action((event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const rbc: { [label: string]: ClusterRequestT } = {};
@@ -192,7 +193,7 @@ const SilenceForm: FC<{
       silenceFormStore.data.setStage("preview");
 
     silenceFormStore.data.setWasValidated(true);
-  };
+  });
 
   return (
     <form onSubmit={handleSubmit} autoComplete="on">

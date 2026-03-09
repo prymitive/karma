@@ -7,6 +7,8 @@ import React, {
   useEffect,
 } from "react";
 
+import { observer } from "mobx-react-lite";
+
 import { useFloating, shift, flip, offset, size } from "@floating-ui/react-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -195,9 +197,11 @@ const SilenceDeleteModalContent: FC<{
 export const MassDeleteProgress: FC<{
   alertStore: AlertStore;
   silences: ClusterSilenceT[];
-}> = ({ alertStore, silences }) => {
+}> = observer(({ alertStore, silences }) => {
   const [done, setDone] = useState(0);
   const [errors, setErrors] = useState<string[]>([]);
+
+  const readWriteAlertmanagers = alertStore.data.readWriteAlertmanagers;
 
   useEffect(() => {
     const deleteSilence = async (
@@ -237,7 +241,7 @@ export const MassDeleteProgress: FC<{
 
     const timers: ReturnType<typeof setTimeout>[] = [];
     silences.forEach((silence, index) => {
-      const ams = alertStore.data.readWriteAlertmanagers.filter(
+      const ams = readWriteAlertmanagers.filter(
         (u) => u.cluster === silence.cluster,
       );
       // eslint-disable-next-line @eslint-react/web-api/no-leaked-timeout -- false positive: timers are collected and cleared in the useEffect cleanup below
@@ -296,4 +300,4 @@ export const MassDeleteProgress: FC<{
       ) : null}
     </>
   );
-};
+});

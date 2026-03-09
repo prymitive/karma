@@ -1,5 +1,6 @@
 import { FC, useEffect, useState } from "react";
 
+import { action } from "mobx";
 import { observer } from "mobx-react-lite";
 
 import { parseISO } from "date-fns/parseISO";
@@ -55,14 +56,14 @@ const ManagedSilence: FC<{
 
     const [showDetails, setShowDetails] = useState<boolean>(isOpen);
 
-    const onEditSilence = () => {
+    const onEditSilence = action(() => {
       const alertmanager = GetAlertmanager(alertStore, cluster);
 
       silenceFormStore.data.fillFormFromSilence(alertmanager, silence);
       silenceFormStore.data.resetProgress();
       silenceFormStore.tab.setTab("editor");
       silenceFormStore.toggle.show();
-    };
+    });
 
     const [progress, setProgress] = useState<number>(() =>
       calculatePercent(silence.startsAt, silence.endsAt),
