@@ -1,6 +1,3 @@
-// MUST be first thing we import
-import "./polyfills";
-
 import { createRoot } from "react-dom/client";
 
 import {
