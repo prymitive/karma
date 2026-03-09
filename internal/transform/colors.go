@@ -59,7 +59,7 @@ func parseCustomColor(colorStore models.LabelsColorMap, key, val, customColor st
 	}
 	colorStore[key][val] = models.LabelColors{
 		Brightness: brightness,
-		Background: bc.ToString(),
+		Background: bc.String(),
 	}
 }
 
@@ -102,7 +102,7 @@ func ColorLabel(colorStore models.LabelsColorMap, key, val string) {
 			brightness := rgbToBrightness(bc.Red, bc.Green, bc.Blue)
 			colorStore[key][val] = models.LabelColors{
 				Brightness: brightness,
-				Background: bc.ToString(),
+				Background: bc.String(),
 			}
 		}
 	}

@@ -1,6 +1,7 @@
 package models
 
 import (
+	"cmp"
 	"encoding/json"
 	"strconv"
 	"time"
@@ -65,33 +66,37 @@ func (ls Labels) Map() map[string]string {
 	return m
 }
 
-func (ls Labels) Len() int {
-	return len(ls)
-}
-
-func (ls Labels) Swap(i, j int) {
-	ls[i], ls[j] = ls[j], ls[i]
-}
-
-func (ls Labels) Less(i, j int) bool {
-	ai, aj := -1, -1
+func CompareLabels(a, b Label) int {
+	ai, bi := -1, -1
 	for index, name := range config.Config.Labels.Order {
-		if ls[i].Name.Value() == name {
+		if a.Name.Value() == name {
 			ai = index
-		} else if ls[j].Name.Value() == name {
-			aj = index
+		} else if b.Name.Value() == name {
+			bi = index
 		}
-		if ai >= 0 && aj >= 0 {
-			return ai < aj
+		if ai >= 0 && bi >= 0 {
+			return cmp.Compare(ai, bi)
 		}
 	}
-	if ai != aj {
-		return aj < ai
+	if ai != bi {
+		return cmp.Compare(bi, ai)
 	}
-	if ls[i].Name.Value() == ls[j].Name.Value() {
-		return sortorder.NaturalLess(ls[i].Value.Value(), ls[j].Value.Value())
+	if a.Name.Value() == b.Name.Value() {
+		if sortorder.NaturalLess(a.Value.Value(), b.Value.Value()) {
+			return -1
+		}
+		if sortorder.NaturalLess(b.Value.Value(), a.Value.Value()) {
+			return 1
+		}
+		return 0
 	}
-	return sortorder.NaturalLess(ls[i].Name.Value(), ls[j].Name.Value())
+	if sortorder.NaturalLess(a.Name.Value(), b.Name.Value()) {
+		return -1
+	}
+	if sortorder.NaturalLess(b.Name.Value(), a.Name.Value()) {
+		return 1
+	}
+	return 0
 }
 
 func (ls Labels) Get(name string) *Label {

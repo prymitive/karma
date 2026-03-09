@@ -5,6 +5,7 @@ import (
 	"maps"
 	"net/http"
 	"net/url"
+	"slices"
 	"sort"
 	"sync"
 	"time"
@@ -310,7 +311,7 @@ func (am *Alertmanager) pullAlerts(version string) error {
 			autocompleteMap[hint.Value] = &hint
 		}
 
-		sort.Sort(&alerts)
+		slices.SortFunc(alerts, models.CompareAlerts)
 		ag.Alerts = alerts
 
 		// Hash is a checksum of all alerts, used to tell when any alert in the group changed

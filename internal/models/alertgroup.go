@@ -1,6 +1,7 @@
 package models
 
 import (
+	"cmp"
 	"io"
 	"strconv"
 	"time"
@@ -11,23 +12,15 @@ import (
 // AlertList is flat list of karmaAlert objects
 type AlertList []Alert
 
-func (a AlertList) Len() int {
-	return len(a)
-}
-
-func (a AlertList) Swap(i, j int) {
-	a[i], a[j] = a[j], a[i]
-}
-
-func (a AlertList) Less(i, j int) bool {
+func CompareAlerts(a, b Alert) int {
 	// compare timestamps, if equal compare fingerprints to stable sort order
-	if a[i].StartsAt.After(a[j].StartsAt) {
-		return true
+	if a.StartsAt.After(b.StartsAt) {
+		return -1
 	}
-	if a[i].StartsAt.Before(a[j].StartsAt) {
-		return false
+	if a.StartsAt.Before(b.StartsAt) {
+		return 1
 	}
-	return a[i].LabelsFingerprint() < a[j].LabelsFingerprint()
+	return cmp.Compare(a.LabelsFingerprint(), b.LabelsFingerprint())
 }
 
 // AlertGroup is vanilla Alertmanager group, but alerts are flattened

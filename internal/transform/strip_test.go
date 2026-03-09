@@ -180,7 +180,7 @@ func TestStripLables(t *testing.T) {
 	for _, testCase := range stripLabelTests {
 		keepRegex := getCompiledRegex(testCase.keepRegex, t)
 		stripRegex := getCompiledRegex(testCase.stripRegex, t)
-		labels := transform.StripLables(testCase.keep, testCase.strip, keepRegex, stripRegex, testCase.before)
+		labels := transform.StripLabels(testCase.keep, testCase.strip, keepRegex, stripRegex, testCase.before)
 		if !reflect.DeepEqual(labels, testCase.after) {
 			t.Errorf("StripLables failed, expected %v, got %v", testCase.after, labels)
 		}

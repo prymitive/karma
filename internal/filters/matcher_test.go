@@ -132,6 +132,58 @@ func TestNegativeRegexpMatcher(t *testing.T) {
 	}
 }
 
+func TestRegexpMatcherWithStringValB(t *testing.T) {
+	tests := []matchTest{
+		// verifies that passing a raw string pattern (not pre-compiled) compiles and matches
+		{"abcdef", "^abc", true, true},
+		// verifies cache hit on the same string pattern
+		{"abcdef", "^abc", true, true},
+		// verifies that a non-matching raw string pattern returns false
+		{"xyz", "^abc", true, false},
+	}
+	for _, mt := range tests {
+		m := regexpMatcher{}
+		if result := m.Compare(mt.ValA, mt.ValB); result != mt.Expacted {
+			t.Errorf("RegexpMatcher(%#v, %#v string) returned %v when %v was expected", mt.ValA, mt.ValB, result, mt.Expacted)
+		}
+	}
+}
+
+func TestRegexpMatcherWithInvalidPattern(t *testing.T) {
+	// verifies that an invalid regex pattern string returns false instead of panicking
+	m := regexpMatcher{}
+	result := m.Compare("foo", "[invalid")
+	if result != false {
+		t.Errorf("RegexpMatcher with invalid pattern returned %v, expected false", result)
+	}
+}
+
+func TestNegativeRegexpMatcherWithStringValB(t *testing.T) {
+	tests := []matchTest{
+		// verifies that passing a raw string pattern (not pre-compiled) compiles and negation works
+		{"abcdef", "^abcdef$", true, false},
+		// verifies cache hit on the same string pattern
+		{"abcdef", "^abcdef$", true, false},
+		// verifies that a non-matching raw string pattern returns true (negated)
+		{"xyz", "^abcdef$", true, true},
+	}
+	for _, mt := range tests {
+		m := negativeRegexMatcher{}
+		if result := m.Compare(mt.ValA, mt.ValB); result != mt.Expacted {
+			t.Errorf("NegativeRegexMatcher(%#v, %#v string) returned %v when %v was expected", mt.ValA, mt.ValB, result, mt.Expacted)
+		}
+	}
+}
+
+func TestNegativeRegexpMatcherWithInvalidPattern(t *testing.T) {
+	// verifies that an invalid regex pattern string returns false instead of panicking
+	m := negativeRegexMatcher{}
+	result := m.Compare("foo", "[invalid")
+	if result != false {
+		t.Errorf("NegativeRegexMatcher with invalid pattern returned %v, expected false", result)
+	}
+}
+
 func TestNewMatcher(t *testing.T) {
 	operators := []string{
 		equalOperator,

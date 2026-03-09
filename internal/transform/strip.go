@@ -3,17 +3,16 @@ package transform
 import (
 	"regexp"
 	"slices"
-	"sort"
 	"strings"
 
 	"github.com/prymitive/karma/internal/models"
 	sliceutils "github.com/prymitive/karma/internal/slices"
 )
 
-// StripLables allows filtering out some labels from alerts
+// StripLabels allows filtering out some labels from alerts
 // it takes the list of label keys to ignore and alert label map
 // it will return label map without labels found on the ignore list
-func StripLables(keptLabels, ignoredLabels []string, keptLabelsRegex, ignoredLabelsRegex []*regexp.Regexp,
+func StripLabels(keptLabels, ignoredLabels []string, keptLabelsRegex, ignoredLabelsRegex []*regexp.Regexp,
 	sourceLabels models.Labels,
 ) models.Labels {
 	// empty keep lists means keep everything by default
@@ -39,7 +38,7 @@ func StripLables(keptLabels, ignoredLabels []string, keptLabelsRegex, ignoredLab
 			labels = labels.Add(l)
 		}
 	}
-	sort.Sort(labels)
+	slices.SortFunc(labels, models.CompareLabels)
 	return labels
 }
 

@@ -426,7 +426,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 						}
 					}
 				}
-				sort.Sort(ag.Alerts)
+				slices.SortFunc(ag.Alerts, models.CompareAlerts)
 				ag.LatestStartsAt = ag.FindLatestStartsAt()
 				ag.Hash = ag.ContentFingerprint()
 				apiAG := models.APIAlertGroup{AlertGroup: *ag, TotalAlerts: len(ag.Alerts)}
@@ -584,12 +584,13 @@ func autocomplete(w http.ResponseWriter, r *http.Request) {
 
 	dedupedAutocomplete := alertmanager.DedupAutocomplete()
 
+	lowerTerm := strings.ToLower(term)
 	for _, hint := range dedupedAutocomplete {
-		if strings.HasPrefix(strings.ToLower(hint.Value.Value()), strings.ToLower(term)) {
+		if strings.HasPrefix(strings.ToLower(hint.Value.Value()), lowerTerm) {
 			acData = append(acData, hint.Value.Value())
 		} else {
 			for _, token := range hint.Tokens {
-				if strings.HasPrefix(strings.ToLower(token.Value()), strings.ToLower(term)) {
+				if strings.HasPrefix(strings.ToLower(token.Value()), lowerTerm) {
 					acData = append(acData, hint.Value.Value())
 				}
 			}
@@ -789,7 +790,7 @@ func alertList(w http.ResponseWriter, r *http.Request) {
 		for k, v := range labels {
 			alert = alert.Set(k, v)
 		}
-		sort.Sort(alert)
+		slices.SortFunc(alert, models.CompareLabels)
 		al.Alerts = append(al.Alerts, alert)
 	}
 	sortSliceOfLabels(al.Alerts, sortKeys, "alertname")

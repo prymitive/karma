@@ -4,36 +4,41 @@ import (
 	"crypto/sha1"
 	"encoding/hex"
 	"regexp"
-	"slices"
 )
 
 // StringSliceToSHA1 returns a SHA1 hash computed from a slice of strings
-func StringSliceToSHA1(stringArray []string) (string, error) {
+func StringSliceToSHA1(stringArray []string) string {
 	h := sha1.New()
 	for _, s := range stringArray {
 		_, _ = h.Write([]byte(s))
 		_, _ = h.Write([]byte("\n"))
 	}
-	return hex.EncodeToString(h.Sum(nil)), nil
+	return hex.EncodeToString(h.Sum(nil))
 }
 
 func StringSliceDiff(slice1, slice2 []string) ([]string, []string) {
 	missing := []string{}
 	extra := []string{}
 
-	var found bool
+	set1 := make(map[string]struct{}, len(slice1))
+	for _, s := range slice1 {
+		set1[s] = struct{}{}
+	}
 
-	for _, s1 := range slice1 {
-		found = slices.Contains(slice2, s1)
-		if !found {
-			missing = append(missing, s1)
+	set2 := make(map[string]struct{}, len(slice2))
+	for _, s := range slice2 {
+		set2[s] = struct{}{}
+	}
+
+	for _, s := range slice1 {
+		if _, ok := set2[s]; !ok {
+			missing = append(missing, s)
 		}
 	}
 
-	for _, s2 := range slice2 {
-		found = slices.Contains(slice1, s2)
-		if !found {
-			extra = append(extra, s2)
+	for _, s := range slice2 {
+		if _, ok := set1[s]; !ok {
+			extra = append(extra, s)
 		}
 	}
 

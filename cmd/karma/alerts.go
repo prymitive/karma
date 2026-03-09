@@ -52,7 +52,7 @@ func countersToLabelStats(counters map[string]map[string]int) models.LabelNameSt
 			nameStats.Values[i].Percent = int(math.Floor((float64(value.Hits) / float64(nameStats.Hits)) * 100.0))
 			totalPercent += nameStats.Values[i].Percent
 		}
-		sort.Sort(nameStats.Values)
+		slices.SortFunc(nameStats.Values, models.CompareLabelValueStats)
 		for totalPercent < 100 {
 			for i := range nameStats.Values {
 				nameStats.Values[i].Percent++
@@ -72,7 +72,7 @@ func countersToLabelStats(counters map[string]map[string]int) models.LabelNameSt
 		data = append(data, nameStats)
 	}
 
-	sort.Sort(data)
+	slices.SortFunc(data, models.CompareLabelNameStats)
 
 	return data
 }
@@ -272,7 +272,7 @@ func autoGridLabel(dedupedAlerts []models.AlertGroup) string {
 	var alertsCount int
 	labelToAlertCount := map[models.UniqueString]map[string]int{}
 	for _, ag := range dedupedAlerts {
-		alertsCount += ag.Alerts.Len()
+		alertsCount += len(ag.Alerts)
 		for _, alert := range ag.Alerts {
 			for _, l := range alert.Labels {
 				if _, ok := labelToAlertCount[l.Name]; !ok {
@@ -375,7 +375,7 @@ func filterAlerts(dedupedAlerts []models.AlertGroup, fl []filters.FilterT) (filt
 			agCopy.Alerts = append(agCopy.Alerts, alert)
 			agCopy.StateCount[alert.State.Value()]++
 		}
-		if agCopy.Alerts.Len() > 0 {
+		if len(agCopy.Alerts) > 0 {
 			filteredAlerts = append(filteredAlerts, agCopy)
 		}
 	}

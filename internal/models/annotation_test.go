@@ -1,7 +1,6 @@
 package models_test
 
 import (
-	"sort"
 	"testing"
 	"unique"
 
@@ -211,7 +210,7 @@ func TestAnnotationsSort(t *testing.T) {
 			IsLink:  true,
 		},
 	}
-	sort.Stable(annotations)
+	models.SortAnnotations(annotations)
 	if annotations[0].Name.Value() != "abc" {
 		t.Errorf("Expected 'abc' to be first, got '%s'", annotations[0].Name.Value())
 	}
@@ -248,7 +247,7 @@ func TestAnnotationsCustomOrderSort(t *testing.T) {
 		},
 	}
 	config.Config.Annotations.Order = []string{"xyz", "yyz"}
-	sort.Stable(annotations)
+	models.SortAnnotations(annotations)
 	if annotations[0].Name.Value() != "xyz" {
 		t.Errorf("Expected 'xyz' to be first, got '%s'", annotations[0].Name.Value())
 	}
@@ -260,5 +259,37 @@ func TestAnnotationsCustomOrderSort(t *testing.T) {
 	}
 	if annotations[3].Name.Value() != "bar" {
 		t.Errorf("Expected 'bar' to be last, got '%s'", annotations[3].Name.Value())
+	}
+}
+
+func TestAnnotationsSortIdenticalNames(t *testing.T) {
+	// verifies that annotations with the same name are treated as equal by the comparator
+	config.Config.Annotations.Order = []string{}
+	annotations := models.Annotations{
+		models.Annotation{
+			Name:    models.NewUniqueString("dup"),
+			Value:   models.NewUniqueString("second"),
+			Visible: true,
+		},
+		models.Annotation{
+			Name:    models.NewUniqueString("dup"),
+			Value:   models.NewUniqueString("first"),
+			Visible: true,
+		},
+		models.Annotation{
+			Name:    models.NewUniqueString("aaa"),
+			Value:   models.NewUniqueString("value"),
+			Visible: true,
+		},
+	}
+	models.SortAnnotations(annotations)
+	if annotations[0].Name.Value() != "aaa" {
+		t.Errorf("Expected 'aaa' to be first, got '%s'", annotations[0].Name.Value())
+	}
+	if annotations[1].Name.Value() != "dup" {
+		t.Errorf("Expected 'dup' to be second, got '%s'", annotations[1].Name.Value())
+	}
+	if annotations[2].Name.Value() != "dup" {
+		t.Errorf("Expected 'dup' to be third, got '%s'", annotations[2].Name.Value())
 	}
 }

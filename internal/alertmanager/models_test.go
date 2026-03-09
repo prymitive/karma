@@ -1,6 +1,7 @@
 package alertmanager
 
 import (
+	"errors"
 	"fmt"
 	"testing"
 	"time"
@@ -9,6 +10,7 @@ import (
 
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/mapper/v017/models"
+	internalModels "github.com/prymitive/karma/internal/models"
 
 	"github.com/rs/zerolog"
 )
@@ -240,6 +242,141 @@ func TestAlertmanagerPullSilencesWithInvalidVersion(t *testing.T) {
 	err := am.pullSilences("0.0.1")
 	if err == nil {
 		t.Error("am.pullSilences(invalid version) didn't return any error")
+	}
+}
+
+func TestProbeVersionHTTPError(t *testing.T) {
+	// verifies that probeVersion returns empty string when the metrics endpoint is unreachable
+	zerolog.SetGlobalLevel(zerolog.PanicLevel)
+	defer zerolog.SetGlobalLevel(zerolog.ErrorLevel)
+
+	uri := "http://probe-http-error.localhost"
+	httpmock.RegisterResponder("GET", uri+"/metrics",
+		httpmock.NewErrorResponder(errors.New("connection refused")))
+
+	am, err := NewAlertmanager("cluster", "probe-http-err", uri)
+	if err != nil {
+		t.Fatalf("NewAlertmanager failed: %s", err)
+	}
+	version := am.probeVersion()
+	if version != "" {
+		t.Errorf("probeVersion() returned %q, expected empty string on HTTP error", version)
+	}
+}
+
+func TestProbeVersionInvalidMetrics(t *testing.T) {
+	// verifies that probeVersion returns empty string when metrics response contains no version info
+	zerolog.SetGlobalLevel(zerolog.PanicLevel)
+	defer zerolog.SetGlobalLevel(zerolog.ErrorLevel)
+
+	uri := "http://probe-invalid-metrics.localhost"
+	httpmock.RegisterResponder("GET", uri+"/metrics",
+		httpmock.NewStringResponder(200, "some_random_metric 1\n"))
+
+	am, err := NewAlertmanager("cluster", "probe-invalid", uri)
+	if err != nil {
+		t.Fatalf("NewAlertmanager failed: %s", err)
+	}
+	version := am.probeVersion()
+	if version != "" {
+		t.Errorf("probeVersion() returned %q, expected empty string on invalid metrics", version)
+	}
+}
+
+func TestIsHealthCheckAlertAllMatch(t *testing.T) {
+	// verifies that an alert matching all healthcheck filters is identified as a healthcheck
+	am, err := NewAlertmanager("cluster", "hc-test", "http://localhost",
+		WithHealthchecks(map[string][]string{
+			"prom1": {"alertname=Watchdog"},
+		}),
+	)
+	if err != nil {
+		t.Fatalf("NewAlertmanager failed: %s", err)
+	}
+
+	alert := &internalModels.Alert{
+		Labels: internalModels.Labels{
+			{Name: internalModels.NewUniqueString("alertname"), Value: internalModels.NewUniqueString("Watchdog")},
+		},
+	}
+	name, hc := am.IsHealthCheckAlert(alert)
+	if name != "prom1" {
+		t.Errorf("IsHealthCheckAlert() returned name=%q, expected %q", name, "prom1")
+	}
+	if hc == nil {
+		t.Error("IsHealthCheckAlert() returned nil HealthCheck for matching alert")
+	}
+}
+
+func TestIsHealthCheckAlertPartialMatch(t *testing.T) {
+	// verifies that an alert matching only some healthcheck filters is NOT identified as a healthcheck
+	am, err := NewAlertmanager("cluster", "hc-test-partial", "http://localhost",
+		WithHealthchecks(map[string][]string{
+			"prom1": {"alertname=Watchdog", "severity=critical"},
+		}),
+	)
+	if err != nil {
+		t.Fatalf("NewAlertmanager failed: %s", err)
+	}
+
+	alert := &internalModels.Alert{
+		Labels: internalModels.Labels{
+			{Name: internalModels.NewUniqueString("alertname"), Value: internalModels.NewUniqueString("Watchdog")},
+			{Name: internalModels.NewUniqueString("severity"), Value: internalModels.NewUniqueString("warning")},
+		},
+	}
+	name, hc := am.IsHealthCheckAlert(alert)
+	if name != "" {
+		t.Errorf("IsHealthCheckAlert() returned name=%q, expected empty string for partial match", name)
+	}
+	if hc != nil {
+		t.Error("IsHealthCheckAlert() returned non-nil HealthCheck for partial match")
+	}
+}
+
+func TestIsHealthCheckAlertNoMatch(t *testing.T) {
+	// verifies that an alert not matching any healthcheck filters returns empty result
+	am, err := NewAlertmanager("cluster", "hc-test-none", "http://localhost",
+		WithHealthchecks(map[string][]string{
+			"prom1": {"alertname=Watchdog"},
+		}),
+	)
+	if err != nil {
+		t.Fatalf("NewAlertmanager failed: %s", err)
+	}
+
+	alert := &internalModels.Alert{
+		Labels: internalModels.Labels{
+			{Name: internalModels.NewUniqueString("alertname"), Value: internalModels.NewUniqueString("DiskFull")},
+		},
+	}
+	name, hc := am.IsHealthCheckAlert(alert)
+	if name != "" {
+		t.Errorf("IsHealthCheckAlert() returned name=%q, expected empty string for non-matching alert", name)
+	}
+	if hc != nil {
+		t.Error("IsHealthCheckAlert() returned non-nil HealthCheck for non-matching alert")
+	}
+}
+
+func TestIsHealthCheckAlertNoHealthchecks(t *testing.T) {
+	// verifies that an alertmanager with no healthchecks returns empty result
+	am, err := NewAlertmanager("cluster", "hc-test-empty", "http://localhost")
+	if err != nil {
+		t.Fatalf("NewAlertmanager failed: %s", err)
+	}
+
+	alert := &internalModels.Alert{
+		Labels: internalModels.Labels{
+			{Name: internalModels.NewUniqueString("alertname"), Value: internalModels.NewUniqueString("Watchdog")},
+		},
+	}
+	name, hc := am.IsHealthCheckAlert(alert)
+	if name != "" {
+		t.Errorf("IsHealthCheckAlert() returned name=%q, expected empty string", name)
+	}
+	if hc != nil {
+		t.Error("IsHealthCheckAlert() returned non-nil HealthCheck")
 	}
 }
 
