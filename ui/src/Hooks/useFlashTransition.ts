@@ -1,4 +1,11 @@
-import { useState, useEffect, useRef, ReactNode, RefObject } from "react";
+import {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  ReactNode,
+  RefObject,
+} from "react";
 
 import type { CSSTransitionProps } from "react-transition-group/CSSTransition";
 
@@ -16,7 +23,7 @@ const defaultProps: CSSTransitionProps = {
 const useFlashTransition = (
   flashOn: ReactNode,
 ): {
-  ref: (node?: Element | null) => void;
+  ref: (node: HTMLElement | null) => void;
   props: CSSTransitionProps;
   nodeRef: RefObject<HTMLElement | null>;
 } => {
@@ -45,7 +52,15 @@ const useFlashTransition = (
     });
   }, [inView, isPending]);
 
-  return { ref, props, nodeRef };
+  const combinedRef = useCallback(
+    (node: HTMLElement | null) => {
+      ref(node);
+      nodeRef.current = node;
+    },
+    [ref],
+  );
+
+  return { ref: combinedRef, props, nodeRef };
 };
 
 export { useFlashTransition, defaultProps };

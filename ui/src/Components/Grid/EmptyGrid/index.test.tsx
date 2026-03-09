@@ -7,9 +7,9 @@ import { EmptyGrid } from ".";
 describe("<EmptyGrid />", () => {
   it("matches snapshot", () => {
     const { asFragment } = render(
-      <ThemeContext.Provider value={MockThemeContext}>
+      <ThemeContext value={MockThemeContext}>
         <EmptyGrid />
-      </ThemeContext.Provider>,
+      </ThemeContext>,
     );
     expect(asFragment()).toMatchSnapshot();
   });

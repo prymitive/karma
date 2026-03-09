@@ -73,7 +73,7 @@ const SilenceSubmitProgress: FC<{
         }`,
       });
     }
-  }, [cluster, error, inProgress, publicURIs, response, responseURI]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [cluster, error, inProgress, publicURIs, response, responseURI]);
 
   return <FontAwesomeIcon className="text-muted" icon={faCircleNotch} spin />;
 };

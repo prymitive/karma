@@ -53,7 +53,7 @@ afterEach(() => {
 
 const renderManagedSilence = (onDidUpdate?: () => void) => {
   return render(
-    <ThemeContext.Provider value={MockThemeContext}>
+    <ThemeContext value={MockThemeContext}>
       <ManagedSilence
         cluster={cluster}
         alertCount={123}
@@ -63,7 +63,7 @@ const renderManagedSilence = (onDidUpdate?: () => void) => {
         silenceFormStore={silenceFormStore}
         onDidUpdate={onDidUpdate}
       />
-    </ThemeContext.Provider>,
+    </ThemeContext>,
   );
 };
 

@@ -66,13 +66,13 @@ afterEach(() => {
 
 const renderAlertGrid = () => {
   return render(
-    <ThemeContext.Provider value={MockThemeContext}>
+    <ThemeContext value={MockThemeContext}>
       <AlertGrid
         alertStore={alertStore}
         settingsStore={settingsStore}
         silenceFormStore={silenceFormStore}
       />
-    </ThemeContext.Provider>,
+    </ThemeContext>,
   );
 };
 
@@ -94,7 +94,7 @@ const MockGrid = () => ({
 
 const renderGrid = (theme?: ThemeCtx) => {
   return render(
-    <ThemeContext.Provider value={theme || MockThemeContext}>
+    <ThemeContext value={theme || MockThemeContext}>
       <Grid
         alertStore={alertStore}
         silenceFormStore={silenceFormStore}
@@ -106,7 +106,7 @@ const renderGrid = (theme?: ThemeCtx) => {
         paddingTop={0}
         zIndex={101}
       />
-    </ThemeContext.Provider>,
+    </ThemeContext>,
   );
 };
 
@@ -227,7 +227,7 @@ describe("<Grid />", () => {
   it("appends more groups after clicking 'Load More' button", () => {
     MockGroupList(40, 5, 70);
     const { container } = render(
-      <ThemeContext.Provider value={MockThemeContext}>
+      <ThemeContext value={MockThemeContext}>
         <Grid
           alertStore={alertStore}
           silenceFormStore={silenceFormStore}
@@ -239,7 +239,7 @@ describe("<Grid />", () => {
           paddingTop={0}
           zIndex={101}
         />
-      </ThemeContext.Provider>,
+      </ThemeContext>,
     );
     const button = container.querySelector("button");
     fireEvent.click(button!);
@@ -263,7 +263,7 @@ describe("<Grid />", () => {
       },
     ]);
     const { container } = render(
-      <ThemeContext.Provider value={MockThemeContext}>
+      <ThemeContext value={MockThemeContext}>
         <Grid
           alertStore={alertStore}
           silenceFormStore={silenceFormStore}
@@ -275,7 +275,7 @@ describe("<Grid />", () => {
           paddingTop={0}
           zIndex={101}
         />
-      </ThemeContext.Provider>,
+      </ThemeContext>,
     );
     const button = container.querySelector("button");
     fireEvent.click(button!);
@@ -309,7 +309,7 @@ describe("<Grid />", () => {
     };
     alertStore.data.setGrids([grid]);
     const { container } = render(
-      <ThemeContext.Provider value={MockThemeContext}>
+      <ThemeContext value={MockThemeContext}>
         <Grid
           alertStore={alertStore}
           silenceFormStore={silenceFormStore}
@@ -321,7 +321,7 @@ describe("<Grid />", () => {
           paddingTop={0}
           zIndex={101}
         />
-      </ThemeContext.Provider>,
+      </ThemeContext>,
     );
     expect(
       container.querySelectorAll(".components-grid-alertgrid-alertgroup"),
@@ -358,7 +358,7 @@ describe("<Grid />", () => {
     ]);
     const dispatchSpy = jest.spyOn(window, "dispatchEvent");
     const { container } = render(
-      <ThemeContext.Provider value={MockThemeContext}>
+      <ThemeContext value={MockThemeContext}>
         <Grid
           alertStore={alertStore}
           silenceFormStore={silenceFormStore}
@@ -370,7 +370,7 @@ describe("<Grid />", () => {
           paddingTop={0}
           zIndex={101}
         />
-      </ThemeContext.Provider>,
+      </ThemeContext>,
     );
 
     const toggles = container.querySelectorAll("span.cursor-pointer");
@@ -396,7 +396,7 @@ describe("<Grid />", () => {
     };
     alertStore.data.setGrids([grid]);
     const { container } = render(
-      <ThemeContext.Provider value={MockThemeContext}>
+      <ThemeContext value={MockThemeContext}>
         <Grid
           alertStore={alertStore}
           silenceFormStore={silenceFormStore}
@@ -408,7 +408,7 @@ describe("<Grid />", () => {
           paddingTop={0}
           zIndex={101}
         />
-      </ThemeContext.Provider>,
+      </ThemeContext>,
     );
 
     expect(
@@ -441,7 +441,7 @@ describe("<Grid />", () => {
     };
     alertStore.data.setGrids([MockGrid(), MockGrid()]);
     const { container } = render(
-      <ThemeContext.Provider value={MockThemeContext}>
+      <ThemeContext value={MockThemeContext}>
         <Grid
           alertStore={alertStore}
           silenceFormStore={silenceFormStore}
@@ -453,7 +453,7 @@ describe("<Grid />", () => {
           paddingTop={0}
           zIndex={101}
         />
-      </ThemeContext.Provider>,
+      </ThemeContext>,
     );
     expect(container.textContent).toMatch(/foo:.*bar/);
   });
@@ -470,7 +470,7 @@ describe("<Grid />", () => {
     };
     alertStore.data.setGrids([MockGrid(), MockGrid()]);
     const { container } = render(
-      <ThemeContext.Provider value={MockThemeContext}>
+      <ThemeContext value={MockThemeContext}>
         <Grid
           alertStore={alertStore}
           silenceFormStore={silenceFormStore}
@@ -482,7 +482,7 @@ describe("<Grid />", () => {
           paddingTop={0}
           zIndex={101}
         />
-      </ThemeContext.Provider>,
+      </ThemeContext>,
     );
     expect(container.querySelector("h5")?.innerHTML).not.toMatch(/foo: bar/);
   });

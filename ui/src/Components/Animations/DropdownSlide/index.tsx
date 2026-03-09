@@ -1,4 +1,4 @@
-import React, { FC, useRef } from "react";
+import React, { use, FC, useRef } from "react";
 
 import { CSSTransition } from "react-transition-group";
 
@@ -9,7 +9,7 @@ const DropdownSlide: FC<{
   in?: boolean;
   unmountOnExit?: boolean;
 }> = ({ children, ...props }) => {
-  const context = React.useContext(ThemeContext);
+  const context = use(ThemeContext);
   const nodeRef = useRef<HTMLDivElement>(null);
 
   return (

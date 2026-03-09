@@ -17,11 +17,7 @@ afterEach(() => {
 });
 
 const renderWithTheme = (ui: React.ReactElement) =>
-  render(
-    <ThemeContext.Provider value={MockThemeContext}>
-      {ui}
-    </ThemeContext.Provider>,
-  );
+  render(<ThemeContext value={MockThemeContext}>{ui}</ThemeContext>);
 
 describe("<UpgradeNeeded />", () => {
   it("matches snapshot", () => {

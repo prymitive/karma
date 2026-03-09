@@ -13,7 +13,7 @@ function getSize(): Dimensions {
 }
 
 function useWindowSize(): Dimensions {
-  const [windowSize, setWindowSize] = useState<Dimensions>(getSize());
+  const [windowSize, setWindowSize] = useState<Dimensions>(() => getSize());
 
   useEffect(() => {
     const handleResize = () => {

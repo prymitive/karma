@@ -234,8 +234,6 @@ const useFetchGetMock = (
 
   useEffect(() => {
     if (autorun) get();
-    // eslint doesn't like ...deps
-    // eslint-disable-next-line
   }, [uri, get, cancelGet, autorun, ...deps]);
 
   return {

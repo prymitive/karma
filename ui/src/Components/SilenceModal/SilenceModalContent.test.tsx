@@ -49,14 +49,14 @@ const MockOnHide = jest.fn();
 
 const renderSilenceModalContent = () => {
   return render(
-    <ThemeContext.Provider value={MockThemeContext}>
+    <ThemeContext value={MockThemeContext}>
       <SilenceModalContent
         alertStore={alertStore}
         settingsStore={settingsStore}
         silenceFormStore={silenceFormStore}
         onHide={MockOnHide}
       />
-    </ThemeContext.Provider>,
+    </ThemeContext>,
   );
 };
 

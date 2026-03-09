@@ -30,9 +30,11 @@ interface AppProps {
 }
 
 const App: FC<AppProps> = observer(({ defaultFilters, uiDefaults }) => {
-  const [alertStore] = useState<AlertStore>(new AlertStore(null));
-  const [silenceFormStore] = useState<SilenceFormStore>(new SilenceFormStore());
-  const [settingsStore] = useState<Settings>(new Settings(uiDefaults));
+  const [alertStore] = useState<AlertStore>(() => new AlertStore(null));
+  const [silenceFormStore] = useState<SilenceFormStore>(
+    () => new SilenceFormStore(),
+  );
+  const [settingsStore] = useState<Settings>(() => new Settings(uiDefaults));
 
   useEffect(() => {
     let filters;
@@ -61,7 +63,7 @@ const App: FC<AppProps> = observer(({ defaultFilters, uiDefaults }) => {
     if (p.params.m && silenceFormStore.data.fromBase64(p.params.m)) {
       silenceFormStore.toggle.show();
     }
-  }, [alertStore, defaultFilters, settingsStore]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [alertStore, defaultFilters, settingsStore]);
 
   const onPopState = useCallback(
     (event: PopStateEvent) => {
@@ -85,7 +87,7 @@ const App: FC<AppProps> = observer(({ defaultFilters, uiDefaults }) => {
   return (
     <ErrorBoundary>
       <span data-theme={`${settingsStore.themeConfig.config.theme}`} />
-      <ThemeContext.Provider
+      <ThemeContext
         value={{
           isDark:
             settingsStore.themeConfig.config.theme ===
@@ -122,7 +124,7 @@ const App: FC<AppProps> = observer(({ defaultFilters, uiDefaults }) => {
           />
           <FaviconBadge alertStore={alertStore} />
         </React.Suspense>
-      </ThemeContext.Provider>
+      </ThemeContext>
     </ErrorBoundary>
   );
 });

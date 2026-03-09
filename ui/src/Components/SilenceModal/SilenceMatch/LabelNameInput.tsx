@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { use, FC } from "react";
 
 import Creatable from "react-select/creatable";
 
@@ -19,7 +19,7 @@ const LabelNameInput: FC<{
     FormatBackendURI(`labelNames.json`),
   );
 
-  const context = React.useContext(ThemeContext);
+  const context = use(ThemeContext);
 
   return (
     <Creatable
@@ -33,6 +33,7 @@ const LabelNameInput: FC<{
       }
       placeholder={isValid ? "Label name" : <ValidationError />}
       onChange={(option: OnChangeValue<OptionT, false>) => {
+        // eslint-disable-next-line react-compiler/react-compiler -- intentional MobX observable mutation
         matcher.name = (option as OptionT).value;
       }}
       hideSelectedOptions

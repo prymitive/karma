@@ -48,8 +48,7 @@ update-e2e:
 
 .PHONY: lint-js
 lint-js: $(NODE_PATH)/eslint
-	@rm -fr node_modules/.cache/eslint-loader
-	eslint --ext .js,.jsx,.ts,.tsx src
+	eslint
 	tsc --noEmit -p .
 
 .PHONY: lint-typescript

@@ -57,7 +57,7 @@ const useFetchDelete = (
     return () => {
       isCancelled = true;
     };
-  }, [uri, options, ...deps]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [uri, options, ...deps]);
 
   return { response, error, isDeleting };
 };

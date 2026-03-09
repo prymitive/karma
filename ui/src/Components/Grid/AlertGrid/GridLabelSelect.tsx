@@ -1,4 +1,5 @@
-import React, {
+import {
+  use,
   FC,
   Ref,
   CSSProperties,
@@ -64,7 +65,7 @@ const GridLabelNameSelect: FC<{
     callback(options);
   };
 
-  const context = React.useContext(ThemeContext);
+  const context = use(ThemeContext);
 
   return (
     <AsyncSelect

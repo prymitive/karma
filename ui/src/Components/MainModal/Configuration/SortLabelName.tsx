@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { use, FC } from "react";
 
 import Creatable from "react-select/creatable";
 
@@ -23,7 +23,7 @@ const SortLabelName: FC<{
     settingsStore.gridConfig.setSortLabel(StaticLabels.AlertName);
   }
 
-  const context = React.useContext(ThemeContext);
+  const context = use(ThemeContext);
 
   return (
     <Creatable

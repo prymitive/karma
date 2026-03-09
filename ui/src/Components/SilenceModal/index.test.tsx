@@ -47,13 +47,13 @@ afterEach(() => {
 
 const renderSilenceModal = () => {
   return render(
-    <ThemeContext.Provider value={MockThemeContext}>
+    <ThemeContext value={MockThemeContext}>
       <SilenceModal
         alertStore={alertStore}
         silenceFormStore={silenceFormStore}
         settingsStore={settingsStore}
       />
-    </ThemeContext.Provider>,
+    </ThemeContext>,
   );
 };
 

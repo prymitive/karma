@@ -83,13 +83,13 @@ const MockSilenceList = (count: number): APIManagedSilenceT[] => {
 
 const renderBrowser = () => {
   return render(
-    <ThemeContext.Provider value={MockThemeContext}>
+    <ThemeContext value={MockThemeContext}>
       <Browser
         alertStore={alertStore}
         silenceFormStore={silenceFormStore}
         settingsStore={settingsStore}
       />
-    </ThemeContext.Provider>,
+    </ThemeContext>,
   );
 };
 

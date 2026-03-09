@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, FC } from "react";
+import { use, useEffect, useRef, useState, FC } from "react";
 
 import { reaction, toJS } from "mobx";
 import { observer } from "mobx-react-lite";
@@ -18,7 +18,7 @@ import { ThemeContext } from "Components/Theme";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 
 const PauseButton: FC<{ alertStore: AlertStore }> = ({ alertStore }) => {
-  const context = React.useContext(ThemeContext);
+  const context = use(ThemeContext);
   const nodeRef = useRef<HTMLSpanElement>(null);
   return (
     <TooltipWrapper title="Click to resume updates">
@@ -42,7 +42,7 @@ const PauseButton: FC<{ alertStore: AlertStore }> = ({ alertStore }) => {
 };
 
 const PlayButton: FC<{ alertStore: AlertStore }> = ({ alertStore }) => {
-  const context = React.useContext(ThemeContext);
+  const context = use(ThemeContext);
   const nodeRef = useRef<HTMLSpanElement>(null);
   return (
     <TooltipWrapper title="Click to pause updates">
@@ -101,7 +101,7 @@ const Fetcher: FC<{
   alertStore: AlertStore;
   settingsStore: Settings;
 }> = observer(({ alertStore, settingsStore }) => {
-  const timer = useRef<number | undefined>(undefined);
+  const timerRef = useRef<number | undefined>(undefined);
   const [percentLeft, setPercentLeft] = useState<number>(100);
   const [isHover, setIsHover] = useState(false);
 
@@ -191,7 +191,7 @@ const Fetcher: FC<{
   };
 
   useEffect(() => {
-    return () => window.clearInterval(timer.current);
+    return () => window.clearInterval(timerRef.current);
   }, []);
 
   useEffect(
@@ -224,7 +224,7 @@ const Fetcher: FC<{
         },
         { fireImmediately: true },
       ),
-    [], // eslint-disable-line react-hooks/exhaustive-deps
+    [],
   );
 
   useEffect(
@@ -233,10 +233,10 @@ const Fetcher: FC<{
         () => alertStore.status.paused,
         (paused) => {
           if (paused) {
-            window.clearInterval(timer.current);
-            timer.current = undefined;
+            window.clearInterval(timerRef.current);
+            timerRef.current = undefined;
           } else {
-            timer.current = window.setInterval(
+            timerRef.current = window.setInterval(
               () => window.requestAnimationFrame(fetchIfIdle),
               1000,
             );
@@ -244,7 +244,7 @@ const Fetcher: FC<{
         },
         { fireImmediately: true },
       ),
-    [], // eslint-disable-line react-hooks/exhaustive-deps
+    [],
   );
 
   const dots = Math.max(0, Math.min(9, percentLeft / 10));

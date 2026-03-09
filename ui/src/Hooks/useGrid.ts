@@ -6,27 +6,28 @@ const useGrid = (
   sizes: SizeDetail[],
 ): { ref: Ref<HTMLDivElement>; repack: () => void } => {
   const ref = useRef<HTMLDivElement | null>(null);
-  const grid = useRef<Instance | null>(null);
+  const gridRef = useRef<Instance | null>(null);
   const [repack, setRepack] = useState<() => void>(() => () => {});
 
   useEffect(() => {
-    if (!grid.current && ref.current) {
-      grid.current = Bricks({
+    if (!gridRef.current && ref.current) {
+      gridRef.current = Bricks({
         container: ref.current,
         sizes: sizes,
         packed: "packed",
         position: false,
       });
-      window.addEventListener("resize", grid.current.pack);
-      grid.current.pack();
+      window.addEventListener("resize", gridRef.current.pack);
+      gridRef.current.pack();
       setRepack(() => () => {
-        grid.current && grid.current.pack();
+        gridRef.current && gridRef.current.pack();
       });
     }
 
     return () => {
-      if (grid.current) window.removeEventListener("resize", grid.current.pack);
-      grid.current = null;
+      if (gridRef.current)
+        window.removeEventListener("resize", gridRef.current.pack);
+      gridRef.current = null;
     };
   }, [sizes]);
 

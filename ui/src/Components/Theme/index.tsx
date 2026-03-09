@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from "react";
+import React, { use, FC, useEffect } from "react";
 
 import type { StylesConfig } from "react-select/dist/declarations/src/styles";
 
@@ -18,7 +18,7 @@ const ThemeContext = React.createContext({
 } as ThemeCtx);
 
 const BodyTheme: FC = () => {
-  const context = React.useContext(ThemeContext);
+  const context = use(ThemeContext);
 
   useEffect(() => {
     document.documentElement.setAttribute(

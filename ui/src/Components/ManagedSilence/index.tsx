@@ -64,7 +64,7 @@ const ManagedSilence: FC<{
       silenceFormStore.toggle.show();
     };
 
-    const [progress, setProgress] = useState<number>(
+    const [progress, setProgress] = useState<number>(() =>
       calculatePercent(silence.startsAt, silence.endsAt),
     );
 

@@ -21,9 +21,9 @@ afterEach(() => {
 
 const renderLabelNameInput = (isValid: boolean) => {
   return render(
-    <ThemeContext.Provider value={MockThemeContext}>
+    <ThemeContext value={MockThemeContext}>
       <LabelNameInput matcher={matcher} isValid={isValid} />
-    </ThemeContext.Provider>,
+    </ThemeContext>,
   );
 };
 

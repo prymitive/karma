@@ -96,14 +96,14 @@ afterEach(() => {
 
 const renderNavbar = (fixedTop?: boolean) => {
   return render(
-    <ThemeContext.Provider value={MockThemeContext}>
+    <ThemeContext value={MockThemeContext}>
       <NavBar
         alertStore={alertStore}
         settingsStore={settingsStore}
         silenceFormStore={silenceFormStore}
         fixedTop={fixedTop}
       />
-    </ThemeContext.Provider>,
+    </ThemeContext>,
   );
 };
 
@@ -215,13 +215,13 @@ describe("<NavBar />", () => {
       resizeCallback([{ contentRect: { width: 100, height: 10 } }]);
     });
     rerender(
-      <ThemeContext.Provider value={MockThemeContext}>
+      <ThemeContext value={MockThemeContext}>
         <NavBar
           alertStore={alertStore}
           settingsStore={settingsStore}
           silenceFormStore={silenceFormStore}
         />
-      </ThemeContext.Provider>,
+      </ThemeContext>,
     );
     expect(
       window
@@ -233,13 +233,13 @@ describe("<NavBar />", () => {
       resizeCallback([{ contentRect: { width: 100, height: 36 } }]);
     });
     rerender(
-      <ThemeContext.Provider value={MockThemeContext}>
+      <ThemeContext value={MockThemeContext}>
         <NavBar
           alertStore={alertStore}
           settingsStore={settingsStore}
           silenceFormStore={silenceFormStore}
         />
-      </ThemeContext.Provider>,
+      </ThemeContext>,
     );
     expect(
       window

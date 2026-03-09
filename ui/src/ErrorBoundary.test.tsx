@@ -73,13 +73,18 @@ describe("<ErrorBoundary />", () => {
   });
 
   it("reloadApp decrements countdown when more than one second is left", () => {
+    // Verifies that reloadApp uses functional setState to decrement reloadSeconds
     const boundary = new ErrorBoundary({ children: <span /> });
     const setStateSpy = jest.spyOn(boundary, "setState");
     (boundary as any).state = { cachedError: null, reloadSeconds: 2 };
 
     boundary.reloadApp();
 
-    expect(setStateSpy).toHaveBeenCalledWith({ reloadSeconds: 1 });
+    expect(setStateSpy).toHaveBeenCalledTimes(1);
+    const updater = setStateSpy.mock.calls[0][0] as unknown as (prev: {
+      reloadSeconds: number;
+    }) => { reloadSeconds: number };
+    expect(updater({ reloadSeconds: 2 })).toEqual({ reloadSeconds: 1 });
   });
 
   it("reloadApp does not decrement when countdown reaches 1 or less", () => {

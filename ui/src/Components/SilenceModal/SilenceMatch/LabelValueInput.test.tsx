@@ -26,13 +26,13 @@ afterEach(() => {
 
 const renderLabelValueInput = (isValid: boolean) => {
   return render(
-    <ThemeContext.Provider value={MockThemeContext}>
+    <ThemeContext value={MockThemeContext}>
       <LabelValueInput
         silenceFormStore={silenceFormStore}
         matcher={matcher}
         isValid={isValid}
       />
-    </ThemeContext.Provider>,
+    </ThemeContext>,
   );
 };
 

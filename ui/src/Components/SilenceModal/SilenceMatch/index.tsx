@@ -49,6 +49,7 @@ const SilenceMatch: FC<{
                 value=""
                 checked={matcher.isEqual}
                 onChange={(event) => {
+                  // eslint-disable-next-line react-compiler/react-compiler -- intentional MobX observable mutation
                   matcher.isEqual = event.target.checked;
                 }}
               />

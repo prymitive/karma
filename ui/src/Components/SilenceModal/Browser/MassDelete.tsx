@@ -235,16 +235,19 @@ export const MassDeleteProgress: FC<{
       }
     };
 
+    const timers: ReturnType<typeof setTimeout>[] = [];
     silences.forEach((silence, index) => {
       const ams = alertStore.data.readWriteAlertmanagers.filter(
         (u) => u.cluster === silence.cluster,
       );
-      setTimeout(
+      // eslint-disable-next-line @eslint-react/web-api/no-leaked-timeout -- false positive: timers are collected and cleared in the useEffect cleanup below
+      const timer = setTimeout(
         () => deleteSilence(silence.cluster, silence.id, ams),
         50 * index,
       );
+      timers.push(timer);
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => timers.forEach((t) => clearTimeout(t));
   }, []);
 
   return (

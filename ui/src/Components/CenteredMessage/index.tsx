@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useRef } from "react";
+import { use, FC, ReactNode, useRef } from "react";
 
 import { CSSTransition } from "react-transition-group";
 
@@ -8,7 +8,7 @@ const CenteredMessage: FC<{
   children: ReactNode;
   className?: string;
 }> = ({ children, className }) => {
-  const context = React.useContext(ThemeContext);
+  const context = use(ThemeContext);
   const nodeRef = useRef<HTMLHeadingElement>(null);
   return (
     <CSSTransition

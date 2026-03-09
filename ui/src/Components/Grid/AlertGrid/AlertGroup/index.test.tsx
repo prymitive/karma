@@ -89,7 +89,7 @@ const MockAlerts = (alertCount: number, totalAlerts: number) => {
 
 const renderAlertGroup = (afterUpdate: () => void, theme?: ThemeCtx) => {
   return render(
-    <ThemeContext.Provider value={theme || MockThemeContext}>
+    <ThemeContext value={theme || MockThemeContext}>
       <AlertGroup
         afterUpdate={afterUpdate}
         grid={grid}
@@ -100,7 +100,7 @@ const renderAlertGroup = (afterUpdate: () => void, theme?: ThemeCtx) => {
         gridLabelValue=""
         groupWidth={420}
       />
-    </ThemeContext.Provider>,
+    </ThemeContext>,
   );
 };
 

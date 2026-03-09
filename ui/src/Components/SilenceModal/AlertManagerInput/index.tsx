@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from "react";
+import { use, FC, useEffect } from "react";
 
 import { autorun } from "mobx";
 import { observer } from "mobx-react-lite";
@@ -36,7 +36,7 @@ const AlertManagerInput: FC<{
         }),
       );
     }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(
     // https://mobx-react.netlify.app/recipes-effects
@@ -59,10 +59,10 @@ const AlertManagerInput: FC<{
           }
         }
       }),
-    [], // eslint-disable-line react-hooks/exhaustive-deps
+    [],
   );
 
-  const context = React.useContext(ThemeContext);
+  const context = use(ThemeContext);
 
   return (
     <Select

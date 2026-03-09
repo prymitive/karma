@@ -1,4 +1,5 @@
-import React, {
+import {
+  use,
   FC,
   useState,
   useEffect,
@@ -46,7 +47,7 @@ const FetchError: FC<{
 const Placeholder: FC<{
   content: ReactNode;
 }> = ({ content }) => {
-  const context = React.useContext(ThemeContext);
+  const context = use(ThemeContext);
   const nodeRef = useRef<HTMLDivElement>(null);
 
   return (

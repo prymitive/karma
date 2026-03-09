@@ -13,9 +13,9 @@ beforeEach(() => {
 
 const renderConfiguration = () => {
   return render(
-    <ThemeContext.Provider value={MockThemeContext}>
+    <ThemeContext value={MockThemeContext}>
       <AlertGroupCollapseConfiguration settingsStore={settingsStore} />
-    </ThemeContext.Provider>,
+    </ThemeContext>,
   );
 };
 

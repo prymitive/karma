@@ -10,12 +10,13 @@ const FaviconBadge: FC<{
   alertStore: AlertStore;
 }> = ({ alertStore }) => {
   const [favico] = useState(
-    new Favico({
-      animation: "none",
-      position: "down",
-      bgColor: "#e74c3c",
-      textColor: "#fff",
-    }),
+    () =>
+      new Favico({
+        animation: "none",
+        position: "down",
+        bgColor: "#e74c3c",
+        textColor: "#fff",
+      }),
   );
 
   useEffect(
@@ -29,7 +30,7 @@ const FaviconBadge: FC<{
               : "?",
         );
       }),
-    [], // eslint-disable-line react-hooks/exhaustive-deps
+    [],
   );
 
   return null;

@@ -1,4 +1,5 @@
 import React, {
+  use,
   FC,
   useEffect,
   useState,
@@ -132,12 +133,12 @@ const Grid: FC<{
   paddingTop,
   zIndex,
 }) => {
-  const context = React.useContext(ThemeContext);
+  const context = use(ThemeContext);
   const { ref, repack } = useGrid(gridSizesConfig);
   const debouncedRepack = useMemo(() => debounce(() => repack(), 10), [repack]);
 
   const [isExpanded, setIsExpanded] = useState<boolean>(
-    !DefaultDetailsCollapseValue(settingsStore),
+    () => !DefaultDetailsCollapseValue(settingsStore),
   );
   const toggleIsExpanded = useCallback(() => {
     setIsExpanded(!isExpanded);
