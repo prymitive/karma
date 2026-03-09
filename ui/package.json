@@ -86,7 +86,7 @@
     "vite-tsconfig-paths": "6.1.1"
   },
   "scripts": {
-    "start": "VITE_APP_BACKEND_URI=http://localhost:8080 vite",
+    "start": "vite",
     "build": "tsc && vite build",
     "test": "jest",
     "analyze": "npx source-map-explorer 'dist/assets/*.js'"

@@ -42,4 +42,4 @@ COPY --from=go-builder /src/karma /karma
 USER karma
 ENV GOGC=50
 EXPOSE 8080
-CMD supervisord --nodaemon --configuration /etc/supervisord.conf
+CMD ["supervisord", "--nodaemon", "--configuration", "/etc/supervisord.conf"]
