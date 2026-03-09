@@ -47,17 +47,17 @@ func TestCustomizationAssets(t *testing.T) {
 			mime:      "text/plain; charset=utf-8",
 		},
 		{
-			customJS: "../../ui/.env",
+			customJS: "../../ui/mock/custom_assets.txt",
 			path:     "/custom.js",
 			code:     200,
-			body:     "PUBLIC_URL=.\nFAST_REFRESH=false\nSKIP_PREFLIGHT_CHECK=true\n",
+			body:     "custom assets fixture\n",
 			mime:     "application/javascript",
 		},
 		{
-			customCSS: "../../ui/.env",
+			customCSS: "../../ui/mock/custom_assets.txt",
 			path:      "/custom.css",
 			code:      200,
-			body:      "PUBLIC_URL=.\nFAST_REFRESH=false\nSKIP_PREFLIGHT_CHECK=true\n",
+			body:      "custom assets fixture\n",
 			mime:      "text/css",
 		},
 	}
