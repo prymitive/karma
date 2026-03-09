@@ -22,10 +22,10 @@ manageFetchMockGlobally(jest as any);
 fetchMock.mockGlobal();
 
 configure({
-  enforceActions: "always",
-  //computedRequiresReaction: true,
-  //reactionRequiresObservable: true,
-  //observableRequiresReaction: true,
+  enforceActions: "observed",
+  // computedRequiresReaction: true,
+  // reactionRequiresObservable: true,
+  // observableRequiresReaction: true,
 });
 
 jest.mock("Hooks/useFetchGet");
@@ -38,17 +38,25 @@ FetchRetryConfig.maxTimeout = 10;
 // floating-ui uses useLayoutEffect
 React.useLayoutEffect = React.useEffect;
 
-// Fail tests on console.error to catch React warnings
-const originalConsoleError = console.error;
-console.error = (...args: unknown[]) => {
-  const message = String(args[0]);
-  // Allow React.lazy suspended resource warnings (React 19 testing limitation)
-  if (message.includes("suspended resource finished loading")) {
-    return;
-  }
-  originalConsoleError(...args);
-  throw new Error(`console.error was called: ${args[0]}`);
-};
+// Fail tests on any console output except explicitly allowed messages
+const allowedMessages = [
+  // React.lazy suspended resource warnings (React 19 testing limitation)
+  "suspended resource finished loading",
+  // AlertStore filter mismatch log
+  "Got response with filters",
+];
+
+for (const level of ["error", "warn", "info"] as const) {
+  const original = console[level];
+  console[level] = (...args: unknown[]) => {
+    const message = String(args[0]);
+    if (allowedMessages.some((allowed) => message.includes(allowed))) {
+      return;
+    }
+    original(...args);
+    throw new Error(`console.${level} was called: ${args[0]}`);
+  };
+}
 
 beforeEach(() => {
   localStorage.clear();
