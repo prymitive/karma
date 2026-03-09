@@ -4,6 +4,8 @@ import { renderHook } from "@testing-library/react";
 
 import { useInView } from "react-intersection-observer";
 
+import { mockInViewResponse } from "__fixtures__/InView";
+
 import { useFlashTransition, defaultProps } from "./useFlashTransition";
 
 describe("useFlashTransition", () => {
@@ -12,10 +14,9 @@ describe("useFlashTransition", () => {
   });
 
   it("does nothing when value changes but element is out of viewport", () => {
-    (useInView as jest.MockedFunction<typeof useInView>).mockReturnValue([
-      jest.fn(),
-      false,
-    ] as any);
+    (useInView as jest.MockedFunction<typeof useInView>).mockReturnValue(
+      mockInViewResponse(false),
+    );
 
     let value = 0;
     const { result, rerender } = renderHook(() => useFlashTransition(value));
@@ -27,10 +28,9 @@ describe("useFlashTransition", () => {
   });
 
   it("flashes when value changes and element is in viewport", () => {
-    (useInView as jest.MockedFunction<typeof useInView>).mockReturnValue([
-      jest.fn(),
-      true,
-    ] as any);
+    (useInView as jest.MockedFunction<typeof useInView>).mockReturnValue(
+      mockInViewResponse(true),
+    );
 
     let value = 2;
     const { result, rerender } = renderHook(() => useFlashTransition(value));
@@ -46,10 +46,9 @@ describe("useFlashTransition", () => {
   });
 
   it("flashes when value changes and element moves into viewport", () => {
-    (useInView as jest.MockedFunction<typeof useInView>).mockReturnValue([
-      jest.fn(),
-      false,
-    ] as any);
+    (useInView as jest.MockedFunction<typeof useInView>).mockReturnValue(
+      mockInViewResponse(false),
+    );
 
     let value = 2;
     const { result, rerender } = renderHook(() => useFlashTransition(value));
@@ -59,10 +58,9 @@ describe("useFlashTransition", () => {
     expect(result.current.props).toMatchObject(defaultProps);
 
     act(() => {
-      (useInView as jest.MockedFunction<typeof useInView>).mockReturnValue([
-        jest.fn(),
-        true,
-      ] as any);
+      (useInView as jest.MockedFunction<typeof useInView>).mockReturnValue(
+        mockInViewResponse(true),
+      );
     });
     rerender();
     expect(result.current.props).toMatchObject({
@@ -73,10 +71,9 @@ describe("useFlashTransition", () => {
   });
 
   it("stops flashing props.onEntered is called", () => {
-    (useInView as jest.MockedFunction<typeof useInView>).mockReturnValue([
-      jest.fn(),
-      true,
-    ] as any);
+    (useInView as jest.MockedFunction<typeof useInView>).mockReturnValue(
+      mockInViewResponse(true),
+    );
 
     let value = 2;
     const { result, rerender } = renderHook(() => useFlashTransition(value));
@@ -89,25 +86,23 @@ describe("useFlashTransition", () => {
       enter: true,
     });
 
-    act(() => (result.current.props as any).onEntered());
+    act(() => result.current.props.onEntered!({} as HTMLElement, false));
     expect(result.current.props).toMatchObject(defaultProps);
   });
 
   it("unmounts cleanly when not flashing", () => {
-    (useInView as jest.MockedFunction<typeof useInView>).mockReturnValue([
-      jest.fn(),
-      false,
-    ] as any);
+    (useInView as jest.MockedFunction<typeof useInView>).mockReturnValue(
+      mockInViewResponse(false),
+    );
 
     const { unmount } = renderHook(() => useFlashTransition(4));
     unmount();
   });
 
   it("unmounts cleanly when flashing", () => {
-    (useInView as jest.MockedFunction<typeof useInView>).mockReturnValue([
-      jest.fn(),
-      false,
-    ] as any);
+    (useInView as jest.MockedFunction<typeof useInView>).mockReturnValue(
+      mockInViewResponse(false),
+    );
 
     let value = 5;
     const { rerender, unmount } = renderHook(() => useFlashTransition(value));

@@ -1,7 +1,7 @@
 import { render, fireEvent, waitFor } from "@testing-library/react";
 
 import { MockThemeContext } from "__fixtures__/Theme";
-import { Settings } from "Stores/Settings";
+import { Settings, type CollapseStateT } from "Stores/Settings";
 import { ThemeContext } from "Components/Theme";
 import { AlertGroupCollapseConfiguration } from "./AlertGroupCollapseConfiguration";
 
@@ -26,7 +26,9 @@ describe("<AlertGroupCollapseConfiguration />", () => {
   });
 
   it("resets stored config to defaults if it is invalid", async () => {
-    settingsStore.alertGroupConfig.setDefaultCollapseState("foo" as any);
+    settingsStore.alertGroupConfig.setDefaultCollapseState(
+      "foo" as unknown as CollapseStateT,
+    );
     const { container } = renderConfiguration();
     const select = container.querySelector("div.react-select__value-container");
     expect(select?.textContent).toBe(

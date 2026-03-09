@@ -12,7 +12,7 @@ import {
   NewUnappliedFilter,
 } from "Stores/AlertStore";
 
-declare let global: any;
+declare let global: typeof globalThis;
 
 beforeEach(() => {
   fetchMock.mockReset();
@@ -491,12 +491,16 @@ describe("UpdateLocationSearch", () => {
   });
 
   it("{a: foo} is not pushed to location.search", () => {
-    UpdateLocationSearch({ a: "foo" } as any);
+    UpdateLocationSearch({ a: "foo" } as unknown as Parameters<
+      typeof UpdateLocationSearch
+    >[0]);
     expect(window.location.search).toBe("?q=");
   });
 
   it("{a: foo, q: bar} is pushed to location.search", () => {
-    UpdateLocationSearch({ a: "foo", q: ["bar"] } as any);
+    UpdateLocationSearch({ a: "foo", q: ["bar"] } as unknown as Parameters<
+      typeof UpdateLocationSearch
+    >[0]);
     expect(window.location.search).toBe("?q=bar");
   });
 
@@ -649,7 +653,7 @@ describe("AlertStore.fetch", () => {
           type: "opaque",
           body: "auth needed",
           json: jest.fn(() => EmptyAPIResponse()),
-        }) as any,
+        }) as unknown as Promise<Response>,
     );
 
     await expect(
@@ -685,7 +689,9 @@ describe("AlertStore.fetch", () => {
     const store = new AlertStore(["label=value"]);
 
     // initial fetch, should update settings
-    store.settings.setValues({ foo: "bar" } as any);
+    store.settings.setValues({ foo: "bar" } as unknown as Parameters<
+      typeof store.settings.setValues
+    >[0]);
     await expect(
       store.fetch("", false, "", "", false, {}, 5, {}),
     ).resolves.toBeUndefined();

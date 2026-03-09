@@ -4,7 +4,7 @@ import { render, screen } from "@testing-library/react";
 
 import { ErrorBoundary } from "./ErrorBoundary";
 
-let consoleSpy: any;
+let consoleSpy: jest.SpyInstance;
 
 beforeEach(() => {
   jest.useFakeTimers();
@@ -76,7 +76,7 @@ describe("<ErrorBoundary />", () => {
     // Verifies that reloadApp uses functional setState to decrement reloadSeconds
     const boundary = new ErrorBoundary({ children: <span /> });
     const setStateSpy = jest.spyOn(boundary, "setState");
-    (boundary as any).state = { cachedError: null, reloadSeconds: 2 };
+    boundary.state = { cachedError: null, reloadSeconds: 2 };
 
     boundary.reloadApp();
 
@@ -91,7 +91,7 @@ describe("<ErrorBoundary />", () => {
     // Verifies that reloadApp calls window.location.reload when reloadSeconds <= 1 (line 65)
     const boundary = new ErrorBoundary({ children: <span /> });
     const setStateSpy = jest.spyOn(boundary, "setState");
-    (boundary as any).state = { cachedError: null, reloadSeconds: 1 };
+    boundary.state = { cachedError: null, reloadSeconds: 1 };
 
     boundary.reloadApp();
 
@@ -103,7 +103,7 @@ describe("<ErrorBoundary />", () => {
     const boundary = new ErrorBoundary({ children: <span /> });
     const setStateSpy = jest.spyOn(boundary, "setState");
     const error = new Error("Test error");
-    (boundary as any).state = { cachedError: error, reloadSeconds: 60 };
+    boundary.state = { cachedError: error, reloadSeconds: 60 };
 
     boundary.componentDidCatch(error, { componentStack: "" });
 
@@ -115,7 +115,7 @@ describe("<ErrorBoundary />", () => {
     const boundary = new ErrorBoundary({ children: <span /> });
     const setIntervalSpy = jest.spyOn(global, "setInterval");
     const error = new Error("Test error");
-    (boundary as any).timer = 123;
+    boundary.timer = 123 as unknown as ReturnType<typeof setInterval>;
 
     boundary.componentDidCatch(error, { componentStack: "" });
 

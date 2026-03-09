@@ -1,10 +1,10 @@
-import React from "react";
-
 import "@testing-library/jest-dom";
 
 import fetchMock, { manageFetchMockGlobally } from "@fetch-mock/jest";
 
 import { useInView } from "react-intersection-observer";
+
+import { mockInViewResponse } from "__fixtures__/InView";
 
 import { createMocks as createIdleTimerMocks } from "react-idle-timer";
 
@@ -35,9 +35,6 @@ jest.mock("react-intersection-observer");
 FetchRetryConfig.minTimeout = 2;
 FetchRetryConfig.maxTimeout = 10;
 
-// floating-ui uses useLayoutEffect
-React.useLayoutEffect = React.useEffect;
-
 // Fail tests on any console output except explicitly allowed messages
 const allowedMessages = [
   // React.lazy suspended resource warnings (React 19 testing limitation)
@@ -66,9 +63,7 @@ beforeEach(() => {
     useFetchGet as jest.MockedFunction<typeof useFetchGetMock>
   ).mockImplementation(useFetchGetMock);
 
-  (useInView as jest.MockedFunction<typeof useInView>).mockReturnValue([
-    jest.fn(),
-    true,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ] as any);
+  (useInView as jest.MockedFunction<typeof useInView>).mockReturnValue(
+    mockInViewResponse(true),
+  );
 });

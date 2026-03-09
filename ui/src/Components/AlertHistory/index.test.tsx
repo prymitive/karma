@@ -6,6 +6,7 @@ import fetchMock from "@fetch-mock/jest";
 
 import { useInView } from "react-intersection-observer";
 
+import { mockInViewResponse } from "__fixtures__/InView";
 import { MockAlertGroup, MockAlert } from "__fixtures__/Alerts";
 import {
   EmptyHistoryResponse,
@@ -289,10 +290,9 @@ describe("<AlertHistory />", () => {
       },
     );
 
-    (useInView as jest.MockedFunction<typeof useInView>).mockReturnValue([
-      jest.fn(),
-      false,
-    ] as any);
+    (useInView as jest.MockedFunction<typeof useInView>).mockReturnValue(
+      mockInViewResponse(false),
+    );
 
     MockAlerts(3);
     const { unmount } = render(
@@ -320,10 +320,9 @@ describe("<AlertHistory />", () => {
       },
     );
 
-    (useInView as jest.MockedFunction<typeof useInView>).mockReturnValue([
-      jest.fn(),
-      false,
-    ] as any);
+    (useInView as jest.MockedFunction<typeof useInView>).mockReturnValue(
+      mockInViewResponse(false),
+    );
 
     MockAlerts(3);
     const { rerender, unmount } = render(
@@ -334,10 +333,9 @@ describe("<AlertHistory />", () => {
     });
     expect(fetchMock.callHistory.calls()).toHaveLength(0);
 
-    (useInView as jest.MockedFunction<typeof useInView>).mockReturnValue([
-      jest.fn(),
-      true,
-    ] as any);
+    (useInView as jest.MockedFunction<typeof useInView>).mockReturnValue(
+      mockInViewResponse(true),
+    );
 
     rerender(<AlertHistory group={group} grid={grid}></AlertHistory>);
     await act(async () => {
@@ -361,11 +359,9 @@ describe("<AlertHistory />", () => {
       },
     );
 
-    const inView = true;
-    (useInView as jest.MockedFunction<typeof useInView>).mockReturnValue([
-      jest.fn(),
-      inView,
-    ] as any);
+    (useInView as jest.MockedFunction<typeof useInView>).mockReturnValue(
+      mockInViewResponse(true),
+    );
 
     MockAlerts(3);
     const { unmount } = render(
