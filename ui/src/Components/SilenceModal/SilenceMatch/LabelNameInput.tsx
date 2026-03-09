@@ -1,5 +1,7 @@
 import { use, FC } from "react";
 
+import { action } from "mobx";
+
 import Creatable from "react-select/creatable";
 
 import { FormatBackendURI } from "Stores/AlertStore";
@@ -10,6 +12,12 @@ import { ThemeContext } from "Components/Theme";
 import { AnimatedMenu } from "Components/Select";
 import { NewLabelName, OptionT, StringToOption } from "Common/Select";
 import { OnChangeValue } from "react-select";
+
+const setMatcherName = action(
+  (matcher: MatcherWithIDT, option: OnChangeValue<OptionT, false>) => {
+    matcher.name = (option as OptionT).value;
+  },
+);
 
 const LabelNameInput: FC<{
   matcher: MatcherWithIDT;
@@ -32,10 +40,9 @@ const LabelNameInput: FC<{
         response ? response.map((value: string) => StringToOption(value)) : []
       }
       placeholder={isValid ? "Label name" : <ValidationError />}
-      onChange={(option: OnChangeValue<OptionT, false>) => {
-        // eslint-disable-next-line react-compiler/react-compiler -- intentional MobX observable mutation
-        matcher.name = (option as OptionT).value;
-      }}
+      onChange={(option: OnChangeValue<OptionT, false>) =>
+        setMatcherName(matcher, option)
+      }
       hideSelectedOptions
       components={{ Menu: AnimatedMenu }}
     />

@@ -1,4 +1,4 @@
-import { Ref, CSSProperties, useRef, useState, useCallback } from "react";
+import { FC, Ref, CSSProperties, useRef, useState, useCallback } from "react";
 
 import { observer } from "mobx-react-lite";
 
@@ -180,59 +180,63 @@ interface AlertMenuProps {
   setIsMenuOpen: (isOpen: boolean) => void;
 }
 
-const AlertMenu = observer<AlertMenuProps>(
-  ({ group, alert, alertStore, silenceFormStore, setIsMenuOpen }) => {
-    const [isHidden, setIsHidden] = useState<boolean>(true);
+const AlertMenu: FC<AlertMenuProps> = ({
+  group,
+  alert,
+  alertStore,
+  silenceFormStore,
+  setIsMenuOpen,
+}) => {
+  const [isHidden, setIsHidden] = useState<boolean>(true);
 
-    const toggle = useCallback(() => {
-      setIsMenuOpen(isHidden);
-      setIsHidden(!isHidden);
-    }, [isHidden, setIsMenuOpen]);
+  const toggle = useCallback(() => {
+    setIsMenuOpen(isHidden);
+    setIsHidden(!isHidden);
+  }, [isHidden, setIsMenuOpen]);
 
-    const hide = useCallback(() => {
-      setIsHidden(true);
-      setIsMenuOpen(false);
-    }, [setIsMenuOpen]);
+  const hide = useCallback(() => {
+    setIsHidden(true);
+    setIsMenuOpen(false);
+  }, [setIsMenuOpen]);
 
-    const rootRef = useRef<HTMLSpanElement | null>(null);
-    useOnClickOutside(rootRef, hide, !isHidden);
+  const rootRef = useRef<HTMLSpanElement | null>(null);
+  useOnClickOutside(rootRef, hide, !isHidden);
 
-    const { x, y, refs, strategy } = useFloating({
-      placement: "bottom-start",
-      middleware: [shift(), offset(5)],
-    });
+  const { x, y, refs, strategy } = useFloating({
+    placement: "bottom-start",
+    middleware: [shift(), offset(5)],
+  });
 
-    return (
-      <span ref={rootRef}>
-        <span
-          className="components-label components-label-with-hover px-1 me-1 badge bg-secondary cursor-pointer"
-          ref={refs.setReference}
-          onClick={toggle}
-          data-toggle="dropdown"
-        >
-          <FontAwesomeIcon
-            className="pe-1"
-            style={{ width: "0.8rem" }}
-            icon={faCaretDown}
-          />
-          <DateFromNow timestamp={alert.startsAt} />
-        </span>
-        <DropdownSlide in={!isHidden} unmountOnExit>
-          <MenuContent
-            group={group}
-            alert={alert}
-            alertStore={alertStore}
-            silenceFormStore={silenceFormStore}
-            afterClick={hide}
-            x={x}
-            y={y}
-            floating={refs.setFloating}
-            strategy={strategy}
-          />
-        </DropdownSlide>
+  return (
+    <span ref={rootRef}>
+      <span
+        className="components-label components-label-with-hover px-1 me-1 badge bg-secondary cursor-pointer"
+        ref={refs.setReference}
+        onClick={toggle}
+        data-toggle="dropdown"
+      >
+        <FontAwesomeIcon
+          className="pe-1"
+          style={{ width: "0.8rem" }}
+          icon={faCaretDown}
+        />
+        <DateFromNow timestamp={alert.startsAt} />
       </span>
-    );
-  },
-);
+      <DropdownSlide in={!isHidden} unmountOnExit>
+        <MenuContent
+          group={group}
+          alert={alert}
+          alertStore={alertStore}
+          silenceFormStore={silenceFormStore}
+          afterClick={hide}
+          x={x}
+          y={y}
+          floating={refs.setFloating}
+          strategy={strategy}
+        />
+      </DropdownSlide>
+    </span>
+  );
+};
 
 export { AlertMenu, MenuContent };

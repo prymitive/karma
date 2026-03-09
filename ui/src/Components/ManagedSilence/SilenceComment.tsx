@@ -17,7 +17,7 @@ import { StaticLabels } from "Common/Query";
 
 const SilenceProgress: FC<{
   silence: APISilenceT;
-}> = observer(({ silence }) => {
+}> = ({ silence }) => {
   const diff = differenceInSeconds(parseISO(silence.endsAt), new Date());
   if (diff <= 0) {
     return (
@@ -35,7 +35,7 @@ const SilenceProgress: FC<{
       Expires <DateFromNow timestamp={silence.endsAt} />
     </span>
   );
-});
+};
 
 const SilenceComment: FC<{
   cluster: string;
@@ -68,6 +68,9 @@ const SilenceComment: FC<{
       ),
     );
 
+    const hasMultipleClusters =
+      Object.keys(alertStore.data.upstreams.clusters).length > 1;
+
     return (
       <>
         <div className="d-flex flex-row">
@@ -93,8 +96,7 @@ const SilenceComment: FC<{
               {collapsed ? (
                 <div className="d-flex flex-row justify-content-end flex-grow-1">
                   <SilenceProgress silence={silence} />
-                  {Object.keys(alertStore.data.upstreams.clusters).length >
-                  1 ? (
+                  {hasMultipleClusters ? (
                     <span className="badge bg-secondary mx-1 components-label">
                       {cluster}
                     </span>

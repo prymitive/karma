@@ -8,8 +8,6 @@ import {
   useCallback,
 } from "react";
 
-import { observer } from "mobx-react-lite";
-
 import { useFloating, shift, offset } from "@floating-ui/react-dom";
 
 import type { OnChangeValue } from "react-select";
@@ -134,7 +132,7 @@ const GridLabelSelect: FC<{
   alertStore: AlertStore;
   settingsStore: Settings;
   grid: APIGridT;
-}> = observer(({ alertStore, settingsStore, grid }) => {
+}> = ({ alertStore, settingsStore, grid }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const hide = useCallback(() => setIsVisible(false), []);
   const toggle = useCallback(() => {
@@ -172,6 +170,6 @@ const GridLabelSelect: FC<{
       </DropdownSlide>
     </div>
   );
-});
+};
 
 export { GridLabelSelect };

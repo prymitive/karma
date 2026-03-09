@@ -1,6 +1,6 @@
 import type { FC } from "react";
 
-import { observer } from "mobx-react-lite";
+import { action } from "mobx";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
@@ -9,6 +9,20 @@ import type { SilenceFormStore, MatcherWithIDT } from "Stores/SilenceFormStore";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { LabelNameInput } from "./LabelNameInput";
 import { LabelValueInput } from "./LabelValueInput";
+
+const setMatcherIsEqual = action(
+  (matcher: MatcherWithIDT, checked: boolean) => {
+    matcher.isEqual = checked;
+  },
+);
+
+const setMatcherIsRegex = action(
+  (matcher: MatcherWithIDT, checked: boolean) => {
+    if (matcher.values.length <= 1) {
+      matcher.isRegex = checked;
+    }
+  },
+);
 
 const SilenceMatch: FC<{
   silenceFormStore: SilenceFormStore;
@@ -48,10 +62,9 @@ const SilenceMatch: FC<{
                 type="checkbox"
                 value=""
                 checked={matcher.isEqual}
-                onChange={(event) => {
-                  // eslint-disable-next-line react-compiler/react-compiler -- intentional MobX observable mutation
-                  matcher.isEqual = event.target.checked;
-                }}
+                onChange={(event) =>
+                  setMatcherIsEqual(matcher, event.target.checked)
+                }
               />
               <label
                 className="form-check-label cursor-pointer me-3"
@@ -67,11 +80,9 @@ const SilenceMatch: FC<{
                 type="checkbox"
                 value=""
                 checked={matcher.isRegex}
-                onChange={(event) => {
-                  if (matcher.values.length <= 1) {
-                    matcher.isRegex = event.target.checked;
-                  }
-                }}
+                onChange={(event) =>
+                  setMatcherIsRegex(matcher, event.target.checked)
+                }
                 disabled={matcher.values.length > 1}
               />
               <label
@@ -99,4 +110,4 @@ const SilenceMatch: FC<{
   );
 };
 
-export default observer(SilenceMatch);
+export default SilenceMatch;

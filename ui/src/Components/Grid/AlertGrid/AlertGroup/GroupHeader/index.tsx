@@ -1,7 +1,5 @@
 import type { FC, MouseEvent } from "react";
 
-import { observer } from "mobx-react-lite";
-
 import type { APIAlertGroupT } from "Models/APITypes";
 import type { AlertStore } from "Stores/AlertStore";
 import type { SilenceFormStore } from "Stores/SilenceFormStore";
@@ -116,4 +114,4 @@ const GroupHeader: FC<{
   );
 };
 
-export default observer(GroupHeader);
+export default GroupHeader;

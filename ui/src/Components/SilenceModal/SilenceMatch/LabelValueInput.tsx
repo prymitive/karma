@@ -1,6 +1,6 @@
 import { use, FC, useEffect } from "react";
 
-import { observer } from "mobx-react-lite";
+import { action } from "mobx";
 
 import {
   ActionMeta,
@@ -20,6 +20,23 @@ import { ValidationError } from "Components/ValidationError";
 import { ThemeContext } from "Components/Theme";
 import { AnimatedMenuMultiple } from "Components/Select";
 import { MatchCounter } from "./MatchCounter";
+
+const updateMatcherValues = action(
+  (
+    matcher: MatcherWithIDT,
+    newValue: OnChangeValue<OptionT, true>,
+    meta: ActionMeta<OptionT>,
+  ) => {
+    matcher.values = newValue as OptionT[];
+    // force regex if we have multiple values
+    if (matcher.values.length > 1 && matcher.isRegex === false) {
+      matcher.isRegex = true;
+    }
+    if (meta.action === "create-option") {
+      matcher.values[matcher.values.length - 1].wasCreated = true;
+    }
+  },
+);
 
 const GenerateHashFromMatchers = (
   silenceFormStore: SilenceFormStore,
@@ -66,7 +83,7 @@ const LabelValueInput: FC<{
   silenceFormStore: SilenceFormStore;
   matcher: MatcherWithIDT;
   isValid: boolean;
-}> = observer(({ silenceFormStore, matcher, isValid }) => {
+}> = ({ silenceFormStore, matcher, isValid }) => {
   const { response, get, cancelGet } = useFetchGet<string[]>(
     FormatBackendURI(`labelValues.json?name=${matcher.name}`),
     { autorun: false },
@@ -97,16 +114,7 @@ const LabelValueInput: FC<{
       onChange={(
         newValue: OnChangeValue<OptionT, true>,
         meta: ActionMeta<OptionT>,
-      ) => {
-        matcher.values = newValue as OptionT[];
-        // force regex if we have multiple values
-        if (matcher.values.length > 1 && matcher.isRegex === false) {
-          matcher.isRegex = true;
-        }
-        if (meta.action === "create-option") {
-          matcher.values[matcher.values.length - 1].wasCreated = true;
-        }
-      }}
+      ) => updateMatcherValues(matcher, newValue, meta)}
       hideSelectedOptions
       isMulti
       components={{
@@ -116,6 +124,6 @@ const LabelValueInput: FC<{
       }}
     />
   );
-});
+};
 
 export { LabelValueInput };

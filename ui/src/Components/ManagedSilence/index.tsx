@@ -1,7 +1,6 @@
 import { FC, useEffect, useState } from "react";
 
 import { action } from "mobx";
-import { observer } from "mobx-react-lite";
 
 import { parseISO } from "date-fns/parseISO";
 import { getUnixTime } from "date-fns/getUnixTime";
@@ -38,89 +37,86 @@ const ManagedSilence: FC<{
   isOpen?: boolean;
   onDidUpdate?: () => void;
   isNested?: boolean;
-}> = observer(
-  ({
-    cluster,
-    alertCount,
-    alertCountAlwaysVisible,
-    silence,
-    alertStore,
-    silenceFormStore,
-    isOpen = false,
-    onDidUpdate,
-    isNested = false,
-  }) => {
-    useEffect(() => {
-      if (onDidUpdate) onDidUpdate();
-    });
+}> = ({
+  cluster,
+  alertCount,
+  alertCountAlwaysVisible,
+  silence,
+  alertStore,
+  silenceFormStore,
+  isOpen = false,
+  onDidUpdate,
+  isNested = false,
+}) => {
+  useEffect(() => {
+    if (onDidUpdate) onDidUpdate();
+  });
 
-    const [showDetails, setShowDetails] = useState<boolean>(isOpen);
+  const [showDetails, setShowDetails] = useState<boolean>(isOpen);
 
-    const onEditSilence = action(() => {
-      const alertmanager = GetAlertmanager(alertStore, cluster);
+  const onEditSilence = action(() => {
+    const alertmanager = GetAlertmanager(alertStore, cluster);
 
-      silenceFormStore.data.fillFormFromSilence(alertmanager, silence);
-      silenceFormStore.data.resetProgress();
-      silenceFormStore.tab.setTab("editor");
-      silenceFormStore.toggle.show();
-    });
+    silenceFormStore.data.fillFormFromSilence(alertmanager, silence);
+    silenceFormStore.data.resetProgress();
+    silenceFormStore.tab.setTab("editor");
+    silenceFormStore.toggle.show();
+  });
 
-    const [progress, setProgress] = useState<number>(() =>
-      calculatePercent(silence.startsAt, silence.endsAt),
-    );
+  const [progress, setProgress] = useState<number>(() =>
+    calculatePercent(silence.startsAt, silence.endsAt),
+  );
 
-    useEffect(() => {
-      const timer = setInterval(() => {
-        setProgress(calculatePercent(silence.startsAt, silence.endsAt));
-      }, 30 * 1000);
-      return () => clearInterval(timer);
-    }, [silence.startsAt, silence.endsAt]);
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setProgress(calculatePercent(silence.startsAt, silence.endsAt));
+    }, 30 * 1000);
+    return () => clearInterval(timer);
+  }, [silence.startsAt, silence.endsAt]);
 
-    return (
-      <div className="card my-1 components-managed-silence w-100">
-        <div className="card-header rounded-0 border-bottom-0 px-2">
-          <SilenceComment
-            alertStore={alertStore}
+  return (
+    <div className="card my-1 components-managed-silence w-100">
+      <div className="card-header rounded-0 border-bottom-0 px-2">
+        <SilenceComment
+          alertStore={alertStore}
+          cluster={cluster}
+          silence={silence}
+          alertCount={alertCount}
+          alertCountAlwaysVisible={alertCountAlwaysVisible}
+          collapsed={!showDetails}
+          collapseToggle={() => setShowDetails(!showDetails)}
+        />
+      </div>
+      {showDetails ? (
+        <div className="card-body pt-0 px-2">
+          <SilenceDetails
             cluster={cluster}
             silence={silence}
-            alertCount={alertCount}
-            alertCountAlwaysVisible={alertCountAlwaysVisible}
-            collapsed={!showDetails}
-            collapseToggle={() => setShowDetails(!showDetails)}
+            alertStore={alertStore}
+            silenceFormStore={silenceFormStore}
+            onEditSilence={onEditSilence}
+            isUpper={isNested}
           />
         </div>
-        {showDetails ? (
-          <div className="card-body pt-0 px-2">
-            <SilenceDetails
-              cluster={cluster}
-              silence={silence}
-              alertStore={alertStore}
-              silenceFormStore={silenceFormStore}
-              onEditSilence={onEditSilence}
-              isUpper={isNested}
-            />
-          </div>
-        ) : null}
-        <div className="progress silence-progress mx-2 mb-1">
-          <div
-            className={
-              progress > 90
-                ? "progress-bar bg-danger"
-                : progress > 75
-                  ? "progress-bar bg-warning"
-                  : "progress-bar bg-success"
-            }
-            role="progressbar"
-            style={{ width: progress + "%" }}
-            aria-valuenow={progress}
-            aria-valuemin={0}
-            aria-valuemax={100}
-          />
-        </div>
+      ) : null}
+      <div className="progress silence-progress mx-2 mb-1">
+        <div
+          className={
+            progress > 90
+              ? "progress-bar bg-danger"
+              : progress > 75
+                ? "progress-bar bg-warning"
+                : "progress-bar bg-success"
+          }
+          role="progressbar"
+          style={{ width: progress + "%" }}
+          aria-valuenow={progress}
+          aria-valuemin={0}
+          aria-valuemax={100}
+        />
       </div>
-    );
-  },
-);
-ManagedSilence.displayName = "ManagedSilence";
+    </div>
+  );
+};
 
 export { ManagedSilence, GetAlertmanager };
