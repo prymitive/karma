@@ -46,14 +46,14 @@ const useFetchGet = <T>(
     isRetrying: false,
     retryCount: 0,
   });
-  const isCanceled = useRef<boolean>(false);
+  const isCanceledRef = useRef<boolean>(false);
 
   const cancelGet = useCallback(() => {
-    isCanceled.current = true;
+    isCanceledRef.current = true;
   }, []);
 
   const get = useCallback(async () => {
-    isCanceled.current = false;
+    isCanceledRef.current = false;
 
     try {
       setResponse((r) => ({
@@ -78,7 +78,7 @@ const useFetchGet = <T>(
               },
             ) as RequestInit,
           ).catch((err: Error) => {
-            if (!isCanceled.current) {
+            if (!isCanceledRef.current) {
               setResponse((r) => ({
                 ...r,
                 isRetrying: true,
@@ -90,7 +90,7 @@ const useFetchGet = <T>(
         FetchRetryConfig,
       );
 
-      if (res !== undefined && !isCanceled.current) {
+      if (res !== undefined && !isCanceledRef.current) {
         let body;
         const contentType = res.headers.get("content-type");
         if (contentType && contentType.indexOf("application/json") !== -1) {
@@ -99,7 +99,7 @@ const useFetchGet = <T>(
           body = await res.text();
         }
 
-        if (!isCanceled.current) {
+        if (!isCanceledRef.current) {
           if (res.ok) {
             setResponse({
               response: body,
@@ -134,7 +134,7 @@ const useFetchGet = <T>(
     if (autorun) get();
 
     return () => cancelGet();
-  }, [uri, get, cancelGet, autorun, ...deps]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [uri, get, cancelGet, autorun, ...deps]);
 
   return { get, cancelGet, ...response };
 };

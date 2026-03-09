@@ -32,7 +32,7 @@ export const AlertHistory: FC<{ group: APIAlertGroupT; grid: APIGridT }> = ({
 }) => {
   const [ref, inView] = useInView({ triggerOnce: true });
 
-  const [lastUpdate, setLastUpdate] = useState<number>(GetUTCSeconds());
+  const [lastUpdate, setLastUpdate] = useState<number>(() => GetUTCSeconds());
   const [upstreams, setUpstreams] = useState<UpstreamT[]>([]);
   const [labels] = useState<{ [key: string]: string }>({
     ...Object.fromEntries(group.labels.map((l) => [l.name, l.value])),

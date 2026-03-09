@@ -7,9 +7,9 @@ import { FatalError } from ".";
 describe("<FatalError />", () => {
   it("matches snapshot", () => {
     const { asFragment } = render(
-      <ThemeContext.Provider value={MockThemeContext}>
+      <ThemeContext value={MockThemeContext}>
         <FatalError message="foo bar" />
-      </ThemeContext.Provider>,
+      </ThemeContext>,
     );
     expect(asFragment()).toMatchSnapshot();
   });

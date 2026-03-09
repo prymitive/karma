@@ -56,7 +56,7 @@ const renderAlert = (
   showOnlyExpandedAnnotations: boolean,
 ) => {
   return render(
-    <ThemeContext.Provider value={MockThemeContext}>
+    <ThemeContext value={MockThemeContext}>
       <Alert
         alert={alert}
         group={group}
@@ -67,7 +67,7 @@ const renderAlert = (
         silenceFormStore={silenceFormStore}
         setIsMenuOpen={MockSetIsMenuOpen}
       />
-    </ThemeContext.Provider>,
+    </ThemeContext>,
   );
 };
 

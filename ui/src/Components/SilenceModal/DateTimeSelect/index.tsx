@@ -246,7 +246,7 @@ const DateTimeSelect: FC<{
   openTab?: tabT;
 }> = observer(({ silenceFormStore, openTab = "duration" }) => {
   const [currentTab, setCurrentTab] = useState<tabT>(openTab);
-  const [timeNow, setTimeNow] = useState<Date>(nowZeroSeconds());
+  const [timeNow, setTimeNow] = useState<Date>(() => nowZeroSeconds());
 
   const updateTimeNow = useCallback(() => {
     setTimeNow(nowZeroSeconds());

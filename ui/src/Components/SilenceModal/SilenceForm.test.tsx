@@ -51,14 +51,14 @@ beforeEach(() => {
 
 const renderSilenceForm = () => {
   return render(
-    <ThemeContext.Provider value={MockThemeContext}>
+    <ThemeContext value={MockThemeContext}>
       <SilenceForm
         alertStore={alertStore}
         silenceFormStore={silenceFormStore}
         settingsStore={settingsStore}
         previewOpen={false}
       />
-    </ThemeContext.Provider>,
+    </ThemeContext>,
   );
 };
 

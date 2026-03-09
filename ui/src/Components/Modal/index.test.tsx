@@ -116,11 +116,11 @@ describe("<ModalInner />", () => {
   it("uses components-animation-modal class when animations are enabled", () => {
     const onExited = jest.fn();
     render(
-      <ThemeContext.Provider value={MockThemeContext}>
+      <ThemeContext value={MockThemeContext}>
         <Modal isOpen={true} toggleOpen={fakeToggle} onExited={onExited}>
           <div />
         </Modal>
-      </ThemeContext.Provider>,
+      </ThemeContext>,
     );
     expect(document.body.querySelector(".modal")).toBeInTheDocument();
   });
@@ -128,11 +128,11 @@ describe("<ModalInner />", () => {
   it("doesn't use components-animation-modal class when animations are disabled", () => {
     const onExited = jest.fn();
     render(
-      <ThemeContext.Provider value={MockThemeContextWithoutAnimations}>
+      <ThemeContext value={MockThemeContextWithoutAnimations}>
         <Modal isOpen={true} toggleOpen={fakeToggle} onExited={onExited}>
           <div />
         </Modal>
-      </ThemeContext.Provider>,
+      </ThemeContext>,
     );
     expect(document.body.querySelector(".modal")).toBeInTheDocument();
   });

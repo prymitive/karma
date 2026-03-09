@@ -29,14 +29,14 @@ afterEach(() => {
 
 const renderModalContent = () => {
   return render(
-    <ThemeContext.Provider value={MockThemeContext}>
+    <ThemeContext value={MockThemeContext}>
       <MainModalContent
         alertStore={alertStore}
         settingsStore={settingsStore}
         onHide={onHide}
         expandAllOptions={true}
       />
-    </ThemeContext.Provider>,
+    </ThemeContext>,
   );
 };
 

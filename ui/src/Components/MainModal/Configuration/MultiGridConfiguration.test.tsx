@@ -24,9 +24,9 @@ afterEach(() => {
 
 const renderConfiguration = () => {
   return render(
-    <ThemeContext.Provider value={MockThemeContext}>
+    <ThemeContext value={MockThemeContext}>
       <MultiGridConfiguration settingsStore={settingsStore} />
-    </ThemeContext.Provider>,
+    </ThemeContext>,
   );
 };
 

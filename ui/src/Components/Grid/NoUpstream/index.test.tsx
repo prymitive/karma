@@ -7,9 +7,9 @@ import { NoUpstream } from ".";
 describe("<NoUpstream />", () => {
   it("matches snapshot", () => {
     const { asFragment } = render(
-      <ThemeContext.Provider value={MockThemeContext}>
+      <ThemeContext value={MockThemeContext}>
         <NoUpstream />
-      </ThemeContext.Provider>,
+      </ThemeContext>,
     );
     expect(asFragment()).toMatchSnapshot();
   });

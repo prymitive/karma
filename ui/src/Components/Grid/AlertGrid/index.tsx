@@ -25,10 +25,10 @@ const AlertGrid: FC<{
   const { width: windowWidth } = useWindowSize();
   const { observe, width: bodyWidth } = useDimensions();
 
-  const [gridSizesConfig, setGridSizesConfig] = useState<SizeDetail[]>(
+  const [gridSizesConfig, setGridSizesConfig] = useState<SizeDetail[]>(() =>
     GridSizesConfig(settingsStore.gridConfig.config.groupWidth),
   );
-  const [groupWidth, setGroupWidth] = useState<number>(
+  const [groupWidth, setGroupWidth] = useState<number>(() =>
     GetGridElementWidth(
       bodyWidth || document.body.clientWidth,
       windowWidth,
@@ -52,7 +52,7 @@ const AlertGrid: FC<{
           ),
         );
       }),
-    [windowWidth, bodyWidth], // eslint-disable-line react-hooks/exhaustive-deps
+    [windowWidth, bodyWidth],
   );
 
   useHotkeys("alt+space", alertStore.status.togglePause);

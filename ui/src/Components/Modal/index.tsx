@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef } from "react";
+import React, { use, FC, useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 
 import { CSSTransition } from "react-transition-group";
@@ -64,7 +64,7 @@ const Modal: FC<{
   onExited,
   children,
 }) => {
-  const context = React.useContext(ThemeContext);
+  const context = use(ThemeContext);
   const modalRef = useRef<HTMLDivElement>(null);
   const backdropRef = useRef<HTMLDivElement>(null);
 

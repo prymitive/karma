@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useState, useEffect, useRef } from "react";
+import React, { use, FC, ReactNode, useState, useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 
 import TransitionGroup from "react-transition-group/TransitionGroup";
@@ -77,7 +77,7 @@ const ToastTransition: FC<{
 };
 
 const ToastContainer: FC<{ children: ReactNode }> = ({ children }) => {
-  const context = React.useContext(ThemeContext);
+  const context = use(ThemeContext);
 
   return ReactDOM.createPortal(
     <div className="components-toast-container d-flex flex-column">

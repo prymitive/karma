@@ -30,16 +30,13 @@ const SilenceIDCopyButton: FC<{
   id: string;
 }> = ({ id }) => {
   const [clickCount, setClickCount] = useState<number>(0);
-  const { ref, props, nodeRef } = useFlashTransition(clickCount);
+  const { ref, props } = useFlashTransition(clickCount);
 
   return (
     <TooltipWrapper title="Copy silence ID to the clipboard">
       <CSSTransition {...props}>
         <span
-          ref={(node) => {
-            ref(node);
-            nodeRef.current = node;
-          }}
+          ref={ref}
           className="badge bg-secondary px-1 me-1 components-label cursor-pointer"
           onClick={() => {
             copy(id);

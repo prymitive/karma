@@ -64,7 +64,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     if (this.state.reloadSeconds <= 1) {
       window.location.reload();
     } else {
-      this.setState({ reloadSeconds: this.state.reloadSeconds - 1 });
+      this.setState((prev) => ({ reloadSeconds: prev.reloadSeconds - 1 }));
     }
   };
 

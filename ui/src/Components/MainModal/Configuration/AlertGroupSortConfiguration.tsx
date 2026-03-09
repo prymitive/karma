@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { use, FC } from "react";
 
 import { observer } from "mobx-react-lite";
 
@@ -43,7 +43,7 @@ const AlertGroupSortConfiguration: FC<{
     settingsStore.gridConfig.config.sortOrder ===
       settingsStore.gridConfig.options.disabled.value;
 
-  const context = React.useContext(ThemeContext);
+  const context = use(ThemeContext);
 
   return (
     <div className="mb-0">

@@ -10,8 +10,8 @@ describe("useOnClickOutside", () => {
     enabled: boolean;
   }> = ({ enabled }) => {
     const ref = useRef<HTMLDivElement | null>(null);
-    const [isModalOpen, setModalOpen] = useState<boolean>(true);
-    useOnClickOutside(ref, () => setModalOpen(false), enabled);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
+    useOnClickOutside(ref, () => setIsModalOpen(false), enabled);
 
     return (
       <div>

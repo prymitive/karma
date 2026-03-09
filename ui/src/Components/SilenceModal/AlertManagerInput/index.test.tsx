@@ -63,12 +63,12 @@ beforeEach(() => {
 
 const renderAlertManagerInput = () => {
   return render(
-    <ThemeContext.Provider value={MockThemeContext}>
+    <ThemeContext value={MockThemeContext}>
       <AlertManagerInput
         alertStore={alertStore}
         silenceFormStore={silenceFormStore}
       />
-    </ThemeContext.Provider>,
+    </ThemeContext>,
   );
 };
 

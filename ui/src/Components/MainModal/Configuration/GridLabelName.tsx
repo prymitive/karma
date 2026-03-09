@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { use, FC } from "react";
 
 import Creatable from "react-select/creatable";
 
@@ -33,7 +33,7 @@ const GridLabelName: FC<{
     FormatBackendURI(`labelNames.json`),
   );
 
-  const context = React.useContext(ThemeContext);
+  const context = use(ThemeContext);
 
   const defaultValue =
     settingsStore.multiGridConfig.config.gridLabel === "@auto"

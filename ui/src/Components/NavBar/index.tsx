@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect, useCallback, useRef } from "react";
+import { use, FC, useState, useEffect, useCallback, useRef } from "react";
 
 import { reaction } from "mobx";
 import { observer } from "mobx-react-lite";
@@ -30,7 +30,7 @@ const NavBar: FC<{
 }> = ({ alertStore, settingsStore, silenceFormStore, fixedTop = true }) => {
   const [containerClass, setContainerClass] = useState<string>("visible");
 
-  const context = React.useContext(ThemeContext);
+  const context = use(ThemeContext);
 
   const ref = useRef<HTMLElement>(null);
   const { observe, height } = useDimensions({});
@@ -38,6 +38,7 @@ const NavBar: FC<{
   const updateBodyPaddingTop = useCallback(
     (idle: boolean) => {
       const paddingTop = idle ? 0 : height + 8;
+      // eslint-disable-next-line react-compiler/react-compiler -- intentional DOM side-effect, not React state
       document.body.style.paddingTop = `${paddingTop}px`;
       setContainerClass(idle ? "invisible" : "visible");
 
@@ -93,7 +94,7 @@ const NavBar: FC<{
         (paused) => (paused ? pause() : reset()),
         { fireImmediately: true },
       ),
-    [], // eslint-disable-line react-hooks/exhaustive-deps
+    [],
   );
 
   const navRef = useRef<HTMLElement>(null);

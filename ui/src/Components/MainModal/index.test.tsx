@@ -46,9 +46,9 @@ const renderMainModal = async () => {
   let result: ReturnType<typeof render>;
   await act(async () => {
     result = render(
-      <ThemeContext.Provider value={MockThemeContext}>
+      <ThemeContext value={MockThemeContext}>
         <MainModal alertStore={alertStore} settingsStore={settingsStore} />
-      </ThemeContext.Provider>,
+      </ThemeContext>,
     );
   });
   return result!;

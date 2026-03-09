@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { use, FC } from "react";
 
 import { observer } from "mobx-react-lite";
 
@@ -32,7 +32,7 @@ const ThemeConfiguration: FC<{
     settingsStore.themeConfig.setTheme(newValue);
   };
 
-  const context = React.useContext(ThemeContext);
+  const context = use(ThemeContext);
 
   return (
     <div className="mb-2">

@@ -24,9 +24,9 @@ describe("<Configuration />", () => {
   it("matches snapshot", () => {
     const settingsStore = new Settings(null);
     const { asFragment } = render(
-      <ThemeContext.Provider value={MockThemeContext}>
+      <ThemeContext value={MockThemeContext}>
         <Configuration settingsStore={settingsStore} defaultIsOpen={true} />
-      </ThemeContext.Provider>,
+      </ThemeContext>,
     );
     expect(asFragment()).toMatchSnapshot();
   });

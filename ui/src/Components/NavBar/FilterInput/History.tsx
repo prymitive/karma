@@ -191,7 +191,7 @@ const History: FC<{
   alertStore: AlertStore;
   settingsStore: Settings;
 }> = observer(({ alertStore, settingsStore }) => {
-  const [history] = useState<HistoryStorage>(new HistoryStorage());
+  const [history] = useState<HistoryStorage>(() => new HistoryStorage());
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const [maxHeight, setMaxHeight] = useState<number | null>(null);
   const hide = useCallback(() => setIsVisible(false), []);
@@ -246,7 +246,7 @@ const History: FC<{
       disposeAutorun();
       history.destroy();
     };
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   const ref = useRef<HTMLSpanElement | null>(null);
   useOnClickOutside(ref, hide, isVisible);

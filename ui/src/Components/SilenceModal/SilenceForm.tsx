@@ -162,7 +162,7 @@ const SilenceForm: FC<{
     if (alertStore.info.authentication.enabled) {
       silenceFormStore.data.setAuthor(alertStore.info.authentication.username);
     }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   const addMore = (event: MouseEvent) => {
     event.preventDefault();

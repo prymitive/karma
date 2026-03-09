@@ -199,13 +199,13 @@ describe("<GridLabelSelect />", () => {
       },
     ]);
     const { container } = render(
-      <ThemeContext.Provider value={MockThemeContextWithoutAnimations}>
+      <ThemeContext value={MockThemeContextWithoutAnimations}>
         <AlertGrid
           alertStore={alertStore}
           settingsStore={settingsStore}
           silenceFormStore={silenceFormStore}
         />
-      </ThemeContext.Provider>,
+      </ThemeContext>,
     );
 
     const toggle = container.querySelector(

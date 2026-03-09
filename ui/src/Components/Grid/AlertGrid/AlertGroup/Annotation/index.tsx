@@ -31,7 +31,7 @@ const RenderNonLinkAnnotation: FC<{
     }
   });
 
-  const { ref, props, nodeRef } = useFlashTransition(value);
+  const { ref, props } = useFlashTransition(value);
 
   const className =
     "mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100";
@@ -63,21 +63,11 @@ const RenderNonLinkAnnotation: FC<{
               <CSSTransition {...props}>
                 {allowHTML ? (
                   <span
-                    ref={(node) => {
-                      ref(node);
-                      nodeRef.current = node;
-                    }}
+                    ref={ref}
                     dangerouslySetInnerHTML={{ __html: value }}
                   ></span>
                 ) : (
-                  <span
-                    ref={(node) => {
-                      ref(node);
-                      nodeRef.current = node;
-                    }}
-                  >
-                    {value}
-                  </span>
+                  <span ref={ref}>{value}</span>
                 )}
               </CSSTransition>
             </Linkify>

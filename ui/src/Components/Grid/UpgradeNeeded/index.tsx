@@ -8,17 +8,13 @@ import { CenteredMessage } from "Components/CenteredMessage";
 
 import "csshake/dist/csshake-slow.css";
 
-const clearUpgradeTimer = (timer: NodeJS.Timeout): void => {
-  clearTimeout(timer);
-};
-
 const UpgradeNeeded: FC<{
   newVersion: string;
   reloadAfter: number;
 }> = ({ newVersion, reloadAfter }) => {
   useEffect(() => {
     const timer = setTimeout(() => window.location.reload(), reloadAfter);
-    return () => clearUpgradeTimer(timer);
+    return () => clearTimeout(timer);
   }, [reloadAfter]);
 
   return (

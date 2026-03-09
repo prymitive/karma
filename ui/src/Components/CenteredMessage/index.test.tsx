@@ -5,11 +5,7 @@ import { ThemeContext } from "Components/Theme";
 import { CenteredMessage } from ".";
 
 const renderWithTheme = (ui: React.ReactElement) =>
-  render(
-    <ThemeContext.Provider value={MockThemeContext}>
-      {ui}
-    </ThemeContext.Provider>,
-  );
+  render(<ThemeContext value={MockThemeContext}>{ui}</ThemeContext>);
 
 describe("<CenteredMessage />", () => {
   const Message = () => <div>Foo</div>;

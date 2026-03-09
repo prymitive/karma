@@ -68,7 +68,7 @@ const renderGroupFooter = (props?: {
   showAnnotations?: boolean;
 }) => {
   return render(
-    <ThemeContext.Provider value={MockThemeContext}>
+    <ThemeContext value={MockThemeContext}>
       <GroupFooter
         group={group}
         afterUpdate={MockAfterUpdate}
@@ -76,7 +76,7 @@ const renderGroupFooter = (props?: {
         silenceFormStore={silenceFormStore}
         {...props}
       />
-    </ThemeContext.Provider>,
+    </ThemeContext>,
   );
 };
 

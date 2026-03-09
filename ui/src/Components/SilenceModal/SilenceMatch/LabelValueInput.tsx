@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from "react";
+import { use, FC, useEffect } from "react";
 
 import { observer } from "mobx-react-lite";
 
@@ -41,6 +41,27 @@ const Placeholder = (props: PlaceholderProps<OptionT, true>) => (
   </div>
 );
 
+const makeValueContainer = (
+  silenceFormStore: SilenceFormStore,
+  matcher: MatcherWithIDT,
+) =>
+  function ValueContainer(props: ValueContainerProps<OptionT, true>) {
+    return (
+      <components.ValueContainer
+        {...(props as ValueContainerProps<OptionT, true>)}
+      >
+        {matcher.values.length > 0 ? (
+          <MatchCounter
+            key={GenerateHashFromMatchers(silenceFormStore, matcher)}
+            silenceFormStore={silenceFormStore}
+            matcher={matcher}
+          />
+        ) : null}
+        {props.children}
+      </components.ValueContainer>
+    );
+  };
+
 const LabelValueInput: FC<{
   silenceFormStore: SilenceFormStore;
   matcher: MatcherWithIDT;
@@ -58,22 +79,7 @@ const LabelValueInput: FC<{
     return () => cancelGet();
   }, [matcher.name, get, cancelGet]);
 
-  const context = React.useContext(ThemeContext);
-
-  const ValueContainer = (props: ValueContainerProps<OptionT, true>) => (
-    <components.ValueContainer
-      {...(props as ValueContainerProps<OptionT, true>)}
-    >
-      {matcher.values.length > 0 ? (
-        <MatchCounter
-          key={GenerateHashFromMatchers(silenceFormStore, matcher)}
-          silenceFormStore={silenceFormStore}
-          matcher={matcher}
-        />
-      ) : null}
-      {props.children}
-    </components.ValueContainer>
-  );
+  const context = use(ThemeContext);
 
   return (
     <Creatable
@@ -104,7 +110,7 @@ const LabelValueInput: FC<{
       hideSelectedOptions
       isMulti
       components={{
-        ValueContainer: ValueContainer,
+        ValueContainer: makeValueContainer(silenceFormStore, matcher),
         Placeholder: Placeholder,
         Menu: AnimatedMenuMultiple,
       }}
