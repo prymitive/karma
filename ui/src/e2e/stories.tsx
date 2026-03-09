@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { createRoot } from "react-dom/client";
 
 import { addDays } from "date-fns/addDays";
@@ -194,7 +194,11 @@ window.fetch = async (
 
 type StoryMap = Record<string, () => React.ReactNode>;
 
-const Modal: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+const Modal: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => (
   <div className="modal d-block" style={{ position: "relative" }}>
     <div className="modal-dialog modal-lg" role="document">
       <div className="modal-content">{children}</div>
@@ -277,6 +281,7 @@ const makeGridAlertStore = (): AlertStore => {
 const gridStory = (): React.ReactNode => {
   const alertStore = makeGridAlertStore();
   const settingsStore = new Settings(null);
+  settingsStore.alertGroupConfig.setDefaultCollapseState("expanded");
   const silenceFormStore = new SilenceFormStore();
   return (
     <Grid
@@ -290,6 +295,7 @@ const gridStory = (): React.ReactNode => {
 const gridColorTitleBarStory = (): React.ReactNode => {
   const alertStore = makeGridAlertStore();
   const settingsStore = new Settings(null);
+  settingsStore.alertGroupConfig.setDefaultCollapseState("expanded");
   const silenceFormStore = new SilenceFormStore();
   settingsStore.alertGroupConfig.setColorTitleBar(true);
   return (
