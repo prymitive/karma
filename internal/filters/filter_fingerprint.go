@@ -7,8 +7,8 @@ import (
 )
 
 type fingerprintFilter struct {
-	alertFilter
 	value string
+	alertFilter
 }
 
 func (filter *fingerprintFilter) init(name string, matcher *matcherT, rawText string, isValid bool, value string) {

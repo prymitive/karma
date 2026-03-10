@@ -8,8 +8,8 @@ import (
 )
 
 type receiverFilter struct {
-	alertFilter
 	value string
+	alertFilter
 }
 
 func (filter *receiverFilter) init(name string, matcher *matcherT, rawText string, isValid bool, value string) {
@@ -28,7 +28,7 @@ func (filter *receiverFilter) GetValue() string {
 
 func (filter *receiverFilter) Match(alert *models.Alert, _ int) bool {
 	if filter.IsValid {
-		isMatch := filter.Matcher.Compare(alert.Receiver.Value(), filter.value)
+		isMatch := filter.Matcher.Compare(alert.Receiver, filter.value)
 		if isMatch {
 			filter.Hits++
 		}
@@ -46,35 +46,39 @@ func newreceiverFilter() FilterT {
 func receiverAutocomplete(name string, operators []string, alerts []models.Alert) []models.Autocomplete {
 	tokens := map[string]*models.Autocomplete{}
 	for _, alert := range alerts {
-		if alert.Receiver.Value() != "" {
+		if alert.Receiver != "" {
 			for _, operator := range operators {
 				switch operator {
 				case equalOperator, notEqualOperator:
-					token := name + operator + alert.Receiver.Value()
-					hint := makeAC(
-						token,
-						[]string{
-							name,
-							strings.TrimPrefix(name, "@"),
-							name + operator,
-						},
-					)
-					tokens[token] = &hint
+					token := name + operator + alert.Receiver
+					if _, ok := tokens[token]; !ok {
+						hint := makeAC(
+							token,
+							[]string{
+								name,
+								strings.TrimPrefix(name, "@"),
+								name + operator,
+							},
+						)
+						tokens[token] = &hint
+					}
 				case regexpOperator, negativeRegexOperator:
-					substrings := strings.Split(alert.Receiver.Value(), " ")
+					substrings := strings.Split(alert.Receiver, " ")
 					if len(substrings) > 1 {
 						for _, substring := range substrings {
 							token := name + operator + substring
-							hint := makeAC(
-								token,
-								[]string{
-									name,
-									strings.TrimPrefix(name, "@"),
-									name + operator,
-									substring,
-								},
-							)
-							tokens[token] = &hint
+							if _, ok := tokens[token]; !ok {
+								hint := makeAC(
+									token,
+									[]string{
+										name,
+										strings.TrimPrefix(name, "@"),
+										name + operator,
+										substring,
+									},
+								)
+								tokens[token] = &hint
+							}
 						}
 					}
 				}

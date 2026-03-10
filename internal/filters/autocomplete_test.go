@@ -6,10 +6,11 @@ import (
 	"strconv"
 	"testing"
 
+	"github.com/google/go-cmp/cmp"
+	"github.com/prometheus/prometheus/model/labels"
+
 	"github.com/prymitive/karma/internal/filters"
 	"github.com/prymitive/karma/internal/models"
-
-	"github.com/google/go-cmp/cmp"
 )
 
 type acTest struct {
@@ -34,24 +35,18 @@ var acTests = []acTest{
 	{
 		Alerts: []models.Alert{
 			{
-				State: models.AlertStateActive,
-				Labels: models.Labels{
-					{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("bar")},
-					{Name: models.NewUniqueString("number"), Value: models.NewUniqueString("1")},
-				},
-				Receiver: models.NewUniqueString("default"),
+				State:    models.AlertStateActive,
+				Labels:   labels.FromStrings("foo", "bar", "number", "1"),
+				Receiver: "default",
 				Alertmanager: []models.AlertmanagerInstance{
 					{Cluster: "cluster", Name: "am1"},
 					{Cluster: "cluster", Name: "am2"},
 				},
 			},
 			{
-				State: models.AlertStateSuppressed,
-				Labels: models.Labels{
-					{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("bar baz")},
-					{Name: models.NewUniqueString("number"), Value: models.NewUniqueString("5")},
-				},
-				Receiver: models.NewUniqueString("not default"),
+				State:    models.AlertStateSuppressed,
+				Labels:   labels.FromStrings("foo", "bar baz", "number", "5"),
+				Receiver: "not default",
 				Alertmanager: []models.AlertmanagerInstance{
 					{Cluster: "cluster", Name: "am1"},
 					{
@@ -134,7 +129,7 @@ func TestBuildAutocomplete(t *testing.T) {
 	for _, acTest := range acTests {
 		result := make([]string, 0, len(acTest.Alerts))
 		for _, hint := range filters.BuildAutocomplete(acTest.Alerts) {
-			result = append(result, hint.Value.Value())
+			result = append(result, hint.Value)
 		}
 
 		sort.Strings(result)
@@ -151,12 +146,9 @@ func BenchmarkAutocomplete(b *testing.B) {
 	alerts := make([]models.Alert, 0, n)
 	for i := range n {
 		alerts = append(alerts, models.Alert{
-			State: models.AlertStateActive,
-			Labels: models.Labels{
-				{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString(fmt.Sprintf("xxx%d", i))},
-				{Name: models.NewUniqueString("number"), Value: models.NewUniqueString(strconv.Itoa(i))},
-			},
-			Receiver: models.NewUniqueString(fmt.Sprintf("receiver-%d", i%1000)),
+			State:    models.AlertStateActive,
+			Labels:   labels.FromStrings("foo", fmt.Sprintf("xxx%d", i), "number", strconv.Itoa(i)),
+			Receiver: fmt.Sprintf("receiver-%d", i%1000),
 			Alertmanager: []models.AlertmanagerInstance{
 				{Cluster: "cluster", Name: "am1"},
 				{Cluster: "cluster", Name: "am2"},

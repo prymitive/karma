@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/beme/abide"
+	"github.com/prometheus/prometheus/model/labels"
 
 	"github.com/prymitive/karma/internal/models"
 )
@@ -44,234 +45,285 @@ func TestColorString(t *testing.T) {
 }
 
 func TestDedupSharedMaps(t *testing.T) {
-	ag := models.APIAlertGroup{
-		AlertGroup: models.AlertGroup{
-			Receiver: models.NewUniqueString("default"),
-			Labels: models.Labels{
-				{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("FakeAlert")},
+	ag := models.AlertGroup{
+		Receiver: "default",
+		Labels:   labels.FromStrings("alertname", "FakeAlert"),
+		Alerts: models.AlertList{
+			models.Alert{
+				Receiver: "default",
+				State:    models.AlertStateSuppressed,
+				Annotations: models.Annotations{
+					models.Annotation{
+						Name:  "summary",
+						Value: "this is summary",
+					},
+					models.Annotation{
+						Name:  "foo",
+						Value: "bar",
+					},
+				},
+				Labels: labels.FromStrings("alertname", "FakeAlert", "instance", "1", "job", "node_exporter"),
+				Alertmanager: []models.AlertmanagerInstance{
+					{
+						State:       models.AlertStateSuppressed,
+						Fingerprint: "1",
+						Name:        "am1",
+						Cluster:     "fakeCluster",
+						SilencedBy:  []string{"fakeSilence1", "fakeSilence2"},
+						Source:      "https://prom.example.com/graph?foo",
+					},
+					{
+						State:       models.AlertStateSuppressed,
+						Fingerprint: "2",
+						Name:        "am2",
+						Cluster:     "fakeCluster",
+						SilencedBy:  []string{"fakeSilence1", "fakeSilence2"},
+						Source:      "https://prom.example.com/subdir/graph?bar",
+					},
+				},
 			},
-			Alerts: models.AlertList{
-				models.Alert{
-					Receiver: models.NewUniqueString("default"),
-					State:    models.AlertStateSuppressed,
-					Annotations: models.Annotations{
-						models.Annotation{
-							Name:  models.NewUniqueString("summary"),
-							Value: models.NewUniqueString("this is summary"),
-						},
-						models.Annotation{
-							Name:  models.NewUniqueString("foo"),
-							Value: models.NewUniqueString("bar"),
-						},
-					},
-					Labels: models.Labels{
-						{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("FakeAlert")},
-						{Name: models.NewUniqueString("job"), Value: models.NewUniqueString("node_exporter")},
-						{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("1")},
-					},
-					Alertmanager: []models.AlertmanagerInstance{
-						{
-							State:       models.AlertStateSuppressed,
-							Fingerprint: "1",
-							Name:        "am1",
-							Cluster:     "fakeCluster",
-							SilencedBy:  []string{"fakeSilence1", "fakeSilence2"},
-							Source:      "https://prom.example.com/graph?foo",
-						},
-						{
-							State:       models.AlertStateSuppressed,
-							Fingerprint: "2",
-							Name:        "am2",
-							Cluster:     "fakeCluster",
-							SilencedBy:  []string{"fakeSilence1", "fakeSilence2"},
-							Source:      "https://prom.example.com/subdir/graph?bar",
-						},
+			models.Alert{
+				Receiver: "default",
+				State:    models.AlertStateActive,
+				Annotations: models.Annotations{
+					models.Annotation{
+						Name:  "summary",
+						Value: "this is summary",
 					},
 				},
-				models.Alert{
-					Receiver: models.NewUniqueString("default"),
-					State:    models.AlertStateActive,
-					Annotations: models.Annotations{
-						models.Annotation{
-							Name:  models.NewUniqueString("summary"),
-							Value: models.NewUniqueString("this is summary"),
-						},
+				Labels: labels.FromStrings("alertname", "FakeAlert", "instance", "2", "job", "node_exporter"),
+				Alertmanager: []models.AlertmanagerInstance{
+					{
+						State:       models.AlertStateActive,
+						Fingerprint: "1",
+						Name:        "am1",
+						Cluster:     "fakeCluster",
+						SilencedBy:  []string{"fakeSilence1", "fakeSilence2"},
+						Source:      "https://am.example.com",
 					},
-					Labels: models.Labels{
-						{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("FakeAlert")},
-						{Name: models.NewUniqueString("job"), Value: models.NewUniqueString("node_exporter")},
-						{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("2")},
-					},
-					Alertmanager: []models.AlertmanagerInstance{
-						{
-							State:       models.AlertStateActive,
-							Fingerprint: "1",
-							Name:        "am1",
-							Cluster:     "fakeCluster",
-							SilencedBy:  []string{"fakeSilence1", "fakeSilence2"},
-							Source:      "https://am.example.com",
-						},
-						{
-							State:       models.AlertStateActive,
-							Fingerprint: "1",
-							Name:        "am2",
-							Cluster:     "fakeCluster",
-							SilencedBy:  []string{"fakeSilence1", "fakeSilence2"},
-							Source:      "https://am.example.com",
-						},
+					{
+						State:       models.AlertStateActive,
+						Fingerprint: "1",
+						Name:        "am2",
+						Cluster:     "fakeCluster",
+						SilencedBy:  []string{"fakeSilence1", "fakeSilence2"},
+						Source:      "https://am.example.com",
 					},
 				},
-				models.Alert{
-					Receiver: models.NewUniqueString("default"),
-					State:    models.AlertStateSuppressed,
-					Annotations: models.Annotations{
-						models.Annotation{
-							Name:  models.NewUniqueString("summary"),
-							Value: models.NewUniqueString("this is summary"),
-						},
+			},
+			models.Alert{
+				Receiver: "default",
+				State:    models.AlertStateSuppressed,
+				Annotations: models.Annotations{
+					models.Annotation{
+						Name:  "summary",
+						Value: "this is summary",
 					},
-					Labels: models.Labels{
-						{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("FakeAlert")},
-						{Name: models.NewUniqueString("job"), Value: models.NewUniqueString("blackbox")},
-						{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("3")},
-						{Name: models.NewUniqueString("extra"), Value: models.NewUniqueString("ignore")},
+				},
+				Labels: labels.FromStrings("alertname", "FakeAlert", "extra", "ignore", "instance", "3", "job", "blackbox"),
+				Alertmanager: []models.AlertmanagerInstance{
+					{
+						State:       models.AlertStateSuppressed,
+						Fingerprint: "1",
+						Name:        "am1",
+						Cluster:     "fakeCluster",
+						SilencedBy:  []string{"fakeSilence1", "fakeSilence2"},
+						Source:      "https://am.example.com/graph",
 					},
-					Alertmanager: []models.AlertmanagerInstance{
-						{
-							State:       models.AlertStateSuppressed,
-							Fingerprint: "1",
-							Name:        "am1",
-							Cluster:     "fakeCluster",
-							SilencedBy:  []string{"fakeSilence1", "fakeSilence2"},
-							Source:      "https://am.example.com/graph",
-						},
-						{
-							State:       models.AlertStateSuppressed,
-							Fingerprint: "1",
-							Name:        "am2",
-							Cluster:     "fakeCluster",
-							SilencedBy:  []string{"fakeSilence1", "fakeSilence2"},
-							Source:      "https://am.example.com/graph",
-						},
+					{
+						State:       models.AlertStateSuppressed,
+						Fingerprint: "1",
+						Name:        "am2",
+						Cluster:     "fakeCluster",
+						SilencedBy:  []string{"fakeSilence1", "fakeSilence2"},
+						Source:      "https://am.example.com/graph",
 					},
 				},
 			},
 		},
 	}
-	ag.DedupSharedMaps(nil)
+	shared, allLabels := ag.DedupSharedMaps(nil)
+	apiAG := models.NewAPIAlertGroup(ag, shared, allLabels, len(ag.Alerts))
 
-	agJSON, _ := json.MarshalIndent(ag, "", "  ")
+	agJSON, _ := json.MarshalIndent(apiAG, "", "  ")
 	abide.AssertReader(t, "SharedMaps", bytes.NewReader(agJSON))
 }
 
 func TestDedupSharedMapsSingleGroup(t *testing.T) {
-	ag := models.APIAlertGroup{
-		AlertGroup: models.AlertGroup{
-			Alerts: models.AlertList{
-				models.Alert{
-					State: models.AlertStateActive,
-					Labels: models.Labels{
-						{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("bar")},
-					},
-				},
-				models.Alert{
-					State: models.AlertStateUnprocessed,
-					Labels: models.Labels{
-						{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("bar")},
-					},
-				},
+	ag := models.AlertGroup{
+		Alerts: models.AlertList{
+			models.Alert{
+				State:  models.AlertStateActive,
+				Labels: labels.FromStrings("foo", "bar"),
+			},
+			models.Alert{
+				State:  models.AlertStateUnprocessed,
+				Labels: labels.FromStrings("foo", "bar"),
 			},
 		},
 	}
-	ag.DedupSharedMaps(nil)
-	if len(ag.Shared.Annotations) > 0 {
-		t.Errorf("Expected empty shared annotations, got %v", ag.Shared.Annotations)
+	shared, _ := ag.DedupSharedMaps(nil)
+	if len(shared.Annotations) > 0 {
+		t.Errorf("Expected empty shared annotations, got %v", shared.Annotations)
 	}
-	if len(ag.Shared.Labels) == 0 {
-		t.Errorf("Expected non-empty shared labels, got %v", ag.Shared.Labels)
+	if shared.Labels.Len() == 0 {
+		t.Errorf("Expected non-empty shared labels, got %v", shared.Labels)
 	}
 }
 
 func TestDedupSharedMapsWithSingleAlert(t *testing.T) {
-	ag := models.APIAlertGroup{
-		AlertGroup: models.AlertGroup{
-			Alerts: models.AlertList{
-				models.Alert{},
-			},
+	ag := models.AlertGroup{
+		Alerts: models.AlertList{
+			models.Alert{},
 		},
 	}
-	ag.DedupSharedMaps(nil)
-	if len(ag.Shared.Annotations) > 0 {
-		t.Errorf("Expected empty shared annotations, got %v", ag.Shared.Annotations)
+	shared, _ := ag.DedupSharedMaps(nil)
+	if len(shared.Annotations) > 0 {
+		t.Errorf("Expected empty shared annotations, got %v", shared.Annotations)
 	}
-	if len(ag.Shared.Labels) > 0 {
-		t.Errorf("Expected empty shared labels, got %v", ag.Shared.Labels)
+	if shared.Labels.Len() > 0 {
+		t.Errorf("Expected empty shared labels, got %v", shared.Labels)
 	}
 }
 
 func TestDedupWithBadSource(t *testing.T) {
-	ag := models.APIAlertGroup{
-		AlertGroup: models.AlertGroup{
-			Alerts: models.AlertList{
-				models.Alert{Alertmanager: []models.AlertmanagerInstance{{Source: "%gh&%ij"}}},
-				models.Alert{Alertmanager: []models.AlertmanagerInstance{{Source: ""}}},
-			},
+	ag := models.AlertGroup{
+		Alerts: models.AlertList{
+			models.Alert{Alertmanager: []models.AlertmanagerInstance{{Source: "%gh&%ij"}}},
+			models.Alert{Alertmanager: []models.AlertmanagerInstance{{Source: ""}}},
 		},
 	}
-	ag.DedupSharedMaps(nil)
-	if len(ag.Shared.Sources) > 0 {
-		t.Errorf("Expected empty sources list, got %v", ag.Shared.Sources)
+	shared, _ := ag.DedupSharedMaps(nil)
+	if len(shared.Sources) > 0 {
+		t.Errorf("Expected empty sources list, got %v", shared.Sources)
 	}
 }
 
 func TestDedupSharedMapsWithDropNames(t *testing.T) {
 	// verifies that passing dropNames to DedupSharedMaps removes those labels
 	// from both group labels and alert labels
-	ag := models.APIAlertGroup{
-		AlertGroup: models.AlertGroup{
-			Receiver: models.NewUniqueString("default"),
-			Labels: models.Labels{
-				{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("TestAlert")},
-				{Name: models.NewUniqueString("cluster"), Value: models.NewUniqueString("prod")},
+	ag := models.AlertGroup{
+		Receiver: "default",
+		Labels:   labels.FromStrings("alertname", "TestAlert", "cluster", "prod"),
+		Alerts: models.AlertList{
+			models.Alert{
+				State:  models.AlertStateActive,
+				Labels: labels.FromStrings("alertname", "TestAlert", "cluster", "prod", "instance", "1"),
 			},
-			Alerts: models.AlertList{
-				models.Alert{
-					State: models.AlertStateActive,
-					Labels: models.Labels{
-						{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("TestAlert")},
-						{Name: models.NewUniqueString("cluster"), Value: models.NewUniqueString("prod")},
-						{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("1")},
-					},
-				},
-				models.Alert{
-					State: models.AlertStateActive,
-					Labels: models.Labels{
-						{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("TestAlert")},
-						{Name: models.NewUniqueString("cluster"), Value: models.NewUniqueString("prod")},
-						{Name: models.NewUniqueString("instance"), Value: models.NewUniqueString("2")},
-					},
-				},
+			models.Alert{
+				State:  models.AlertStateActive,
+				Labels: labels.FromStrings("alertname", "TestAlert", "cluster", "prod", "instance", "2"),
 			},
 		},
 	}
 	ag.DedupSharedMaps([]string{"cluster"})
 
 	// "cluster" should be removed from group labels
-	if ag.Labels.Get("cluster") != nil {
+	if ag.Labels.Get("cluster") != "" {
 		t.Error("Expected 'cluster' label to be removed from group labels")
 	}
 	// "alertname" should remain in group labels
-	if ag.Labels.Get("alertname") == nil {
+	if ag.Labels.Get("alertname") == "" {
 		t.Error("Expected 'alertname' label to remain in group labels")
 	}
 	// alert labels should not contain "cluster" (dropped) or "alertname" (shared with group)
 	for i, alert := range ag.Alerts {
-		if alert.Labels.Get("cluster") != nil {
+		if alert.Labels.Get("cluster") != "" {
 			t.Errorf("Alert[%d]: expected 'cluster' label to be removed", i)
 		}
-		if alert.Labels.Get("alertname") != nil {
+		if alert.Labels.Get("alertname") != "" {
 			t.Errorf("Alert[%d]: expected 'alertname' label to be removed (shared with group)", i)
 		}
+	}
+}
+
+func TestAPIAlertGroupJSONFieldsNonNull(t *testing.T) {
+	type testCaseT struct {
+		desc string
+		ag   models.AlertGroup
+	}
+
+	testCases := []testCaseT{
+		{
+			// verifies that a group with multiple alerts produces non-null alerts and labels
+			desc: "multiple alerts",
+			ag: models.AlertGroup{
+				Receiver: "default",
+				Labels:   labels.FromStrings("alertname", "Test"),
+				Alerts: models.AlertList{
+					{State: models.AlertStateActive, Labels: labels.FromStrings("alertname", "Test", "instance", "1")},
+					{State: models.AlertStateActive, Labels: labels.FromStrings("alertname", "Test", "instance", "2")},
+				},
+			},
+		},
+		{
+			// verifies that a group with a single alert produces non-null alerts and labels
+			desc: "single alert",
+			ag: models.AlertGroup{
+				Receiver: "default",
+				Labels:   labels.FromStrings("alertname", "Test"),
+				Alerts: models.AlertList{
+					{State: models.AlertStateActive, Labels: labels.FromStrings("alertname", "Test")},
+				},
+			},
+		},
+		{
+			// verifies that a group with empty labels produces non-null labels array
+			desc: "empty labels",
+			ag: models.AlertGroup{
+				Alerts: models.AlertList{
+					{State: models.AlertStateActive, Labels: labels.EmptyLabels()},
+				},
+			},
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.desc, func(t *testing.T) {
+			shared, allLabels := tc.ag.DedupSharedMaps(nil)
+			apiAG := models.NewAPIAlertGroup(tc.ag, shared, allLabels, len(tc.ag.Alerts))
+
+			b, err := json.Marshal(apiAG)
+			if err != nil {
+				t.Fatalf("json.Marshal failed: %v", err)
+			}
+
+			var raw map[string]json.RawMessage
+			if err := json.Unmarshal(b, &raw); err != nil {
+				t.Fatalf("json.Unmarshal into raw map failed: %v", err)
+			}
+
+			// alerts field must be a non-null JSON array
+			alertsRaw, ok := raw["alerts"]
+			if !ok {
+				t.Fatal("JSON output missing 'alerts' field")
+			}
+			if string(alertsRaw) == "null" {
+				t.Error("JSON 'alerts' field is null, expected a non-null array")
+			}
+
+			// labels field must be a non-null JSON array
+			labelsRaw, ok := raw["labels"]
+			if !ok {
+				t.Fatal("JSON output missing 'labels' field")
+			}
+			if string(labelsRaw) == "null" {
+				t.Error("JSON 'labels' field is null, expected a non-null array")
+			}
+
+			// shared.labels must also be non-null
+			var sharedRaw map[string]json.RawMessage
+			if err := json.Unmarshal(raw["shared"], &sharedRaw); err != nil {
+				t.Fatalf("json.Unmarshal shared failed: %v", err)
+			}
+			sharedLabelsRaw, ok := sharedRaw["labels"]
+			if !ok {
+				t.Fatal("JSON output missing 'shared.labels' field")
+			}
+			if string(sharedLabelsRaw) == "null" {
+				t.Error("JSON 'shared.labels' field is null, expected a non-null array")
+			}
+		})
 	}
 }
 

@@ -2,7 +2,6 @@ package models_test
 
 import (
 	"testing"
-	"unique"
 
 	"github.com/google/go-cmp/cmp"
 
@@ -26,8 +25,8 @@ var annotationMapsTestCases = []annotationMapsTestCase{
 		},
 		annotations: models.Annotations{
 			models.Annotation{
-				Name:     models.NewUniqueString("foo"),
-				Value:    models.NewUniqueString("bar"),
+				Name:     "foo",
+				Value:    "bar",
 				Visible:  true,
 				IsLink:   false,
 				IsAction: false,
@@ -40,8 +39,8 @@ var annotationMapsTestCases = []annotationMapsTestCase{
 		},
 		annotations: models.Annotations{
 			models.Annotation{
-				Name:     models.NewUniqueString("foo"),
-				Value:    models.NewUniqueString("http://localhost"),
+				Name:     "foo",
+				Value:    "http://localhost",
 				Visible:  true,
 				IsLink:   true,
 				IsAction: false,
@@ -54,8 +53,8 @@ var annotationMapsTestCases = []annotationMapsTestCase{
 		},
 		annotations: models.Annotations{
 			models.Annotation{
-				Name:     models.NewUniqueString("foo"),
-				Value:    models.NewUniqueString("ftp://localhost"),
+				Name:     "foo",
+				Value:    "ftp://localhost",
 				Visible:  true,
 				IsLink:   true,
 				IsAction: false,
@@ -70,22 +69,22 @@ var annotationMapsTestCases = []annotationMapsTestCase{
 		},
 		annotations: models.Annotations{
 			models.Annotation{
-				Name:     models.NewUniqueString("abc"),
-				Value:    models.NewUniqueString("xyz"),
+				Name:     "abc",
+				Value:    "xyz",
 				Visible:  true,
 				IsLink:   false,
 				IsAction: false,
 			},
 			models.Annotation{
-				Name:     models.NewUniqueString("act"),
-				Value:    models.NewUniqueString("https://localhost/act "),
+				Name:     "act",
+				Value:    "https://localhost/act ",
 				Visible:  true,
 				IsLink:   true,
 				IsAction: true,
 			},
 			models.Annotation{
-				Name:     models.NewUniqueString("foo"),
-				Value:    models.NewUniqueString("https://localhost/xxx"),
+				Name:     "foo",
+				Value:    "https://localhost/xxx",
 				Visible:  true,
 				IsLink:   true,
 				IsAction: false,
@@ -99,8 +98,8 @@ var annotationMapsTestCases = []annotationMapsTestCase{
 		},
 		annotations: models.Annotations{
 			models.Annotation{
-				Name:     models.NewUniqueString("notLink"),
-				Value:    models.NewUniqueString("https://some-links.domain.com/healthcheck in dev (job: blackbox) is not successfully probing via the blackbox prober. this could be due to the endpoint being offline, returning an invalid status code, taking too long to respond, etc."),
+				Name:     "notLink",
+				Value:    "https://some-links.domain.com/healthcheck in dev (job: blackbox) is not successfully probing via the blackbox prober. this could be due to the endpoint being offline, returning an invalid status code, taking too long to respond, etc.",
 				Visible:  true,
 				IsLink:   false,
 				IsAction: false,
@@ -113,8 +112,8 @@ var annotationMapsTestCases = []annotationMapsTestCase{
 		},
 		annotations: models.Annotations{
 			models.Annotation{
-				Name:     models.NewUniqueString("notLink"),
-				Value:    models.NewUniqueString("mailto:me@example.com"),
+				Name:     "notLink",
+				Value:    "mailto:me@example.com",
 				Visible:  true,
 				IsLink:   false,
 				IsAction: false,
@@ -129,8 +128,8 @@ var annotationMapsTestCases = []annotationMapsTestCase{
 		},
 		annotations: models.Annotations{
 			models.Annotation{
-				Name:     models.NewUniqueString("hidden"),
-				Value:    models.NewUniqueString("value"),
+				Name:     "hidden",
+				Value:    "value",
 				Visible:  false,
 				IsLink:   false,
 				IsAction: false,
@@ -148,22 +147,22 @@ var annotationMapsTestCases = []annotationMapsTestCase{
 		},
 		annotations: models.Annotations{
 			models.Annotation{
-				Name:     models.NewUniqueString("default"),
-				Value:    models.NewUniqueString("value"),
+				Name:     "default",
+				Value:    "value",
 				Visible:  false,
 				IsLink:   false,
 				IsAction: false,
 			},
 			models.Annotation{
-				Name:     models.NewUniqueString("hidden"),
-				Value:    models.NewUniqueString("value"),
+				Name:     "hidden",
+				Value:    "value",
 				Visible:  false,
 				IsLink:   false,
 				IsAction: false,
 			},
 			models.Annotation{
-				Name:     models.NewUniqueString("visible"),
-				Value:    models.NewUniqueString("value"),
+				Name:     "visible",
+				Value:    "value",
 				Visible:  true,
 				IsLink:   false,
 				IsAction: false,
@@ -173,17 +172,13 @@ var annotationMapsTestCases = []annotationMapsTestCase{
 }
 
 func TestAnnotationsFromMap(t *testing.T) {
-	cmpUnique := cmp.Comparer(func(x, y unique.Handle[string]) bool {
-		return cmp.Equal(x.Value(), y.Value())
-	})
-
 	for _, testCase := range annotationMapsTestCases {
 		config.Config.Annotations.Default.Hidden = testCase.defaultHidden
 		config.Config.Annotations.Hidden = testCase.hidden
 		config.Config.Annotations.Visible = testCase.visible
 		config.Config.Annotations.Actions = testCase.actions
 		result := models.AnnotationsFromMap(testCase.annotationMap)
-		if diff := cmp.Diff(testCase.annotations, result, cmpUnique); diff != "" {
+		if diff := cmp.Diff(testCase.annotations, result); diff != "" {
 			t.Errorf("AnnotationsFromMap result mismatch (-want +got):\n%s", diff)
 		}
 	}
@@ -192,73 +187,73 @@ func TestAnnotationsFromMap(t *testing.T) {
 func TestAnnotationsSort(t *testing.T) {
 	annotations := models.Annotations{
 		models.Annotation{
-			Name:    models.NewUniqueString("bar"),
-			Value:   models.NewUniqueString("abc"),
+			Name:    "bar",
+			Value:   "abc",
 			Visible: true,
 			IsLink:  false,
 		},
 		models.Annotation{
-			Name:    models.NewUniqueString("xyz"),
-			Value:   models.NewUniqueString("xyz"),
+			Name:    "xyz",
+			Value:   "xyz",
 			Visible: true,
 			IsLink:  true,
 		},
 		models.Annotation{
-			Name:    models.NewUniqueString("abc"),
-			Value:   models.NewUniqueString("bar"),
+			Name:    "abc",
+			Value:   "bar",
 			Visible: true,
 			IsLink:  true,
 		},
 	}
 	models.SortAnnotations(annotations)
-	if annotations[0].Name.Value() != "abc" {
-		t.Errorf("Expected 'abc' to be first, got '%s'", annotations[0].Name.Value())
+	if annotations[0].Name != "abc" {
+		t.Errorf("Expected 'abc' to be first, got '%s'", annotations[0].Name)
 	}
-	if annotations[2].Name.Value() != "xyz" {
-		t.Errorf("Expected 'xyz' to be last, got '%s'", annotations[2].Name.Value())
+	if annotations[2].Name != "xyz" {
+		t.Errorf("Expected 'xyz' to be last, got '%s'", annotations[2].Name)
 	}
 }
 
 func TestAnnotationsCustomOrderSort(t *testing.T) {
 	annotations := models.Annotations{
 		models.Annotation{
-			Name:    models.NewUniqueString("bar"),
-			Value:   models.NewUniqueString("abc"),
+			Name:    "bar",
+			Value:   "abc",
 			Visible: true,
 			IsLink:  false,
 		},
 		models.Annotation{
-			Name:    models.NewUniqueString("xyz"),
-			Value:   models.NewUniqueString("xyz"),
+			Name:    "xyz",
+			Value:   "xyz",
 			Visible: true,
 			IsLink:  true,
 		},
 		models.Annotation{
-			Name:    models.NewUniqueString("yyz"),
-			Value:   models.NewUniqueString("yyz"),
+			Name:    "yyz",
+			Value:   "yyz",
 			Visible: true,
 			IsLink:  true,
 		},
 		models.Annotation{
-			Name:    models.NewUniqueString("abc"),
-			Value:   models.NewUniqueString("bar"),
+			Name:    "abc",
+			Value:   "bar",
 			Visible: true,
 			IsLink:  true,
 		},
 	}
 	config.Config.Annotations.Order = []string{"xyz", "yyz"}
 	models.SortAnnotations(annotations)
-	if annotations[0].Name.Value() != "xyz" {
-		t.Errorf("Expected 'xyz' to be first, got '%s'", annotations[0].Name.Value())
+	if annotations[0].Name != "xyz" {
+		t.Errorf("Expected 'xyz' to be first, got '%s'", annotations[0].Name)
 	}
-	if annotations[1].Name.Value() != "yyz" {
-		t.Errorf("Expected 'yyz' to be second, got '%s'", annotations[1].Name.Value())
+	if annotations[1].Name != "yyz" {
+		t.Errorf("Expected 'yyz' to be second, got '%s'", annotations[1].Name)
 	}
-	if annotations[2].Name.Value() != "abc" {
-		t.Errorf("Expected 'abc' to be third, got '%s'", annotations[2].Name.Value())
+	if annotations[2].Name != "abc" {
+		t.Errorf("Expected 'abc' to be third, got '%s'", annotations[2].Name)
 	}
-	if annotations[3].Name.Value() != "bar" {
-		t.Errorf("Expected 'bar' to be last, got '%s'", annotations[3].Name.Value())
+	if annotations[3].Name != "bar" {
+		t.Errorf("Expected 'bar' to be last, got '%s'", annotations[3].Name)
 	}
 }
 
@@ -267,29 +262,29 @@ func TestAnnotationsSortIdenticalNames(t *testing.T) {
 	config.Config.Annotations.Order = []string{}
 	annotations := models.Annotations{
 		models.Annotation{
-			Name:    models.NewUniqueString("dup"),
-			Value:   models.NewUniqueString("second"),
+			Name:    "dup",
+			Value:   "second",
 			Visible: true,
 		},
 		models.Annotation{
-			Name:    models.NewUniqueString("dup"),
-			Value:   models.NewUniqueString("first"),
+			Name:    "dup",
+			Value:   "first",
 			Visible: true,
 		},
 		models.Annotation{
-			Name:    models.NewUniqueString("aaa"),
-			Value:   models.NewUniqueString("value"),
+			Name:    "aaa",
+			Value:   "value",
 			Visible: true,
 		},
 	}
 	models.SortAnnotations(annotations)
-	if annotations[0].Name.Value() != "aaa" {
-		t.Errorf("Expected 'aaa' to be first, got '%s'", annotations[0].Name.Value())
+	if annotations[0].Name != "aaa" {
+		t.Errorf("Expected 'aaa' to be first, got '%s'", annotations[0].Name)
 	}
-	if annotations[1].Name.Value() != "dup" {
-		t.Errorf("Expected 'dup' to be second, got '%s'", annotations[1].Name.Value())
+	if annotations[1].Name != "dup" {
+		t.Errorf("Expected 'dup' to be second, got '%s'", annotations[1].Name)
 	}
-	if annotations[2].Name.Value() != "dup" {
-		t.Errorf("Expected 'dup' to be third, got '%s'", annotations[2].Name.Value())
+	if annotations[2].Name != "dup" {
+		t.Errorf("Expected 'dup' to be third, got '%s'", annotations[2].Name)
 	}
 }

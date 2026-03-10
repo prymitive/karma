@@ -4,182 +4,168 @@ import (
 	"encoding/json"
 	"fmt"
 	"slices"
-	"strings"
 	"testing"
 	"time"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/google/go-cmp/cmp/cmpopts"
+	"github.com/prometheus/prometheus/model/labels"
 
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/models"
 )
 
-func labelsToString(ls models.Labels) string {
-	s := make([]string, 0, len(ls))
-	for _, l := range ls {
-		s = append(s, fmt.Sprintf("%s=\"%s\"", l.Name.Value(), l.Value.Value()))
-	}
-	return strings.Join(s, ",")
-}
-
-func TestLabelsSet(t *testing.T) {
-	l := models.Labels{}
-	if labelsToString(l) != "" {
-		t.Errorf("Invalid labels: %+v", l)
+func TestLabelsSetIfMissing(t *testing.T) {
+	// verifies that LabelsSetIfMissing adds a label when missing
+	l := labels.EmptyLabels()
+	l = models.LabelsSetIfMissing(l, "foo", "bar")
+	if l.Get("foo") != "bar" {
+		t.Errorf("Expected foo=bar, got foo=%s", l.Get("foo"))
 	}
 
-	l = l.Set("foo", "bar")
-	if labelsToString(l) != `foo="bar"` {
-		t.Errorf("Invalid labels: %+v", l)
+	// verifies that LabelsSetIfMissing does not overwrite an existing label
+	l = models.LabelsSetIfMissing(l, "foo", "baz")
+	if l.Get("foo") != "bar" {
+		t.Errorf("Expected foo=bar (unchanged), got foo=%s", l.Get("foo"))
 	}
 
-	l = l.Set("foo", "bar")
-	if labelsToString(l) != `foo="bar"` {
-		t.Errorf("Invalid labels: %+v", l)
+	// verifies that LabelsSetIfMissing adds a second label
+	l = models.LabelsSetIfMissing(l, "bar", "foo")
+	if l.Get("bar") != "foo" {
+		t.Errorf("Expected bar=foo, got bar=%s", l.Get("bar"))
 	}
-
-	l = l.Set("bar", "foo")
-	if labelsToString(l) != `foo="bar",bar="foo"` {
-		t.Errorf("Invalid labels: %+v", l)
-	}
-
-	l = l.Set("bar", "foo")
-	if labelsToString(l) != `foo="bar",bar="foo"` {
-		t.Errorf("Invalid labels: %+v", l)
-	}
-
-	l = l.Set("foo", "bar")
-	if labelsToString(l) != `foo="bar",bar="foo"` {
-		t.Errorf("Invalid labels: %+v", l)
+	if l.Get("foo") != "bar" {
+		t.Errorf("Expected foo=bar (still), got foo=%s", l.Get("foo"))
 	}
 }
 
-type sortLabelsTestCase struct {
+type sortOrderedLabelsTestCase struct {
 	order []string
-	in    models.Labels
-	out   models.Labels
+	in    models.OrderedLabels
+	out   models.OrderedLabels
 }
 
-func TestSortLabels(t *testing.T) {
-	testCases := []sortLabelsTestCase{
+func TestSortOrderedLabels(t *testing.T) {
+	testCases := []sortOrderedLabelsTestCase{
+		// verifies that a single label stays in place
 		{
 			order: []string{},
-			in: models.Labels{
-				{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("bar")},
-			},
-			out: models.Labels{
-				{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("bar")},
-			},
+			in:    models.OrderedLabels{{Name: "foo", Value: "bar"}},
+			out:   models.OrderedLabels{{Name: "foo", Value: "bar"}},
 		},
+		// verifies that two labels are sorted alphabetically by name
 		{
 			order: []string{},
-			in: models.Labels{
-				{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("bar")},
-				{Name: models.NewUniqueString("bar"), Value: models.NewUniqueString("foo")},
+			in: models.OrderedLabels{
+				{Name: "foo", Value: "bar"},
+				{Name: "bar", Value: "foo"},
 			},
-			out: models.Labels{
-				{Name: models.NewUniqueString("bar"), Value: models.NewUniqueString("foo")},
-				{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("bar")},
+			out: models.OrderedLabels{
+				{Name: "bar", Value: "foo"},
+				{Name: "foo", Value: "bar"},
 			},
 		},
+		// verifies that already-sorted labels remain stable
 		{
 			order: []string{},
-			in: models.Labels{
-				{Name: models.NewUniqueString("bar"), Value: models.NewUniqueString("foo")},
-				{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("bar")},
+			in: models.OrderedLabels{
+				{Name: "bar", Value: "foo"},
+				{Name: "foo", Value: "bar"},
 			},
-			out: models.Labels{
-				{Name: models.NewUniqueString("bar"), Value: models.NewUniqueString("foo")},
-				{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("bar")},
+			out: models.OrderedLabels{
+				{Name: "bar", Value: "foo"},
+				{Name: "foo", Value: "bar"},
 			},
 		},
+		// verifies that same-name labels sort by value naturally
 		{
 			order: []string{},
-			in: models.Labels{
-				{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("foo")},
-				{Name: models.NewUniqueString("bar"), Value: models.NewUniqueString("foo")},
-				{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("bar")},
+			in: models.OrderedLabels{
+				{Name: "foo", Value: "foo"},
+				{Name: "bar", Value: "foo"},
+				{Name: "foo", Value: "bar"},
 			},
-			out: models.Labels{
-				{Name: models.NewUniqueString("bar"), Value: models.NewUniqueString("foo")},
-				{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("bar")},
-				{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("foo")},
+			out: models.OrderedLabels{
+				{Name: "bar", Value: "foo"},
+				{Name: "foo", Value: "bar"},
+				{Name: "foo", Value: "foo"},
 			},
 		},
+		// verifies natural sort on values with numbers
 		{
 			order: []string{},
-			in: models.Labels{
-				{Name: models.NewUniqueString("1"), Value: models.NewUniqueString("a12")},
-				{Name: models.NewUniqueString("1"), Value: models.NewUniqueString("1")},
-				{Name: models.NewUniqueString("1"), Value: models.NewUniqueString("a2")},
+			in: models.OrderedLabels{
+				{Name: "1", Value: "a12"},
+				{Name: "1", Value: "1"},
+				{Name: "1", Value: "a2"},
 			},
-			out: models.Labels{
-				{Name: models.NewUniqueString("1"), Value: models.NewUniqueString("1")},
-				{Name: models.NewUniqueString("1"), Value: models.NewUniqueString("a2")},
-				{Name: models.NewUniqueString("1"), Value: models.NewUniqueString("a12")},
+			out: models.OrderedLabels{
+				{Name: "1", Value: "1"},
+				{Name: "1", Value: "a2"},
+				{Name: "1", Value: "a12"},
 			},
 		},
+		// verifies that configured order takes priority
 		{
 			order: []string{"bar"},
-			in: models.Labels{
-				{Name: models.NewUniqueString("baz"), Value: models.NewUniqueString("1")},
-				{Name: models.NewUniqueString("bar"), Value: models.NewUniqueString("1")},
-				{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("1")},
+			in: models.OrderedLabels{
+				{Name: "baz", Value: "1"},
+				{Name: "bar", Value: "1"},
+				{Name: "foo", Value: "1"},
 			},
-			out: models.Labels{
-				{Name: models.NewUniqueString("bar"), Value: models.NewUniqueString("1")},
-				{Name: models.NewUniqueString("baz"), Value: models.NewUniqueString("1")},
-				{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("1")},
+			out: models.OrderedLabels{
+				{Name: "bar", Value: "1"},
+				{Name: "baz", Value: "1"},
+				{Name: "foo", Value: "1"},
 			},
 		},
+		// verifies that multiple order entries sort correctly with natural value sort
 		{
 			order: []string{"foo", "bar"},
-			in: models.Labels{
-				{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("a10")},
-				{Name: models.NewUniqueString("bar"), Value: models.NewUniqueString("1")},
-				{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("a3")},
+			in: models.OrderedLabels{
+				{Name: "foo", Value: "a10"},
+				{Name: "bar", Value: "1"},
+				{Name: "foo", Value: "a3"},
 			},
-			out: models.Labels{
-				{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("a3")},
-				{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("a10")},
-				{Name: models.NewUniqueString("bar"), Value: models.NewUniqueString("1")},
+			out: models.OrderedLabels{
+				{Name: "foo", Value: "a3"},
+				{Name: "foo", Value: "a10"},
+				{Name: "bar", Value: "1"},
 			},
 		},
 		// verifies that identical labels stay in their original positions
 		{
 			order: []string{},
-			in: models.Labels{
-				{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("bar")},
-				{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("bar")},
+			in: models.OrderedLabels{
+				{Name: "foo", Value: "bar"},
+				{Name: "foo", Value: "bar"},
 			},
-			out: models.Labels{
-				{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("bar")},
-				{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("bar")},
-			},
-		},
-		// verifies that same-name labels with different values sort by value descending naturally
-		{
-			order: []string{},
-			in: models.Labels{
-				{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("z")},
-				{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("a")},
-			},
-			out: models.Labels{
-				{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("a")},
-				{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("z")},
+			out: models.OrderedLabels{
+				{Name: "foo", Value: "bar"},
+				{Name: "foo", Value: "bar"},
 			},
 		},
-		// verifies that completely identical name labels (no order config) with equal names sort by name naturally
+		// verifies that same-name labels with different values sort by value naturally
 		{
 			order: []string{},
-			in: models.Labels{
-				{Name: models.NewUniqueString("zzz"), Value: models.NewUniqueString("1")},
-				{Name: models.NewUniqueString("aaa"), Value: models.NewUniqueString("1")},
+			in: models.OrderedLabels{
+				{Name: "foo", Value: "z"},
+				{Name: "foo", Value: "a"},
 			},
-			out: models.Labels{
-				{Name: models.NewUniqueString("aaa"), Value: models.NewUniqueString("1")},
-				{Name: models.NewUniqueString("zzz"), Value: models.NewUniqueString("1")},
+			out: models.OrderedLabels{
+				{Name: "foo", Value: "a"},
+				{Name: "foo", Value: "z"},
+			},
+		},
+		// verifies that labels with different names sort by name naturally
+		{
+			order: []string{},
+			in: models.OrderedLabels{
+				{Name: "zzz", Value: "1"},
+				{Name: "aaa", Value: "1"},
+			},
+			out: models.OrderedLabels{
+				{Name: "aaa", Value: "1"},
+				{Name: "zzz", Value: "1"},
 			},
 		},
 	}
@@ -191,8 +177,8 @@ func TestSortLabels(t *testing.T) {
 	for i, testCase := range testCases {
 		t.Run(fmt.Sprintf("[%d] order=%v", i, testCase.order), func(t *testing.T) {
 			config.Config.Labels.Order = testCase.order
-			slices.SortFunc(testCase.in, models.CompareLabels)
-			if diff := cmp.Diff(testCase.in, testCase.out, cmpopts.EquateComparable(models.Label{})); diff != "" {
+			slices.SortFunc(testCase.in, models.CompareOrderedLabels)
+			if diff := cmp.Diff(testCase.out, testCase.in); diff != "" {
 				t.Errorf("Incorrectly sorted labels (-want +got):\n%s", diff)
 				t.FailNow()
 			}
@@ -202,22 +188,19 @@ func TestSortLabels(t *testing.T) {
 
 func TestLabelsMap(t *testing.T) {
 	type testCaseT struct {
-		labels   models.Labels
+		labels   labels.Labels
 		expected map[string]string
 	}
 
 	testCases := []testCaseT{
 		// verifies that empty labels produce an empty map
 		{
-			labels:   models.Labels{},
+			labels:   labels.EmptyLabels(),
 			expected: map[string]string{},
 		},
 		// verifies that labels are converted to a name->value map
 		{
-			labels: models.Labels{
-				{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("bar")},
-				{Name: models.NewUniqueString("baz"), Value: models.NewUniqueString("qux")},
-			},
+			labels:   labels.FromStrings("baz", "qux", "foo", "bar"),
 			expected: map[string]string{"foo": "bar", "baz": "qux"},
 		},
 	}
@@ -230,11 +213,8 @@ func TestLabelsMap(t *testing.T) {
 	}
 }
 
-func TestLabelsGetValue(t *testing.T) {
-	labels := models.Labels{
-		{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("bar")},
-		{Name: models.NewUniqueString("baz"), Value: models.NewUniqueString("qux")},
-	}
+func TestLabelsGet(t *testing.T) {
+	ls := labels.FromStrings("baz", "qux", "foo", "bar")
 
 	type testCaseT struct {
 		name     string
@@ -251,38 +231,38 @@ func TestLabelsGetValue(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		result := labels.GetValue(tc.name)
+		result := ls.Get(tc.name)
 		if result != tc.expected {
-			t.Errorf("Labels.GetValue(%q) returned %q, expected %q", tc.name, result, tc.expected)
+			t.Errorf("Labels.Get(%q) returned %q, expected %q", tc.name, result, tc.expected)
 		}
 	}
 }
 
-func TestUniqueStringJSONRoundTrip(t *testing.T) {
-	// verifies that UniqueString survives a JSON marshal/unmarshal round-trip
-	original := models.NewUniqueString("test_value")
-	data, err := json.Marshal(&original)
+func TestAlertStateJSONRoundTrip(t *testing.T) {
+	// verifies that AlertState survives a JSON marshal/unmarshal round-trip
+	original := models.AlertStateActive
+	data, err := json.Marshal(original)
 	if err != nil {
 		t.Fatalf("json.Marshal failed: %s", err)
 	}
-	if string(data) != `"test_value"` {
-		t.Errorf("json.Marshal produced %s, expected %q", string(data), `"test_value"`)
+	if string(data) != `"active"` {
+		t.Errorf("json.Marshal produced %s, expected %q", string(data), `"active"`)
 	}
 
-	var decoded models.UniqueString
+	var decoded models.AlertState
 	err = json.Unmarshal(data, &decoded)
 	if err != nil {
 		t.Fatalf("json.Unmarshal failed: %s", err)
 	}
-	if decoded.Value() != "test_value" {
-		t.Errorf("json.Unmarshal produced %q, expected %q", decoded.Value(), "test_value")
+	if decoded != models.AlertStateActive {
+		t.Errorf("json.Unmarshal produced %v, expected %v", decoded, models.AlertStateActive)
 	}
 }
 
-func TestUniqueStringUnmarshalJSONError(t *testing.T) {
+func TestAlertStateUnmarshalJSONError(t *testing.T) {
 	// verifies that UnmarshalJSON returns an error for invalid JSON input
-	var us models.UniqueString
-	err := json.Unmarshal([]byte(`{invalid`), &us)
+	var s models.AlertState
+	err := json.Unmarshal([]byte(`{invalid`), &s)
 	if err == nil {
 		t.Error("json.Unmarshal should have returned an error for invalid JSON")
 	}
@@ -293,16 +273,14 @@ func TestUpdateFingerprints(t *testing.T) {
 	// including the alertmanager instance, silenced-by, and inhibited-by branches
 	alert := models.Alert{
 		StartsAt:    time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC),
-		State:       models.NewUniqueString("active"),
-		Receiver:    models.NewUniqueString("default"),
+		State:       models.AlertStateActive,
+		Receiver:    "default",
 		Fingerprint: "abc123",
-		Labels: models.Labels{
-			{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("TestAlert")},
-		},
+		Labels:      labels.FromStrings("alertname", "TestAlert"),
 		Annotations: models.Annotations{
 			{
-				Name:     models.NewUniqueString("summary"),
-				Value:    models.NewUniqueString("test summary"),
+				Name:     "summary",
+				Value:    "test summary",
 				Visible:  true,
 				IsLink:   false,
 				IsAction: false,
@@ -313,7 +291,7 @@ func TestUpdateFingerprints(t *testing.T) {
 				Fingerprint: "fp1",
 				Name:        "am1",
 				Cluster:     "cluster1",
-				State:       models.NewUniqueString("active"),
+				State:       models.AlertStateActive,
 				StartsAt:    time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC),
 				Source:      "http://source",
 				SilencedBy:  []string{"silence1", "silence2"},
@@ -344,11 +322,40 @@ func TestUpdateFingerprints(t *testing.T) {
 
 	// verifies that changing a label produces a different fingerprint
 	alert2 := alert
-	alert2.Labels = models.Labels{
-		{Name: models.NewUniqueString("alertname"), Value: models.NewUniqueString("DifferentAlert")},
-	}
+	alert2.Labels = labels.FromStrings("alertname", "DifferentAlert")
 	alert2.UpdateFingerprints()
 	if alert2.LabelsFingerprint() == fp1 {
 		t.Error("LabelsFingerprint() should differ when labels change")
+	}
+}
+
+func TestLabelsToOrderedLabels(t *testing.T) {
+	// verifies that LabelsToOrderedLabels converts labels and applies display ordering
+	defer func() {
+		config.Config.Labels.Order = []string{}
+	}()
+
+	config.Config.Labels.Order = []string{"alertname"}
+	ls := labels.FromStrings("alertname", "TestAlert", "job", "node")
+	dl := models.LabelsToOrderedLabels(ls)
+
+	expected := models.OrderedLabels{
+		{Name: "alertname", Value: "TestAlert"},
+		{Name: "job", Value: "node"},
+	}
+	if diff := cmp.Diff(expected, dl); diff != "" {
+		t.Errorf("LabelsToOrderedLabels mismatch (-want +got):\n%s", diff)
+	}
+}
+
+func TestLabelsFromMap(t *testing.T) {
+	// verifies that LabelsFromMap creates labels from a map
+	m := map[string]string{"foo": "bar", "baz": "qux"}
+	ls := models.LabelsFromMap(m)
+	if ls.Get("foo") != "bar" {
+		t.Errorf("Expected foo=bar, got foo=%s", ls.Get("foo"))
+	}
+	if ls.Get("baz") != "qux" {
+		t.Errorf("Expected baz=qux, got baz=%s", ls.Get("baz"))
 	}
 }

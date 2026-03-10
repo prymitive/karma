@@ -7,8 +7,10 @@ import (
 	"slices"
 	"sort"
 	"strings"
+	"time"
 
 	"github.com/fvbommel/sortorder"
+	"github.com/prometheus/prometheus/model/labels"
 )
 
 // Filter holds returned data on any filter passed by the user as part of the query
@@ -85,91 +87,139 @@ func CompareLabelNameStats(a, b LabelNameStats) int {
 	return cmp.Compare(a.Name, b.Name)
 }
 
-// APIAlertGroupSharedMaps defines shared part of APIAlertGroup
+// AlertGroupSharedMaps holds data shared across all alerts in a group.
+// Populated by AlertGroup.DedupSharedMaps.
+type AlertGroupSharedMaps struct {
+	Annotations Annotations
+	Labels      labels.Labels
+	Silences    map[string][]string
+	Sources     []string
+	Clusters    []string
+}
+
+// APIAlertGroupSharedMaps is the JSON representation of AlertGroupSharedMaps.
 type APIAlertGroupSharedMaps struct {
 	Annotations Annotations         `json:"annotations"`
-	Labels      Labels              `json:"labels"`
+	Labels      OrderedLabels       `json:"labels"`
 	Silences    map[string][]string `json:"silences"`
 	Sources     []string            `json:"sources"`
 	Clusters    []string            `json:"clusters"`
 }
 
-// APIAlertGroup is how AlertGroup is returned in the API response
+// APIAlertGroup is how AlertGroup is returned in the API response.
 // All labels and annotations that are shared between all alerts in given group
 // are moved to Shared namespace, each alert instance only tracks labels and
-// annotations that are unique to that instance
+// annotations that are unique to that instance.
 type APIAlertGroup struct {
-	AllLabels map[string]map[string][]string `json:"allLabels"`
-	AlertGroup
-	Shared      APIAlertGroupSharedMaps `json:"shared"`
-	TotalAlerts int                     `json:"totalAlerts"`
+	LatestStartsAt    time.Time                      `json:"-"`
+	AllLabels         map[string]map[string][]string `json:"allLabels"`
+	AlertmanagerCount map[string]int                 `json:"alertmanagerCount"`
+	StateCount        map[string]int                 `json:"stateCount"`
+	Receiver          string                         `json:"receiver"`
+	ID                string                         `json:"id"`
+	Shared            APIAlertGroupSharedMaps        `json:"shared"`
+	Labels            OrderedLabels                  `json:"labels"`
+	Alerts            []APIAlert                     `json:"alerts"`
+	TotalAlerts       int                            `json:"totalAlerts"`
 }
 
-func (ag *APIAlertGroup) dedupLabels() {
+// NewAPIAlertGroup converts an AlertGroup into its API representation.
+// ag must have been processed by DedupSharedMaps before calling this.
+func NewAPIAlertGroup(ag AlertGroup, shared AlertGroupSharedMaps, allLabels map[string]map[string][]string, totalAlerts int) APIAlertGroup {
+	alerts := make([]APIAlert, len(ag.Alerts))
+	for i, a := range ag.Alerts {
+		alerts[i] = APIAlert{
+			StartsAt:     a.StartsAt,
+			State:        a.State.String(),
+			Receiver:     a.Receiver,
+			LabelsFP:     a.LabelsFP,
+			Annotations:  a.Annotations,
+			Labels:       LabelsToOrderedLabels(a.Labels),
+			Alertmanager: a.Alertmanager,
+		}
+	}
+	return APIAlertGroup{
+		AllLabels:         allLabels,
+		Labels:            LabelsToOrderedLabels(ag.Labels),
+		Alerts:            alerts,
+		AlertmanagerCount: ag.AlertmanagerCount,
+		StateCount:        ag.StateCount,
+		Receiver:          ag.Receiver,
+		ID:                ag.ID,
+		LatestStartsAt:    ag.LatestStartsAt,
+		Shared: APIAlertGroupSharedMaps{
+			Annotations: shared.Annotations,
+			Labels:      LabelsToOrderedLabels(shared.Labels),
+			Silences:    shared.Silences,
+			Sources:     shared.Sources,
+			Clusters:    shared.Clusters,
+		},
+		TotalAlerts: totalAlerts,
+	}
+}
+
+func (ag *AlertGroup) dedupLabels(shared *AlertGroupSharedMaps) {
 	totalAlerts := len(ag.Alerts)
 
 	labelCounts := make(map[string]int, len(ag.Alerts))
 
 	for _, alert := range ag.Alerts {
-		for _, l := range alert.Labels {
-			key := l.Name.Value() + "\n" + l.Value.Value()
+		alert.Labels.Range(func(l labels.Label) {
+			key := l.Name + "\n" + l.Value
 			labelCounts[key]++
-		}
+		})
 	}
 
-	sharedLabels := Labels{}
+	sharedPairs := make([]string, 0, len(labelCounts)*2)
+	alertPairs := make([]string, 0, len(labelCounts)*2)
+	sharedSeen := map[string]struct{}{}
 
 	for i, alert := range ag.Alerts {
-		newAlertLabels := Labels{}
-		for _, l := range alert.Labels {
-			key := l.Name.Value() + "\n" + l.Value.Value()
+		alertPairs = alertPairs[:0]
+		alert.Labels.Range(func(l labels.Label) {
+			key := l.Name + "\n" + l.Value
 			if labelCounts[key] == totalAlerts {
-				sharedLabels = sharedLabels.Add(l)
+				if _, ok := sharedSeen[l.Name]; !ok {
+					sharedSeen[l.Name] = struct{}{}
+					sharedPairs = append(sharedPairs, l.Name, l.Value)
+				}
 			} else {
-				newAlertLabels = newAlertLabels.Add(l)
+				alertPairs = append(alertPairs, l.Name, l.Value)
 			}
-		}
-		ag.Alerts[i].Labels = newAlertLabels
+		})
+		ag.Alerts[i].Labels = labels.FromStrings(alertPairs...)
 	}
 
-	ag.Shared.Labels = sharedLabels
+	shared.Labels = labels.FromStrings(sharedPairs...)
 }
 
-func (ag *APIAlertGroup) removeGroupingLabels(dropNames []string) {
-	newGroupLabels := Labels{}
-	for _, l := range ag.Labels {
-		if slices.Contains(dropNames, l.Name.Value()) {
-			continue
-		}
-		newGroupLabels = newGroupLabels.Add(l)
+func (ag *AlertGroup) removeGroupingLabels(dropNames []string) {
+	b := labels.NewBuilder(ag.Labels)
+	for _, name := range dropNames {
+		b.Del(name)
 	}
-	ag.Labels = newGroupLabels
+	ag.Labels = b.Labels()
 
 	for i, alert := range ag.Alerts {
-		newAlertLabels := Labels{}
-		for _, l := range alert.Labels {
-			if slices.Contains(dropNames, l.Name.Value()) {
-				// skip all labels from the drop list
-				continue
-			}
-			if v := ag.Labels.Get(l.Name.Value()); v != nil {
-				// skip all labels that are used for grouping
-				continue
-			}
-			newAlertLabels = newAlertLabels.Add(l)
+		b.Reset(alert.Labels)
+		for _, name := range dropNames {
+			b.Del(name)
 		}
-		ag.Alerts[i].Labels = newAlertLabels
+		ag.Labels.Range(func(l labels.Label) {
+			b.Del(l.Name)
+		})
+		ag.Alerts[i].Labels = b.Labels()
 	}
 }
 
-func (ag *APIAlertGroup) dedupAnnotations() {
+func (ag *AlertGroup) dedupAnnotations(shared *AlertGroupSharedMaps) {
 	totalAlerts := len(ag.Alerts)
 
 	annotationCount := map[string]int{}
 
 	for _, alert := range ag.Alerts {
 		for _, annotation := range alert.Annotations {
-			key := annotation.Name.Value() + "\n" + annotation.Value.Value()
+			key := annotation.Name + "\n" + annotation.Value
 			annotationCount[key]++
 		}
 	}
@@ -180,7 +230,7 @@ func (ag *APIAlertGroup) dedupAnnotations() {
 	for i, alert := range ag.Alerts {
 		newAlertAnnotations := Annotations{}
 		for _, annotation := range alert.Annotations {
-			key := annotation.Name.Value() + "\n" + annotation.Value.Value()
+			key := annotation.Name + "\n" + annotation.Value
 			if annotationCount[key] == totalAlerts {
 				if _, ok := sharedKeys[key]; !ok {
 					sharedAnnotations = append(sharedAnnotations, annotation)
@@ -193,11 +243,11 @@ func (ag *APIAlertGroup) dedupAnnotations() {
 		ag.Alerts[i].Annotations = newAlertAnnotations
 	}
 
-	ag.Shared.Annotations = sharedAnnotations
+	shared.Annotations = sharedAnnotations
 }
 
-func (ag *APIAlertGroup) dedupSilences() {
-	ag.Shared.Silences = map[string][]string{}
+func (ag *AlertGroup) dedupSilences(shared *AlertGroupSharedMaps) {
+	shared.Silences = map[string][]string{}
 
 	silencesByCluster := map[string]map[string]int{}
 
@@ -222,20 +272,20 @@ func (ag *APIAlertGroup) dedupSilences() {
 	for cluster, silenceCountMap := range silencesByCluster {
 		for silenceID, affectedAlertsCount := range silenceCountMap {
 			if affectedAlertsCount == totalAlerts {
-				_, ok := ag.Shared.Silences[cluster]
+				_, ok := shared.Silences[cluster]
 				if !ok {
-					ag.Shared.Silences[cluster] = []string{}
+					shared.Silences[cluster] = []string{}
 				}
-				ag.Shared.Silences[cluster] = append(ag.Shared.Silences[cluster], silenceID)
+				shared.Silences[cluster] = append(shared.Silences[cluster], silenceID)
 				// sort to have stable order of silences
-				sort.Strings(ag.Shared.Silences[cluster])
+				sort.Strings(shared.Silences[cluster])
 			}
 		}
 	}
 }
 
-func (ag *APIAlertGroup) dedupSources() {
-	ag.Shared.Sources = []string{}
+func (ag *AlertGroup) dedupSources(shared *AlertGroupSharedMaps) {
+	shared.Sources = []string{}
 
 	urls := map[string]struct{}{}
 	var err error
@@ -260,12 +310,12 @@ func (ag *APIAlertGroup) dedupSources() {
 	}
 
 	for u := range urls {
-		ag.Shared.Sources = append(ag.Shared.Sources, u)
+		shared.Sources = append(shared.Sources, u)
 	}
-	sort.Strings(ag.Shared.Sources)
+	sort.Strings(shared.Sources)
 }
 
-func (ag *APIAlertGroup) dedupClusters() {
+func (ag *AlertGroup) dedupClusters(shared *AlertGroupSharedMaps) {
 	totalAlerts := len(ag.Alerts)
 
 	alertsPerCluster := map[string]int{}
@@ -282,81 +332,81 @@ func (ag *APIAlertGroup) dedupClusters() {
 		}
 	}
 
-	ag.Shared.Clusters = []string{}
+	shared.Clusters = []string{}
 	for cluster, alerts := range alertsPerCluster {
 		if alerts == totalAlerts {
-			ag.Shared.Clusters = append(ag.Shared.Clusters, cluster)
+			shared.Clusters = append(shared.Clusters, cluster)
 		}
 	}
-	sort.Strings(ag.Shared.Clusters)
+	sort.Strings(shared.Clusters)
 }
 
-func (ag *APIAlertGroup) populateAllLabels() {
-	ag.AllLabels = map[string]map[string][]string{
-		AlertStateActive.Value():      {},
-		AlertStateSuppressed.Value():  {},
-		AlertStateUnprocessed.Value(): {},
+func (ag *AlertGroup) populateAllLabels() map[string]map[string][]string {
+	allLabels := map[string]map[string][]string{
+		AlertStateActive.String():      {},
+		AlertStateSuppressed.String():  {},
+		AlertStateUnprocessed.String(): {},
 	}
 
-	labels := map[UniqueString]int{}
-	for _, alert := range ag.Alerts {
-		for _, l := range alert.Labels {
-			if _, ok := labels[l.Name]; !ok {
-				labels[l.Name] = 0
-			}
-			labels[l.Name]++
-		}
-	}
-
-	labelNames := map[UniqueString]struct{}{}
 	totalAlerts := len(ag.Alerts)
-	for k, totalValues := range labels {
-		if totalValues == totalAlerts {
-			labelNames[k] = struct{}{}
-		}
+
+	var estLabels int
+	if totalAlerts > 0 {
+		estLabels = ag.Alerts[0].Labels.Len()
+	}
+
+	labelNameCounts := make(map[string]int, estLabels)
+	for _, alert := range ag.Alerts {
+		alert.Labels.Range(func(l labels.Label) {
+			labelNameCounts[l.Name]++
+		})
 	}
 
 	for _, alert := range ag.Alerts {
-		for _, l := range alert.Labels {
-			if _, ok := labelNames[l.Name]; !ok {
-				continue
+		stateLabels := allLabels[alert.State.String()]
+		alert.Labels.Range(func(l labels.Label) {
+			if labelNameCounts[l.Name] != totalAlerts {
+				return
 			}
-			if _, ok := ag.AllLabels[alert.State.Value()][l.Name.Value()]; !ok {
-				ag.AllLabels[alert.State.Value()][l.Name.Value()] = []string{}
+			vals := stateLabels[l.Name]
+			if !slices.Contains(vals, l.Value) {
+				stateLabels[l.Name] = append(vals, l.Value)
 			}
-			if !slices.Contains(ag.AllLabels[alert.State.Value()][l.Name.Value()], l.Value.Value()) {
-				ag.AllLabels[alert.State.Value()][l.Name.Value()] = append(ag.AllLabels[alert.State.Value()][l.Name.Value()], l.Value.Value())
-			}
+		})
+	}
+	for state := range allLabels {
+		for k := range allLabels[state] {
+			sort.Strings(allLabels[state][k])
 		}
 	}
-	for state := range ag.AllLabels {
-		for k := range ag.AllLabels[state] {
-			sort.Strings(ag.AllLabels[state][k])
-		}
-	}
+	return allLabels
 }
 
-// DedupSharedMaps will find all labels and annotations shared by all alerts
-// in this group and moved them to Shared namespace
-func (ag *APIAlertGroup) DedupSharedMaps(ignoredLabels []string) {
-	ag.populateAllLabels()
+// DedupSharedMaps finds all labels and annotations shared by all alerts
+// in this group, moves them to shared maps, and removes grouping labels.
+// It mutates ag.Alerts and ag.Labels in place.
+func (ag *AlertGroup) DedupSharedMaps(ignoredLabels []string) (AlertGroupSharedMaps, map[string]map[string][]string) {
+	allLabels := ag.populateAllLabels()
 	// remove all labels that are used for grouping
 	ag.removeGroupingLabels(ignoredLabels)
+
+	var shared AlertGroupSharedMaps
 	// don't dedup if we only have a single alert in this group
 	if len(ag.Alerts) > 1 {
-		ag.dedupLabels()
-		ag.dedupAnnotations()
-		ag.dedupSilences()
-		ag.dedupClusters()
+		ag.dedupLabels(&shared)
+		ag.dedupAnnotations(&shared)
+		ag.dedupSilences(&shared)
+		ag.dedupClusters(&shared)
 	} else {
-		ag.Shared = APIAlertGroupSharedMaps{
-			Labels:      Labels{},
+		shared = AlertGroupSharedMaps{
+			Labels:      labels.EmptyLabels(),
 			Annotations: Annotations{},
 			Silences:    map[string][]string{},
 			Clusters:    []string{},
 		}
 	}
-	ag.dedupSources()
+	ag.dedupSources(&shared)
+	return shared, allLabels
 }
 
 // GridSettings exposes all grid settings from the config file
@@ -457,8 +507,8 @@ type AlertsResponse struct {
 // Autocomplete is the structure of autocomplete object for filter hints
 // this is internal representation, not what's returned to the user
 type Autocomplete struct {
-	Value  UniqueString   `json:"value"`
-	Tokens []UniqueString `json:"tokens"`
+	Value  string   `json:"value"`
+	Tokens []string `json:"tokens"`
 }
 
 type Counters struct {

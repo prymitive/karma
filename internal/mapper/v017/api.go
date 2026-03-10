@@ -4,7 +4,6 @@ import (
 	"net/http"
 	"net/url"
 	"path"
-	"slices"
 	"sort"
 	"time"
 
@@ -49,30 +48,22 @@ func groups(c *client.AlertmanagerAPI, timeout time.Duration) ([]models.AlertGro
 	ret := make([]models.AlertGroup, 0, len(groups.Payload))
 
 	for _, group := range groups.Payload {
-		ls := make(models.Labels, 0, len(group.Labels))
-		for k, v := range group.Labels {
-			ls = ls.Set(k, v)
-		}
-		slices.SortFunc(ls, models.CompareLabels)
+		ls := models.LabelsFromMap(group.Labels)
 		g := models.AlertGroup{
-			Receiver: models.NewUniqueString(*group.Receiver.Name),
+			Receiver: *group.Receiver.Name,
 			Labels:   ls,
 			Alerts:   make(models.AlertList, 0, len(group.Alerts)),
 		}
 		for _, alert := range group.Alerts {
-			ls := make(models.Labels, 0, len(alert.Labels))
-			for k, v := range alert.Labels {
-				ls = ls.Set(k, v)
-			}
-			slices.SortFunc(ls, models.CompareLabels)
+			ls := models.LabelsFromMap(alert.Labels)
 			a := models.Alert{
 				Fingerprint:  *alert.Fingerprint,
-				Receiver:     models.NewUniqueString(*group.Receiver.Name),
+				Receiver:     *group.Receiver.Name,
 				Annotations:  models.AnnotationsFromMap(alert.Annotations),
 				Labels:       ls,
 				StartsAt:     time.Time(*alert.StartsAt),
 				GeneratorURL: alert.GeneratorURL.String(),
-				State:        models.NewUniqueString(*alert.Status.State),
+				State:        models.ParseAlertState(*alert.Status.State),
 				InhibitedBy:  alert.Status.InhibitedBy,
 				SilencedBy:   alert.Status.SilencedBy,
 			}

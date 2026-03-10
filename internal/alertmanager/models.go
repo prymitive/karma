@@ -10,6 +10,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/prometheus/prometheus/model/labels"
+
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/filters"
 	"github.com/prymitive/karma/internal/mapper"
@@ -207,7 +209,7 @@ func (am *Alertmanager) pullAlerts(version string) error {
 		Msg("Deduplicating alert groups")
 	uniqueGroups := map[string]models.AlertGroup{}
 	uniqueAlerts := map[string]map[string]models.Alert{}
-	knownLabelsMap := map[models.UniqueString]struct{}{}
+	knownLabelsMap := map[string]struct{}{}
 	for _, ag := range groups {
 		agID := ag.LabelsFingerprint()
 		if _, found := uniqueGroups[agID]; !found {
@@ -225,9 +227,9 @@ func (am *Alertmanager) pullAlerts(version string) error {
 			if _, found := uniqueAlerts[agID][alertCFP]; !found {
 				uniqueAlerts[agID][alertCFP] = alert
 			}
-			for _, l := range alert.Labels {
+			alert.Labels.Range(func(l labels.Label) {
 				knownLabelsMap[l.Name] = struct{}{}
-			}
+			})
 
 			if name, hc := am.IsHealthCheckAlert(&alert); hc != nil {
 				healthchecks[name] = HealthCheck{
@@ -240,7 +242,7 @@ func (am *Alertmanager) pullAlerts(version string) error {
 
 	dedupedGroups := make([]models.AlertGroup, 0, len(uniqueGroups))
 	colors := models.LabelsColorMap{}
-	autocompleteMap := map[models.UniqueString]*models.Autocomplete{}
+	autocompleteMap := map[string]*models.Autocomplete{}
 	expiredSilences := am.ExpiredSilences()
 
 	log.Info().
@@ -294,14 +296,14 @@ func (am *Alertmanager) pullAlerts(version string) error {
 				},
 			}
 
-			transform.ColorLabel(colors, "@receiver", alert.Receiver.Value())
+			transform.ColorLabel(colors, "@receiver", alert.Receiver)
 			for _, am := range alert.Alertmanager {
 				transform.ColorLabel(colors, "@alertmanager", am.Name)
 				transform.ColorLabel(colors, "@cluster", am.Cluster)
 			}
-			for _, l := range alert.Labels {
-				transform.ColorLabel(colors, l.Name.Value(), l.Value.Value())
-			}
+			alert.Labels.Range(func(l labels.Label) {
+				transform.ColorLabel(colors, l.Name, l.Value)
+			})
 
 			alert.UpdateFingerprints()
 			alerts = append(alerts, alert)
@@ -331,7 +333,7 @@ func (am *Alertmanager) pullAlerts(version string) error {
 
 	knownLabels := make([]string, 0, len(knownLabelsMap))
 	for key := range knownLabelsMap {
-		knownLabels = append(knownLabels, key.Value())
+		knownLabels = append(knownLabels, key)
 	}
 
 	am.lock.Lock()

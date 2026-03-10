@@ -2,15 +2,14 @@ package filters
 
 import (
 	"fmt"
-	"slices"
 	"strings"
 
 	"github.com/prymitive/karma/internal/models"
 )
 
 type stateFilter struct {
-	alertFilter
 	value string
+	alertFilter
 }
 
 func (filter *stateFilter) init(name string, matcher *matcherT, rawText string, isValid bool, value string) {
@@ -21,7 +20,7 @@ func (filter *stateFilter) init(name string, matcher *matcherT, rawText string, 
 	filter.RawText = rawText
 	filter.IsValid = isValid
 	filter.value = value
-	if !slices.Contains(models.AlertStateList, models.NewUniqueString(value)) {
+	if _, ok := models.AlertStateFromString(value); !ok {
 		filter.IsValid = false
 	}
 }
@@ -34,7 +33,7 @@ func (filter *stateFilter) Match(alert *models.Alert, _ int) bool {
 	if filter.IsValid {
 		var isMatch bool
 		for _, am := range alert.Alertmanager {
-			if filter.Matcher.Compare(am.State.Value(), filter.value) {
+			if filter.Matcher.Compare(am.State.String(), filter.value) {
 				isMatch = true
 			}
 		}
@@ -48,7 +47,7 @@ func (filter *stateFilter) Match(alert *models.Alert, _ int) bool {
 }
 
 func (filter *stateFilter) MatchAlertmanager(am *models.AlertmanagerInstance) bool {
-	return filter.Matcher.Compare(am.State.Value(), filter.value)
+	return filter.Matcher.Compare(am.State.String(), filter.value)
 }
 
 func newStateFilter() FilterT {
@@ -58,18 +57,26 @@ func newStateFilter() FilterT {
 }
 
 func stateAutocomplete(name string, operators []string, alerts []models.Alert) []models.Autocomplete {
-	tokens := make([]models.Autocomplete, 0, len(operators))
+	tokens := map[string]*models.Autocomplete{}
 	for _, operator := range operators {
 		for _, alert := range alerts {
-			tokens = append(tokens, makeAC(
-				name+operator+alert.State.Value(),
-				[]string{
-					name,
-					strings.TrimPrefix(name, "@"),
-					name + operator,
-				},
-			))
+			token := name + operator + alert.State.String()
+			if _, ok := tokens[token]; !ok {
+				hint := makeAC(
+					token,
+					[]string{
+						name,
+						strings.TrimPrefix(name, "@"),
+						name + operator,
+					},
+				)
+				tokens[token] = &hint
+			}
 		}
 	}
-	return tokens
+	acData := make([]models.Autocomplete, 0, len(tokens))
+	for _, token := range tokens {
+		acData = append(acData, *token)
+	}
+	return acData
 }

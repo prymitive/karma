@@ -8,8 +8,8 @@ import (
 )
 
 type silenceAuthorFilter struct {
-	alertFilter
 	value string
+	alertFilter
 }
 
 func (filter *silenceAuthorFilter) init(name string, matcher *matcherT, rawText string, isValid bool, value string) {
@@ -79,13 +79,15 @@ func silenceAuthorAutocomplete(name string, operators []string, alerts []models.
 					if found {
 						for _, operator := range operators {
 							token := name + operator + silence.CreatedBy
-							hint := makeAC(token, []string{
-								name,
-								strings.TrimPrefix(name, "@"),
-								name + operator,
-								silence.CreatedBy,
-							})
-							tokens[token] = &hint
+							if _, ok := tokens[token]; !ok {
+								hint := makeAC(token, []string{
+									name,
+									strings.TrimPrefix(name, "@"),
+									name + operator,
+									silence.CreatedBy,
+								})
+								tokens[token] = &hint
+							}
 						}
 					}
 				}

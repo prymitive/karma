@@ -4,12 +4,14 @@ import (
 	"fmt"
 	"regexp"
 
+	"github.com/prometheus/prometheus/model/labels"
+
 	"github.com/prymitive/karma/internal/models"
 )
 
 type fuzzyFilter struct {
-	alertFilter
 	value *regexp.Regexp
+	alertFilter
 }
 
 func (filter *fuzzyFilter) init(name string, matcher *matcherT, rawText string, isValid bool, value string) {
@@ -32,17 +34,21 @@ func (filter *fuzzyFilter) GetValue() string {
 func (filter *fuzzyFilter) Match(alert *models.Alert, _ int) bool {
 	if filter.IsValid {
 		for _, val := range alert.Annotations {
-			if filter.value.MatchString(val.Value.Value()) {
+			if filter.value.MatchString(val.Value) {
 				filter.Hits++
 				return true
 			}
 		}
 
-		for _, l := range alert.Labels {
-			if filter.value.MatchString(l.Value.Value()) {
-				filter.Hits++
-				return true
+		var labelMatch bool
+		alert.Labels.Range(func(l labels.Label) {
+			if filter.value.MatchString(l.Value) {
+				labelMatch = true
 			}
+		})
+		if labelMatch {
+			filter.Hits++
+			return true
 		}
 
 		for _, silenceID := range alert.SilencedBy {

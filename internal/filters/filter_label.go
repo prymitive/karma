@@ -5,12 +5,14 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/prometheus/prometheus/model/labels"
+
 	"github.com/prymitive/karma/internal/models"
 )
 
 type labelFilter struct {
-	alertFilter
 	value string
+	alertFilter
 }
 
 func (filter *labelFilter) init(name string, matcher *matcherT, rawText string, isValid bool, value string) {
@@ -29,7 +31,7 @@ func (filter *labelFilter) GetValue() string {
 
 func (filter *labelFilter) Match(alert *models.Alert, _ int) bool {
 	if filter.IsValid {
-		isMatch := filter.Matcher.Compare(alert.Labels.GetValue(filter.Matched), filter.value)
+		isMatch := filter.Matcher.Compare(alert.Labels.Get(filter.Matched), filter.value)
 		if isMatch {
 			filter.Hits++
 		}
@@ -47,53 +49,59 @@ func newLabelFilter() FilterT {
 func labelAutocomplete(_ string, operators []string, alerts []models.Alert) []models.Autocomplete {
 	tokens := map[string]*models.Autocomplete{}
 	for _, alert := range alerts {
-		for _, l := range alert.Labels {
+		alert.Labels.Range(func(l labels.Label) {
 			for _, operator := range operators {
 				switch operator {
 				case equalOperator, notEqualOperator:
-					token := l.Name.Value() + operator + l.Value.Value()
-					hint := makeAC(
-						token,
-						[]string{
-							l.Name.Value(),
-							l.Name.Value() + operator,
-							l.Value.Value(),
-						},
-					)
-					tokens[token] = &hint
+					token := l.Name + operator + l.Value
+					if _, ok := tokens[token]; !ok {
+						hint := makeAC(
+							token,
+							[]string{
+								l.Name,
+								l.Name + operator,
+								l.Value,
+							},
+						)
+						tokens[token] = &hint
+					}
 				case regexpOperator, negativeRegexOperator:
-					substrings := strings.Split(l.Value.Value(), " ")
+					substrings := strings.Split(l.Value, " ")
 					if len(substrings) > 1 {
 						for _, substring := range substrings {
-							token := l.Name.Value() + operator + substring
+							token := l.Name + operator + substring
+							if _, ok := tokens[token]; !ok {
+								hint := makeAC(
+									token,
+									[]string{
+										l.Name,
+										l.Name + operator,
+										l.Value,
+										substring,
+									},
+								)
+								tokens[token] = &hint
+							}
+						}
+					}
+				case moreThanOperator, lessThanOperator:
+					if _, err := strconv.Atoi(l.Value); err == nil {
+						token := l.Name + operator + l.Value
+						if _, ok := tokens[token]; !ok {
 							hint := makeAC(
 								token,
 								[]string{
-									l.Name.Value(),
-									l.Name.Value() + operator,
-									l.Value.Value(),
-									substring,
+									l.Name,
+									l.Name + operator,
+									l.Value,
 								},
 							)
 							tokens[token] = &hint
 						}
 					}
-				case moreThanOperator, lessThanOperator:
-					if _, err := strconv.Atoi(l.Value.Value()); err == nil {
-						token := l.Name.Value() + operator + l.Value.Value()
-						hint := makeAC(
-							token,
-							[]string{
-								l.Name.Value(),
-								l.Name.Value() + operator,
-								l.Value.Value(),
-							},
-						)
-						tokens[token] = &hint
-					}
 				}
 			}
-		}
+		})
 	}
 	acData := make([]models.Autocomplete, 0, len(tokens))
 	for _, token := range tokens {

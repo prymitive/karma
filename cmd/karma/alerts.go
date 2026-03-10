@@ -8,6 +8,7 @@ import (
 	"sort"
 
 	"github.com/fvbommel/sortorder"
+	promlabels "github.com/prometheus/prometheus/model/labels"
 	"github.com/rs/zerolog/log"
 
 	"github.com/prymitive/karma/internal/alertmanager"
@@ -132,14 +133,16 @@ func resolveLabelValue(name, value string) string {
 }
 
 func getGroupLabel(group *models.APIAlertGroup, label string) string {
-	if v := group.Labels.Get(label); v != nil {
-		return resolveLabelValue(label, v.Value.Value())
+	if v := group.Labels.Get(label); v != "" {
+		return resolveLabelValue(label, v)
 	}
-	if v := group.Shared.Labels.Get(label); v != nil {
-		return resolveLabelValue(label, v.Value.Value())
+	if v := group.Shared.Labels.Get(label); v != "" {
+		return resolveLabelValue(label, v)
 	}
-	if v := group.Alerts[0].Labels.Get(label); v != nil {
-		return resolveLabelValue(label, v.Value.Value())
+	if len(group.Alerts) > 0 {
+		if v := group.Alerts[0].Labels.Get(label); v != "" {
+			return resolveLabelValue(label, v)
+		}
 	}
 	return ""
 }
@@ -270,26 +273,26 @@ func isPreferredLabel(label, other string) bool {
 func autoGridLabel(dedupedAlerts []models.AlertGroup) string {
 	alertGroupsCount := len(dedupedAlerts)
 	var alertsCount int
-	labelToAlertCount := map[models.UniqueString]map[string]int{}
+	labelToAlertCount := map[string]map[string]int{}
 	for _, ag := range dedupedAlerts {
 		alertsCount += len(ag.Alerts)
 		for _, alert := range ag.Alerts {
-			for _, l := range alert.Labels {
+			alert.Labels.Range(func(l promlabels.Label) {
 				if _, ok := labelToAlertCount[l.Name]; !ok {
 					labelToAlertCount[l.Name] = map[string]int{}
 				}
-				if _, ok := labelToAlertCount[l.Name][l.Value.Value()]; !ok {
-					labelToAlertCount[l.Name][l.Value.Value()] = 0
+				if _, ok := labelToAlertCount[l.Name][l.Value]; !ok {
+					labelToAlertCount[l.Name][l.Value] = 0
 				}
-				labelToAlertCount[l.Name][l.Value.Value()]++
-			}
+				labelToAlertCount[l.Name][l.Value]++
+			})
 		}
 	}
 	log.Debug().Int("alerts", alertsCount).Int("groups", alertGroupsCount).Msg("Alerts count for automatic grid label")
 
 	candidates := map[string]int{}
 	for key, vals := range labelToAlertCount {
-		if slices.Contains(config.Config.Grid.Auto.Ignore, key.Value()) {
+		if slices.Contains(config.Config.Grid.Auto.Ignore, key) {
 			continue
 		}
 		var total int
@@ -298,11 +301,11 @@ func autoGridLabel(dedupedAlerts []models.AlertGroup) string {
 			total += cnt
 			uniqueValues[val] = struct{}{}
 		}
-		log.Debug().Str("label", key.Value()).Int("alerts", total).Msg("Number of alerts per label")
+		log.Debug().Str("label", key).Int("alerts", total).Msg("Number of alerts per label")
 		if total < alertsCount {
 			continue
 		}
-		candidates[key.Value()] = len(uniqueValues)
+		candidates[key] = len(uniqueValues)
 	}
 
 	var lastLabel string
@@ -323,18 +326,26 @@ func autoGridLabel(dedupedAlerts []models.AlertGroup) string {
 
 func filterAlerts(dedupedAlerts []models.AlertGroup, fl []filters.FilterT) (filteredAlerts []models.AlertGroup) {
 	var matches int
+	var hasAMFilters bool
+	for _, filter := range fl {
+		if filter.GetIsValid() && filter.GetIsAlertmanagerFilter() {
+			hasAMFilters = true
+			break
+		}
+	}
+	blockedAMs := map[string]struct{}{}
 	for _, ag := range dedupedAlerts {
 		agCopy := models.AlertGroup{
 			ID:                ag.ID,
 			Receiver:          ag.Receiver,
 			Labels:            ag.Labels,
 			LatestStartsAt:    ag.LatestStartsAt,
-			Alerts:            []models.Alert{},
-			AlertmanagerCount: map[string]int{},
+			Alerts:            make([]models.Alert, 0, len(ag.Alerts)),
+			AlertmanagerCount: make(map[string]int, len(ag.AlertmanagerCount)),
 			StateCount:        map[string]int{},
 		}
 		for _, s := range models.AlertStateList {
-			agCopy.StateCount[s.Value()] = 0
+			agCopy.StateCount[s.String()] = 0
 		}
 		for _, alert := range ag.Alerts {
 			var hadMismatch bool
@@ -349,23 +360,24 @@ func filterAlerts(dedupedAlerts []models.AlertGroup, fl []filters.FilterT) (filt
 				continue
 			}
 
-			blockedAMs := map[string]struct{}{}
-			for _, am := range alert.Alertmanager {
-				for _, filter := range fl {
-					if filter.GetIsValid() && filter.GetIsAlertmanagerFilter() && !filter.MatchAlertmanager(&am) {
-						blockedAMs[am.Name] = struct{}{}
-					}
-				}
-			}
-			if len(blockedAMs) > 0 {
-				ams := []models.AlertmanagerInstance{}
+			if hasAMFilters {
+				clear(blockedAMs)
 				for _, am := range alert.Alertmanager {
-					_, found := blockedAMs[am.Name]
-					if !found {
-						ams = append(ams, am)
+					for _, filter := range fl {
+						if filter.GetIsValid() && filter.GetIsAlertmanagerFilter() && !filter.MatchAlertmanager(&am) {
+							blockedAMs[am.Name] = struct{}{}
+						}
 					}
 				}
-				alert.Alertmanager = ams
+				if len(blockedAMs) > 0 {
+					ams := make([]models.AlertmanagerInstance, 0, len(alert.Alertmanager))
+					for _, am := range alert.Alertmanager {
+						if _, blocked := blockedAMs[am.Name]; !blocked {
+							ams = append(ams, am)
+						}
+					}
+					alert.Alertmanager = ams
+				}
 			}
 			if len(alert.Alertmanager) == 0 {
 				continue
@@ -373,7 +385,7 @@ func filterAlerts(dedupedAlerts []models.AlertGroup, fl []filters.FilterT) (filt
 
 			matches++
 			agCopy.Alerts = append(agCopy.Alerts, alert)
-			agCopy.StateCount[alert.State.Value()]++
+			agCopy.StateCount[alert.State.String()]++
 		}
 		if len(agCopy.Alerts) > 0 {
 			filteredAlerts = append(filteredAlerts, agCopy)
@@ -383,19 +395,19 @@ func filterAlerts(dedupedAlerts []models.AlertGroup, fl []filters.FilterT) (filt
 	return filteredAlerts
 }
 
-func newStateCount() map[models.UniqueString]int {
-	stateCount := map[models.UniqueString]int{}
+func newStateCount() map[string]int {
+	stateCount := map[string]int{}
 	for _, s := range models.AlertStateList {
-		stateCount[s] = 0
+		stateCount[s.String()] = 0
 	}
 	return stateCount
 }
 
-func stateFromStateCount(stateCount map[models.UniqueString]int) models.UniqueString {
-	if stateCount[models.AlertStateActive] > 0 {
+func stateFromStateCount(stateCount map[string]int) models.AlertState {
+	if stateCount[models.AlertStateActive.String()] > 0 {
 		return models.AlertStateActive
 	}
-	if stateCount[models.AlertStateSuppressed] > 0 {
+	if stateCount[models.AlertStateSuppressed.String()] > 0 {
 		return models.AlertStateSuppressed
 	}
 	return models.AlertStateUnprocessed

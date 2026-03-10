@@ -32,9 +32,9 @@ type silenceFilter struct {
 func (sf *silenceFilter) isMatch(silence *models.Silence) bool {
 	for _, m := range silence.Matchers {
 		var nameMatch bool
-		if sf.Name != "" && sf.Name == m.Name.Value() {
+		if sf.Name != "" && sf.Name == m.Name {
 			nameMatch = true
-		} else if sf.NameRegex != nil && sf.NameRegex.MatchString(m.Name.Value()) {
+		} else if sf.NameRegex != nil && sf.NameRegex.MatchString(m.Name) {
 			nameMatch = true
 		}
 
@@ -73,10 +73,10 @@ type silenceMatcher struct {
 }
 
 func (sm *silenceMatcher) isMatch(m models.SilenceMatcher) bool {
-	if sm.NameRegex != nil && !sm.NameRegex.MatchString(m.Name.Value()) {
+	if sm.NameRegex != nil && !sm.NameRegex.MatchString(m.Name) {
 		return false
 	}
-	if sm.Name != "" && sm.Name != m.Name.Value() {
+	if sm.Name != "" && sm.Name != m.Name {
 		return false
 	}
 	if sm.ValueRegex != nil && !sm.ValueRegex.MatchString(m.Value) {
