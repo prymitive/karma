@@ -5,6 +5,8 @@ import (
 	"slices"
 	"strings"
 
+	"github.com/prometheus/prometheus/model/labels"
+
 	"github.com/prymitive/karma/internal/models"
 	sliceutils "github.com/prymitive/karma/internal/slices"
 )
@@ -13,33 +15,28 @@ import (
 // it takes the list of label keys to ignore and alert label map
 // it will return label map without labels found on the ignore list
 func StripLabels(keptLabels, ignoredLabels []string, keptLabelsRegex, ignoredLabelsRegex []*regexp.Regexp,
-	sourceLabels models.Labels,
-) models.Labels {
+	sourceLabels labels.Labels,
+) labels.Labels {
 	// empty keep lists means keep everything by default
 	keepAll := len(keptLabels) == 0 && len(keptLabelsRegex) == 0
 	// if we keep everything and there's nothing to strip then simply return source labels as-is
 	if keepAll && len(ignoredLabels) == 0 && len(ignoredLabelsRegex) == 0 {
 		return sourceLabels
 	}
-	labels := make(models.Labels, 0, len(sourceLabels))
+	b := labels.NewBuilder(labels.EmptyLabels())
 	var inKeep, inStrip bool
-	for _, label := range sourceLabels {
+	sourceLabels.Range(func(l labels.Label) {
 		// is explicitly marked to be kept
-		inKeep = slices.Contains(keptLabels, label.Name.Value()) || sliceutils.MatchesAnyRegex(label.Name.Value(), keptLabelsRegex)
+		inKeep = slices.Contains(keptLabels, l.Name) || sliceutils.MatchesAnyRegex(l.Name, keptLabelsRegex)
 		// is explicitly marked to be stripped
-		inStrip = slices.Contains(ignoredLabels, label.Name.Value()) || sliceutils.MatchesAnyRegex(label.Name.Value(), ignoredLabelsRegex)
+		inStrip = slices.Contains(ignoredLabels, l.Name) || sliceutils.MatchesAnyRegex(l.Name, ignoredLabelsRegex)
 		if (keepAll || inKeep) && !inStrip {
-			l := models.Label{
-				Name: label.Name,
-				// strip leading and trailing space in label value
-				// this is to normalize values in case space is added by Alertmanager rules
-				Value: models.NewUniqueString(strings.TrimSpace(label.Value.Value())),
-			}
-			labels = labels.Add(l)
+			// strip leading and trailing space in label value
+			// this is to normalize values in case space is added by Alertmanager rules
+			b.Set(l.Name, strings.TrimSpace(l.Value))
 		}
-	}
-	slices.SortFunc(labels, models.CompareLabels)
-	return labels
+	})
+	return b.Labels()
 }
 
 // StripReceivers allows filtering all alerts for specified receiver(s)
@@ -67,9 +64,9 @@ func StripAnnotations(keptAnnotations, ignoredAnnotations []string, sourceAnnota
 	annotations := make(models.Annotations, 0, len(sourceAnnotations))
 	for _, annotation := range sourceAnnotations {
 		// is explicitly marked to be kept
-		inKeep := slices.Contains(keptAnnotations, annotation.Name.Value())
+		inKeep := slices.Contains(keptAnnotations, annotation.Name)
 		// is explicitly marked to be stripped
-		inStrip := slices.Contains(ignoredAnnotations, annotation.Name.Value())
+		inStrip := slices.Contains(ignoredAnnotations, annotation.Name)
 		if (keepAll || inKeep) && !inStrip {
 			annotations = append(annotations, annotation)
 		}

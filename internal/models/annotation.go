@@ -13,11 +13,11 @@ import (
 // Annotation extends Alertmanager scheme of key:value with additional data
 // to control how given annotation should be rendered
 type Annotation struct {
-	Name     UniqueString `json:"name"`
-	Value    UniqueString `json:"value"`
-	Visible  bool         `json:"visible"`
-	IsLink   bool         `json:"isLink"`
-	IsAction bool         `json:"isAction"`
+	Name     string `json:"name"`
+	Value    string `json:"value"`
+	Visible  bool   `json:"visible"`
+	IsLink   bool   `json:"isLink"`
+	IsAction bool   `json:"isAction"`
 }
 
 // Annotations is a slice of Annotation structs, needed to implement sorting
@@ -28,9 +28,9 @@ func compareAnnotations(a, b Annotation) int {
 	// the order they appear in that list; remaining annotations are sorted alphabetically.
 	ai, bi := -1, -1
 	for index, name := range config.Config.Annotations.Order {
-		if a.Name.Value() == name {
+		if a.Name == name {
 			ai = index
-		} else if b.Name.Value() == name {
+		} else if b.Name == name {
 			bi = index
 		}
 		// If both annotations are in c.C.A.Order, sort them according to the
@@ -50,10 +50,10 @@ func compareAnnotations(a, b Annotation) int {
 		return 1
 	}
 	// If neither annotation was in c.C.A.Order, sort alphabetically.
-	if sortorder.NaturalLess(a.Name.Value(), b.Name.Value()) {
+	if sortorder.NaturalLess(a.Name, b.Name) {
 		return -1
 	}
-	if sortorder.NaturalLess(b.Name.Value(), a.Name.Value()) {
+	if sortorder.NaturalLess(b.Name, a.Name) {
 		return 1
 	}
 	return 0
@@ -65,8 +65,8 @@ func AnnotationsFromMap(m map[string]string) Annotations {
 	annotations := make(Annotations, 0, len(m))
 	for name, value := range m {
 		a := Annotation{
-			Name:     NewUniqueString(name),
-			Value:    NewUniqueString(value),
+			Name:     name,
+			Value:    value,
 			Visible:  isVisible(name),
 			IsLink:   isLink(value),
 			IsAction: isAction(name),

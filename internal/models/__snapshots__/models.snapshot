@@ -29,163 +29,8 @@
   },
   "alertmanagerCount": null,
   "stateCount": null,
-  "receiver": {},
+  "receiver": "default",
   "id": "",
-  "labels": [
-    {
-      "name": "alertname",
-      "value": "FakeAlert"
-    }
-  ],
-  "alerts": [
-    {
-      "startsAt": "0001-01-01T00:00:00Z",
-      "state": "suppressed",
-      "receiver": "default",
-      "id": "",
-      "annotations": [
-        {
-          "name": "foo",
-          "value": "bar",
-          "visible": false,
-          "isLink": false,
-          "isAction": false
-        }
-      ],
-      "labels": [
-        {
-          "name": "job",
-          "value": "node_exporter"
-        },
-        {
-          "name": "instance",
-          "value": "1"
-        }
-      ],
-      "alertmanager": [
-        {
-          "fingerprint": "1",
-          "name": "am1",
-          "cluster": "fakeCluster",
-          "state": "suppressed",
-          "startsAt": "0001-01-01T00:00:00Z",
-          "source": "https://prom.example.com/graph?foo",
-          "silencedBy": [
-            "fakeSilence1",
-            "fakeSilence2"
-          ],
-          "inhibitedBy": null
-        },
-        {
-          "fingerprint": "2",
-          "name": "am2",
-          "cluster": "fakeCluster",
-          "state": "suppressed",
-          "startsAt": "0001-01-01T00:00:00Z",
-          "source": "https://prom.example.com/subdir/graph?bar",
-          "silencedBy": [
-            "fakeSilence1",
-            "fakeSilence2"
-          ],
-          "inhibitedBy": null
-        }
-      ]
-    },
-    {
-      "startsAt": "0001-01-01T00:00:00Z",
-      "state": "active",
-      "receiver": "default",
-      "id": "",
-      "annotations": [],
-      "labels": [
-        {
-          "name": "job",
-          "value": "node_exporter"
-        },
-        {
-          "name": "instance",
-          "value": "2"
-        }
-      ],
-      "alertmanager": [
-        {
-          "fingerprint": "1",
-          "name": "am1",
-          "cluster": "fakeCluster",
-          "state": "active",
-          "startsAt": "0001-01-01T00:00:00Z",
-          "source": "https://am.example.com",
-          "silencedBy": [
-            "fakeSilence1",
-            "fakeSilence2"
-          ],
-          "inhibitedBy": null
-        },
-        {
-          "fingerprint": "1",
-          "name": "am2",
-          "cluster": "fakeCluster",
-          "state": "active",
-          "startsAt": "0001-01-01T00:00:00Z",
-          "source": "https://am.example.com",
-          "silencedBy": [
-            "fakeSilence1",
-            "fakeSilence2"
-          ],
-          "inhibitedBy": null
-        }
-      ]
-    },
-    {
-      "startsAt": "0001-01-01T00:00:00Z",
-      "state": "suppressed",
-      "receiver": "default",
-      "id": "",
-      "annotations": [],
-      "labels": [
-        {
-          "name": "job",
-          "value": "blackbox"
-        },
-        {
-          "name": "instance",
-          "value": "3"
-        },
-        {
-          "name": "extra",
-          "value": "ignore"
-        }
-      ],
-      "alertmanager": [
-        {
-          "fingerprint": "1",
-          "name": "am1",
-          "cluster": "fakeCluster",
-          "state": "suppressed",
-          "startsAt": "0001-01-01T00:00:00Z",
-          "source": "https://am.example.com/graph",
-          "silencedBy": [
-            "fakeSilence1",
-            "fakeSilence2"
-          ],
-          "inhibitedBy": null
-        },
-        {
-          "fingerprint": "1",
-          "name": "am2",
-          "cluster": "fakeCluster",
-          "state": "suppressed",
-          "startsAt": "0001-01-01T00:00:00Z",
-          "source": "https://am.example.com/graph",
-          "silencedBy": [
-            "fakeSilence1",
-            "fakeSilence2"
-          ],
-          "inhibitedBy": null
-        }
-      ]
-    }
-  ],
   "shared": {
     "annotations": [
       {
@@ -213,5 +58,160 @@
       "fakeCluster"
     ]
   },
-  "totalAlerts": 0
+  "labels": [
+    {
+      "name": "alertname",
+      "value": "FakeAlert"
+    }
+  ],
+  "alerts": [
+    {
+      "startsAt": "0001-01-01T00:00:00Z",
+      "state": "suppressed",
+      "receiver": "default",
+      "id": "",
+      "annotations": [
+        {
+          "name": "foo",
+          "value": "bar",
+          "visible": false,
+          "isLink": false,
+          "isAction": false
+        }
+      ],
+      "labels": [
+        {
+          "name": "instance",
+          "value": "1"
+        },
+        {
+          "name": "job",
+          "value": "node_exporter"
+        }
+      ],
+      "alertmanager": [
+        {
+          "startsAt": "0001-01-01T00:00:00Z",
+          "fingerprint": "1",
+          "name": "am1",
+          "cluster": "fakeCluster",
+          "source": "https://prom.example.com/graph?foo",
+          "silencedBy": [
+            "fakeSilence1",
+            "fakeSilence2"
+          ],
+          "inhibitedBy": null,
+          "state": "suppressed"
+        },
+        {
+          "startsAt": "0001-01-01T00:00:00Z",
+          "fingerprint": "2",
+          "name": "am2",
+          "cluster": "fakeCluster",
+          "source": "https://prom.example.com/subdir/graph?bar",
+          "silencedBy": [
+            "fakeSilence1",
+            "fakeSilence2"
+          ],
+          "inhibitedBy": null,
+          "state": "suppressed"
+        }
+      ]
+    },
+    {
+      "startsAt": "0001-01-01T00:00:00Z",
+      "state": "active",
+      "receiver": "default",
+      "id": "",
+      "annotations": [],
+      "labels": [
+        {
+          "name": "instance",
+          "value": "2"
+        },
+        {
+          "name": "job",
+          "value": "node_exporter"
+        }
+      ],
+      "alertmanager": [
+        {
+          "startsAt": "0001-01-01T00:00:00Z",
+          "fingerprint": "1",
+          "name": "am1",
+          "cluster": "fakeCluster",
+          "source": "https://am.example.com",
+          "silencedBy": [
+            "fakeSilence1",
+            "fakeSilence2"
+          ],
+          "inhibitedBy": null,
+          "state": "active"
+        },
+        {
+          "startsAt": "0001-01-01T00:00:00Z",
+          "fingerprint": "1",
+          "name": "am2",
+          "cluster": "fakeCluster",
+          "source": "https://am.example.com",
+          "silencedBy": [
+            "fakeSilence1",
+            "fakeSilence2"
+          ],
+          "inhibitedBy": null,
+          "state": "active"
+        }
+      ]
+    },
+    {
+      "startsAt": "0001-01-01T00:00:00Z",
+      "state": "suppressed",
+      "receiver": "default",
+      "id": "",
+      "annotations": [],
+      "labels": [
+        {
+          "name": "extra",
+          "value": "ignore"
+        },
+        {
+          "name": "instance",
+          "value": "3"
+        },
+        {
+          "name": "job",
+          "value": "blackbox"
+        }
+      ],
+      "alertmanager": [
+        {
+          "startsAt": "0001-01-01T00:00:00Z",
+          "fingerprint": "1",
+          "name": "am1",
+          "cluster": "fakeCluster",
+          "source": "https://am.example.com/graph",
+          "silencedBy": [
+            "fakeSilence1",
+            "fakeSilence2"
+          ],
+          "inhibitedBy": null,
+          "state": "suppressed"
+        },
+        {
+          "startsAt": "0001-01-01T00:00:00Z",
+          "fingerprint": "1",
+          "name": "am2",
+          "cluster": "fakeCluster",
+          "source": "https://am.example.com/graph",
+          "silencedBy": [
+            "fakeSilence1",
+            "fakeSilence2"
+          ],
+          "inhibitedBy": null,
+          "state": "suppressed"
+        }
+      ]
+    }
+  ],
+  "totalAlerts": 3
 }

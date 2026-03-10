@@ -18,6 +18,7 @@ import (
 	"github.com/cnf/structhash"
 	"github.com/fvbommel/sortorder"
 	"github.com/klauspost/compress/gzip"
+	promlabels "github.com/prometheus/prometheus/model/labels"
 
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
@@ -34,6 +35,19 @@ var gzipWriterPool = sync.Pool{
 		w, _ := gzip.NewWriterLevel(io.Discard, 3)
 		return w
 	},
+}
+
+var jsonBufPool = sync.Pool{
+	New: func() any {
+		return bytes.NewBuffer(make([]byte, 0, 1<<16))
+	},
+}
+
+func marshalJSON(v any) *bytes.Buffer {
+	buf := jsonBufPool.Get().(*bytes.Buffer)
+	buf.Reset()
+	_ = json.NewEncoder(buf).Encode(v)
+	return buf
 }
 
 func noCache(w http.ResponseWriter) {
@@ -248,17 +262,18 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 		newResp.Settings.Labels = labels
 		newResp.Timestamp = string(ts)
 		newResp.Authentication = resp.Authentication
-		newData, _ := json.Marshal(&newResp)
+		buf := marshalJSON(&newResp)
 		mimeJSON(w)
 		w.WriteHeader(http.StatusOK)
-		_, _ = w.Write(newData)
+		_, _ = w.Write(buf.Bytes())
+		jsonBufPool.Put(buf)
 		return
 	}
 
 	grids := map[string]models.APIGrid{}
 	colors := models.LabelsColorMap{}
 	silences := map[string]map[string]models.Silence{}
-	allReceivers := map[models.UniqueString]struct{}{}
+	allReceivers := map[string]struct{}{}
 
 	dedupedAlerts := alertmanager.DedupAlerts()
 	dedupedColors := alertmanager.DedupColors()
@@ -272,17 +287,17 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var matches int
-	labelMap := map[models.UniqueString]struct{}{}
+	labelMap := map[string]struct{}{}
 	for _, ag := range filtered {
 		perGridAlertGroup := map[string]*models.AlertGroup{}
 
-		for _, l := range ag.Labels {
+		ag.Labels.Range(func(l promlabels.Label) {
 			labelMap[l.Name] = struct{}{}
-		}
+		})
 		for _, alert := range ag.Alerts {
-			for _, l := range alert.Labels {
+			alert.Labels.Range(func(l promlabels.Label) {
 				labelMap[l.Name] = struct{}{}
-			}
+			})
 
 			allReceivers[alert.Receiver] = struct{}{}
 
@@ -291,7 +306,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 			alertGridLabelValues := map[string]struct{}{}
 			switch gridLabel {
 			case "@receiver":
-				alertGridLabelValues[alert.Receiver.Value()] = struct{}{}
+				alertGridLabelValues[alert.Receiver] = struct{}{}
 			case "@alertmanager":
 				for _, am := range alert.Alertmanager {
 					alertGridLabelValues[am.Name] = struct{}{}
@@ -301,7 +316,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 					alertGridLabelValues[am.Cluster] = struct{}{}
 				}
 			default:
-				alertGridLabelValues[alert.Labels.GetValue(gridLabel)] = struct{}{}
+				alertGridLabelValues[alert.Labels.Get(gridLabel)] = struct{}{}
 			}
 
 			for alertGridLabelValue := range alertGridLabelValues {
@@ -323,7 +338,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 						StateCount:        map[string]int{},
 					}
 					for _, s := range models.AlertStateList {
-						agCopy.StateCount[s.Value()] = 0
+						agCopy.StateCount[s.String()] = 0
 					}
 					perGridAlertGroup[alertGridLabelValue] = agCopy
 				}
@@ -335,7 +350,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 					for _, am := range alert.Alertmanager {
 						if am.Name == alertGridLabelValue {
 							ams = append(ams, am)
-							stateCount[am.State]++
+							stateCount[am.State.String()]++
 						}
 					}
 					alert.Alertmanager = ams
@@ -344,13 +359,13 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 					for _, am := range alert.Alertmanager {
 						if am.Cluster == alertGridLabelValue {
 							ams = append(ams, am)
-							stateCount[am.State]++
+							stateCount[am.State.String()]++
 						}
 					}
 					alert.Alertmanager = ams
 				default:
 					for _, am := range alert.Alertmanager {
-						stateCount[am.State]++
+						stateCount[am.State.String()]++
 					}
 				}
 
@@ -359,11 +374,11 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 				agCopy.Alerts = append(agCopy.Alerts, alert)
 
 				if ck, foundKey := dedupedColors["@receiver"]; foundKey {
-					if cv, foundVal := ck[alert.Receiver.Value()]; foundVal {
+					if cv, foundVal := ck[alert.Receiver]; foundVal {
 						if _, found := colors["@receiver"]; !found {
 							colors["@receiver"] = map[string]models.LabelColors{}
 						}
-						colors["@receiver"][alert.Receiver.Value()] = cv
+						colors["@receiver"][alert.Receiver] = cv
 					}
 				}
 
@@ -389,7 +404,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 					}
 				}
 
-				agCopy.StateCount[alert.State.Value()]++
+				agCopy.StateCount[alert.State.String()]++
 
 				for _, am := range alert.Alertmanager {
 					if _, found := agCopy.AlertmanagerCount[am.Name]; !found {
@@ -399,16 +414,16 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 					}
 				}
 
-				for _, l := range alert.Labels {
-					if keyMap, foundKey := dedupedColors[l.Name.Value()]; foundKey {
-						if color, foundColor := keyMap[l.Value.Value()]; foundColor {
-							if _, found := colors[l.Name.Value()]; !found {
-								colors[l.Name.Value()] = map[string]models.LabelColors{}
+				alert.Labels.Range(func(l promlabels.Label) {
+					if keyMap, foundKey := dedupedColors[l.Name]; foundKey {
+						if color, foundColor := keyMap[l.Value]; foundColor {
+							if _, found := colors[l.Name]; !found {
+								colors[l.Name] = map[string]models.LabelColors{}
 							}
-							colors[l.Name.Value()][l.Value.Value()] = color
+							colors[l.Name][l.Value] = color
 						}
 					}
-				}
+				})
 			}
 		}
 
@@ -429,9 +444,9 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 				slices.SortFunc(ag.Alerts, models.CompareAlerts)
 				ag.LatestStartsAt = ag.FindLatestStartsAt()
 				ag.Hash = ag.ContentFingerprint()
-				apiAG := models.APIAlertGroup{AlertGroup: *ag, TotalAlerts: len(ag.Alerts)}
-				apiAG.DedupSharedMaps([]string{gridLabel})
-				resp.TotalAlerts += len(ag.Alerts)
+				totalAlerts := len(ag.Alerts)
+				shared, allLabels := ag.DedupSharedMaps([]string{gridLabel})
+				resp.TotalAlerts += totalAlerts
 
 				alertLimit, found := request.GroupLimits[ag.ID]
 				if !found {
@@ -441,10 +456,11 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 						alertLimit = config.Config.UI.AlertsPerGroup
 					}
 				}
-				if alertLimit > apiAG.TotalAlerts {
-					alertLimit = apiAG.TotalAlerts
+				if alertLimit > totalAlerts {
+					alertLimit = totalAlerts
 				}
-				apiAG.Alerts = apiAG.Alerts[0:alertLimit]
+				ag.Alerts = ag.Alerts[0:alertLimit]
+				apiAG := models.NewAPIAlertGroup(*ag, shared, allLabels, totalAlerts)
 
 				grid, found := grids[gridLabelValue]
 				if !found {
@@ -455,7 +471,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 						StateCount:  map[string]int{},
 					}
 					for _, s := range models.AlertStateList {
-						grid.StateCount[s.Value()] = 0
+						grid.StateCount[s.String()] = 0
 					}
 					grids[gridLabelValue] = grid
 				}
@@ -493,13 +509,13 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 
 	receivers := []string{}
 	for k := range allReceivers {
-		receivers = append(receivers, k.Value())
+		receivers = append(receivers, k)
 	}
 	sort.Strings(receivers)
 
 	resp.LabelNames = make([]string, 0, len(labelMap))
 	for label := range labelMap {
-		resp.LabelNames = append(resp.LabelNames, label.Value())
+		resp.LabelNames = append(resp.LabelNames, label)
 	}
 	sort.Strings(resp.LabelNames)
 
@@ -511,13 +527,14 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 	resp.Filters = populateAPIFilters(matchFilters)
 	resp.Receivers = receivers
 
-	data, _ = json.Marshal(resp)
-	compressedData, _ := compressResponse(data, nil)
+	buf := marshalJSON(resp)
+	compressedData, _ := compressResponse(buf.Bytes(), nil)
 	_ = apiCache.Add(cacheKey, compressedData)
 
 	mimeJSON(w)
 	w.WriteHeader(http.StatusOK)
-	_, _ = w.Write(data)
+	_, _ = w.Write(buf.Bytes())
+	jsonBufPool.Put(buf)
 }
 
 func labelsSettings(grids []models.APIGrid, store models.LabelsSettings) {
@@ -530,12 +547,12 @@ func labelsSettings(grids []models.APIGrid, store models.LabelsSettings) {
 	for _, grid := range grids {
 		labelSettings(grid.LabelName, store)
 		for _, ag := range grid.AlertGroups {
-			for _, label := range ag.Labels {
-				labelSettings(label.Name.Value(), store)
+			for _, l := range ag.Labels {
+				labelSettings(l.Name, store)
 			}
 			for _, alert := range ag.Alerts {
-				for _, label := range alert.Labels {
-					labelSettings(label.Name.Value(), store)
+				for _, l := range alert.Labels {
+					labelSettings(l.Name, store)
 				}
 			}
 		}
@@ -586,25 +603,27 @@ func autocomplete(w http.ResponseWriter, r *http.Request) {
 
 	lowerTerm := strings.ToLower(term)
 	for _, hint := range dedupedAutocomplete {
-		if strings.HasPrefix(strings.ToLower(hint.Value.Value()), lowerTerm) {
-			acData = append(acData, hint.Value.Value())
+		if strings.HasPrefix(strings.ToLower(hint.Value), lowerTerm) {
+			acData = append(acData, hint.Value)
 		} else {
 			for _, token := range hint.Tokens {
-				if strings.HasPrefix(strings.ToLower(token.Value()), lowerTerm) {
-					acData = append(acData, hint.Value.Value())
+				if strings.HasPrefix(strings.ToLower(token), lowerTerm) {
+					acData = append(acData, hint.Value)
 				}
 			}
 		}
 	}
 
 	sort.Sort(sort.Reverse(acData))
-	data, _ = json.Marshal(acData)
+	buf := marshalJSON(acData)
 
+	data = append([]byte(nil), buf.Bytes()...)
 	_ = apiCache.Add(cacheKey, data)
 
 	mimeJSON(w)
 	w.WriteHeader(http.StatusOK)
-	_, _ = w.Write(data)
+	_, _ = w.Write(buf.Bytes())
+	jsonBufPool.Put(buf)
 }
 
 func silences(w http.ResponseWriter, r *http.Request) {
@@ -669,9 +688,9 @@ func silences(w http.ResponseWriter, r *http.Request) {
 					if match.IsRegex {
 						eq = "=~"
 					}
-					if searchTerm == fmt.Sprintf("%s%s\"%s\"", strings.ToLower(match.Name.Value()), eq, strings.ToLower(match.Value)) {
+					if searchTerm == fmt.Sprintf("%s%s\"%s\"", strings.ToLower(match.Name), eq, strings.ToLower(match.Value)) {
 						isMatch = true
-					} else if strings.Contains(strings.ToLower(fmt.Sprintf("%s%s%s", match.Name.Value(), eq, match.Value)), searchTerm) {
+					} else if strings.Contains(strings.ToLower(fmt.Sprintf("%s%s%s", match.Name, eq, match.Value)), searchTerm) {
 						isMatch = true
 					}
 				}
@@ -724,17 +743,19 @@ func silences(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	data, _ = json.Marshal(dedupedSilences)
+	buf := marshalJSON(dedupedSilences)
 
+	data = append([]byte(nil), buf.Bytes()...)
 	_ = apiCache.Add(cacheKey, data)
 
 	mimeJSON(w)
 	w.WriteHeader(http.StatusOK)
-	_, _ = w.Write(data)
+	_, _ = w.Write(buf.Bytes())
+	jsonBufPool.Put(buf)
 }
 
 type AlertList struct {
-	Alerts []models.Labels `json:"alerts"`
+	Alerts []promlabels.Labels `json:"alerts"`
 }
 
 func alertList(w http.ResponseWriter, r *http.Request) {
@@ -761,12 +782,12 @@ func alertList(w http.ResponseWriter, r *http.Request) {
 	labelMap := map[string]map[string]string{}
 	for _, ag := range filtered {
 		for _, alert := range ag.Alerts {
-			labels := ag.Labels.Map()
-			for _, l := range alert.Labels {
-				labels[l.Name.Value()] = l.Value.Value()
-			}
-			h := hex.EncodeToString(structhash.Sha1(labels, 1))
-			labelMap[h] = labels
+			lm := ag.Labels.Map()
+			alert.Labels.Range(func(l promlabels.Label) {
+				lm[l.Name] = l.Value
+			})
+			h := hex.EncodeToString(structhash.Sha1(lm, 1))
+			labelMap[h] = lm
 		}
 	}
 
@@ -783,31 +804,27 @@ func alertList(w http.ResponseWriter, r *http.Request) {
 	sort.Strings(sortKeys)
 
 	al := AlertList{
-		Alerts: []models.Labels{},
+		Alerts: []promlabels.Labels{},
 	}
-	for _, labels := range labelMap {
-		alert := models.Labels{}
-		for k, v := range labels {
-			alert = alert.Set(k, v)
-		}
-		slices.SortFunc(alert, models.CompareLabels)
-		al.Alerts = append(al.Alerts, alert)
+	for _, lm := range labelMap {
+		al.Alerts = append(al.Alerts, models.LabelsFromMap(lm))
 	}
 	sortSliceOfLabels(al.Alerts, sortKeys, "alertname")
 
 	mimeJSON(w)
 	w.WriteHeader(http.StatusOK)
-	data, _ := json.Marshal(al)
-	compressedData, _ := compressResponse(data, nil)
+	buf := marshalJSON(al)
+	compressedData, _ := compressResponse(buf.Bytes(), nil)
 	_ = apiCache.Add(cacheKey, compressedData)
-	_, _ = w.Write(data)
+	_, _ = w.Write(buf.Bytes())
+	jsonBufPool.Put(buf)
 }
 
-func sortSliceOfLabels(labels []models.Labels, sortKeys []string, fallback string) {
-	sort.SliceStable(labels, func(i, j int) bool {
+func sortSliceOfLabels(ls []promlabels.Labels, sortKeys []string, fallback string) {
+	sort.SliceStable(ls, func(i, j int) bool {
 		for _, k := range sortKeys {
-			vi := labels[i].GetValue(k)
-			vj := labels[j].GetValue(k)
+			vi := ls[i].Get(k)
+			vj := ls[j].Get(k)
 			if vi != "" && vj == "" {
 				return true
 			}
@@ -818,7 +835,7 @@ func sortSliceOfLabels(labels []models.Labels, sortKeys []string, fallback strin
 				return sortorder.NaturalLess(vi, vj)
 			}
 		}
-		return sortorder.NaturalLess(labels[i].GetValue(fallback), labels[j].GetValue(fallback))
+		return sortorder.NaturalLess(ls[i].Get(fallback), ls[j].Get(fallback))
 	})
 }
 
@@ -858,7 +875,7 @@ func counters(w http.ResponseWriter, r *http.Request) {
 		for _, alert := range ag.Alerts {
 			stateCount := newStateCount()
 			for _, am := range alert.Alertmanager {
-				stateCount[am.State]++
+				stateCount[am.State.String()]++
 			}
 			alert.State = stateFromStateCount(stateCount)
 
@@ -871,11 +888,11 @@ func counters(w http.ResponseWriter, r *http.Request) {
 					countLabel("@cluster", cluster)
 				}
 			}
-			countLabel("@state", alert.State.Value())
-			countLabel("@receiver", alert.Receiver.Value())
-			for _, l := range alert.Labels {
-				countLabel(l.Name.Value(), l.Value.Value())
-			}
+			countLabel("@state", alert.State.String())
+			countLabel("@receiver", alert.Receiver)
+			alert.Labels.Range(func(l promlabels.Label) {
+				countLabel(l.Name, l.Value)
+			})
 		}
 	}
 
@@ -886,8 +903,9 @@ func counters(w http.ResponseWriter, r *http.Request) {
 
 	mimeJSON(w)
 	w.WriteHeader(http.StatusOK)
-	data, _ := json.Marshal(resp)
-	compressedData, _ := compressResponse(data, nil)
+	buf := marshalJSON(resp)
+	compressedData, _ := compressResponse(buf.Bytes(), nil)
 	_ = apiCache.Add(cacheKey, compressedData)
-	_, _ = w.Write(data)
+	_, _ = w.Write(buf.Bytes())
+	jsonBufPool.Put(buf)
 }

@@ -7,16 +7,13 @@ import (
 type autocompleteFactory func(name string, operators []string, alerts []models.Alert) []models.Autocomplete
 
 func makeAC(value string, tokens []string) models.Autocomplete {
-	uTokens := make([]models.UniqueString, 0, len(tokens))
-	for _, token := range tokens {
-		uTokens = append(uTokens, models.NewUniqueString(token))
-	}
-
+	t := make([]string, len(tokens)+1)
+	copy(t, tokens)
+	t[len(tokens)] = value
 	acHint := models.Autocomplete{
-		Value:  models.NewUniqueString(value),
-		Tokens: uTokens,
+		Value:  value,
+		Tokens: t,
 	}
-	acHint.Tokens = append(acHint.Tokens, models.NewUniqueString(value))
 	return acHint
 }
 

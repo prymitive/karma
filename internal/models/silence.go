@@ -8,16 +8,16 @@ import (
 )
 
 type SilenceMatcher struct {
-	Name    UniqueString `json:"name"`
-	Value   string       `json:"value"`
-	IsRegex bool         `json:"isRegex"`
-	IsEqual bool         `json:"isEqual"`
 	re      *regexp.Regexp
+	Name    string `json:"name"`
+	Value   string `json:"value"`
+	IsRegex bool   `json:"isRegex"`
+	IsEqual bool   `json:"isEqual"`
 }
 
 func NewSilenceMatcher(name, value string, isRegexp, isEqual bool) SilenceMatcher {
 	sm := SilenceMatcher{
-		Name:    NewUniqueString(name),
+		Name:    name,
 		Value:   value,
 		IsRegex: isRegexp,
 		IsEqual: isEqual,
@@ -29,7 +29,7 @@ func NewSilenceMatcher(name, value string, isRegexp, isEqual bool) SilenceMatche
 }
 
 func (sm SilenceMatcher) IsMatch(labels map[string]string) bool {
-	v, ok := labels[sm.Name.Value()]
+	v, ok := labels[sm.Name]
 	if !ok {
 		return !sm.IsEqual
 	}

@@ -18,18 +18,18 @@ func TestSortByStartsAt(t *testing.T) {
 		sortReverse bool
 	}
 
-	g1 := models.AlertGroup{
-		Receiver:       models.NewUniqueString("default"),
+	g1 := models.APIAlertGroup{
+		Receiver:       "default",
 		ID:             "1",
 		LatestStartsAt: time.Date(2020, time.January, 1, 0, 0, 0, 1, time.UTC),
 	}
-	g2 := models.AlertGroup{
-		Receiver:       models.NewUniqueString("default"),
+	g2 := models.APIAlertGroup{
+		Receiver:       "default",
 		ID:             "2",
 		LatestStartsAt: time.Date(2020, time.January, 1, 0, 0, 0, 2, time.UTC),
 	}
-	g3 := models.AlertGroup{
-		Receiver:       models.NewUniqueString("default"),
+	g3 := models.APIAlertGroup{
+		Receiver:       "default",
 		ID:             "3",
 		LatestStartsAt: time.Date(2020, time.January, 1, 0, 0, 0, 3, time.UTC),
 	}
@@ -45,54 +45,22 @@ func TestSortByStartsAt(t *testing.T) {
 			sortReverse: true,
 		},
 		{
-			groups: []models.APIAlertGroup{
-				{AlertGroup: g1},
-				{AlertGroup: g2},
-				{AlertGroup: g3},
-			},
-			sorted: []models.APIAlertGroup{
-				{AlertGroup: g1},
-				{AlertGroup: g2},
-				{AlertGroup: g3},
-			},
+			groups: []models.APIAlertGroup{g1, g2, g3},
+			sorted: []models.APIAlertGroup{g1, g2, g3},
 		},
 		{
-			groups: []models.APIAlertGroup{
-				{AlertGroup: g1},
-				{AlertGroup: g2},
-				{AlertGroup: g3},
-			},
+			groups:      []models.APIAlertGroup{g1, g2, g3},
 			sortReverse: true,
-			sorted: []models.APIAlertGroup{
-				{AlertGroup: g3},
-				{AlertGroup: g2},
-				{AlertGroup: g1},
-			},
+			sorted:      []models.APIAlertGroup{g3, g2, g1},
 		},
 		{
-			groups: []models.APIAlertGroup{
-				{AlertGroup: g2},
-				{AlertGroup: g3},
-				{AlertGroup: g1},
-			},
-			sorted: []models.APIAlertGroup{
-				{AlertGroup: g1},
-				{AlertGroup: g2},
-				{AlertGroup: g3},
-			},
+			groups: []models.APIAlertGroup{g2, g3, g1},
+			sorted: []models.APIAlertGroup{g1, g2, g3},
 		},
 		{
-			groups: []models.APIAlertGroup{
-				{AlertGroup: g2},
-				{AlertGroup: g3},
-				{AlertGroup: g1},
-			},
+			groups:      []models.APIAlertGroup{g2, g3, g1},
 			sortReverse: true,
-			sorted: []models.APIAlertGroup{
-				{AlertGroup: g3},
-				{AlertGroup: g2},
-				{AlertGroup: g1},
-			},
+			sorted:      []models.APIAlertGroup{g3, g2, g1},
 		},
 	}
 

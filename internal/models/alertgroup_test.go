@@ -5,6 +5,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/prometheus/prometheus/model/labels"
+
 	"github.com/prymitive/karma/internal/models"
 )
 
@@ -16,7 +18,7 @@ type alertListSortTest struct {
 var alertListSortTests = []alertListSortTest{
 	{
 		alert: models.Alert{
-			Receiver: models.NewUniqueString("default"),
+			Receiver: "default",
 			State:    models.AlertStateActive,
 			StartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 5, time.UTC),
 		},
@@ -24,7 +26,7 @@ var alertListSortTests = []alertListSortTest{
 	},
 	{
 		alert: models.Alert{
-			Receiver: models.NewUniqueString("default"),
+			Receiver: "default",
 			State:    models.AlertStateActive,
 			StartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 1, time.UTC),
 		},
@@ -32,7 +34,7 @@ var alertListSortTests = []alertListSortTest{
 	},
 	{
 		alert: models.Alert{
-			Receiver: models.NewUniqueString("default"),
+			Receiver: "default",
 			State:    models.AlertStateActive,
 			StartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 0, time.UTC),
 		},
@@ -40,7 +42,7 @@ var alertListSortTests = []alertListSortTest{
 	},
 	{
 		alert: models.Alert{
-			Receiver: models.NewUniqueString("default"),
+			Receiver: "default",
 			State:    models.AlertStateActive,
 			StartsAt: time.Date(2015, time.March, 10, 0, 0, 0, 0, time.UTC),
 		},
@@ -48,7 +50,7 @@ var alertListSortTests = []alertListSortTest{
 	},
 	{
 		alert: models.Alert{
-			Receiver: models.NewUniqueString("default"),
+			Receiver: "default",
 			State:    models.AlertStateActive,
 			StartsAt: time.Date(2016, time.December, 10, 0, 0, 0, 0, time.UTC),
 		},
@@ -56,7 +58,7 @@ var alertListSortTests = []alertListSortTest{
 	},
 	{
 		alert: models.Alert{
-			Receiver: models.NewUniqueString("default"),
+			Receiver: "default",
 			State:    models.AlertStateActive, StartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 0, time.UTC),
 		},
 
@@ -64,7 +66,7 @@ var alertListSortTests = []alertListSortTest{
 	},
 	{
 		alert: models.Alert{
-			Receiver: models.NewUniqueString("default"),
+			Receiver: "default",
 			State:    models.AlertStateActive,
 			StartsAt: time.Date(2015, time.March, 10, 0, 0, 0, 0, time.UTC),
 		},
@@ -106,88 +108,78 @@ var agFPTests = []agFPTest{
 	{
 		name: "empty group fingerprint",
 		ag: models.AlertGroup{
-			Receiver: models.NewUniqueString("default"),
+			Receiver: "default",
 		},
 	},
 	{
 		name: "different Receiver shouldn't change content fingerprint",
 		ag: models.AlertGroup{
-			Receiver: models.NewUniqueString("default"),
+			Receiver: "default",
 		},
 		fpChange: false,
 	},
 	{
 		name: "different StateCount shouldn't change content fingerprint",
 		ag: models.AlertGroup{
-			Receiver:   models.NewUniqueString("default"),
-			StateCount: map[string]int{"default": 0},
+			Receiver:   "default",
+			StateCount: map[string]int{},
 		},
 		fpChange: false,
 	},
 	{
 		name: "different Labels shouldn't change content fingerprint",
 		ag: models.AlertGroup{
-			Receiver: models.NewUniqueString("default"),
-			Labels: models.Labels{
-				{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("bar")},
-			},
-			StateCount: map[string]int{"default": 0},
+			Receiver:   "default",
+			Labels:     labels.FromStrings("foo", "bar"),
+			StateCount: map[string]int{},
 		},
 		fpChange: false,
 	},
 	{
 		name: "different set of alerts should change content fingerprint",
 		ag: models.AlertGroup{
-			Receiver: models.NewUniqueString("default"),
-			Labels:   models.Labels{{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("bar")}},
+			Receiver: "default",
+			Labels:   labels.FromStrings("foo", "bar"),
 			Alerts: models.AlertList{
 				models.Alert{
-					Receiver: models.NewUniqueString("default"),
+					Receiver: "default",
 					State:    models.AlertStateActive,
-					Labels: models.Labels{
-						{Name: models.NewUniqueString("foo1"), Value: models.NewUniqueString("bar")},
-					},
+					Labels:   labels.FromStrings("foo1", "bar"),
 				},
 			},
-			StateCount: map[string]int{"default": 0},
+			StateCount: map[string]int{},
 		},
 		fpChange: true,
 	},
 	{
 		name: "another different set of alerts should change content fingerprint",
 		ag: models.AlertGroup{
-			Receiver: models.NewUniqueString("default"),
-			Labels:   models.Labels{{Name: models.NewUniqueString("bar"), Value: models.NewUniqueString("foo")}},
+			Receiver: "default",
+			Labels:   labels.FromStrings("bar", "foo"),
 			Alerts: models.AlertList{
 				models.Alert{
-					Receiver: models.NewUniqueString("default"),
+					Receiver: "default",
 					State:    models.AlertStateActive,
-					Labels: models.Labels{
-						{Name: models.NewUniqueString("bar"), Value: models.NewUniqueString("foo")},
-					},
+					Labels:   labels.FromStrings("bar", "foo"),
 				},
 			},
-			StateCount: map[string]int{"default": 0},
+			StateCount: map[string]int{},
 		},
 		fpChange: true,
 	},
 	{
 		name: "repeating last set of alerts shouldn't change content fingerprint",
 		ag: models.AlertGroup{
-			Receiver: models.NewUniqueString("default"),
-			Labels: models.Labels{
-				{Name: models.NewUniqueString("bar"), Value: models.NewUniqueString("foo")},
-			},
+			Receiver: "default",
+			Labels:   labels.FromStrings("bar", "foo"),
 			Alerts: models.AlertList{
 				models.Alert{
-					Receiver: models.NewUniqueString("default"),
+					Receiver: "default",
 					State:    models.AlertStateActive,
-					Labels: models.Labels{
-						{Name: models.NewUniqueString("bar"), Value: models.NewUniqueString("foo")},
-					},
+					Labels:   labels.FromStrings("bar", "foo"),
 				},
 			},
-			StateCount: map[string]int{"default": 0},
+			StateCount: map[string]int{},
 		},
 		fpChange: false,
 	},
@@ -225,7 +217,7 @@ func TestAlertGroupContentFingerprint(t *testing.T) {
 
 func TestFingerprint(t *testing.T) {
 	ag := models.AlertGroup{
-		Receiver: models.NewUniqueString("default"),
+		Receiver: "default",
 	}
 	if ag.LabelsFingerprint() == ag.ContentFingerprint() {
 		t.Errorf("Expected LabelsFingerprint and ContentFingerprint to return different values")
@@ -235,11 +227,8 @@ func TestFingerprint(t *testing.T) {
 func TestLabelsFingerprint(t *testing.T) {
 	// verifies that LabelsFingerprint produces non-empty output when labels are present
 	ag := models.AlertGroup{
-		Receiver: models.NewUniqueString("default"),
-		Labels: models.Labels{
-			{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("bar")},
-			{Name: models.NewUniqueString("baz"), Value: models.NewUniqueString("qux")},
-		},
+		Receiver: "default",
+		Labels:   labels.FromStrings("baz", "qux", "foo", "bar"),
 	}
 	fp := ag.LabelsFingerprint()
 	if fp == "" {
@@ -248,10 +237,8 @@ func TestLabelsFingerprint(t *testing.T) {
 
 	// verifies that different labels produce a different fingerprint
 	ag2 := models.AlertGroup{
-		Receiver: models.NewUniqueString("default"),
-		Labels: models.Labels{
-			{Name: models.NewUniqueString("different"), Value: models.NewUniqueString("label")},
-		},
+		Receiver: "default",
+		Labels:   labels.FromStrings("different", "label"),
 	}
 	fp2 := ag2.LabelsFingerprint()
 	if fp == fp2 {
@@ -260,11 +247,8 @@ func TestLabelsFingerprint(t *testing.T) {
 
 	// verifies that same receiver and labels produce the same fingerprint
 	ag3 := models.AlertGroup{
-		Receiver: models.NewUniqueString("default"),
-		Labels: models.Labels{
-			{Name: models.NewUniqueString("foo"), Value: models.NewUniqueString("bar")},
-			{Name: models.NewUniqueString("baz"), Value: models.NewUniqueString("qux")},
-		},
+		Receiver: "default",
+		Labels:   labels.FromStrings("baz", "qux", "foo", "bar"),
 	}
 	if ag3.LabelsFingerprint() != fp {
 		t.Errorf("LabelsFingerprint() not stable: %q != %q", ag3.LabelsFingerprint(), fp)

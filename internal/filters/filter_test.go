@@ -7,11 +7,12 @@ import (
 	"testing"
 	"time"
 
+	"github.com/prometheus/prometheus/model/labels"
+	"github.com/rs/zerolog"
+
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/filters"
 	"github.com/prymitive/karma/internal/models"
-
-	"github.com/rs/zerolog"
 )
 
 type filterTest struct {
@@ -745,7 +746,7 @@ var tests = []filterTest{
 	{
 		Expression: "node=vps1",
 		IsValid:    true,
-		Alert:      models.Alert{Labels: models.Labels{{Name: models.NewUniqueString("node"), Value: models.NewUniqueString("vps1")}}},
+		Alert:      models.Alert{Labels: labels.FromStrings("node", "vps1")},
 		IsMatch:    true,
 	},
 	{
@@ -759,68 +760,68 @@ var tests = []filterTest{
 	{
 		Expression: "node!=vps1",
 		IsValid:    true,
-		Alert:      models.Alert{Labels: models.Labels{{Name: models.NewUniqueString("node"), Value: models.NewUniqueString("vps1")}}},
+		Alert:      models.Alert{Labels: labels.FromStrings("node", "vps1")},
 		IsMatch:    false,
 	},
 	{
 		Expression: "node!=vps1",
 		IsValid:    true,
-		Alert:      models.Alert{Labels: models.Labels{{Name: models.NewUniqueString("node"), Value: models.NewUniqueString("vps2")}}},
+		Alert:      models.Alert{Labels: labels.FromStrings("node", "vps2")},
 		IsMatch:    true,
 	},
 	{
 		Expression: "node=~vps",
 		IsValid:    true,
-		Alert:      models.Alert{Labels: models.Labels{{Name: models.NewUniqueString("node"), Value: models.NewUniqueString("vps1")}}},
+		Alert:      models.Alert{Labels: labels.FromStrings("node", "vps1")},
 		IsMatch:    true,
 	},
 	{
 		Expression: "node!~vps",
 		IsValid:    true,
-		Alert:      models.Alert{Labels: models.Labels{{Name: models.NewUniqueString("node"), Value: models.NewUniqueString("vps1")}}},
+		Alert:      models.Alert{Labels: labels.FromStrings("node", "vps1")},
 		IsMatch:    false,
 	},
 	{
 		Expression: "node!~abc",
 		IsValid:    true,
-		Alert:      models.Alert{Labels: models.Labels{{Name: models.NewUniqueString("node"), Value: models.NewUniqueString("vps1")}}},
+		Alert:      models.Alert{Labels: labels.FromStrings("node", "vps1")},
 		IsMatch:    true,
 	},
 	{
 		Expression: "node!~",
 		IsValid:    false,
-		Alert:      models.Alert{Labels: models.Labels{{Name: models.NewUniqueString("node"), Value: models.NewUniqueString("vps1")}}},
+		Alert:      models.Alert{Labels: labels.FromStrings("node", "vps1")},
 		IsMatch:    false,
 	},
 	{
 		Expression: "node=",
 		IsValid:    false,
-		Alert:      models.Alert{Labels: models.Labels{{Name: models.NewUniqueString("node"), Value: models.NewUniqueString("vps1")}}},
+		Alert:      models.Alert{Labels: labels.FromStrings("node", "vps1")},
 		IsMatch:    false,
 	},
 	{
 		Expression: "node===",
 		IsValid:    false,
-		Alert:      models.Alert{Labels: models.Labels{{Name: models.NewUniqueString("node"), Value: models.NewUniqueString("vps1")}}},
+		Alert:      models.Alert{Labels: labels.FromStrings("node", "vps1")},
 		IsMatch:    false,
 	},
 
 	{
 		Expression: "abc",
 		IsValid:    true,
-		Alert:      models.Alert{Labels: models.Labels{{Name: models.NewUniqueString("key"), Value: models.NewUniqueString("abc")}}},
+		Alert:      models.Alert{Labels: labels.FromStrings("key", "abc")},
 		IsMatch:    true,
 	},
 	{
 		Expression: "abc",
 		IsValid:    true,
-		Alert:      models.Alert{Labels: models.Labels{{Name: models.NewUniqueString("key"), Value: models.NewUniqueString("XXXabcx")}}},
+		Alert:      models.Alert{Labels: labels.FromStrings("key", "XXXabcx")},
 		IsMatch:    true,
 	},
 	{
 		Expression: "abc",
 		IsValid:    true,
-		Alert:      models.Alert{Labels: models.Labels{{Name: models.NewUniqueString("abc"), Value: models.NewUniqueString("xxxab")}}},
+		Alert:      models.Alert{Labels: labels.FromStrings("abc", "xxxab")},
 		IsMatch:    false,
 	},
 	{
@@ -828,7 +829,7 @@ var tests = []filterTest{
 		IsValid:    true,
 		Alert: models.Alert{
 			Annotations: models.Annotations{
-				models.Annotation{Name: models.NewUniqueString("key"), Value: models.NewUniqueString("abc")},
+				models.Annotation{Name: "key", Value: "abc"},
 			},
 		},
 		IsMatch: true,
@@ -838,7 +839,7 @@ var tests = []filterTest{
 		IsValid:    true,
 		Alert: models.Alert{
 			Annotations: models.Annotations{
-				models.Annotation{Name: models.NewUniqueString("key"), Value: models.NewUniqueString("ccc abc")},
+				models.Annotation{Name: "key", Value: "ccc abc"},
 			},
 		},
 		IsMatch: true,
@@ -848,7 +849,7 @@ var tests = []filterTest{
 		IsValid:    true,
 		Alert: models.Alert{
 			Annotations: models.Annotations{
-				models.Annotation{Name: models.NewUniqueString("abc"), Value: models.NewUniqueString("zzz")},
+				models.Annotation{Name: "abc", Value: "zzz"},
 			},
 		},
 		IsMatch: false,
@@ -977,7 +978,7 @@ var tests = []filterTest{
 		Expression: "@receiver=by-name",
 		IsValid:    true,
 		Alert: models.Alert{
-			Receiver: models.NewUniqueString("by-name"),
+			Receiver: "by-name",
 		},
 		IsMatch: true,
 	},
@@ -993,7 +994,7 @@ var tests = []filterTest{
 		Expression: "@cluster=HA",
 		IsValid:    true,
 		Alert: models.Alert{
-			Receiver: models.NewUniqueString("by-name"),
+			Receiver: "by-name",
 		},
 		IsMatch:             true,
 		IsAlertmanagerMatch: true,
@@ -1002,7 +1003,7 @@ var tests = []filterTest{
 		Expression: "@cluster!=foo",
 		IsValid:    true,
 		Alert: models.Alert{
-			Receiver: models.NewUniqueString("by-name"),
+			Receiver: "by-name",
 		},
 		IsMatch:             true,
 		IsAlertmanagerMatch: true,
@@ -1015,7 +1016,7 @@ var tests = []filterTest{
 		Expression: "@receiver=by-name",
 		IsValid:    true,
 		Alert: models.Alert{
-			Receiver: models.NewUniqueString("by-not-name"),
+			Receiver: "by-not-name",
 		},
 		IsMatch: false,
 	},
@@ -1023,7 +1024,7 @@ var tests = []filterTest{
 		Expression: "@receiver=~name",
 		IsValid:    true,
 		Alert: models.Alert{
-			Receiver: models.NewUniqueString("by-not-name"),
+			Receiver: "by-not-name",
 		},
 		IsMatch: true,
 	},

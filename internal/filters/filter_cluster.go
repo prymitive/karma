@@ -8,8 +8,8 @@ import (
 )
 
 type alertmanagerClusterFilter struct {
-	alertFilter
 	value string
+	alertFilter
 }
 
 func (filter *alertmanagerClusterFilter) init(name string, matcher *matcherT, rawText string, isValid bool, value string) {
@@ -61,15 +61,17 @@ func alertmanagerClusterAutocomplete(name string, operators []string, alerts []m
 				switch operator {
 				case equalOperator, notEqualOperator:
 					token := name + operator + am.Cluster
-					hint := makeAC(
-						token,
-						[]string{
-							name,
-							strings.TrimPrefix(name, "@"),
-							name + operator,
-						},
-					)
-					tokens[token] = &hint
+					if _, ok := tokens[token]; !ok {
+						hint := makeAC(
+							token,
+							[]string{
+								name,
+								strings.TrimPrefix(name, "@"),
+								name + operator,
+							},
+						)
+						tokens[token] = &hint
+					}
 				}
 			}
 		}

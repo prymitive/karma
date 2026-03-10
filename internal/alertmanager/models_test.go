@@ -7,12 +7,11 @@ import (
 	"time"
 
 	"github.com/jarcoal/httpmock"
+	"github.com/prometheus/prometheus/model/labels"
+	"github.com/rs/zerolog"
 
 	"github.com/prymitive/karma/internal/config"
-	"github.com/prymitive/karma/internal/mapper/v017/models"
 	internalModels "github.com/prymitive/karma/internal/models"
-
-	"github.com/rs/zerolog"
 )
 
 type uriTest struct {
@@ -295,9 +294,7 @@ func TestIsHealthCheckAlertAllMatch(t *testing.T) {
 	}
 
 	alert := &internalModels.Alert{
-		Labels: internalModels.Labels{
-			{Name: internalModels.NewUniqueString("alertname"), Value: internalModels.NewUniqueString("Watchdog")},
-		},
+		Labels: labels.FromStrings("alertname", "Watchdog"),
 	}
 	name, hc := am.IsHealthCheckAlert(alert)
 	if name != "prom1" {
@@ -320,10 +317,7 @@ func TestIsHealthCheckAlertPartialMatch(t *testing.T) {
 	}
 
 	alert := &internalModels.Alert{
-		Labels: internalModels.Labels{
-			{Name: internalModels.NewUniqueString("alertname"), Value: internalModels.NewUniqueString("Watchdog")},
-			{Name: internalModels.NewUniqueString("severity"), Value: internalModels.NewUniqueString("warning")},
-		},
+		Labels: labels.FromStrings("alertname", "Watchdog", "severity", "warning"),
 	}
 	name, hc := am.IsHealthCheckAlert(alert)
 	if name != "" {
@@ -346,9 +340,7 @@ func TestIsHealthCheckAlertNoMatch(t *testing.T) {
 	}
 
 	alert := &internalModels.Alert{
-		Labels: internalModels.Labels{
-			{Name: internalModels.NewUniqueString("alertname"), Value: internalModels.NewUniqueString("DiskFull")},
-		},
+		Labels: labels.FromStrings("alertname", "DiskFull"),
 	}
 	name, hc := am.IsHealthCheckAlert(alert)
 	if name != "" {
@@ -367,9 +359,7 @@ func TestIsHealthCheckAlertNoHealthchecks(t *testing.T) {
 	}
 
 	alert := &internalModels.Alert{
-		Labels: internalModels.Labels{
-			{Name: internalModels.NewUniqueString("alertname"), Value: internalModels.NewUniqueString("Watchdog")},
-		},
+		Labels: labels.FromStrings("alertname", "Watchdog"),
 	}
 	name, hc := am.IsHealthCheckAlert(alert)
 	if name != "" {
@@ -502,7 +492,7 @@ func TestExpiredSilences(t *testing.T) {
 	}
 	for _, ag := range alertGroups {
 		for _, alert := range ag.Alerts {
-			if alert.State.Value() == models.AlertStatusStateActive {
+			if alert.State == internalModels.AlertStateActive {
 				if len(alert.SilencedBy) < 1 {
 					t.Errorf("Alert should include expired silence")
 				}
