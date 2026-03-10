@@ -409,7 +409,7 @@ func TestProxyUserRewrite(t *testing.T) {
   { "isRegex": false, "name": "alertname", "value": "Fake Alert" },
   { "isRegex": true, "name": "foo", "value": "(bar|baz)" }
 ]}`,
-			proxyRequestBody: `{"comment":"comment","createdBy":"","endsAt":"2000-02-01T00:02:03.000Z","matchers":[{"isRegex":false,"name":"alertname","value":"Fake Alert"},{"isRegex":true,"name":"foo","value":"(bar|baz)"}],"startsAt":"2000-02-01T00:00:00.000Z"}`,
+			proxyRequestBody: `{"endsAt":"2000-02-01T00:02:03.000Z","startsAt":"2000-02-01T00:00:00.000Z","comment":"comment","createdBy":"","matchers":[{"name":"alertname","value":"Fake Alert","isRegex":false},{"name":"foo","value":"(bar|baz)","isRegex":true}]}`,
 		},
 		{
 			name:         "basicAuth, correct credentials, invalid JSON",
@@ -420,7 +420,7 @@ func TestProxyUserRewrite(t *testing.T) {
 			requestBasicAuthUser:     "john",
 			requestBasicAuthPassword: "foobar",
 			frontednRequestBody:      `{XXX`,
-			proxyRequestBody:         "invalid character 'X' looking for beginning of object key string\n",
+			proxyRequestBody:         "jsontext: invalid character 'X' at start of value after offset 1\n",
 		},
 		{
 			name:         "basicAuth, missing credentials",
@@ -446,7 +446,7 @@ func TestProxyUserRewrite(t *testing.T) {
   { "isRegex": false, "name": "alertname", "value": "Fake Alert" },
   { "isRegex": true, "name": "foo", "value": "(bar|baz)" }
 ]}`,
-			proxyRequestBody: `{"comment":"comment","createdBy":"john","endsAt":"2000-02-01T00:02:03.000Z","matchers":[{"isRegex":false,"name":"alertname","value":"Fake Alert"},{"isRegex":true,"name":"foo","value":"(bar|baz)"}],"startsAt":"2000-02-01T00:00:00.000Z"}`,
+			proxyRequestBody: `{"endsAt":"2000-02-01T00:02:03.000Z","startsAt":"2000-02-01T00:00:00.000Z","comment":"comment","createdBy":"john","matchers":[{"name":"alertname","value":"Fake Alert","isRegex":false},{"name":"foo","value":"(bar|baz)","isRegex":true}]}`,
 		},
 		{
 			name:         "basicAuth, correct credentials, fixed username, silence ID",
@@ -466,7 +466,7 @@ func TestProxyUserRewrite(t *testing.T) {
 	{ "isRegex": false, "name": "alertname", "value": "Fake Alert" },
 	{ "isRegex": true, "name": "foo", "value": "(bar|baz)" }
 ]}`,
-			proxyRequestBody: `{"id":"1234567890","comment":"comment","createdBy":"john","endsAt":"2000-02-01T00:02:03.000Z","matchers":[{"isRegex":false,"name":"alertname","value":"Fake Alert"},{"isRegex":true,"name":"foo","value":"(bar|baz)"}],"startsAt":"2000-02-01T00:00:00.000Z"}`,
+			proxyRequestBody: `{"endsAt":"2000-02-01T00:02:03.000Z","startsAt":"2000-02-01T00:00:00.000Z","id":"1234567890","comment":"comment","createdBy":"john","matchers":[{"name":"alertname","value":"Fake Alert","isRegex":false},{"name":"foo","value":"(bar|baz)","isRegex":true}]}`,
 		},
 		{
 			name:             "header auth, missing header",
@@ -502,7 +502,7 @@ func TestProxyUserRewrite(t *testing.T) {
   { "isRegex": false, "name": "alertname", "value": "Fake Alert" },
   { "isRegex": true, "name": "foo", "value": "(bar|baz)" }
 ]}`,
-			proxyRequestBody: `{"comment":"comment","createdBy":"john","endsAt":"2000-02-01T00:02:03.000Z","matchers":[{"isRegex":false,"name":"alertname","value":"Fake Alert"},{"isRegex":true,"name":"foo","value":"(bar|baz)"}],"startsAt":"2000-02-01T00:00:00.000Z"}`,
+			proxyRequestBody: `{"endsAt":"2000-02-01T00:02:03.000Z","startsAt":"2000-02-01T00:00:00.000Z","comment":"comment","createdBy":"john","matchers":[{"name":"alertname","value":"Fake Alert","isRegex":false},{"name":"foo","value":"(bar|baz)","isRegex":true}]}`,
 		},
 		{
 			name:         "basicAuth, correct credentials, fixed username, silence ID",
@@ -522,7 +522,7 @@ func TestProxyUserRewrite(t *testing.T) {
 	{ "isRegex": false, "name": "alertname", "value": "Fake Alert" },
 	{ "isRegex": true, "name": "foo", "value": "(bar|baz)" }
 ]}`,
-			proxyRequestBody: `{"id":"1234567890","comment":"comment","createdBy":"john","endsAt":"2000-02-01T00:02:03.000Z","matchers":[{"isRegex":false,"name":"alertname","value":"Fake Alert"},{"isRegex":true,"name":"foo","value":"(bar|baz)"}],"startsAt":"2000-02-01T00:00:00.000Z"}`,
+			proxyRequestBody: `{"endsAt":"2000-02-01T00:02:03.000Z","startsAt":"2000-02-01T00:00:00.000Z","id":"1234567890","comment":"comment","createdBy":"john","matchers":[{"name":"alertname","value":"Fake Alert","isRegex":false},{"name":"foo","value":"(bar|baz)","isRegex":true}]}`,
 		},
 	}
 

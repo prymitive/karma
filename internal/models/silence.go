@@ -4,6 +4,8 @@ import (
 	"regexp"
 	"time"
 
+	"github.com/go-json-experiment/json/jsontext"
+
 	"github.com/prymitive/karma/internal/regex"
 )
 
@@ -26,6 +28,25 @@ func NewSilenceMatcher(name, value string, isRegexp, isEqual bool) SilenceMatche
 		sm.re = regex.MustCompileAnchored(sm.Value)
 	}
 	return sm
+}
+
+func (sm SilenceMatcher) MarshalJSONTo(enc *jsontext.Encoder) error {
+	w := jsonWriter{enc: enc}
+	sm.marshalTo(&w)
+	return w.err
+}
+
+func (sm *SilenceMatcher) marshalTo(w *jsonWriter) {
+	w.beginObject()
+	w.key("name")
+	w.str(sm.Name)
+	w.key("value")
+	w.str(sm.Value)
+	w.key("isRegex")
+	w.boolean(sm.IsRegex)
+	w.key("isEqual")
+	w.boolean(sm.IsEqual)
+	w.endObject()
 }
 
 func (sm SilenceMatcher) IsMatch(labels map[string]string) bool {
@@ -56,6 +77,39 @@ type Silence struct {
 	Matchers  []SilenceMatcher `json:"matchers"`
 }
 
+func (s Silence) MarshalJSONTo(enc *jsontext.Encoder) error {
+	w := jsonWriter{enc: enc}
+	s.marshalTo(&w)
+	return w.err
+}
+
+func (s *Silence) marshalTo(w *jsonWriter) {
+	w.beginObject()
+	w.key("startsAt")
+	w.time(s.StartsAt)
+	w.key("endsAt")
+	w.time(s.EndsAt)
+	w.key("createdAt")
+	w.time(s.CreatedAt)
+	w.key("id")
+	w.str(s.ID)
+	w.key("createdBy")
+	w.str(s.CreatedBy)
+	w.key("comment")
+	w.str(s.Comment)
+	w.key("ticketID")
+	w.str(s.TicketID)
+	w.key("ticketURL")
+	w.str(s.TicketURL)
+	w.key("matchers")
+	w.beginArray()
+	for i := range s.Matchers {
+		s.Matchers[i].marshalTo(w)
+	}
+	w.endArray()
+	w.endObject()
+}
+
 func (s Silence) IsMatch(labels map[string]string) bool {
 	for _, m := range s.Matchers {
 		if !m.IsMatch(labels) {
@@ -71,4 +125,19 @@ type ManagedSilence struct {
 	Silence    Silence `json:"silence"`
 	AlertCount int     `json:"alertCount"`
 	IsExpired  bool    `json:"isExpired"`
+}
+
+func (ms ManagedSilence) MarshalJSONTo(enc *jsontext.Encoder) error {
+	w := jsonWriter{enc: enc}
+	w.beginObject()
+	w.key("cluster")
+	w.str(ms.Cluster)
+	w.key("silence")
+	ms.Silence.marshalTo(&w)
+	w.key("alertCount")
+	w.integer(ms.AlertCount)
+	w.key("isExpired")
+	w.boolean(ms.IsExpired)
+	w.endObject()
+	return w.err
 }

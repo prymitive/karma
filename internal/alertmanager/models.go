@@ -227,10 +227,6 @@ func (am *Alertmanager) pullAlerts(version string) error {
 			if _, found := uniqueAlerts[agID][alertCFP]; !found {
 				uniqueAlerts[agID][alertCFP] = alert
 			}
-			alert.Labels.Range(func(l labels.Label) {
-				knownLabelsMap[l.Name] = struct{}{}
-			})
-
 			if name, hc := am.IsHealthCheckAlert(&alert); hc != nil {
 				healthchecks[name] = HealthCheck{
 					filters:  hc.filters,
@@ -251,6 +247,7 @@ func (am *Alertmanager) pullAlerts(version string) error {
 		Msg("Processing deduplicated alert groups")
 	for _, ag := range uniqueGroups {
 		alerts := make(models.AlertList, 0, len(uniqueAlerts[ag.ID]))
+		labelPairs := make([][]labels.Label, 0, len(uniqueAlerts[ag.ID]))
 		for _, alert := range uniqueAlerts[ag.ID] {
 			silences := map[string]*models.Silence{}
 			for _, silenceID := range alert.SilencedBy {
@@ -301,15 +298,22 @@ func (am *Alertmanager) pullAlerts(version string) error {
 				transform.ColorLabel(colors, "@alertmanager", am.Name)
 				transform.ColorLabel(colors, "@cluster", am.Cluster)
 			}
+			var pairs []labels.Label
 			alert.Labels.Range(func(l labels.Label) {
 				transform.ColorLabel(colors, l.Name, l.Value)
+				knownLabelsMap[l.Name] = struct{}{}
+				pairs = append(pairs, l)
 			})
+			labelPairs = append(labelPairs, pairs)
 
 			alert.UpdateFingerprints()
 			alerts = append(alerts, alert)
 		}
 
 		for _, hint := range filters.BuildAutocomplete(alerts) {
+			autocompleteMap[hint.Value] = &hint
+		}
+		for _, hint := range filters.LabelAutocomplete(labelPairs) {
 			autocompleteMap[hint.Value] = &hint
 		}
 

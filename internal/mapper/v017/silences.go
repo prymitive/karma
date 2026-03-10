@@ -23,8 +23,8 @@ func (m SilenceMapper) IsSupported(version string) bool {
 }
 
 func (m SilenceMapper) Collect(uri string, headers map[string]string, timeout time.Duration, httpTransport http.RoundTripper) ([]models.Silence, error) {
-	c := newClient(uri, headers, httpTransport)
-	return silences(c, timeout)
+	c, u := newHTTPClient(uri, headers, httpTransport)
+	return silences(c, u, timeout)
 }
 
 func (m SilenceMapper) RewriteUsername(body []byte, username string) ([]byte, error) {

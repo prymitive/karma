@@ -2,13 +2,13 @@ package models
 
 import (
 	"cmp"
-	"encoding/json"
 	"slices"
 	"strconv"
 	"time"
 
 	"github.com/cespare/xxhash/v2"
 	"github.com/fvbommel/sortorder"
+	"github.com/go-json-experiment/json/jsontext"
 	"github.com/prometheus/prometheus/model/labels"
 
 	"github.com/prymitive/karma/internal/config"
@@ -50,15 +50,15 @@ func (s AlertState) String() string {
 }
 
 func (s AlertState) MarshalJSON() ([]byte, error) {
-	return json.Marshal(s.String())
+	return jsontext.AppendQuote(nil, s.String())
 }
 
 func (s *AlertState) UnmarshalJSON(data []byte) error {
-	var str string
-	if err := json.Unmarshal(data, &str); err != nil {
+	unquoted, err := jsontext.AppendUnquote(nil, data)
+	if err != nil {
 		return err
 	}
-	*s = ParseAlertState(str)
+	*s = ParseAlertState(string(unquoted))
 	return nil
 }
 
@@ -110,6 +110,21 @@ func (ol OrderedLabels) Get(name string) string {
 	return ""
 }
 
+func (ol OrderedLabels) MarshalJSONTo(enc *jsontext.Encoder) error {
+	w := jsonWriter{enc: enc}
+	w.beginArray()
+	for _, l := range ol {
+		w.beginObject()
+		w.key("name")
+		w.str(l.Name)
+		w.key("value")
+		w.str(l.Value)
+		w.endObject()
+	}
+	w.endArray()
+	return w.err
+}
+
 // LabelsToOrderedLabels converts prometheus Labels to OrderedLabels sorted
 // by the configured display order.
 func LabelsToOrderedLabels(ls labels.Labels) OrderedLabels {
@@ -119,15 +134,6 @@ func LabelsToOrderedLabels(ls labels.Labels) OrderedLabels {
 	})
 	slices.SortFunc(dl, CompareOrderedLabels)
 	return dl
-}
-
-// orderedLabelsToLabels converts OrderedLabels back to prometheus Labels.
-func orderedLabelsToLabels(ol OrderedLabels) labels.Labels {
-	s := make([]string, 0, len(ol)*2)
-	for _, l := range ol {
-		s = append(s, l.Name, l.Value)
-	}
-	return labels.FromStrings(s...)
 }
 
 // CompareOrderedLabels sorts display labels by the configured label order,
@@ -213,31 +219,46 @@ type APIAlert struct {
 	Alertmanager []AlertmanagerInstance `json:"alertmanager"`
 }
 
-func (a Alert) MarshalJSON() ([]byte, error) {
-	return json.Marshal(APIAlert{
-		StartsAt:     a.StartsAt,
-		State:        a.State.String(),
-		Receiver:     a.Receiver,
-		LabelsFP:     a.LabelsFP,
-		Annotations:  a.Annotations,
-		Labels:       LabelsToOrderedLabels(a.Labels),
-		Alertmanager: a.Alertmanager,
-	})
+func (a APIAlert) MarshalJSONTo(enc *jsontext.Encoder) error {
+	w := jsonWriter{enc: enc}
+	a.marshalTo(&w)
+	return w.err
 }
 
-func (a *Alert) UnmarshalJSON(data []byte) error {
-	var j APIAlert
-	if err := json.Unmarshal(data, &j); err != nil {
-		return err
+func (a *APIAlert) marshalTo(w *jsonWriter) {
+	w.beginObject()
+	w.key("startsAt")
+	w.time(a.StartsAt)
+	w.key("state")
+	w.str(a.State)
+	w.key("receiver")
+	w.str(a.Receiver)
+	w.key("id")
+	w.str(a.LabelsFP)
+	w.key("annotations")
+	w.beginArray()
+	for i := range a.Annotations {
+		a.Annotations[i].marshalTo(w)
 	}
-	a.StartsAt = j.StartsAt
-	a.State = ParseAlertState(j.State)
-	a.Receiver = j.Receiver
-	a.LabelsFP = j.LabelsFP
-	a.Annotations = j.Annotations
-	a.Labels = orderedLabelsToLabels(j.Labels)
-	a.Alertmanager = j.Alertmanager
-	return nil
+	w.endArray()
+	w.key("labels")
+	w.beginArray()
+	for _, l := range a.Labels {
+		w.beginObject()
+		w.key("name")
+		w.str(l.Name)
+		w.key("value")
+		w.str(l.Value)
+		w.endObject()
+	}
+	w.endArray()
+	w.key("alertmanager")
+	w.beginArray()
+	for i := range a.Alertmanager {
+		a.Alertmanager[i].marshalTo(w)
+	}
+	w.endArray()
+	w.endObject()
 }
 
 var seps = []byte{'\xff'}

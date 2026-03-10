@@ -127,8 +127,20 @@ var acTests = []acTest{
 
 func TestBuildAutocomplete(t *testing.T) {
 	for _, acTest := range acTests {
+		labelPairs := make([][]labels.Label, 0, len(acTest.Alerts))
+		for _, alert := range acTest.Alerts {
+			var pairs []labels.Label
+			alert.Labels.Range(func(l labels.Label) {
+				pairs = append(pairs, l)
+			})
+			labelPairs = append(labelPairs, pairs)
+		}
+
 		result := make([]string, 0, len(acTest.Alerts))
 		for _, hint := range filters.BuildAutocomplete(acTest.Alerts) {
+			result = append(result, hint.Value)
+		}
+		for _, hint := range filters.LabelAutocomplete(labelPairs) {
 			result = append(result, hint.Value)
 		}
 
@@ -144,19 +156,27 @@ func TestBuildAutocomplete(t *testing.T) {
 func BenchmarkAutocomplete(b *testing.B) {
 	const n = 10000
 	alerts := make([]models.Alert, 0, n)
+	labelPairs := make([][]labels.Label, 0, n)
 	for i := range n {
+		l := labels.FromStrings("foo", fmt.Sprintf("xxx%d", i), "number", strconv.Itoa(i))
 		alerts = append(alerts, models.Alert{
 			State:    models.AlertStateActive,
-			Labels:   labels.FromStrings("foo", fmt.Sprintf("xxx%d", i), "number", strconv.Itoa(i)),
+			Labels:   l,
 			Receiver: fmt.Sprintf("receiver-%d", i%1000),
 			Alertmanager: []models.AlertmanagerInstance{
 				{Cluster: "cluster", Name: "am1"},
 				{Cluster: "cluster", Name: "am2"},
 			},
 		})
+		var pairs []labels.Label
+		l.Range(func(lbl labels.Label) {
+			pairs = append(pairs, lbl)
+		})
+		labelPairs = append(labelPairs, pairs)
 	}
 	b.ReportAllocs()
 	for i := 0; i < b.N; i++ {
 		filters.BuildAutocomplete(alerts)
+		filters.LabelAutocomplete(labelPairs)
 	}
 }

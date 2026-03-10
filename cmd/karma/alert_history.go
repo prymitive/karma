@@ -4,7 +4,6 @@ import (
 	"context"
 	"crypto/sha1"
 	"encoding/hex"
-	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -16,6 +15,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	jsonv2 "github.com/go-json-experiment/json"
 	lru "github.com/hashicorp/golang-lru/v2"
 	"github.com/prometheus/client_golang/api"
 	v1 "github.com/prometheus/client_golang/api/prometheus/v1"
@@ -52,7 +52,7 @@ func alertHistory(historyPoller *historyPoller, w http.ResponseWriter, r *http.R
 	}
 
 	var payload AlertHistoryPayload
-	err := json.NewDecoder(r.Body).Decode(&payload)
+	err := jsonv2.UnmarshalRead(r.Body, &payload)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
@@ -97,7 +97,7 @@ func alertHistory(historyPoller *historyPoller, w http.ResponseWriter, r *http.R
 		}
 	}
 
-	data, _ := json.Marshal(resp)
+	data, _ := marshalJSON(resp)
 	mimeJSON(w)
 	w.WriteHeader(http.StatusOK)
 	_, _ = w.Write(data)

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"net/http"
 	"sort"
 	"strings"
@@ -55,7 +54,7 @@ func knownLabelNames(w http.ResponseWriter, r *http.Request) {
 		sort.Strings(acData)
 	}
 
-	data, _ = json.Marshal(acData)
+	data, _ = marshalJSON(acData)
 
 	_ = apiCache.Add(cacheKey, data)
 
@@ -86,7 +85,7 @@ func knownLabelValues(w http.ResponseWriter, r *http.Request) {
 	values := alertmanager.DedupKnownLabelValues(name[len(name)-1])
 	sort.Strings(values)
 
-	data, _ = json.Marshal(values)
+	data, _ = marshalJSON(values)
 
 	_ = apiCache.Add(cacheKey, data)
 

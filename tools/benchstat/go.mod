@@ -1,6 +1,6 @@
 module _
 
-go 1.25.0
+go 1.26.0
 
 require golang.org/x/perf v0.0.0-20260211190930-8161c38c6cdc
 

@@ -10,7 +10,7 @@ function cleanup() {
     exit
 }
 
-PKGS=$(go list ./... | grep -vE 'prymitive/karma/internal/mapper/v017/(client|models)')
+PKGS=$(go list ./... | grep -v ui/node_modules)
 COVERPKG=$(echo "$PKGS" | tr '\n' ',')
 
 I=0

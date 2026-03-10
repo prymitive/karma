@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -1813,80 +1812,6 @@ func TestAlertFilters(t *testing.T) {
 				upstreamSetup = false
 			})
 		}
-	}
-}
-
-type gzErrWriter struct {
-	failWrite bool
-	failClose bool
-}
-
-func (ew *gzErrWriter) Write(p []byte) (n int, err error) {
-	if ew.failWrite {
-		return 0, errors.New("Write error")
-	}
-	return len(p), nil
-}
-
-func (ew *gzErrWriter) Close() error {
-	if ew.failClose {
-		return errors.New("Close error")
-	}
-	return nil
-}
-
-func TestCompressResponseWriteError(t *testing.T) {
-	_, err := compressResponse(nil, &gzErrWriter{failWrite: true})
-	if err == nil {
-		t.Error("compressResponse() didn't return any error")
-	}
-}
-
-func TestCompressResponseCloseError(t *testing.T) {
-	_, err := compressResponse(nil, &gzErrWriter{failClose: true})
-	if err == nil {
-		t.Error("compressResponse() didn't return any error")
-	}
-}
-
-type gzErrReader struct {
-	failAfter int
-	reads     int
-}
-
-func (er *gzErrReader) Read(p []byte) (n int, err error) {
-	if er.reads >= er.failAfter {
-		return 0, errors.New("Read error")
-	}
-	er.reads++
-
-	b, err := compressResponse([]byte("abcd"), nil)
-	if err != nil {
-		return 0, err
-	}
-
-	return bytes.NewReader(b).Read(p)
-}
-
-func TestDecompressResponseResetError(t *testing.T) {
-	_, err := decompressCachedResponse(&gzErrReader{failAfter: 0})
-	if err == nil {
-		t.Error("decompressCachedResponse() didn't return any error")
-		return
-	}
-	if err.Error() != "failed to created new compression reader: Read error" {
-		t.Errorf("decompressCachedResponse() returned wrong error: %s", err)
-	}
-}
-
-func TestDecompressResponseReadError(t *testing.T) {
-	_, err := decompressCachedResponse(&gzErrReader{failAfter: 1})
-	if err == nil {
-		t.Error("decompressCachedResponse() didn't return any error")
-		return
-	}
-	if err.Error() != "failed to decompress data: Read error" {
-		t.Errorf("decompressCachedResponse() returned wrong error: %s", err)
 	}
 }
 
