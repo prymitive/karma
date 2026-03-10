@@ -1,6 +1,6 @@
 module github.com/prymitive/karma
 
-go 1.25.0
+go 1.26.0
 
 require (
 	github.com/Masterminds/semver/v3 v3.4.0
@@ -10,11 +10,7 @@ require (
 	github.com/fvbommel/sortorder v1.1.0
 	github.com/go-chi/chi/v5 v5.2.5
 	github.com/go-chi/cors v1.2.2
-	github.com/go-openapi/errors v0.22.7
-	github.com/go-openapi/runtime v0.29.3
-	github.com/go-openapi/strfmt v0.26.0
-	github.com/go-openapi/swag v0.25.5
-	github.com/go-openapi/validate v0.25.2
+	github.com/go-json-experiment/json v0.0.0-20260214004413-d219187c3433
 	github.com/go-viper/mapstructure/v2 v2.5.0
 	github.com/google/go-cmp v0.7.0
 	github.com/hashicorp/golang-lru/v2 v2.0.7
@@ -42,25 +38,6 @@ require (
 require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/fsnotify/fsnotify v1.9.0 // indirect
-	github.com/go-logr/logr v1.4.3 // indirect
-	github.com/go-logr/stdr v1.2.2 // indirect
-	github.com/go-openapi/analysis v0.24.3 // indirect
-	github.com/go-openapi/jsonpointer v0.22.5 // indirect
-	github.com/go-openapi/jsonreference v0.21.5 // indirect
-	github.com/go-openapi/loads v0.23.3 // indirect
-	github.com/go-openapi/spec v0.22.4 // indirect
-	github.com/go-openapi/swag/cmdutils v0.25.5 // indirect
-	github.com/go-openapi/swag/conv v0.25.5 // indirect
-	github.com/go-openapi/swag/fileutils v0.25.5 // indirect
-	github.com/go-openapi/swag/jsonname v0.25.5 // indirect
-	github.com/go-openapi/swag/jsonutils v0.25.5 // indirect
-	github.com/go-openapi/swag/loading v0.25.5 // indirect
-	github.com/go-openapi/swag/mangling v0.25.5 // indirect
-	github.com/go-openapi/swag/netutils v0.25.5 // indirect
-	github.com/go-openapi/swag/stringutils v0.25.5 // indirect
-	github.com/go-openapi/swag/typeutils v0.25.5 // indirect
-	github.com/go-openapi/swag/yamlutils v0.25.5 // indirect
-	github.com/google/uuid v1.6.0 // indirect
 	github.com/grafana/regexp v0.0.0-20250905093917-f7b3be9d1853 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/knadh/koanf/maps v0.1.2 // indirect
@@ -71,17 +48,11 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.3-0.20250322232337-35a7c28c31ee // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
-	github.com/oklog/ulid/v2 v2.1.1 // indirect
 	github.com/prometheus/client_model v0.6.2 // indirect
 	github.com/prometheus/procfs v0.20.1 // indirect
 	github.com/sergi/go-diff v1.4.0 // indirect
-	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
-	go.opentelemetry.io/otel v1.42.0 // indirect
-	go.opentelemetry.io/otel/metric v1.42.0 // indirect
-	go.opentelemetry.io/otel/trace v1.42.0 // indirect
 	go.yaml.in/yaml/v2 v2.4.4 // indirect
 	golang.org/x/net v0.51.0 // indirect
-	golang.org/x/sync v0.20.0 // indirect
 	golang.org/x/sys v0.42.0 // indirect
 	golang.org/x/text v0.34.0 // indirect
 	golang.org/x/tools v0.41.0 // indirect

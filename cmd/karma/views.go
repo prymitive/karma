@@ -1,23 +1,20 @@
 package main
 
 import (
-	"bytes"
 	"encoding/base64"
 	"encoding/hex"
-	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
 	"runtime"
 	"slices"
 	"sort"
 	"strings"
-	"sync"
 	"time"
 
 	"github.com/cnf/structhash"
 	"github.com/fvbommel/sortorder"
-	"github.com/klauspost/compress/gzip"
+	jsonv2 "github.com/go-json-experiment/json"
+	"github.com/go-json-experiment/json/jsontext"
 	promlabels "github.com/prometheus/prometheus/model/labels"
 
 	"github.com/prymitive/karma/internal/alertmanager"
@@ -30,24 +27,8 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-var gzipWriterPool = sync.Pool{
-	New: func() any {
-		w, _ := gzip.NewWriterLevel(io.Discard, 3)
-		return w
-	},
-}
-
-var jsonBufPool = sync.Pool{
-	New: func() any {
-		return bytes.NewBuffer(make([]byte, 0, 1<<16))
-	},
-}
-
-func marshalJSON(v any) *bytes.Buffer {
-	buf := jsonBufPool.Get().(*bytes.Buffer)
-	buf.Reset()
-	_ = json.NewEncoder(buf).Encode(v)
-	return buf
+func marshalJSON(v any) ([]byte, error) {
+	return jsonv2.Marshal(v, jsontext.EscapeForHTML(true))
 }
 
 func noCache(w http.ResponseWriter) {
@@ -61,7 +42,7 @@ func mimeJSON(w http.ResponseWriter) {
 func badRequestJSON(w http.ResponseWriter, err string) {
 	mimeJSON(w)
 	w.WriteHeader(http.StatusBadRequest)
-	out, _ := json.Marshal(map[string]string{"error": err})
+	out, _ := marshalJSON(map[string]string{"error": err})
 	_, _ = w.Write(out)
 }
 
@@ -75,7 +56,7 @@ func versionHandler(w http.ResponseWriter, _ *http.Request) {
 		Version: version,
 		Golang:  runtime.Version(),
 	}
-	data, _ := json.MarshalIndent(ver, "", "  ")
+	data, _ := jsonv2.Marshal(ver, jsontext.Multiline(true), jsontext.WithIndent("  "))
 	_, _ = w.Write(data)
 }
 
@@ -87,70 +68,17 @@ func robots(w http.ResponseWriter, _ *http.Request) {
 	_, _ = w.Write([]byte("User-agent: *\nDisallow: /\n"))
 }
 
-func compressResponse(data []byte, gz io.WriteCloser) ([]byte, error) {
-	var b bytes.Buffer
-
-	if gz == nil {
-		w := gzipWriterPool.Get().(*gzip.Writer)
-		w.Reset(&b)
-		defer gzipWriterPool.Put(w)
-		gz = w
-	}
-
-	_, err := gz.Write(data)
-	if err != nil {
-		return nil, fmt.Errorf("failed to compress data: %w", err)
-	}
-
-	if err = gz.Close(); err != nil {
-		return nil, fmt.Errorf("failed to close compression writer: %w", err)
-	}
-
-	compressed := b.Bytes()
-	ratio := fmt.Sprintf("%.5f", float64(len(compressed))/float64(len(data)))
-	log.Debug().
-		Int("original", len(data)).
-		Int("compressed", len(compressed)).
-		Str("ratio", ratio).
-		Msg("Compressed response")
-
-	return compressed, nil
-}
-
-func decompressCachedResponse(r io.Reader) ([]byte, error) {
-	z, err := gzip.NewReader(r)
-	if err != nil {
-		return nil, fmt.Errorf("failed to created new compression reader: %w", err)
-	}
-	p, err := io.ReadAll(z)
-	if err != nil {
-		return nil, fmt.Errorf("failed to decompress data: %w", err)
-	}
-	z.Close()
-	return p, nil
-}
-
-func pushPath(w http.ResponseWriter, path string) {
-	if pusher, ok := w.(http.Pusher); ok {
-		if err := pusher.Push(path, nil); err != nil {
-			log.Debug().Err(err).Str("path", path).Msg("Failed to push server path via HTTP/2")
-		}
-	}
-}
-
 func redirectIndex(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, r.URL.Path+"/", http.StatusMovedPermanently)
 }
 
 func index(w http.ResponseWriter, _ *http.Request) {
 	noCache(w)
-	pushPath(w, getViewURL("/custom.css"))
-	pushPath(w, getViewURL("/custom.js"))
 
-	filtersJSON, _ := json.Marshal(config.Config.Filters.Default)
+	filtersJSON, _ := marshalJSON(config.Config.Filters.Default)
 	filtersB64 := base64.StdEncoding.EncodeToString(filtersJSON)
 
-	defaults, _ := json.Marshal(config.Config.UI)
+	defaults, _ := marshalJSON(config.Config.UI)
 	defaultsB64 := base64.StdEncoding.EncodeToString(defaults)
 
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
@@ -242,7 +170,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var request models.AlertsRequest
-	err := json.NewDecoder(r.Body).Decode(&request)
+	err := jsonv2.UnmarshalRead(r.Body, &request)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
@@ -252,21 +180,18 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 
 	data, found := apiCache.Get(cacheKey)
 	if found {
-		r := bytes.NewReader(data)
-		rawData, _ := decompressCachedResponse(r)
 		// need to overwrite settings as they can have user specific data
 		newResp := models.AlertsResponse{}
-		_ = json.Unmarshal(rawData, &newResp)
+		_ = jsonv2.Unmarshal(data, &newResp)
 		labels := newResp.Settings.Labels
 		newResp.Settings = resp.Settings
 		newResp.Settings.Labels = labels
 		newResp.Timestamp = string(ts)
 		newResp.Authentication = resp.Authentication
-		buf := marshalJSON(&newResp)
+		data, _ = marshalJSON(&newResp)
 		mimeJSON(w)
 		w.WriteHeader(http.StatusOK)
-		_, _ = w.Write(buf.Bytes())
-		jsonBufPool.Put(buf)
+		_, _ = w.Write(data)
 		return
 	}
 
@@ -527,14 +452,12 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 	resp.Filters = populateAPIFilters(matchFilters)
 	resp.Receivers = receivers
 
-	buf := marshalJSON(resp)
-	compressedData, _ := compressResponse(buf.Bytes(), nil)
-	_ = apiCache.Add(cacheKey, compressedData)
+	data, _ = marshalJSON(resp)
+	_ = apiCache.Add(cacheKey, data)
 
 	mimeJSON(w)
 	w.WriteHeader(http.StatusOK)
-	_, _ = w.Write(buf.Bytes())
-	jsonBufPool.Put(buf)
+	_, _ = w.Write(data)
 }
 
 func labelsSettings(grids []models.APIGrid, store models.LabelsSettings) {
@@ -615,15 +538,12 @@ func autocomplete(w http.ResponseWriter, r *http.Request) {
 	}
 
 	sort.Sort(sort.Reverse(acData))
-	buf := marshalJSON(acData)
-
-	data = append([]byte(nil), buf.Bytes()...)
+	data, _ = marshalJSON(acData)
 	_ = apiCache.Add(cacheKey, data)
 
 	mimeJSON(w)
 	w.WriteHeader(http.StatusOK)
-	_, _ = w.Write(buf.Bytes())
-	jsonBufPool.Put(buf)
+	_, _ = w.Write(data)
 }
 
 func silences(w http.ResponseWriter, r *http.Request) {
@@ -743,15 +663,12 @@ func silences(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	buf := marshalJSON(dedupedSilences)
-
-	data = append([]byte(nil), buf.Bytes()...)
+	data, _ = marshalJSON(dedupedSilences)
 	_ = apiCache.Add(cacheKey, data)
 
 	mimeJSON(w)
 	w.WriteHeader(http.StatusOK)
-	_, _ = w.Write(buf.Bytes())
-	jsonBufPool.Put(buf)
+	_, _ = w.Write(data)
 }
 
 type AlertList struct {
@@ -766,11 +683,9 @@ func alertList(w http.ResponseWriter, r *http.Request) {
 
 	d, found := apiCache.Get(cacheKey)
 	if found {
-		r := bytes.NewReader(d)
-		rawData, _ := decompressCachedResponse(r)
 		mimeJSON(w)
 		w.WriteHeader(http.StatusOK)
-		_, _ = w.Write(rawData)
+		_, _ = w.Write(d)
 		return
 	}
 
@@ -813,11 +728,9 @@ func alertList(w http.ResponseWriter, r *http.Request) {
 
 	mimeJSON(w)
 	w.WriteHeader(http.StatusOK)
-	buf := marshalJSON(al)
-	compressedData, _ := compressResponse(buf.Bytes(), nil)
-	_ = apiCache.Add(cacheKey, compressedData)
-	_, _ = w.Write(buf.Bytes())
-	jsonBufPool.Put(buf)
+	data, _ := marshalJSON(al)
+	_ = apiCache.Add(cacheKey, data)
+	_, _ = w.Write(data)
 }
 
 func sortSliceOfLabels(ls []promlabels.Labels, sortKeys []string, fallback string) {
@@ -847,11 +760,9 @@ func counters(w http.ResponseWriter, r *http.Request) {
 
 	d, found := apiCache.Get(cacheKey)
 	if found {
-		r := bytes.NewReader(d)
-		rawData, _ := decompressCachedResponse(r)
 		mimeJSON(w)
 		w.WriteHeader(http.StatusOK)
-		_, _ = w.Write(rawData)
+		_, _ = w.Write(d)
 		return
 	}
 
@@ -903,9 +814,7 @@ func counters(w http.ResponseWriter, r *http.Request) {
 
 	mimeJSON(w)
 	w.WriteHeader(http.StatusOK)
-	buf := marshalJSON(resp)
-	compressedData, _ := compressResponse(buf.Bytes(), nil)
-	_ = apiCache.Add(cacheKey, compressedData)
-	_, _ = w.Write(buf.Bytes())
-	jsonBufPool.Put(buf)
+	data, _ := marshalJSON(resp)
+	_ = apiCache.Add(cacheKey, data)
+	_, _ = w.Write(data)
 }

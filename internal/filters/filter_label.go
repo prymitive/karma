@@ -46,11 +46,11 @@ func newLabelFilter() FilterT {
 	return &f
 }
 
-func labelAutocomplete(_ string, operators []string, alerts []models.Alert) []models.Autocomplete {
+func LabelAutocomplete(labelPairs [][]labels.Label) []models.Autocomplete {
 	tokens := map[string]*models.Autocomplete{}
-	for _, alert := range alerts {
-		alert.Labels.Range(func(l labels.Label) {
-			for _, operator := range operators {
+	for _, pairs := range labelPairs {
+		for _, l := range pairs {
+			for _, operator := range labelFilterOperators {
 				switch operator {
 				case equalOperator, notEqualOperator:
 					token := l.Name + operator + l.Value
@@ -101,7 +101,7 @@ func labelAutocomplete(_ string, operators []string, alerts []models.Alert) []mo
 					}
 				}
 			}
-		})
+		}
 	}
 	acData := make([]models.Autocomplete, 0, len(tokens))
 	for _, token := range tokens {
@@ -109,3 +109,5 @@ func labelAutocomplete(_ string, operators []string, alerts []models.Alert) []mo
 	}
 	return acData
 }
+
+var labelFilterOperators = []string{regexpOperator, negativeRegexOperator, equalOperator, notEqualOperator, lessThanOperator, moreThanOperator}

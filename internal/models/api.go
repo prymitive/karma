@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/fvbommel/sortorder"
+	"github.com/go-json-experiment/json/jsontext"
 	"github.com/prometheus/prometheus/model/labels"
 )
 
@@ -21,6 +22,25 @@ type Filter struct {
 	Value   string `json:"value"`
 	Hits    int    `json:"hits"`
 	IsValid bool   `json:"isValid"`
+}
+
+func (f Filter) MarshalJSONTo(enc *jsontext.Encoder) error {
+	w := jsonWriter{enc: enc}
+	w.beginObject()
+	w.key("text")
+	w.str(f.Text)
+	w.key("name")
+	w.str(f.Name)
+	w.key("matcher")
+	w.str(f.Matcher)
+	w.key("value")
+	w.str(f.Value)
+	w.key("hits")
+	w.integer(f.Hits)
+	w.key("isValid")
+	w.boolean(f.IsValid)
+	w.endObject()
+	return w.err
 }
 
 // Color is used by karmaLabelColor to reprenset colors as RGBA
@@ -42,8 +62,40 @@ type LabelColors struct {
 	Brightness int32  `json:"brightness"`
 }
 
+func (lc LabelColors) MarshalJSONTo(enc *jsontext.Encoder) error {
+	w := jsonWriter{enc: enc}
+	w.beginObject()
+	w.key("background")
+	w.str(lc.Background)
+	w.key("brightness")
+	w.integer32(lc.Brightness)
+	w.endObject()
+	return w.err
+}
+
 // LabelsColorMap is a map of "Label Key" -> "Label Value" -> karmaLabelColors
 type LabelsColorMap map[string]map[string]LabelColors
+
+func (m LabelsColorMap) MarshalJSONTo(enc *jsontext.Encoder) error {
+	w := jsonWriter{enc: enc}
+	w.beginObject()
+	for k, inner := range m {
+		w.key(k)
+		w.beginObject()
+		for v, lc := range inner {
+			w.key(v)
+			w.beginObject()
+			w.key("background")
+			w.str(lc.Background)
+			w.key("brightness")
+			w.integer32(lc.Brightness)
+			w.endObject()
+		}
+		w.endObject()
+	}
+	w.endObject()
+	return w.err
+}
 
 // LabelsCountMap is a map of "Label Key" -> "Label Value" -> number of occurrence
 type LabelsCountMap map[string]map[string]int
@@ -57,6 +109,44 @@ type LabelValueStats struct {
 }
 
 type LabelValueStatsList []LabelValueStats
+
+func (lvs LabelValueStats) MarshalJSONTo(enc *jsontext.Encoder) error {
+	w := jsonWriter{enc: enc}
+	w.beginObject()
+	w.key("value")
+	w.str(lvs.Value)
+	w.key("raw")
+	w.str(lvs.Raw)
+	w.key("hits")
+	w.integer(lvs.Hits)
+	w.key("percent")
+	w.integer(lvs.Percent)
+	w.key("offset")
+	w.integer(lvs.Offset)
+	w.endObject()
+	return w.err
+}
+
+func (l LabelValueStatsList) MarshalJSONTo(enc *jsontext.Encoder) error {
+	w := jsonWriter{enc: enc}
+	w.beginArray()
+	for _, v := range l {
+		w.beginObject()
+		w.key("value")
+		w.str(v.Value)
+		w.key("raw")
+		w.str(v.Raw)
+		w.key("hits")
+		w.integer(v.Hits)
+		w.key("percent")
+		w.integer(v.Percent)
+		w.key("offset")
+		w.integer(v.Offset)
+		w.endObject()
+	}
+	w.endArray()
+	return w.err
+}
 
 func CompareLabelValueStats(a, b LabelValueStats) int {
 	if a.Hits != b.Hits {
@@ -79,6 +169,66 @@ type LabelNameStats struct {
 }
 
 type LabelNameStatsList []LabelNameStats
+
+func (lns LabelNameStats) MarshalJSONTo(enc *jsontext.Encoder) error {
+	w := jsonWriter{enc: enc}
+	w.beginObject()
+	w.key("name")
+	w.str(lns.Name)
+	w.key("values")
+	w.beginArray()
+	for _, v := range lns.Values {
+		w.beginObject()
+		w.key("value")
+		w.str(v.Value)
+		w.key("raw")
+		w.str(v.Raw)
+		w.key("hits")
+		w.integer(v.Hits)
+		w.key("percent")
+		w.integer(v.Percent)
+		w.key("offset")
+		w.integer(v.Offset)
+		w.endObject()
+	}
+	w.endArray()
+	w.key("hits")
+	w.integer(lns.Hits)
+	w.endObject()
+	return w.err
+}
+
+func (l LabelNameStatsList) MarshalJSONTo(enc *jsontext.Encoder) error {
+	w := jsonWriter{enc: enc}
+	w.beginArray()
+	for _, lns := range l {
+		w.beginObject()
+		w.key("name")
+		w.str(lns.Name)
+		w.key("values")
+		w.beginArray()
+		for _, v := range lns.Values {
+			w.beginObject()
+			w.key("value")
+			w.str(v.Value)
+			w.key("raw")
+			w.str(v.Raw)
+			w.key("hits")
+			w.integer(v.Hits)
+			w.key("percent")
+			w.integer(v.Percent)
+			w.key("offset")
+			w.integer(v.Offset)
+			w.endObject()
+		}
+		w.endArray()
+		w.key("hits")
+		w.integer(lns.Hits)
+		w.endObject()
+	}
+	w.endArray()
+	return w.err
+}
 
 func CompareLabelNameStats(a, b LabelNameStats) int {
 	if a.Hits != b.Hits {
@@ -106,6 +256,40 @@ type APIAlertGroupSharedMaps struct {
 	Clusters    []string            `json:"clusters"`
 }
 
+func (s APIAlertGroupSharedMaps) MarshalJSONTo(enc *jsontext.Encoder) error {
+	w := jsonWriter{enc: enc}
+	s.marshalTo(&w)
+	return w.err
+}
+
+func (s *APIAlertGroupSharedMaps) marshalTo(w *jsonWriter) {
+	w.beginObject()
+	w.key("annotations")
+	w.beginArray()
+	for i := range s.Annotations {
+		s.Annotations[i].marshalTo(w)
+	}
+	w.endArray()
+	w.key("labels")
+	w.beginArray()
+	for _, l := range s.Labels {
+		w.beginObject()
+		w.key("name")
+		w.str(l.Name)
+		w.key("value")
+		w.str(l.Value)
+		w.endObject()
+	}
+	w.endArray()
+	w.key("silences")
+	w.mapStringStringSlice(s.Silences)
+	w.key("sources")
+	w.strings(s.Sources)
+	w.key("clusters")
+	w.strings(s.Clusters)
+	w.endObject()
+}
+
 // APIAlertGroup is how AlertGroup is returned in the API response.
 // All labels and annotations that are shared between all alerts in given group
 // are moved to Shared namespace, each alert instance only tracks labels and
@@ -121,6 +305,49 @@ type APIAlertGroup struct {
 	Labels            OrderedLabels                  `json:"labels"`
 	Alerts            []APIAlert                     `json:"alerts"`
 	TotalAlerts       int                            `json:"totalAlerts"`
+}
+
+func (ag APIAlertGroup) MarshalJSONTo(enc *jsontext.Encoder) error {
+	w := jsonWriter{enc: enc}
+	w.beginObject()
+	w.key("allLabels")
+	w.beginObject()
+	for state, labels := range ag.AllLabels {
+		w.key(state)
+		w.mapStringStringSlice(labels)
+	}
+	w.endObject()
+	w.key("alertmanagerCount")
+	w.mapStringInt(ag.AlertmanagerCount)
+	w.key("stateCount")
+	w.mapStringInt(ag.StateCount)
+	w.key("receiver")
+	w.str(ag.Receiver)
+	w.key("id")
+	w.str(ag.ID)
+	w.key("shared")
+	ag.Shared.marshalTo(&w)
+	w.key("labels")
+	w.beginArray()
+	for _, l := range ag.Labels {
+		w.beginObject()
+		w.key("name")
+		w.str(l.Name)
+		w.key("value")
+		w.str(l.Value)
+		w.endObject()
+	}
+	w.endArray()
+	w.key("alerts")
+	w.beginArray()
+	for i := range ag.Alerts {
+		ag.Alerts[i].marshalTo(&w)
+	}
+	w.endArray()
+	w.key("totalAlerts")
+	w.integer(ag.TotalAlerts)
+	w.endObject()
+	return w.err
 }
 
 // NewAPIAlertGroup converts an AlertGroup into its API representation.
@@ -162,11 +389,13 @@ func (ag *AlertGroup) dedupLabels(shared *AlertGroupSharedMaps) {
 	totalAlerts := len(ag.Alerts)
 
 	labelCounts := make(map[string]int, len(ag.Alerts))
+	alertLabelPairs := make([][]labels.Label, len(ag.Alerts))
 
-	for _, alert := range ag.Alerts {
+	for i, alert := range ag.Alerts {
 		alert.Labels.Range(func(l labels.Label) {
 			key := l.Name + "\n" + l.Value
 			labelCounts[key]++
+			alertLabelPairs[i] = append(alertLabelPairs[i], l)
 		})
 	}
 
@@ -174,9 +403,9 @@ func (ag *AlertGroup) dedupLabels(shared *AlertGroupSharedMaps) {
 	alertPairs := make([]string, 0, len(labelCounts)*2)
 	sharedSeen := map[string]struct{}{}
 
-	for i, alert := range ag.Alerts {
+	for i, pairs := range alertLabelPairs {
 		alertPairs = alertPairs[:0]
-		alert.Labels.Range(func(l labels.Label) {
+		for _, l := range pairs {
 			key := l.Name + "\n" + l.Value
 			if labelCounts[key] == totalAlerts {
 				if _, ok := sharedSeen[l.Name]; !ok {
@@ -186,7 +415,7 @@ func (ag *AlertGroup) dedupLabels(shared *AlertGroupSharedMaps) {
 			} else {
 				alertPairs = append(alertPairs, l.Name, l.Value)
 			}
-		})
+		}
 		ag.Alerts[i].Labels = labels.FromStrings(alertPairs...)
 	}
 
@@ -356,23 +585,25 @@ func (ag *AlertGroup) populateAllLabels() map[string]map[string][]string {
 	}
 
 	labelNameCounts := make(map[string]int, estLabels)
-	for _, alert := range ag.Alerts {
+	alertLabelPairs := make([][]labels.Label, totalAlerts)
+	for i, alert := range ag.Alerts {
 		alert.Labels.Range(func(l labels.Label) {
 			labelNameCounts[l.Name]++
+			alertLabelPairs[i] = append(alertLabelPairs[i], l)
 		})
 	}
 
-	for _, alert := range ag.Alerts {
-		stateLabels := allLabels[alert.State.String()]
-		alert.Labels.Range(func(l labels.Label) {
+	for i, pairs := range alertLabelPairs {
+		stateLabels := allLabels[ag.Alerts[i].State.String()]
+		for _, l := range pairs {
 			if labelNameCounts[l.Name] != totalAlerts {
-				return
+				continue
 			}
 			vals := stateLabels[l.Name]
 			if !slices.Contains(vals, l.Value) {
 				stateLabels[l.Name] = append(vals, l.Value)
 			}
-		})
+		}
 	}
 	for state := range allLabels {
 		for k := range allLabels[state] {
@@ -416,19 +647,73 @@ type GridSettings struct {
 	Reverse bool   `json:"reverse"`
 }
 
+func (gs GridSettings) MarshalJSONTo(enc *jsontext.Encoder) error {
+	w := jsonWriter{enc: enc}
+	w.beginObject()
+	w.key("order")
+	w.str(gs.Order)
+	w.key("label")
+	w.str(gs.Label)
+	w.key("reverse")
+	w.boolean(gs.Reverse)
+	w.endObject()
+	return w.err
+}
+
 // SortSettings nests all settings specific to sorting
 type SortSettings struct {
 	ValueMapping map[string]map[string]string `json:"valueMapping"`
 	Grid         GridSettings                 `json:"grid"`
 }
 
+func (ss SortSettings) MarshalJSONTo(enc *jsontext.Encoder) error {
+	w := jsonWriter{enc: enc}
+	w.beginObject()
+	w.key("valueMapping")
+	w.mapStringMapStringString(ss.ValueMapping)
+	w.key("grid")
+	w.beginObject()
+	w.key("order")
+	w.str(ss.Grid.Order)
+	w.key("label")
+	w.str(ss.Grid.Label)
+	w.key("reverse")
+	w.boolean(ss.Grid.Reverse)
+	w.endObject()
+	w.endObject()
+	return w.err
+}
+
 type SilenceFormStripSettings struct {
 	Labels []string `json:"labels"`
+}
+
+func (s SilenceFormStripSettings) MarshalJSONTo(enc *jsontext.Encoder) error {
+	w := jsonWriter{enc: enc}
+	w.beginObject()
+	w.key("labels")
+	w.strings(s.Labels)
+	w.endObject()
+	return w.err
 }
 
 type SilenceFormSettings struct {
 	Strip                SilenceFormStripSettings `json:"strip"`
 	DefaultAlertmanagers []string                 `json:"defaultAlertmanagers"`
+}
+
+func (s SilenceFormSettings) MarshalJSONTo(enc *jsontext.Encoder) error {
+	w := jsonWriter{enc: enc}
+	w.beginObject()
+	w.key("strip")
+	w.beginObject()
+	w.key("labels")
+	w.strings(s.Strip.Labels)
+	w.endObject()
+	w.key("defaultAlertmanagers")
+	w.strings(s.DefaultAlertmanagers)
+	w.endObject()
+	return w.err
 }
 
 type AlertAcknowledgementSettings struct {
@@ -438,12 +723,43 @@ type AlertAcknowledgementSettings struct {
 	Enabled         bool   `json:"enabled"`
 }
 
+func (s AlertAcknowledgementSettings) MarshalJSONTo(enc *jsontext.Encoder) error {
+	w := jsonWriter{enc: enc}
+	w.beginObject()
+	w.key("author")
+	w.str(s.Author)
+	w.key("comment")
+	w.str(s.Comment)
+	w.key("durationSeconds")
+	w.integer(s.DurationSeconds)
+	w.key("enabled")
+	w.boolean(s.Enabled)
+	w.endObject()
+	return w.err
+}
+
 type LabelSettings struct {
 	IsStatic    bool `json:"isStatic"`
 	IsValueOnly bool `json:"isValueOnly"`
 }
 
 type LabelsSettings map[string]LabelSettings
+
+func (ls LabelsSettings) MarshalJSONTo(enc *jsontext.Encoder) error {
+	w := jsonWriter{enc: enc}
+	w.beginObject()
+	for k, v := range ls {
+		w.key(k)
+		w.beginObject()
+		w.key("isStatic")
+		w.boolean(v.IsStatic)
+		w.key("isValueOnly")
+		w.boolean(v.IsValueOnly)
+		w.endObject()
+	}
+	w.endObject()
+	return w.err
+}
 
 // Settings is used to export karma configuration that is used by UI
 // nolint: maligned
@@ -460,10 +776,89 @@ type Settings struct {
 	HistoryEnabled           bool                         `json:"historyEnabled"`
 }
 
+func (s Settings) MarshalJSONTo(enc *jsontext.Encoder) error {
+	w := jsonWriter{enc: enc}
+	w.beginObject()
+	w.key("labels")
+	w.beginObject()
+	for k, v := range s.Labels {
+		w.key(k)
+		w.beginObject()
+		w.key("isStatic")
+		w.boolean(v.IsStatic)
+		w.key("isValueOnly")
+		w.boolean(v.IsValueOnly)
+		w.endObject()
+	}
+	w.endObject()
+	w.key("sorting")
+	w.beginObject()
+	w.key("valueMapping")
+	w.mapStringMapStringString(s.Sorting.ValueMapping)
+	w.key("grid")
+	w.beginObject()
+	w.key("order")
+	w.str(s.Sorting.Grid.Order)
+	w.key("label")
+	w.str(s.Sorting.Grid.Label)
+	w.key("reverse")
+	w.boolean(s.Sorting.Grid.Reverse)
+	w.endObject()
+	w.endObject()
+	w.key("silenceForm")
+	w.beginObject()
+	w.key("strip")
+	w.beginObject()
+	w.key("labels")
+	w.strings(s.SilenceForm.Strip.Labels)
+	w.endObject()
+	w.key("defaultAlertmanagers")
+	w.strings(s.SilenceForm.DefaultAlertmanagers)
+	w.endObject()
+	w.key("annotationsHidden")
+	w.strings(s.AnnotationsHidden)
+	w.key("annotationsVisible")
+	w.strings(s.AnnotationsVisible)
+	w.key("alertAcknowledgement")
+	w.beginObject()
+	w.key("author")
+	w.str(s.AlertAcknowledgement.Author)
+	w.key("comment")
+	w.str(s.AlertAcknowledgement.Comment)
+	w.key("durationSeconds")
+	w.integer(s.AlertAcknowledgement.DurationSeconds)
+	w.key("enabled")
+	w.boolean(s.AlertAcknowledgement.Enabled)
+	w.endObject()
+	w.key("gridGroupLimit")
+	w.integer(s.GridGroupLimit)
+	w.key("annotationsDefaultHidden")
+	w.boolean(s.AnnotationsDefaultHidden)
+	w.key("annotationsEnableHTML")
+	w.boolean(s.AnnotationsAllowHTML)
+	w.key("historyEnabled")
+	w.boolean(s.HistoryEnabled)
+	w.endObject()
+	return w.err
+}
+
 type AuthenticationInfo struct {
 	Username string   `json:"username"`
 	Groups   []string `json:"groups"`
 	Enabled  bool     `json:"enabled"`
+}
+
+func (ai AuthenticationInfo) MarshalJSONTo(enc *jsontext.Encoder) error {
+	w := jsonWriter{enc: enc}
+	w.beginObject()
+	w.key("username")
+	w.str(ai.Username)
+	w.key("groups")
+	w.strings(ai.Groups)
+	w.key("enabled")
+	w.boolean(ai.Enabled)
+	w.endObject()
+	return w.err
 }
 
 type APIGrid struct {
@@ -472,6 +867,65 @@ type APIGrid struct {
 	LabelValue  string          `json:"labelValue"`
 	AlertGroups []APIAlertGroup `json:"alertGroups"`
 	TotalGroups int             `json:"totalGroups"`
+}
+
+func (g APIGrid) MarshalJSONTo(enc *jsontext.Encoder) error {
+	w := jsonWriter{enc: enc}
+	w.beginObject()
+	w.key("stateCount")
+	w.mapStringInt(g.StateCount)
+	w.key("labelName")
+	w.str(g.LabelName)
+	w.key("labelValue")
+	w.str(g.LabelValue)
+	w.key("alertGroups")
+	w.beginArray()
+	for i := range g.AlertGroups {
+		ag := &g.AlertGroups[i]
+		w.beginObject()
+		w.key("allLabels")
+		w.beginObject()
+		for state, labels := range ag.AllLabels {
+			w.key(state)
+			w.mapStringStringSlice(labels)
+		}
+		w.endObject()
+		w.key("alertmanagerCount")
+		w.mapStringInt(ag.AlertmanagerCount)
+		w.key("stateCount")
+		w.mapStringInt(ag.StateCount)
+		w.key("receiver")
+		w.str(ag.Receiver)
+		w.key("id")
+		w.str(ag.ID)
+		w.key("shared")
+		ag.Shared.marshalTo(&w)
+		w.key("labels")
+		w.beginArray()
+		for _, l := range ag.Labels {
+			w.beginObject()
+			w.key("name")
+			w.str(l.Name)
+			w.key("value")
+			w.str(l.Value)
+			w.endObject()
+		}
+		w.endArray()
+		w.key("alerts")
+		w.beginArray()
+		for j := range ag.Alerts {
+			ag.Alerts[j].marshalTo(&w)
+		}
+		w.endArray()
+		w.key("totalAlerts")
+		w.integer(ag.TotalAlerts)
+		w.endObject()
+	}
+	w.endArray()
+	w.key("totalGroups")
+	w.integer(g.TotalGroups)
+	w.endObject()
+	return w.err
 }
 
 // nolint: maligned
@@ -504,6 +958,225 @@ type AlertsResponse struct {
 	TotalAlerts    int                           `json:"totalAlerts"`
 }
 
+func (r AlertsResponse) MarshalJSONTo(enc *jsontext.Encoder) error {
+	w := jsonWriter{enc: enc}
+	w.beginObject()
+	w.key("settings")
+	// inline Settings marshal
+	w.beginObject()
+	w.key("labels")
+	w.beginObject()
+	for k, v := range r.Settings.Labels {
+		w.key(k)
+		w.beginObject()
+		w.key("isStatic")
+		w.boolean(v.IsStatic)
+		w.key("isValueOnly")
+		w.boolean(v.IsValueOnly)
+		w.endObject()
+	}
+	w.endObject()
+	w.key("sorting")
+	w.beginObject()
+	w.key("valueMapping")
+	w.mapStringMapStringString(r.Settings.Sorting.ValueMapping)
+	w.key("grid")
+	w.beginObject()
+	w.key("order")
+	w.str(r.Settings.Sorting.Grid.Order)
+	w.key("label")
+	w.str(r.Settings.Sorting.Grid.Label)
+	w.key("reverse")
+	w.boolean(r.Settings.Sorting.Grid.Reverse)
+	w.endObject()
+	w.endObject()
+	w.key("silenceForm")
+	w.beginObject()
+	w.key("strip")
+	w.beginObject()
+	w.key("labels")
+	w.strings(r.Settings.SilenceForm.Strip.Labels)
+	w.endObject()
+	w.key("defaultAlertmanagers")
+	w.strings(r.Settings.SilenceForm.DefaultAlertmanagers)
+	w.endObject()
+	w.key("annotationsHidden")
+	w.strings(r.Settings.AnnotationsHidden)
+	w.key("annotationsVisible")
+	w.strings(r.Settings.AnnotationsVisible)
+	w.key("alertAcknowledgement")
+	w.beginObject()
+	w.key("author")
+	w.str(r.Settings.AlertAcknowledgement.Author)
+	w.key("comment")
+	w.str(r.Settings.AlertAcknowledgement.Comment)
+	w.key("durationSeconds")
+	w.integer(r.Settings.AlertAcknowledgement.DurationSeconds)
+	w.key("enabled")
+	w.boolean(r.Settings.AlertAcknowledgement.Enabled)
+	w.endObject()
+	w.key("gridGroupLimit")
+	w.integer(r.Settings.GridGroupLimit)
+	w.key("annotationsDefaultHidden")
+	w.boolean(r.Settings.AnnotationsDefaultHidden)
+	w.key("annotationsEnableHTML")
+	w.boolean(r.Settings.AnnotationsAllowHTML)
+	w.key("historyEnabled")
+	w.boolean(r.Settings.HistoryEnabled)
+	w.endObject()
+	w.key("silences")
+	w.beginObject()
+	for cluster, silenceMap := range r.Silences {
+		w.key(cluster)
+		w.beginObject()
+		for id, sil := range silenceMap {
+			w.key(id)
+			sil.marshalTo(&w)
+		}
+		w.endObject()
+	}
+	w.endObject()
+	w.key("colors")
+	w.beginObject()
+	for k, inner := range r.Colors {
+		w.key(k)
+		w.beginObject()
+		for v, lc := range inner {
+			w.key(v)
+			w.beginObject()
+			w.key("background")
+			w.str(lc.Background)
+			w.key("brightness")
+			w.integer32(lc.Brightness)
+			w.endObject()
+		}
+		w.endObject()
+	}
+	w.endObject()
+	w.key("status")
+	w.str(r.Status)
+	w.key("timestamp")
+	w.str(r.Timestamp)
+	w.key("version")
+	w.str(r.Version)
+	w.key("authentication")
+	w.beginObject()
+	w.key("username")
+	w.str(r.Authentication.Username)
+	w.key("groups")
+	w.strings(r.Authentication.Groups)
+	w.key("enabled")
+	w.boolean(r.Authentication.Enabled)
+	w.endObject()
+	w.key("grids")
+	w.beginArray()
+	for i := range r.Grids {
+		g := &r.Grids[i]
+		w.beginObject()
+		w.key("stateCount")
+		w.mapStringInt(g.StateCount)
+		w.key("labelName")
+		w.str(g.LabelName)
+		w.key("labelValue")
+		w.str(g.LabelValue)
+		w.key("alertGroups")
+		w.beginArray()
+		for j := range g.AlertGroups {
+			ag := &g.AlertGroups[j]
+			w.beginObject()
+			w.key("allLabels")
+			w.beginObject()
+			for state, labels := range ag.AllLabels {
+				w.key(state)
+				w.mapStringStringSlice(labels)
+			}
+			w.endObject()
+			w.key("alertmanagerCount")
+			w.mapStringInt(ag.AlertmanagerCount)
+			w.key("stateCount")
+			w.mapStringInt(ag.StateCount)
+			w.key("receiver")
+			w.str(ag.Receiver)
+			w.key("id")
+			w.str(ag.ID)
+			w.key("shared")
+			ag.Shared.marshalTo(&w)
+			w.key("labels")
+			w.beginArray()
+			for _, l := range ag.Labels {
+				w.beginObject()
+				w.key("name")
+				w.str(l.Name)
+				w.key("value")
+				w.str(l.Value)
+				w.endObject()
+			}
+			w.endArray()
+			w.key("alerts")
+			w.beginArray()
+			for k := range ag.Alerts {
+				ag.Alerts[k].marshalTo(&w)
+			}
+			w.endArray()
+			w.key("totalAlerts")
+			w.integer(ag.TotalAlerts)
+			w.endObject()
+		}
+		w.endArray()
+		w.key("totalGroups")
+		w.integer(g.TotalGroups)
+		w.endObject()
+	}
+	w.endArray()
+	w.key("labelNames")
+	w.strings(r.LabelNames)
+	w.key("filters")
+	w.beginArray()
+	for _, f := range r.Filters {
+		w.beginObject()
+		w.key("text")
+		w.str(f.Text)
+		w.key("name")
+		w.str(f.Name)
+		w.key("matcher")
+		w.str(f.Matcher)
+		w.key("value")
+		w.str(f.Value)
+		w.key("hits")
+		w.integer(f.Hits)
+		w.key("isValid")
+		w.boolean(f.IsValid)
+		w.endObject()
+	}
+	w.endArray()
+	w.key("receivers")
+	w.strings(r.Receivers)
+	w.key("upstreams")
+	w.beginObject()
+	w.key("clusters")
+	w.mapStringStringSlice(r.Upstreams.Clusters)
+	w.key("instances")
+	w.beginArray()
+	for i := range r.Upstreams.Instances {
+		r.Upstreams.Instances[i].marshalTo(&w)
+	}
+	w.endArray()
+	w.key("counters")
+	w.beginObject()
+	w.key("total")
+	w.integer(r.Upstreams.Counters.Total)
+	w.key("healthy")
+	w.integer(r.Upstreams.Counters.Healthy)
+	w.key("failed")
+	w.integer(r.Upstreams.Counters.Failed)
+	w.endObject()
+	w.endObject()
+	w.key("totalAlerts")
+	w.integer(r.TotalAlerts)
+	w.endObject()
+	return w.err
+}
+
 // Autocomplete is the structure of autocomplete object for filter hints
 // this is internal representation, not what's returned to the user
 type Autocomplete struct {
@@ -511,7 +1184,55 @@ type Autocomplete struct {
 	Tokens []string `json:"tokens"`
 }
 
+func (a Autocomplete) MarshalJSONTo(enc *jsontext.Encoder) error {
+	w := jsonWriter{enc: enc}
+	w.beginObject()
+	w.key("value")
+	w.str(a.Value)
+	w.key("tokens")
+	w.strings(a.Tokens)
+	w.endObject()
+	return w.err
+}
+
 type Counters struct {
 	Counters LabelNameStatsList `json:"counters"`
 	Total    int                `json:"total"`
+}
+
+func (c Counters) MarshalJSONTo(enc *jsontext.Encoder) error {
+	w := jsonWriter{enc: enc}
+	w.beginObject()
+	w.key("counters")
+	w.beginArray()
+	for _, lns := range c.Counters {
+		w.beginObject()
+		w.key("name")
+		w.str(lns.Name)
+		w.key("values")
+		w.beginArray()
+		for _, v := range lns.Values {
+			w.beginObject()
+			w.key("value")
+			w.str(v.Value)
+			w.key("raw")
+			w.str(v.Raw)
+			w.key("hits")
+			w.integer(v.Hits)
+			w.key("percent")
+			w.integer(v.Percent)
+			w.key("offset")
+			w.integer(v.Offset)
+			w.endObject()
+		}
+		w.endArray()
+		w.key("hits")
+		w.integer(lns.Hits)
+		w.endObject()
+	}
+	w.endArray()
+	w.key("total")
+	w.integer(c.Total)
+	w.endObject()
+	return w.err
 }

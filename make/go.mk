@@ -49,10 +49,6 @@ download-deps-go:
 	@for f in $(wildcard tools/*/go.mod) ; do echo ">>> $$f" && cd $(CURDIR)/`dirname "$$f"` && go mod download && cd $(CURDIR) ; done
 	go mod download
 
-.PHONY: openapi-client
-openapi-client:
-	for f in $(wildcard internal/mapper/*/Dockerfile) ; do $(MAKE) -C `dirname "$$f"` ; done
-
 .PHONY: mock-assets
 mock-assets:
 	rm -fr ui/dist

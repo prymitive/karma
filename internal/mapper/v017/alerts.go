@@ -23,6 +23,6 @@ func (m AlertMapper) IsSupported(version string) bool {
 }
 
 func (m AlertMapper) Collect(uri string, headers map[string]string, timeout time.Duration, httpTransport http.RoundTripper) ([]models.AlertGroup, error) {
-	c := newClient(uri, headers, httpTransport)
-	return groups(c, timeout)
+	c, u := newHTTPClient(uri, headers, httpTransport)
+	return groups(c, u, timeout)
 }

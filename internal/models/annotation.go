@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/fvbommel/sortorder"
+	"github.com/go-json-experiment/json/jsontext"
 
 	"github.com/prymitive/karma/internal/config"
 )
@@ -20,8 +21,39 @@ type Annotation struct {
 	IsAction bool   `json:"isAction"`
 }
 
+func (a Annotation) MarshalJSONTo(enc *jsontext.Encoder) error {
+	w := jsonWriter{enc: enc}
+	a.marshalTo(&w)
+	return w.err
+}
+
+func (a *Annotation) marshalTo(w *jsonWriter) {
+	w.beginObject()
+	w.key("name")
+	w.str(a.Name)
+	w.key("value")
+	w.str(a.Value)
+	w.key("visible")
+	w.boolean(a.Visible)
+	w.key("isLink")
+	w.boolean(a.IsLink)
+	w.key("isAction")
+	w.boolean(a.IsAction)
+	w.endObject()
+}
+
 // Annotations is a slice of Annotation structs, needed to implement sorting
 type Annotations []Annotation
+
+func (a Annotations) MarshalJSONTo(enc *jsontext.Encoder) error {
+	w := jsonWriter{enc: enc}
+	w.beginArray()
+	for i := range a {
+		a[i].marshalTo(&w)
+	}
+	w.endArray()
+	return w.err
+}
 
 func compareAnnotations(a, b Annotation) int {
 	// Sort the annotations listed in config.Config.Annotations.Order first, in
@@ -57,6 +89,16 @@ func compareAnnotations(a, b Annotation) int {
 		return 1
 	}
 	return 0
+}
+
+func NewAnnotation(name, value string) Annotation {
+	return Annotation{
+		Name:     name,
+		Value:    value,
+		Visible:  isVisible(name),
+		IsLink:   isLink(value),
+		IsAction: isAction(name),
+	}
 }
 
 // AnnotationsFromMap will convert a map[string]string to a list of Annotation

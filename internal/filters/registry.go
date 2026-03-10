@@ -126,8 +126,7 @@ var AllFilters = []filterConfig{
 	{
 		Label:              "[a-zA-Z_][a-zA-Z0-9_]*",
 		LabelRe:            regexp.MustCompile("^[a-zA-Z_][a-zA-Z0-9_]*$"),
-		SupportedOperators: []string{regexpOperator, negativeRegexOperator, equalOperator, notEqualOperator, lessThanOperator, moreThanOperator},
+		SupportedOperators: labelFilterOperators,
 		Factory:            newLabelFilter,
-		Autocomplete:       labelAutocomplete,
 	},
 }
