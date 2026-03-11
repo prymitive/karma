@@ -14,6 +14,7 @@ import (
 	"strconv"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/beme/abide"
 	lru "github.com/hashicorp/golang-lru/v2"
@@ -1143,6 +1144,328 @@ func TestSilences(t *testing.T) {
 	}
 }
 
+func TestSilencesSearchAndSort(t *testing.T) {
+	// covers silence handler paths: expired silence filtering, search by
+	// silence ID, regex matcher branch, and sort tiebreakers
+	customSilences := `[
+		{
+			"id": "aaaa-1111",
+			"status": {"state": "expired"},
+			"updatedAt": "2024-01-01T00:00:00.000Z",
+			"comment": "expired silence",
+			"createdBy": "admin@example.com",
+			"endsAt": "2024-01-02T00:00:00.000Z",
+			"startsAt": "2024-01-01T00:00:00.000Z",
+			"matchers": [{"isEqual": true, "isRegex": false, "name": "env", "value": "dev"}]
+		},
+		{
+			"id": "bbbb-2222",
+			"status": {"state": "active"},
+			"updatedAt": "2024-01-01T00:00:00.000Z",
+			"comment": "regex silence",
+			"createdBy": "admin@example.com",
+			"endsAt": "2063-06-01T00:00:00.000Z",
+			"startsAt": "2024-01-01T00:00:00.000Z",
+			"matchers": [{"isEqual": true, "isRegex": true, "name": "instance", "value": "web.*"}]
+		},
+		{
+			"id": "cccc-3333",
+			"status": {"state": "active"},
+			"updatedAt": "2024-01-01T00:00:00.000Z",
+			"comment": "same timestamps as next",
+			"createdBy": "admin@example.com",
+			"endsAt": "2063-06-01T00:00:00.000Z",
+			"startsAt": "2024-01-01T00:00:00.000Z",
+			"matchers": [{"isEqual": true, "isRegex": false, "name": "job", "value": "node"}]
+		},
+		{
+			"id": "dddd-4444",
+			"status": {"state": "active"},
+			"updatedAt": "2024-01-01T00:00:00.000Z",
+			"comment": "different endsAt",
+			"createdBy": "admin@example.com",
+			"endsAt": "2063-07-01T00:00:00.000Z",
+			"startsAt": "2024-02-01T00:00:00.000Z",
+			"matchers": [{"isEqual": true, "isRegex": false, "name": "job", "value": "app"}]
+		}
+	]`
+
+	type testCase struct {
+		searchTerm  string
+		showExpired string
+		sortReverse string
+		results     []string
+	}
+	testCases := []testCase{
+		// default: expired silence is filtered out
+		{
+			results: []string{"different endsAt", "regex silence", "same timestamps as next"},
+		},
+		// showExpired=1: expired silence is included
+		{
+			showExpired: "1",
+			results:     []string{"different endsAt", "expired silence", "regex silence", "same timestamps as next"},
+		},
+		// search by exact silence ID
+		{
+			searchTerm: "bbbb-2222",
+			results:    []string{"regex silence"},
+		},
+		// search matches regex matcher notation (instance=~web.*)
+		{
+			searchTerm: "instance=~web",
+			results:    []string{"regex silence"},
+		},
+		// sortReverse flips the order
+		{
+			sortReverse: "1",
+			results:     []string{"different endsAt", "regex silence", "same timestamps as next"},
+		},
+		// search with no results
+		{
+			searchTerm: "nonexistent",
+			results:    []string{},
+		},
+	}
+
+	for _, version := range mock.ListAllMocks() {
+		t.Run(version, func(t *testing.T) {
+			httpmock.Activate()
+			defer httpmock.DeactivateAndReset()
+			mockCache()
+
+			mock.RegisterURL("http://localhost/metrics", version, "metrics")
+			httpmock.RegisterResponder("GET", "http://localhost/api/v2/silences",
+				httpmock.NewStringResponder(200, customSilences))
+			mock.RegisterURL("http://localhost/api/v2/alerts/groups", version, "api/v2/alerts/groups")
+
+			alertmanager.UnregisterAll()
+			upstreamSetup = false
+			mockConfig(t.Setenv)
+
+			pullFromAlertmanager()
+
+			r := testRouter()
+			setupRouter(r, nil)
+
+			for _, tc := range testCases {
+				uri := fmt.Sprintf("/silences.json?showExpired=%s&sortReverse=%s&searchTerm=%s",
+					tc.showExpired, tc.sortReverse, tc.searchTerm)
+				req := httptest.NewRequest("GET", uri, nil)
+				resp := httptest.NewRecorder()
+				r.ServeHTTP(resp, req)
+				if resp.Code != http.StatusOK {
+					t.Errorf("GET %s returned status %d", uri, resp.Code)
+					continue
+				}
+				var ur []models.ManagedSilence
+				if err := json.Unmarshal(resp.Body.Bytes(), &ur); err != nil {
+					t.Errorf("Failed to unmarshal response for %s: %s", uri, err)
+					continue
+				}
+				results := make([]string, 0, len(ur))
+				for _, silence := range ur {
+					results = append(results, silence.Silence.Comment)
+				}
+				sort.Strings(results)
+				if diff := cmp.Diff(tc.results, results); diff != "" {
+					t.Errorf("Wrong silences for %s (-want +got):\n%s", uri, diff)
+				}
+			}
+		})
+		break // custom responder only works for first version
+	}
+}
+
+func TestAlertsUnprocessedState(t *testing.T) {
+	// verifies that alerts with unprocessed state are handled correctly
+	// by stateFromStateCount, which returns AlertStateUnprocessed when
+	// no active or suppressed instances exist
+	customAlertGroups := `[
+		{
+			"alerts": [
+				{
+					"annotations": {},
+					"endsAt": "2063-01-01T00:00:00.000Z",
+					"fingerprint": "unprocessed1",
+					"receivers": [{"name": "default"}],
+					"startsAt": "2024-01-01T00:00:00.000Z",
+					"status": {
+						"inhibitedBy": [],
+						"silencedBy": [],
+						"state": "unprocessed"
+					},
+					"updatedAt": "2024-01-01T00:00:00.000Z",
+					"generatorURL": "http://localhost",
+					"labels": {
+						"alertname": "UnprocessedAlert"
+					}
+				}
+			],
+			"labels": {"alertname": "UnprocessedAlert"},
+			"receiver": {"name": "default"}
+		}
+	]`
+
+	for _, version := range mock.ListAllMocks() {
+		t.Run(version, func(t *testing.T) {
+			httpmock.Activate()
+			defer httpmock.DeactivateAndReset()
+			mockCache()
+
+			mock.RegisterURL("http://localhost/metrics", version, "metrics")
+			mock.RegisterURL("http://localhost/api/v2/silences", version, "api/v2/silences")
+			httpmock.RegisterResponder("GET", "http://localhost/api/v2/alerts/groups",
+				httpmock.NewStringResponder(200, customAlertGroups))
+
+			alertmanager.UnregisterAll()
+			upstreamSetup = false
+			mockConfig(t.Setenv)
+
+			pullFromAlertmanager()
+
+			payload, err := json.Marshal(models.AlertsRequest{
+				Filters:           []string{},
+				GridLimits:        map[string]int{},
+				DefaultGroupLimit: 5,
+			})
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			r := testRouter()
+			setupRouter(r, nil)
+			req := httptest.NewRequest("POST", "/alerts.json", bytes.NewReader(payload))
+			resp := httptest.NewRecorder()
+			r.ServeHTTP(resp, req)
+			if resp.Code != http.StatusOK {
+				t.Fatalf("POST /alerts.json returned status %d", resp.Code)
+			}
+			ur := models.AlertsResponse{}
+			if err := json.Unmarshal(resp.Body.Bytes(), &ur); err != nil {
+				t.Fatal(err)
+			}
+			if ur.TotalAlerts != 1 {
+				t.Errorf("Expected 1 alert, got %d", ur.TotalAlerts)
+			}
+		})
+		break
+	}
+}
+
+func TestSilencedBySortFallback(t *testing.T) {
+	// verifies SilencedBy sorting for active alerts with expired silences
+	// (reverse EndsAt order) and fallback to string comparison when a
+	// silence ID is not found in the silence map
+	now := time.Now()
+	expiredA := now.Add(-1 * time.Hour).UTC().Format(time.RFC3339)
+	expiredB := now.Add(-2 * time.Hour).UTC().Format(time.RFC3339)
+	started := now.Add(-24 * time.Hour).UTC().Format(time.RFC3339)
+	future := now.Add(24 * time.Hour).UTC().Format(time.RFC3339)
+
+	customSilences := fmt.Sprintf(`[
+		{
+			"id": "sid-active",
+			"status": {"state": "active"},
+			"updatedAt": "%s",
+			"comment": "active silence",
+			"createdBy": "admin@example.com",
+			"endsAt": "%s",
+			"startsAt": "%s",
+			"matchers": [{"isEqual": true, "isRegex": false, "name": "instance", "value": "web1"}]
+		},
+		{
+			"id": "sid-expired-a",
+			"status": {"state": "expired"},
+			"updatedAt": "%s",
+			"comment": "expired silence A",
+			"createdBy": "admin@example.com",
+			"endsAt": "%s",
+			"startsAt": "%s",
+			"matchers": [{"isEqual": true, "isRegex": false, "name": "alertname", "value": "TestAlert"}]
+		},
+		{
+			"id": "sid-expired-b",
+			"status": {"state": "expired"},
+			"updatedAt": "%s",
+			"comment": "expired silence B",
+			"createdBy": "admin@example.com",
+			"endsAt": "%s",
+			"startsAt": "%s",
+			"matchers": [{"isEqual": true, "isRegex": false, "name": "alertname", "value": "TestAlert"}]
+		}
+	]`, started, future, started,
+		started, expiredA, started,
+		started, expiredB, started)
+
+	customAlertGroups := fmt.Sprintf(`[
+		{
+			"alerts": [
+				{
+					"annotations": {},
+					"endsAt": "%s",
+					"fingerprint": "fp1",
+					"receivers": [{"name": "default"}],
+					"startsAt": "%s",
+					"status": {
+						"inhibitedBy": [],
+						"silencedBy": [],
+						"state": "active"
+					},
+					"updatedAt": "%s",
+					"generatorURL": "http://localhost",
+					"labels": {"alertname": "TestAlert"}
+				}
+			],
+			"labels": {"alertname": "TestAlert"},
+			"receiver": {"name": "default"}
+		}
+	]`, future, started, started)
+
+	for _, version := range mock.ListAllMocks() {
+		t.Run(version, func(t *testing.T) {
+			httpmock.Activate()
+			defer httpmock.DeactivateAndReset()
+			mockCache()
+
+			t.Setenv("ALERTMANAGER_URI", "http://localhost")
+			f := pflag.NewFlagSet(".", pflag.ExitOnError)
+			config.SetupFlags(f)
+			_, _ = config.Config.Read(f)
+			config.Config.Silences.Expired = 24 * time.Hour
+
+			mock.RegisterURL("http://localhost/metrics", version, "metrics")
+			httpmock.RegisterResponder("GET", "http://localhost/api/v2/silences",
+				httpmock.NewStringResponder(200, customSilences))
+			httpmock.RegisterResponder("GET", "http://localhost/api/v2/alerts/groups",
+				httpmock.NewStringResponder(200, customAlertGroups))
+
+			alertmanager.UnregisterAll()
+			upstreamSetup = false
+
+			am, err := alertmanager.NewAlertmanager("cluster", "test", "http://localhost")
+			if err != nil {
+				t.Fatal(err)
+			}
+			if err := alertmanager.RegisterAlertmanager(am); err != nil {
+				t.Fatal(err)
+			}
+			if err := am.Pull(); err != nil {
+				t.Fatal(err)
+			}
+
+			alerts := alertmanager.DedupAlerts()
+			if len(alerts) != 1 {
+				t.Fatalf("expected 1 group, got %d", len(alerts))
+			}
+			if len(alerts[0].Alerts) != 1 {
+				t.Fatalf("expected 1 alert, got %d", len(alerts[0].Alerts))
+			}
+		})
+		break
+	}
+}
+
 func TestCORS(t *testing.T) {
 	type corsTestCase struct {
 		requestOrigin  string
@@ -1782,6 +2105,11 @@ func TestAlertFilters(t *testing.T) {
 		{
 			filters:    []string{"@cluster=cluster2"},
 			alertCount: 24,
+		},
+		// all AM instances blocked by combining != filters, alert has no remaining AMs
+		{
+			filters:    []string{"@alertmanager!=c1a", "@alertmanager!=c1b", "@alertmanager!=c2a"},
+			alertCount: 0,
 		},
 	}
 

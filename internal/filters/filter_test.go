@@ -1230,3 +1230,75 @@ func TestLimitFilter(t *testing.T) {
 		}
 	}
 }
+
+func TestMatchAlertmanagerNoMatch(t *testing.T) {
+	// verifies that MatchAlertmanager returns false when the alertmanager
+	// instance does not satisfy the filter condition
+	type testCase struct {
+		expression string
+		am         models.AlertmanagerInstance
+	}
+	tests := []testCase{
+		// inhibited_by filter — AM has no matching inhibitedBy entry
+		{
+			expression: "@inhibited_by=abcdef",
+			am:         models.AlertmanagerInstance{InhibitedBy: []string{"other"}},
+		},
+		// inhibited_by filter — AM has empty inhibitedBy list
+		{
+			expression: "@inhibited_by=abcdef",
+			am:         models.AlertmanagerInstance{},
+		},
+		// silenced_by filter — AM has no matching silencedBy entry
+		{
+			expression: "@silenced_by=abcdef",
+			am:         models.AlertmanagerInstance{SilencedBy: []string{"other"}},
+		},
+		// silenced_by filter — AM has empty silencedBy list
+		{
+			expression: "@silenced_by=abcdef",
+			am:         models.AlertmanagerInstance{},
+		},
+		// silence_author filter — AM has silencedBy but silence not found in map
+		{
+			expression: "@silence_author=john",
+			am: models.AlertmanagerInstance{
+				SilencedBy: []string{"missing-id"},
+				Silences:   map[string]*models.Silence{},
+			},
+		},
+		// silence_author filter — AM has no silencedBy entries
+		{
+			expression: "@silence_author=john",
+			am: models.AlertmanagerInstance{
+				Silences: map[string]*models.Silence{},
+			},
+		},
+		// silence_ticket filter — AM has silencedBy but silence not found in map
+		{
+			expression: "@silence_ticket=1",
+			am: models.AlertmanagerInstance{
+				SilencedBy: []string{"missing-id"},
+				Silences:   map[string]*models.Silence{},
+			},
+		},
+		// silence_ticket filter — AM has no silencedBy entries
+		{
+			expression: "@silence_ticket=1",
+			am: models.AlertmanagerInstance{
+				Silences: map[string]*models.Silence{},
+			},
+		},
+	}
+	for _, tc := range tests {
+		t.Run(tc.expression, func(t *testing.T) {
+			f := filters.NewFilter(tc.expression)
+			if !f.Valid() {
+				t.Fatalf("filter %q is not valid", tc.expression)
+			}
+			if f.MatchAlertmanager(&tc.am) {
+				t.Errorf("MatchAlertmanager() returned true, expected false for %q", tc.expression)
+			}
+		})
+	}
+}
