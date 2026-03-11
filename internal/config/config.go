@@ -355,7 +355,7 @@ func (config *configSchema) Read(flags *pflag.FlagSet) (string, error) {
 	}
 
 	if !slices.Contains([]string{"omit", "include", "same-origin"}, config.Alertmanager.CORS.Credentials) {
-		return "", fmt.Errorf("invalid alertmanager.cors.credentials value '%s', allowed options: omit, inclue, same-origin", config.Alertmanager.CORS.Credentials)
+		return "", fmt.Errorf("invalid alertmanager.cors.credentials value '%s', allowed options: omit, include, same-origin", config.Alertmanager.CORS.Credentials)
 	}
 
 	for i, s := range config.Alertmanager.Servers {
@@ -369,7 +369,7 @@ func (config *configSchema) Read(flags *pflag.FlagSet) (string, error) {
 			config.Alertmanager.Servers[i].CORS.Credentials = config.Alertmanager.CORS.Credentials
 		}
 		if !slices.Contains([]string{"omit", "include", "same-origin"}, config.Alertmanager.Servers[i].CORS.Credentials) {
-			return "", fmt.Errorf("invalid cors.credentials value '%s' for alertmanager '%s', allowed options: omit, inclue, same-origin", config.Alertmanager.Servers[i].CORS.Credentials, s.Name)
+			return "", fmt.Errorf("invalid cors.credentials value '%s' for alertmanager '%s', allowed options: omit, include, same-origin", config.Alertmanager.Servers[i].CORS.Credentials, s.Name)
 		}
 	}
 

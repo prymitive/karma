@@ -5,6 +5,7 @@
 ### Changed
 
 - Refactored light and dark theme to use a single CSS bundle.
+- Improved backend API performance.
 
 ## v0.126
 
@@ -183,7 +184,7 @@
 ### Fixed
 
 - Correctly set filter history.
-- Correctly escape label values when quering Prometheus for alert history.
+- Correctly escape label values when querying Prometheus for alert history.
 
 ## v0.101
 
@@ -457,12 +458,12 @@
 
 ### Fixed
 
-- Not all labels were stripped when using `lables:keep` or `labels:strip`
+- Not all labels were stripped when using `labels:keep` or `labels:strip`
   option #2585.
 
 ### Added
 
-- `healthcheck:visible` alertmanager option to control if healtcheck alerts
+- `healthcheck:visible` alertmanager option to control if healthcheck alerts
   should be visible in the UI #2614.
 
 ## v0.78
@@ -473,7 +474,7 @@
 
 ### Added
 
-- Added support for DeadMansSwitch alerts via `healtcheck:alerts` option
+- Added support for DeadMansSwitch alerts via `healthcheck:alerts` option
   on alertmanager upstream configuration #2512.
   Example:
 
@@ -484,7 +485,7 @@
       expr: vector(1)
     ```
 
-  - Add healtcheck configuration to karma:
+  - Add healthcheck configuration to karma:
 
     ```YAML
     alertmanager:

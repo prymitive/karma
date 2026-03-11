@@ -55,7 +55,7 @@ func DedupAlerts() []models.AlertGroup {
 				for _, am := range upstreams {
 					if !am.healthchecksVisible {
 						if _, hc := am.IsHealthCheckAlert(&alert); hc != nil {
-							log.Debug().Str("fingerprint", alert.Fingerprint).Msg("Skipping healtcheck alert")
+							log.Debug().Str("fingerprint", alert.Fingerprint).Msg("Skipping healthcheck alert")
 							keep = false
 							break
 						}

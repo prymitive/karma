@@ -182,7 +182,7 @@ func httpServer(ts *testscript.TestScript, _ bool, args []string) {
 		for {
 			try++
 			if try > 30 {
-				ts.Fatalf("HTTP server didn't pass healt checks after %d check(s)", try)
+				ts.Fatalf("HTTP server didn't pass health checks after %d check(s)", try)
 			}
 
 			ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)

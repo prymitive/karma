@@ -42,12 +42,12 @@ type queryResult struct {
 
 func generateV1Matrix(series []seriesValues, step time.Duration) queryResult {
 	r := queryResult{ResultType: "matrix", Result: model.Matrix{}}
-	for _, serie := range series {
+	for _, sv := range series {
 		ss := model.SampleStream{
-			Metric: serie.metric,
+			Metric: sv.metric,
 		}
 		ts := time.Now()
-		for _, val := range serie.values {
+		for _, val := range sv.values {
 			sp := model.SamplePair{
 				Timestamp: model.TimeFromUnix(ts.Unix()),
 				Value:     model.SampleValue(val),

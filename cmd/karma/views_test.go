@@ -935,7 +935,7 @@ func TestGzipMiddleware(t *testing.T) {
 
 			ce := h.Get("Content-Encoding")
 			if ce != "gzip" {
-				t.Errorf("Inavlid 'Content-Encoding' in response for '%s', expected 'gzip', got '%s'", path, ce)
+				t.Errorf("Invalid 'Content-Encoding' in response for '%s', expected 'gzip', got '%s'", path, ce)
 			}
 
 			bs := h.Get("Content-Length")
@@ -962,7 +962,7 @@ func TestGzipMiddlewareWithoutAcceptEncoding(t *testing.T) {
 
 			ce := h.Get("Content-Encoding")
 			if ce == "gzip" {
-				t.Errorf("Inavlid 'Content-Encoding' in response for '%s', expected '', got '%s'", path, ce)
+				t.Errorf("Invalid 'Content-Encoding' in response for '%s', expected '', got '%s'", path, ce)
 			}
 
 			bs := h.Get("Content-Length")
