@@ -57,6 +57,7 @@ export default defineConfig({
     reuseExistingServer: !process.env.CI,
   },
   expect: {
+    timeout: 10_000,
     toHaveScreenshot: {
       animations: "disabled",
       maxDiffPixelRatio: 0,

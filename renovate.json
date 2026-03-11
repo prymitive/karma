@@ -43,7 +43,12 @@
       "description": "Go modules for tools",
       "matchManagers": ["gomod"],
       "matchFileNames": ["tools/**/go.mod"],
-      "groupName": "go-tools"
+      "groupName": "go-tools",
+      "postUpgradeTasks": {
+        "commands": ["make tools-go-mod-tidy"],
+        "fileFilters": ["tools/**/go.mod", "tools/**/go.sum"],
+        "executionMode": "branch"
+      }
     }
   ]
 }
