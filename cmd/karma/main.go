@@ -44,7 +44,7 @@ var (
 	// data from Alertmanager
 	ticker *time.Ticker
 
-	// apiCache will be used to keep short lived copy of JSON reponses generated for the UI
+	// apiCache will be used to keep short lived copy of JSON responses generated for the UI
 	// If there are requests with the same filter we should respond from cache
 	// rather than do all the filtering every time
 	apiCache *lru.Cache[string, []byte]

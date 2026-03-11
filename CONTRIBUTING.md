@@ -29,7 +29,7 @@ a breaking change run tests using:
 ## Vendoring dependencies
 
 [Go modules](https://github.com/golang/go/wiki/Modules) are used for managing
-dependecies. After adding new or removing exitsting depenencies please run
+dependencies. After adding new or removing existing dependencies please run
 
     go mod tidy
 

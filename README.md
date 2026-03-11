@@ -232,7 +232,7 @@ To finally compile `karma` the binary run:
     make
 
 Note that building locally from sources requires Go, nodejs and yarn.
-See Docker build options below for instructions on building from withing docker
+See Docker build options below for instructions on building from within docker
 container.
 
 ## Running

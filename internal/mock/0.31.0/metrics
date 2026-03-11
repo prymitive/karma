@@ -1,0 +1,740 @@
+# HELP alertmanager_alerts How many alerts by state.
+# TYPE alertmanager_alerts gauge
+alertmanager_alerts{state="active"} 8
+alertmanager_alerts{state="suppressed"} 4
+alertmanager_alerts{state="unprocessed"} 0
+# HELP alertmanager_alerts_invalid_total The total number of received alerts that were invalid.
+# TYPE alertmanager_alerts_invalid_total counter
+alertmanager_alerts_invalid_total{version="v2"} 0
+# HELP alertmanager_alerts_per_alert_limit Current limit on number of alerts per alert name
+# TYPE alertmanager_alerts_per_alert_limit gauge
+alertmanager_alerts_per_alert_limit 0
+# HELP alertmanager_alerts_received_total The total number of received alerts.
+# TYPE alertmanager_alerts_received_total counter
+alertmanager_alerts_received_total{status="firing",version="v2"} 60
+alertmanager_alerts_received_total{status="resolved",version="v2"} 0
+# HELP alertmanager_alerts_subscriber_channel_writes_total Number of times alerts were written to subscriber channels
+# TYPE alertmanager_alerts_subscriber_channel_writes_total counter
+alertmanager_alerts_subscriber_channel_writes_total{subscriber="dispatcher"} 60
+alertmanager_alerts_subscriber_channel_writes_total{subscriber="inhibitor"} 60
+# HELP alertmanager_build_info A metric with a constant '1' value labeled by version, revision, branch, goversion from which alertmanager was built, and the goos and goarch for the build.
+# TYPE alertmanager_build_info gauge
+alertmanager_build_info{branch="HEAD",goarch="amd64",goos="linux",goversion="go1.25.6",revision="0ae07a09fbb26a7738c867306f32b5f42583a7d2",tags="netgo",version="0.31.0"} 1
+# HELP alertmanager_cluster_alive_messages_total Total number of received alive messages.
+# TYPE alertmanager_cluster_alive_messages_total counter
+alertmanager_cluster_alive_messages_total{peer="01KKEF1VS4AZH53FJ7EC916F9H"} 1
+# HELP alertmanager_cluster_enabled Indicates whether the clustering is enabled or not.
+# TYPE alertmanager_cluster_enabled gauge
+alertmanager_cluster_enabled 1
+# HELP alertmanager_cluster_failed_peers Number indicating the current number of failed peers in the cluster.
+# TYPE alertmanager_cluster_failed_peers gauge
+alertmanager_cluster_failed_peers 0
+# HELP alertmanager_cluster_health_score Health score of the cluster. Lower values are better and zero means 'totally healthy'.
+# TYPE alertmanager_cluster_health_score gauge
+alertmanager_cluster_health_score 0
+# HELP alertmanager_cluster_members Number indicating current number of members in cluster.
+# TYPE alertmanager_cluster_members gauge
+alertmanager_cluster_members 1
+# HELP alertmanager_cluster_messages_pruned_total Total number of cluster messages pruned.
+# TYPE alertmanager_cluster_messages_pruned_total counter
+alertmanager_cluster_messages_pruned_total 0
+# HELP alertmanager_cluster_messages_queued Number of cluster messages which are queued.
+# TYPE alertmanager_cluster_messages_queued gauge
+alertmanager_cluster_messages_queued 3
+# HELP alertmanager_cluster_messages_received_size_total Total size of cluster messages received.
+# TYPE alertmanager_cluster_messages_received_size_total counter
+alertmanager_cluster_messages_received_size_total{msg_type="full_state"} 0
+alertmanager_cluster_messages_received_size_total{msg_type="update"} 0
+# HELP alertmanager_cluster_messages_received_total Total number of cluster messages received.
+# TYPE alertmanager_cluster_messages_received_total counter
+alertmanager_cluster_messages_received_total{msg_type="full_state"} 0
+alertmanager_cluster_messages_received_total{msg_type="update"} 0
+# HELP alertmanager_cluster_messages_sent_size_total Total size of cluster messages sent.
+# TYPE alertmanager_cluster_messages_sent_size_total counter
+alertmanager_cluster_messages_sent_size_total{msg_type="full_state"} 0
+alertmanager_cluster_messages_sent_size_total{msg_type="update"} 0
+# HELP alertmanager_cluster_messages_sent_total Total number of cluster messages sent.
+# TYPE alertmanager_cluster_messages_sent_total counter
+alertmanager_cluster_messages_sent_total{msg_type="full_state"} 0
+alertmanager_cluster_messages_sent_total{msg_type="update"} 0
+# HELP alertmanager_cluster_peer_info A metric with a constant '1' value labeled by peer name.
+# TYPE alertmanager_cluster_peer_info gauge
+alertmanager_cluster_peer_info{peer="01KKEF1VS4AZH53FJ7EC916F9H"} 1
+# HELP alertmanager_cluster_peer_name_conflicts_total Total number of times memberlist has noticed conflicting peer names
+# TYPE alertmanager_cluster_peer_name_conflicts_total counter
+alertmanager_cluster_peer_name_conflicts_total 0
+# HELP alertmanager_cluster_peers_joined_total A counter of the number of peers that have joined.
+# TYPE alertmanager_cluster_peers_joined_total counter
+alertmanager_cluster_peers_joined_total 1
+# HELP alertmanager_cluster_peers_left_total A counter of the number of peers that have left.
+# TYPE alertmanager_cluster_peers_left_total counter
+alertmanager_cluster_peers_left_total 0
+# HELP alertmanager_cluster_peers_update_total A counter of the number of peers that have updated metadata.
+# TYPE alertmanager_cluster_peers_update_total counter
+alertmanager_cluster_peers_update_total 0
+# HELP alertmanager_cluster_reconnections_failed_total A counter of the number of failed cluster peer reconnection attempts.
+# TYPE alertmanager_cluster_reconnections_failed_total counter
+alertmanager_cluster_reconnections_failed_total 0
+# HELP alertmanager_cluster_reconnections_total A counter of the number of cluster peer reconnections.
+# TYPE alertmanager_cluster_reconnections_total counter
+alertmanager_cluster_reconnections_total 0
+# HELP alertmanager_cluster_refresh_join_failed_total A counter of the number of failed cluster peer joined attempts via refresh.
+# TYPE alertmanager_cluster_refresh_join_failed_total counter
+alertmanager_cluster_refresh_join_failed_total 0
+# HELP alertmanager_cluster_refresh_join_total A counter of the number of cluster peer joined via refresh.
+# TYPE alertmanager_cluster_refresh_join_total counter
+alertmanager_cluster_refresh_join_total 0
+# HELP alertmanager_config_hash Hash of the currently loaded alertmanager configuration. Note that this is not a cryptographically strong hash.
+# TYPE alertmanager_config_hash gauge
+alertmanager_config_hash 6.2645753076152e+13
+# HELP alertmanager_config_last_reload_success_timestamp_seconds Timestamp of the last successful configuration reload.
+# TYPE alertmanager_config_last_reload_success_timestamp_seconds gauge
+alertmanager_config_last_reload_success_timestamp_seconds 1.7732333033532562e+09
+# HELP alertmanager_config_last_reload_successful Whether the last configuration reload attempt was successful.
+# TYPE alertmanager_config_last_reload_successful gauge
+alertmanager_config_last_reload_successful 1
+# HELP alertmanager_dispatcher_aggregation_group_limit_reached_total Number of times when dispatcher failed to create new aggregation group due to limit.
+# TYPE alertmanager_dispatcher_aggregation_group_limit_reached_total counter
+alertmanager_dispatcher_aggregation_group_limit_reached_total 0
+# HELP alertmanager_dispatcher_aggregation_groups Number of active aggregation groups
+# TYPE alertmanager_dispatcher_aggregation_groups gauge
+alertmanager_dispatcher_aggregation_groups 10
+# HELP alertmanager_dispatcher_alert_processing_duration_seconds Summary of latencies for the processing of alerts.
+# TYPE alertmanager_dispatcher_alert_processing_duration_seconds summary
+alertmanager_dispatcher_alert_processing_duration_seconds_sum 0.0018133570000000005
+alertmanager_dispatcher_alert_processing_duration_seconds_count 60
+# HELP alertmanager_http_concurrency_limit_exceeded_total Total number of times an HTTP request failed because the concurrency limit was reached.
+# TYPE alertmanager_http_concurrency_limit_exceeded_total counter
+alertmanager_http_concurrency_limit_exceeded_total{method="get"} 0
+# HELP alertmanager_http_request_duration_seconds Histogram of latencies for HTTP requests.
+# TYPE alertmanager_http_request_duration_seconds histogram
+alertmanager_http_request_duration_seconds_bucket{code="200",handler="/api/v2/alerts",method="post",le="0.005"} 5
+alertmanager_http_request_duration_seconds_bucket{code="200",handler="/api/v2/alerts",method="post",le="0.01"} 5
+alertmanager_http_request_duration_seconds_bucket{code="200",handler="/api/v2/alerts",method="post",le="0.025"} 5
+alertmanager_http_request_duration_seconds_bucket{code="200",handler="/api/v2/alerts",method="post",le="0.05"} 5
+alertmanager_http_request_duration_seconds_bucket{code="200",handler="/api/v2/alerts",method="post",le="0.1"} 5
+alertmanager_http_request_duration_seconds_bucket{code="200",handler="/api/v2/alerts",method="post",le="0.25"} 5
+alertmanager_http_request_duration_seconds_bucket{code="200",handler="/api/v2/alerts",method="post",le="0.5"} 5
+alertmanager_http_request_duration_seconds_bucket{code="200",handler="/api/v2/alerts",method="post",le="1"} 5
+alertmanager_http_request_duration_seconds_bucket{code="200",handler="/api/v2/alerts",method="post",le="2.5"} 5
+alertmanager_http_request_duration_seconds_bucket{code="200",handler="/api/v2/alerts",method="post",le="5"} 5
+alertmanager_http_request_duration_seconds_bucket{code="200",handler="/api/v2/alerts",method="post",le="10"} 5
+alertmanager_http_request_duration_seconds_bucket{code="200",handler="/api/v2/alerts",method="post",le="+Inf"} 5
+alertmanager_http_request_duration_seconds_sum{code="200",handler="/api/v2/alerts",method="post"} 0.0028228439999999997
+alertmanager_http_request_duration_seconds_count{code="200",handler="/api/v2/alerts",method="post"} 5
+alertmanager_http_request_duration_seconds_bucket{code="200",handler="/api/v2/silences",method="post",le="0.005"} 3
+alertmanager_http_request_duration_seconds_bucket{code="200",handler="/api/v2/silences",method="post",le="0.01"} 3
+alertmanager_http_request_duration_seconds_bucket{code="200",handler="/api/v2/silences",method="post",le="0.025"} 3
+alertmanager_http_request_duration_seconds_bucket{code="200",handler="/api/v2/silences",method="post",le="0.05"} 3
+alertmanager_http_request_duration_seconds_bucket{code="200",handler="/api/v2/silences",method="post",le="0.1"} 3
+alertmanager_http_request_duration_seconds_bucket{code="200",handler="/api/v2/silences",method="post",le="0.25"} 3
+alertmanager_http_request_duration_seconds_bucket{code="200",handler="/api/v2/silences",method="post",le="0.5"} 3
+alertmanager_http_request_duration_seconds_bucket{code="200",handler="/api/v2/silences",method="post",le="1"} 3
+alertmanager_http_request_duration_seconds_bucket{code="200",handler="/api/v2/silences",method="post",le="2.5"} 3
+alertmanager_http_request_duration_seconds_bucket{code="200",handler="/api/v2/silences",method="post",le="5"} 3
+alertmanager_http_request_duration_seconds_bucket{code="200",handler="/api/v2/silences",method="post",le="10"} 3
+alertmanager_http_request_duration_seconds_bucket{code="200",handler="/api/v2/silences",method="post",le="+Inf"} 3
+alertmanager_http_request_duration_seconds_sum{code="200",handler="/api/v2/silences",method="post"} 0.001101868
+alertmanager_http_request_duration_seconds_count{code="200",handler="/api/v2/silences",method="post"} 3
+# HELP alertmanager_http_requests_in_flight Current number of HTTP requests being processed.
+# TYPE alertmanager_http_requests_in_flight gauge
+alertmanager_http_requests_in_flight{method="get"} 1
+# HELP alertmanager_inhibition_rules Number of configured inhibition rules.
+# TYPE alertmanager_inhibition_rules gauge
+alertmanager_inhibition_rules 1
+# HELP alertmanager_integrations Number of configured integrations.
+# TYPE alertmanager_integrations gauge
+alertmanager_integrations 0
+# HELP alertmanager_marked_alerts How many alerts by state are currently marked in the Alertmanager regardless of their expiry.
+# TYPE alertmanager_marked_alerts gauge
+alertmanager_marked_alerts{state="active"} 8
+alertmanager_marked_alerts{state="suppressed"} 4
+alertmanager_marked_alerts{state="unprocessed"} 0
+# HELP alertmanager_nflog_gc_duration_seconds Duration of the last notification log garbage collection cycle.
+# TYPE alertmanager_nflog_gc_duration_seconds summary
+alertmanager_nflog_gc_duration_seconds_sum 0
+alertmanager_nflog_gc_duration_seconds_count 0
+# HELP alertmanager_nflog_gossip_messages_propagated_total Number of received gossip messages that have been further gossiped.
+# TYPE alertmanager_nflog_gossip_messages_propagated_total counter
+alertmanager_nflog_gossip_messages_propagated_total 0
+# HELP alertmanager_nflog_maintenance_errors_total How many maintenances were executed for the notification log that failed.
+# TYPE alertmanager_nflog_maintenance_errors_total counter
+alertmanager_nflog_maintenance_errors_total 0
+# HELP alertmanager_nflog_maintenance_total How many maintenances were executed for the notification log.
+# TYPE alertmanager_nflog_maintenance_total counter
+alertmanager_nflog_maintenance_total 0
+# HELP alertmanager_nflog_queries_total Number of notification log queries were received.
+# TYPE alertmanager_nflog_queries_total counter
+alertmanager_nflog_queries_total 0
+# HELP alertmanager_nflog_query_duration_seconds Duration of notification log query evaluation.
+# TYPE alertmanager_nflog_query_duration_seconds histogram
+alertmanager_nflog_query_duration_seconds_bucket{le="0.005"} 0
+alertmanager_nflog_query_duration_seconds_bucket{le="0.01"} 0
+alertmanager_nflog_query_duration_seconds_bucket{le="0.025"} 0
+alertmanager_nflog_query_duration_seconds_bucket{le="0.05"} 0
+alertmanager_nflog_query_duration_seconds_bucket{le="0.1"} 0
+alertmanager_nflog_query_duration_seconds_bucket{le="0.25"} 0
+alertmanager_nflog_query_duration_seconds_bucket{le="0.5"} 0
+alertmanager_nflog_query_duration_seconds_bucket{le="1"} 0
+alertmanager_nflog_query_duration_seconds_bucket{le="2.5"} 0
+alertmanager_nflog_query_duration_seconds_bucket{le="5"} 0
+alertmanager_nflog_query_duration_seconds_bucket{le="10"} 0
+alertmanager_nflog_query_duration_seconds_bucket{le="+Inf"} 0
+alertmanager_nflog_query_duration_seconds_sum 0
+alertmanager_nflog_query_duration_seconds_count 0
+# HELP alertmanager_nflog_query_errors_total Number notification log received queries that failed.
+# TYPE alertmanager_nflog_query_errors_total counter
+alertmanager_nflog_query_errors_total 0
+# HELP alertmanager_nflog_snapshot_duration_seconds Duration of the last notification log snapshot.
+# TYPE alertmanager_nflog_snapshot_duration_seconds summary
+alertmanager_nflog_snapshot_duration_seconds_sum 0
+alertmanager_nflog_snapshot_duration_seconds_count 0
+# HELP alertmanager_nflog_snapshot_size_bytes Size of the last notification log snapshot in bytes.
+# TYPE alertmanager_nflog_snapshot_size_bytes gauge
+alertmanager_nflog_snapshot_size_bytes 0
+# HELP alertmanager_notification_latency_seconds The latency of notifications in seconds.
+# TYPE alertmanager_notification_latency_seconds histogram
+alertmanager_notification_latency_seconds_bucket{integration="discord",le="1"} 0
+alertmanager_notification_latency_seconds_bucket{integration="discord",le="5"} 0
+alertmanager_notification_latency_seconds_bucket{integration="discord",le="10"} 0
+alertmanager_notification_latency_seconds_bucket{integration="discord",le="15"} 0
+alertmanager_notification_latency_seconds_bucket{integration="discord",le="20"} 0
+alertmanager_notification_latency_seconds_bucket{integration="discord",le="+Inf"} 0
+alertmanager_notification_latency_seconds_sum{integration="discord"} 0
+alertmanager_notification_latency_seconds_count{integration="discord"} 0
+alertmanager_notification_latency_seconds_bucket{integration="email",le="1"} 0
+alertmanager_notification_latency_seconds_bucket{integration="email",le="5"} 0
+alertmanager_notification_latency_seconds_bucket{integration="email",le="10"} 0
+alertmanager_notification_latency_seconds_bucket{integration="email",le="15"} 0
+alertmanager_notification_latency_seconds_bucket{integration="email",le="20"} 0
+alertmanager_notification_latency_seconds_bucket{integration="email",le="+Inf"} 0
+alertmanager_notification_latency_seconds_sum{integration="email"} 0
+alertmanager_notification_latency_seconds_count{integration="email"} 0
+alertmanager_notification_latency_seconds_bucket{integration="incidentio",le="1"} 0
+alertmanager_notification_latency_seconds_bucket{integration="incidentio",le="5"} 0
+alertmanager_notification_latency_seconds_bucket{integration="incidentio",le="10"} 0
+alertmanager_notification_latency_seconds_bucket{integration="incidentio",le="15"} 0
+alertmanager_notification_latency_seconds_bucket{integration="incidentio",le="20"} 0
+alertmanager_notification_latency_seconds_bucket{integration="incidentio",le="+Inf"} 0
+alertmanager_notification_latency_seconds_sum{integration="incidentio"} 0
+alertmanager_notification_latency_seconds_count{integration="incidentio"} 0
+alertmanager_notification_latency_seconds_bucket{integration="jira",le="1"} 0
+alertmanager_notification_latency_seconds_bucket{integration="jira",le="5"} 0
+alertmanager_notification_latency_seconds_bucket{integration="jira",le="10"} 0
+alertmanager_notification_latency_seconds_bucket{integration="jira",le="15"} 0
+alertmanager_notification_latency_seconds_bucket{integration="jira",le="20"} 0
+alertmanager_notification_latency_seconds_bucket{integration="jira",le="+Inf"} 0
+alertmanager_notification_latency_seconds_sum{integration="jira"} 0
+alertmanager_notification_latency_seconds_count{integration="jira"} 0
+alertmanager_notification_latency_seconds_bucket{integration="mattermost",le="1"} 0
+alertmanager_notification_latency_seconds_bucket{integration="mattermost",le="5"} 0
+alertmanager_notification_latency_seconds_bucket{integration="mattermost",le="10"} 0
+alertmanager_notification_latency_seconds_bucket{integration="mattermost",le="15"} 0
+alertmanager_notification_latency_seconds_bucket{integration="mattermost",le="20"} 0
+alertmanager_notification_latency_seconds_bucket{integration="mattermost",le="+Inf"} 0
+alertmanager_notification_latency_seconds_sum{integration="mattermost"} 0
+alertmanager_notification_latency_seconds_count{integration="mattermost"} 0
+alertmanager_notification_latency_seconds_bucket{integration="msteams",le="1"} 0
+alertmanager_notification_latency_seconds_bucket{integration="msteams",le="5"} 0
+alertmanager_notification_latency_seconds_bucket{integration="msteams",le="10"} 0
+alertmanager_notification_latency_seconds_bucket{integration="msteams",le="15"} 0
+alertmanager_notification_latency_seconds_bucket{integration="msteams",le="20"} 0
+alertmanager_notification_latency_seconds_bucket{integration="msteams",le="+Inf"} 0
+alertmanager_notification_latency_seconds_sum{integration="msteams"} 0
+alertmanager_notification_latency_seconds_count{integration="msteams"} 0
+alertmanager_notification_latency_seconds_bucket{integration="msteamsv2",le="1"} 0
+alertmanager_notification_latency_seconds_bucket{integration="msteamsv2",le="5"} 0
+alertmanager_notification_latency_seconds_bucket{integration="msteamsv2",le="10"} 0
+alertmanager_notification_latency_seconds_bucket{integration="msteamsv2",le="15"} 0
+alertmanager_notification_latency_seconds_bucket{integration="msteamsv2",le="20"} 0
+alertmanager_notification_latency_seconds_bucket{integration="msteamsv2",le="+Inf"} 0
+alertmanager_notification_latency_seconds_sum{integration="msteamsv2"} 0
+alertmanager_notification_latency_seconds_count{integration="msteamsv2"} 0
+alertmanager_notification_latency_seconds_bucket{integration="opsgenie",le="1"} 0
+alertmanager_notification_latency_seconds_bucket{integration="opsgenie",le="5"} 0
+alertmanager_notification_latency_seconds_bucket{integration="opsgenie",le="10"} 0
+alertmanager_notification_latency_seconds_bucket{integration="opsgenie",le="15"} 0
+alertmanager_notification_latency_seconds_bucket{integration="opsgenie",le="20"} 0
+alertmanager_notification_latency_seconds_bucket{integration="opsgenie",le="+Inf"} 0
+alertmanager_notification_latency_seconds_sum{integration="opsgenie"} 0
+alertmanager_notification_latency_seconds_count{integration="opsgenie"} 0
+alertmanager_notification_latency_seconds_bucket{integration="pagerduty",le="1"} 0
+alertmanager_notification_latency_seconds_bucket{integration="pagerduty",le="5"} 0
+alertmanager_notification_latency_seconds_bucket{integration="pagerduty",le="10"} 0
+alertmanager_notification_latency_seconds_bucket{integration="pagerduty",le="15"} 0
+alertmanager_notification_latency_seconds_bucket{integration="pagerduty",le="20"} 0
+alertmanager_notification_latency_seconds_bucket{integration="pagerduty",le="+Inf"} 0
+alertmanager_notification_latency_seconds_sum{integration="pagerduty"} 0
+alertmanager_notification_latency_seconds_count{integration="pagerduty"} 0
+alertmanager_notification_latency_seconds_bucket{integration="pushover",le="1"} 0
+alertmanager_notification_latency_seconds_bucket{integration="pushover",le="5"} 0
+alertmanager_notification_latency_seconds_bucket{integration="pushover",le="10"} 0
+alertmanager_notification_latency_seconds_bucket{integration="pushover",le="15"} 0
+alertmanager_notification_latency_seconds_bucket{integration="pushover",le="20"} 0
+alertmanager_notification_latency_seconds_bucket{integration="pushover",le="+Inf"} 0
+alertmanager_notification_latency_seconds_sum{integration="pushover"} 0
+alertmanager_notification_latency_seconds_count{integration="pushover"} 0
+alertmanager_notification_latency_seconds_bucket{integration="rocketchat",le="1"} 0
+alertmanager_notification_latency_seconds_bucket{integration="rocketchat",le="5"} 0
+alertmanager_notification_latency_seconds_bucket{integration="rocketchat",le="10"} 0
+alertmanager_notification_latency_seconds_bucket{integration="rocketchat",le="15"} 0
+alertmanager_notification_latency_seconds_bucket{integration="rocketchat",le="20"} 0
+alertmanager_notification_latency_seconds_bucket{integration="rocketchat",le="+Inf"} 0
+alertmanager_notification_latency_seconds_sum{integration="rocketchat"} 0
+alertmanager_notification_latency_seconds_count{integration="rocketchat"} 0
+alertmanager_notification_latency_seconds_bucket{integration="slack",le="1"} 0
+alertmanager_notification_latency_seconds_bucket{integration="slack",le="5"} 0
+alertmanager_notification_latency_seconds_bucket{integration="slack",le="10"} 0
+alertmanager_notification_latency_seconds_bucket{integration="slack",le="15"} 0
+alertmanager_notification_latency_seconds_bucket{integration="slack",le="20"} 0
+alertmanager_notification_latency_seconds_bucket{integration="slack",le="+Inf"} 0
+alertmanager_notification_latency_seconds_sum{integration="slack"} 0
+alertmanager_notification_latency_seconds_count{integration="slack"} 0
+alertmanager_notification_latency_seconds_bucket{integration="sns",le="1"} 0
+alertmanager_notification_latency_seconds_bucket{integration="sns",le="5"} 0
+alertmanager_notification_latency_seconds_bucket{integration="sns",le="10"} 0
+alertmanager_notification_latency_seconds_bucket{integration="sns",le="15"} 0
+alertmanager_notification_latency_seconds_bucket{integration="sns",le="20"} 0
+alertmanager_notification_latency_seconds_bucket{integration="sns",le="+Inf"} 0
+alertmanager_notification_latency_seconds_sum{integration="sns"} 0
+alertmanager_notification_latency_seconds_count{integration="sns"} 0
+alertmanager_notification_latency_seconds_bucket{integration="telegram",le="1"} 0
+alertmanager_notification_latency_seconds_bucket{integration="telegram",le="5"} 0
+alertmanager_notification_latency_seconds_bucket{integration="telegram",le="10"} 0
+alertmanager_notification_latency_seconds_bucket{integration="telegram",le="15"} 0
+alertmanager_notification_latency_seconds_bucket{integration="telegram",le="20"} 0
+alertmanager_notification_latency_seconds_bucket{integration="telegram",le="+Inf"} 0
+alertmanager_notification_latency_seconds_sum{integration="telegram"} 0
+alertmanager_notification_latency_seconds_count{integration="telegram"} 0
+alertmanager_notification_latency_seconds_bucket{integration="victorops",le="1"} 0
+alertmanager_notification_latency_seconds_bucket{integration="victorops",le="5"} 0
+alertmanager_notification_latency_seconds_bucket{integration="victorops",le="10"} 0
+alertmanager_notification_latency_seconds_bucket{integration="victorops",le="15"} 0
+alertmanager_notification_latency_seconds_bucket{integration="victorops",le="20"} 0
+alertmanager_notification_latency_seconds_bucket{integration="victorops",le="+Inf"} 0
+alertmanager_notification_latency_seconds_sum{integration="victorops"} 0
+alertmanager_notification_latency_seconds_count{integration="victorops"} 0
+alertmanager_notification_latency_seconds_bucket{integration="webex",le="1"} 0
+alertmanager_notification_latency_seconds_bucket{integration="webex",le="5"} 0
+alertmanager_notification_latency_seconds_bucket{integration="webex",le="10"} 0
+alertmanager_notification_latency_seconds_bucket{integration="webex",le="15"} 0
+alertmanager_notification_latency_seconds_bucket{integration="webex",le="20"} 0
+alertmanager_notification_latency_seconds_bucket{integration="webex",le="+Inf"} 0
+alertmanager_notification_latency_seconds_sum{integration="webex"} 0
+alertmanager_notification_latency_seconds_count{integration="webex"} 0
+alertmanager_notification_latency_seconds_bucket{integration="webhook",le="1"} 0
+alertmanager_notification_latency_seconds_bucket{integration="webhook",le="5"} 0
+alertmanager_notification_latency_seconds_bucket{integration="webhook",le="10"} 0
+alertmanager_notification_latency_seconds_bucket{integration="webhook",le="15"} 0
+alertmanager_notification_latency_seconds_bucket{integration="webhook",le="20"} 0
+alertmanager_notification_latency_seconds_bucket{integration="webhook",le="+Inf"} 0
+alertmanager_notification_latency_seconds_sum{integration="webhook"} 0
+alertmanager_notification_latency_seconds_count{integration="webhook"} 0
+alertmanager_notification_latency_seconds_bucket{integration="wechat",le="1"} 0
+alertmanager_notification_latency_seconds_bucket{integration="wechat",le="5"} 0
+alertmanager_notification_latency_seconds_bucket{integration="wechat",le="10"} 0
+alertmanager_notification_latency_seconds_bucket{integration="wechat",le="15"} 0
+alertmanager_notification_latency_seconds_bucket{integration="wechat",le="20"} 0
+alertmanager_notification_latency_seconds_bucket{integration="wechat",le="+Inf"} 0
+alertmanager_notification_latency_seconds_sum{integration="wechat"} 0
+alertmanager_notification_latency_seconds_count{integration="wechat"} 0
+# HELP alertmanager_notification_requests_failed_total The total number of failed notification requests.
+# TYPE alertmanager_notification_requests_failed_total counter
+alertmanager_notification_requests_failed_total{integration="discord"} 0
+alertmanager_notification_requests_failed_total{integration="email"} 0
+alertmanager_notification_requests_failed_total{integration="incidentio"} 0
+alertmanager_notification_requests_failed_total{integration="jira"} 0
+alertmanager_notification_requests_failed_total{integration="mattermost"} 0
+alertmanager_notification_requests_failed_total{integration="msteams"} 0
+alertmanager_notification_requests_failed_total{integration="msteamsv2"} 0
+alertmanager_notification_requests_failed_total{integration="opsgenie"} 0
+alertmanager_notification_requests_failed_total{integration="pagerduty"} 0
+alertmanager_notification_requests_failed_total{integration="pushover"} 0
+alertmanager_notification_requests_failed_total{integration="rocketchat"} 0
+alertmanager_notification_requests_failed_total{integration="slack"} 0
+alertmanager_notification_requests_failed_total{integration="sns"} 0
+alertmanager_notification_requests_failed_total{integration="telegram"} 0
+alertmanager_notification_requests_failed_total{integration="victorops"} 0
+alertmanager_notification_requests_failed_total{integration="webex"} 0
+alertmanager_notification_requests_failed_total{integration="webhook"} 0
+alertmanager_notification_requests_failed_total{integration="wechat"} 0
+# HELP alertmanager_notification_requests_total The total number of attempted notification requests.
+# TYPE alertmanager_notification_requests_total counter
+alertmanager_notification_requests_total{integration="discord"} 0
+alertmanager_notification_requests_total{integration="email"} 0
+alertmanager_notification_requests_total{integration="incidentio"} 0
+alertmanager_notification_requests_total{integration="jira"} 0
+alertmanager_notification_requests_total{integration="mattermost"} 0
+alertmanager_notification_requests_total{integration="msteams"} 0
+alertmanager_notification_requests_total{integration="msteamsv2"} 0
+alertmanager_notification_requests_total{integration="opsgenie"} 0
+alertmanager_notification_requests_total{integration="pagerduty"} 0
+alertmanager_notification_requests_total{integration="pushover"} 0
+alertmanager_notification_requests_total{integration="rocketchat"} 0
+alertmanager_notification_requests_total{integration="slack"} 0
+alertmanager_notification_requests_total{integration="sns"} 0
+alertmanager_notification_requests_total{integration="telegram"} 0
+alertmanager_notification_requests_total{integration="victorops"} 0
+alertmanager_notification_requests_total{integration="webex"} 0
+alertmanager_notification_requests_total{integration="webhook"} 0
+alertmanager_notification_requests_total{integration="wechat"} 0
+# HELP alertmanager_notifications_failed_total The total number of failed notifications.
+# TYPE alertmanager_notifications_failed_total counter
+alertmanager_notifications_failed_total{integration="discord",reason="clientError"} 0
+alertmanager_notifications_failed_total{integration="discord",reason="contextCanceled"} 0
+alertmanager_notifications_failed_total{integration="discord",reason="contextDeadlineExceeded"} 0
+alertmanager_notifications_failed_total{integration="discord",reason="other"} 0
+alertmanager_notifications_failed_total{integration="discord",reason="serverError"} 0
+alertmanager_notifications_failed_total{integration="email",reason="clientError"} 0
+alertmanager_notifications_failed_total{integration="email",reason="contextCanceled"} 0
+alertmanager_notifications_failed_total{integration="email",reason="contextDeadlineExceeded"} 0
+alertmanager_notifications_failed_total{integration="email",reason="other"} 0
+alertmanager_notifications_failed_total{integration="email",reason="serverError"} 0
+alertmanager_notifications_failed_total{integration="incidentio",reason="clientError"} 0
+alertmanager_notifications_failed_total{integration="incidentio",reason="contextCanceled"} 0
+alertmanager_notifications_failed_total{integration="incidentio",reason="contextDeadlineExceeded"} 0
+alertmanager_notifications_failed_total{integration="incidentio",reason="other"} 0
+alertmanager_notifications_failed_total{integration="incidentio",reason="serverError"} 0
+alertmanager_notifications_failed_total{integration="jira",reason="clientError"} 0
+alertmanager_notifications_failed_total{integration="jira",reason="contextCanceled"} 0
+alertmanager_notifications_failed_total{integration="jira",reason="contextDeadlineExceeded"} 0
+alertmanager_notifications_failed_total{integration="jira",reason="other"} 0
+alertmanager_notifications_failed_total{integration="jira",reason="serverError"} 0
+alertmanager_notifications_failed_total{integration="mattermost",reason="clientError"} 0
+alertmanager_notifications_failed_total{integration="mattermost",reason="contextCanceled"} 0
+alertmanager_notifications_failed_total{integration="mattermost",reason="contextDeadlineExceeded"} 0
+alertmanager_notifications_failed_total{integration="mattermost",reason="other"} 0
+alertmanager_notifications_failed_total{integration="mattermost",reason="serverError"} 0
+alertmanager_notifications_failed_total{integration="msteams",reason="clientError"} 0
+alertmanager_notifications_failed_total{integration="msteams",reason="contextCanceled"} 0
+alertmanager_notifications_failed_total{integration="msteams",reason="contextDeadlineExceeded"} 0
+alertmanager_notifications_failed_total{integration="msteams",reason="other"} 0
+alertmanager_notifications_failed_total{integration="msteams",reason="serverError"} 0
+alertmanager_notifications_failed_total{integration="msteamsv2",reason="clientError"} 0
+alertmanager_notifications_failed_total{integration="msteamsv2",reason="contextCanceled"} 0
+alertmanager_notifications_failed_total{integration="msteamsv2",reason="contextDeadlineExceeded"} 0
+alertmanager_notifications_failed_total{integration="msteamsv2",reason="other"} 0
+alertmanager_notifications_failed_total{integration="msteamsv2",reason="serverError"} 0
+alertmanager_notifications_failed_total{integration="opsgenie",reason="clientError"} 0
+alertmanager_notifications_failed_total{integration="opsgenie",reason="contextCanceled"} 0
+alertmanager_notifications_failed_total{integration="opsgenie",reason="contextDeadlineExceeded"} 0
+alertmanager_notifications_failed_total{integration="opsgenie",reason="other"} 0
+alertmanager_notifications_failed_total{integration="opsgenie",reason="serverError"} 0
+alertmanager_notifications_failed_total{integration="pagerduty",reason="clientError"} 0
+alertmanager_notifications_failed_total{integration="pagerduty",reason="contextCanceled"} 0
+alertmanager_notifications_failed_total{integration="pagerduty",reason="contextDeadlineExceeded"} 0
+alertmanager_notifications_failed_total{integration="pagerduty",reason="other"} 0
+alertmanager_notifications_failed_total{integration="pagerduty",reason="serverError"} 0
+alertmanager_notifications_failed_total{integration="pushover",reason="clientError"} 0
+alertmanager_notifications_failed_total{integration="pushover",reason="contextCanceled"} 0
+alertmanager_notifications_failed_total{integration="pushover",reason="contextDeadlineExceeded"} 0
+alertmanager_notifications_failed_total{integration="pushover",reason="other"} 0
+alertmanager_notifications_failed_total{integration="pushover",reason="serverError"} 0
+alertmanager_notifications_failed_total{integration="rocketchat",reason="clientError"} 0
+alertmanager_notifications_failed_total{integration="rocketchat",reason="contextCanceled"} 0
+alertmanager_notifications_failed_total{integration="rocketchat",reason="contextDeadlineExceeded"} 0
+alertmanager_notifications_failed_total{integration="rocketchat",reason="other"} 0
+alertmanager_notifications_failed_total{integration="rocketchat",reason="serverError"} 0
+alertmanager_notifications_failed_total{integration="slack",reason="clientError"} 0
+alertmanager_notifications_failed_total{integration="slack",reason="contextCanceled"} 0
+alertmanager_notifications_failed_total{integration="slack",reason="contextDeadlineExceeded"} 0
+alertmanager_notifications_failed_total{integration="slack",reason="other"} 0
+alertmanager_notifications_failed_total{integration="slack",reason="serverError"} 0
+alertmanager_notifications_failed_total{integration="sns",reason="clientError"} 0
+alertmanager_notifications_failed_total{integration="sns",reason="contextCanceled"} 0
+alertmanager_notifications_failed_total{integration="sns",reason="contextDeadlineExceeded"} 0
+alertmanager_notifications_failed_total{integration="sns",reason="other"} 0
+alertmanager_notifications_failed_total{integration="sns",reason="serverError"} 0
+alertmanager_notifications_failed_total{integration="telegram",reason="clientError"} 0
+alertmanager_notifications_failed_total{integration="telegram",reason="contextCanceled"} 0
+alertmanager_notifications_failed_total{integration="telegram",reason="contextDeadlineExceeded"} 0
+alertmanager_notifications_failed_total{integration="telegram",reason="other"} 0
+alertmanager_notifications_failed_total{integration="telegram",reason="serverError"} 0
+alertmanager_notifications_failed_total{integration="victorops",reason="clientError"} 0
+alertmanager_notifications_failed_total{integration="victorops",reason="contextCanceled"} 0
+alertmanager_notifications_failed_total{integration="victorops",reason="contextDeadlineExceeded"} 0
+alertmanager_notifications_failed_total{integration="victorops",reason="other"} 0
+alertmanager_notifications_failed_total{integration="victorops",reason="serverError"} 0
+alertmanager_notifications_failed_total{integration="webex",reason="clientError"} 0
+alertmanager_notifications_failed_total{integration="webex",reason="contextCanceled"} 0
+alertmanager_notifications_failed_total{integration="webex",reason="contextDeadlineExceeded"} 0
+alertmanager_notifications_failed_total{integration="webex",reason="other"} 0
+alertmanager_notifications_failed_total{integration="webex",reason="serverError"} 0
+alertmanager_notifications_failed_total{integration="webhook",reason="clientError"} 0
+alertmanager_notifications_failed_total{integration="webhook",reason="contextCanceled"} 0
+alertmanager_notifications_failed_total{integration="webhook",reason="contextDeadlineExceeded"} 0
+alertmanager_notifications_failed_total{integration="webhook",reason="other"} 0
+alertmanager_notifications_failed_total{integration="webhook",reason="serverError"} 0
+alertmanager_notifications_failed_total{integration="wechat",reason="clientError"} 0
+alertmanager_notifications_failed_total{integration="wechat",reason="contextCanceled"} 0
+alertmanager_notifications_failed_total{integration="wechat",reason="contextDeadlineExceeded"} 0
+alertmanager_notifications_failed_total{integration="wechat",reason="other"} 0
+alertmanager_notifications_failed_total{integration="wechat",reason="serverError"} 0
+# HELP alertmanager_notifications_suppressed_total The total number of notifications suppressed for being silenced, inhibited, outside of active time intervals or within muted time intervals.
+# TYPE alertmanager_notifications_suppressed_total counter
+alertmanager_notifications_suppressed_total{reason="silence"} 16
+# HELP alertmanager_notifications_total The total number of attempted notifications.
+# TYPE alertmanager_notifications_total counter
+alertmanager_notifications_total{integration="discord"} 0
+alertmanager_notifications_total{integration="email"} 0
+alertmanager_notifications_total{integration="incidentio"} 0
+alertmanager_notifications_total{integration="jira"} 0
+alertmanager_notifications_total{integration="mattermost"} 0
+alertmanager_notifications_total{integration="msteams"} 0
+alertmanager_notifications_total{integration="msteamsv2"} 0
+alertmanager_notifications_total{integration="opsgenie"} 0
+alertmanager_notifications_total{integration="pagerduty"} 0
+alertmanager_notifications_total{integration="pushover"} 0
+alertmanager_notifications_total{integration="rocketchat"} 0
+alertmanager_notifications_total{integration="slack"} 0
+alertmanager_notifications_total{integration="sns"} 0
+alertmanager_notifications_total{integration="telegram"} 0
+alertmanager_notifications_total{integration="victorops"} 0
+alertmanager_notifications_total{integration="webex"} 0
+alertmanager_notifications_total{integration="webhook"} 0
+alertmanager_notifications_total{integration="wechat"} 0
+# HELP alertmanager_oversize_gossip_message_duration_seconds Duration of oversized gossip message requests.
+# TYPE alertmanager_oversize_gossip_message_duration_seconds histogram
+alertmanager_oversize_gossip_message_duration_seconds_bucket{key="nfl",le="0.005"} 0
+alertmanager_oversize_gossip_message_duration_seconds_bucket{key="nfl",le="0.01"} 0
+alertmanager_oversize_gossip_message_duration_seconds_bucket{key="nfl",le="0.025"} 0
+alertmanager_oversize_gossip_message_duration_seconds_bucket{key="nfl",le="0.05"} 0
+alertmanager_oversize_gossip_message_duration_seconds_bucket{key="nfl",le="0.1"} 0
+alertmanager_oversize_gossip_message_duration_seconds_bucket{key="nfl",le="0.25"} 0
+alertmanager_oversize_gossip_message_duration_seconds_bucket{key="nfl",le="0.5"} 0
+alertmanager_oversize_gossip_message_duration_seconds_bucket{key="nfl",le="1"} 0
+alertmanager_oversize_gossip_message_duration_seconds_bucket{key="nfl",le="2.5"} 0
+alertmanager_oversize_gossip_message_duration_seconds_bucket{key="nfl",le="5"} 0
+alertmanager_oversize_gossip_message_duration_seconds_bucket{key="nfl",le="10"} 0
+alertmanager_oversize_gossip_message_duration_seconds_bucket{key="nfl",le="+Inf"} 0
+alertmanager_oversize_gossip_message_duration_seconds_sum{key="nfl"} 0
+alertmanager_oversize_gossip_message_duration_seconds_count{key="nfl"} 0
+alertmanager_oversize_gossip_message_duration_seconds_bucket{key="sil",le="0.005"} 0
+alertmanager_oversize_gossip_message_duration_seconds_bucket{key="sil",le="0.01"} 0
+alertmanager_oversize_gossip_message_duration_seconds_bucket{key="sil",le="0.025"} 0
+alertmanager_oversize_gossip_message_duration_seconds_bucket{key="sil",le="0.05"} 0
+alertmanager_oversize_gossip_message_duration_seconds_bucket{key="sil",le="0.1"} 0
+alertmanager_oversize_gossip_message_duration_seconds_bucket{key="sil",le="0.25"} 0
+alertmanager_oversize_gossip_message_duration_seconds_bucket{key="sil",le="0.5"} 0
+alertmanager_oversize_gossip_message_duration_seconds_bucket{key="sil",le="1"} 0
+alertmanager_oversize_gossip_message_duration_seconds_bucket{key="sil",le="2.5"} 0
+alertmanager_oversize_gossip_message_duration_seconds_bucket{key="sil",le="5"} 0
+alertmanager_oversize_gossip_message_duration_seconds_bucket{key="sil",le="10"} 0
+alertmanager_oversize_gossip_message_duration_seconds_bucket{key="sil",le="+Inf"} 0
+alertmanager_oversize_gossip_message_duration_seconds_sum{key="sil"} 0
+alertmanager_oversize_gossip_message_duration_seconds_count{key="sil"} 0
+# HELP alertmanager_oversized_gossip_message_dropped_total Number of oversized gossip messages that were dropped due to a full message queue.
+# TYPE alertmanager_oversized_gossip_message_dropped_total counter
+alertmanager_oversized_gossip_message_dropped_total{key="nfl"} 0
+alertmanager_oversized_gossip_message_dropped_total{key="sil"} 0
+# HELP alertmanager_oversized_gossip_message_failure_total Number of oversized gossip message sends that failed.
+# TYPE alertmanager_oversized_gossip_message_failure_total counter
+alertmanager_oversized_gossip_message_failure_total{key="nfl"} 0
+alertmanager_oversized_gossip_message_failure_total{key="sil"} 0
+# HELP alertmanager_oversized_gossip_message_sent_total Number of oversized gossip message sent.
+# TYPE alertmanager_oversized_gossip_message_sent_total counter
+alertmanager_oversized_gossip_message_sent_total{key="nfl"} 0
+alertmanager_oversized_gossip_message_sent_total{key="sil"} 0
+# HELP alertmanager_peer_position Position the Alertmanager instance believes it's in. The position determines a peer's behavior in the cluster.
+# TYPE alertmanager_peer_position gauge
+alertmanager_peer_position 0
+# HELP alertmanager_receivers Number of configured receivers.
+# TYPE alertmanager_receivers gauge
+alertmanager_receivers 3
+# HELP alertmanager_silences How many silences by state.
+# TYPE alertmanager_silences gauge
+alertmanager_silences{state="active"} 3
+alertmanager_silences{state="expired"} 0
+alertmanager_silences{state="pending"} 0
+# HELP alertmanager_silences_gc_duration_seconds Duration of the last silence garbage collection cycle.
+# TYPE alertmanager_silences_gc_duration_seconds summary
+alertmanager_silences_gc_duration_seconds_sum 0
+alertmanager_silences_gc_duration_seconds_count 0
+# HELP alertmanager_silences_gc_errors_total How many silence GC errors were encountered.
+# TYPE alertmanager_silences_gc_errors_total counter
+alertmanager_silences_gc_errors_total 0
+# HELP alertmanager_silences_gossip_messages_propagated_total Number of received gossip messages that have been further gossiped.
+# TYPE alertmanager_silences_gossip_messages_propagated_total counter
+alertmanager_silences_gossip_messages_propagated_total 0
+# HELP alertmanager_silences_maintenance_errors_total How many maintenances were executed for silences that failed.
+# TYPE alertmanager_silences_maintenance_errors_total counter
+alertmanager_silences_maintenance_errors_total 0
+# HELP alertmanager_silences_maintenance_total How many maintenances were executed for silences.
+# TYPE alertmanager_silences_maintenance_total counter
+alertmanager_silences_maintenance_total 0
+# HELP alertmanager_silences_matcher_compile_errors_total How many silence matcher compilations failed.
+# TYPE alertmanager_silences_matcher_compile_errors_total counter
+alertmanager_silences_matcher_compile_errors_total{stage="index"} 0
+alertmanager_silences_matcher_compile_errors_total{stage="load_snapshot"} 0
+# HELP alertmanager_silences_matcher_index_size The number of entries in the matcher cache index.
+# TYPE alertmanager_silences_matcher_index_size gauge
+alertmanager_silences_matcher_index_size 3
+# HELP alertmanager_silences_queries_total How many silence queries were received.
+# TYPE alertmanager_silences_queries_total counter
+alertmanager_silences_queries_total 24
+# HELP alertmanager_silences_query_duration_seconds Duration of silence query evaluation.
+# TYPE alertmanager_silences_query_duration_seconds histogram
+alertmanager_silences_query_duration_seconds_bucket{le="0.005"} 26
+alertmanager_silences_query_duration_seconds_bucket{le="0.01"} 26
+alertmanager_silences_query_duration_seconds_bucket{le="0.025"} 26
+alertmanager_silences_query_duration_seconds_bucket{le="0.05"} 26
+alertmanager_silences_query_duration_seconds_bucket{le="0.1"} 26
+alertmanager_silences_query_duration_seconds_bucket{le="0.25"} 26
+alertmanager_silences_query_duration_seconds_bucket{le="0.5"} 26
+alertmanager_silences_query_duration_seconds_bucket{le="1"} 26
+alertmanager_silences_query_duration_seconds_bucket{le="2.5"} 26
+alertmanager_silences_query_duration_seconds_bucket{le="5"} 26
+alertmanager_silences_query_duration_seconds_bucket{le="10"} 26
+alertmanager_silences_query_duration_seconds_bucket{le="+Inf"} 26
+alertmanager_silences_query_duration_seconds_sum 0.000124002
+alertmanager_silences_query_duration_seconds_count 26
+# HELP alertmanager_silences_query_errors_total How many silence received queries did not succeed.
+# TYPE alertmanager_silences_query_errors_total counter
+alertmanager_silences_query_errors_total 0
+# HELP alertmanager_silences_query_silences_scanned_total How many silences were scanned during query evaluation.
+# TYPE alertmanager_silences_query_silences_scanned_total counter
+alertmanager_silences_query_silences_scanned_total 51
+# HELP alertmanager_silences_query_silences_skipped_total How many silences were skipped during query evaluation using the version index.
+# TYPE alertmanager_silences_query_silences_skipped_total counter
+alertmanager_silences_query_silences_skipped_total 0
+# HELP alertmanager_silences_snapshot_duration_seconds Duration of the last silence snapshot.
+# TYPE alertmanager_silences_snapshot_duration_seconds summary
+alertmanager_silences_snapshot_duration_seconds_sum 0
+alertmanager_silences_snapshot_duration_seconds_count 0
+# HELP alertmanager_silences_snapshot_size_bytes Size of the last silence snapshot in bytes.
+# TYPE alertmanager_silences_snapshot_size_bytes gauge
+alertmanager_silences_snapshot_size_bytes 0
+# HELP alertmanager_silences_state_size The number of silences in the state map.
+# TYPE alertmanager_silences_state_size gauge
+alertmanager_silences_state_size 3
+# HELP alertmanager_silences_version_index_size The number of entries in the version index.
+# TYPE alertmanager_silences_version_index_size gauge
+alertmanager_silences_version_index_size 3
+# HELP go_gc_duration_seconds A summary of the wall-time pause (stop-the-world) duration in garbage collection cycles.
+# TYPE go_gc_duration_seconds summary
+go_gc_duration_seconds{quantile="0"} 3.3568e-05
+go_gc_duration_seconds{quantile="0.25"} 3.6978e-05
+go_gc_duration_seconds{quantile="0.5"} 3.8411e-05
+go_gc_duration_seconds{quantile="0.75"} 4.6025e-05
+go_gc_duration_seconds{quantile="1"} 5.9678e-05
+go_gc_duration_seconds_sum 0.00021466
+go_gc_duration_seconds_count 5
+# HELP go_gc_gogc_percent Heap size target percentage configured by the user, otherwise 100. This value is set by the GOGC environment variable, and the runtime/debug.SetGCPercent function. Sourced from /gc/gogc:percent.
+# TYPE go_gc_gogc_percent gauge
+go_gc_gogc_percent 100
+# HELP go_gc_gomemlimit_bytes Go runtime memory limit configured by the user, otherwise math.MaxInt64. This value is set by the GOMEMLIMIT environment variable, and the runtime/debug.SetMemoryLimit function. Sourced from /gc/gomemlimit:bytes.
+# TYPE go_gc_gomemlimit_bytes gauge
+go_gc_gomemlimit_bytes 9.223372036854776e+18
+# HELP go_goroutines Number of goroutines that currently exist.
+# TYPE go_goroutines gauge
+go_goroutines 43
+# HELP go_info Information about the Go environment.
+# TYPE go_info gauge
+go_info{version="go1.25.6"} 1
+# HELP go_memstats_alloc_bytes Number of bytes allocated in heap and currently in use. Equals to /memory/classes/heap/objects:bytes.
+# TYPE go_memstats_alloc_bytes gauge
+go_memstats_alloc_bytes 6.661032e+06
+# HELP go_memstats_alloc_bytes_total Total number of bytes allocated in heap until now, even if released already. Equals to /gc/heap/allocs:bytes.
+# TYPE go_memstats_alloc_bytes_total counter
+go_memstats_alloc_bytes_total 1.483128e+07
+# HELP go_memstats_buck_hash_sys_bytes Number of bytes used by the profiling bucket hash table. Equals to /memory/classes/profiling/buckets:bytes.
+# TYPE go_memstats_buck_hash_sys_bytes gauge
+go_memstats_buck_hash_sys_bytes 1.461405e+06
+# HELP go_memstats_frees_total Total number of heap objects frees. Equals to /gc/heap/frees:objects + /gc/heap/tiny/allocs:objects.
+# TYPE go_memstats_frees_total counter
+go_memstats_frees_total 86567
+# HELP go_memstats_gc_sys_bytes Number of bytes used for garbage collection system metadata. Equals to /memory/classes/metadata/other:bytes.
+# TYPE go_memstats_gc_sys_bytes gauge
+go_memstats_gc_sys_bytes 3.506448e+06
+# HELP go_memstats_heap_alloc_bytes Number of heap bytes allocated and currently in use, same as go_memstats_alloc_bytes. Equals to /memory/classes/heap/objects:bytes.
+# TYPE go_memstats_heap_alloc_bytes gauge
+go_memstats_heap_alloc_bytes 6.661032e+06
+# HELP go_memstats_heap_idle_bytes Number of heap bytes waiting to be used. Equals to /memory/classes/heap/released:bytes + /memory/classes/heap/free:bytes.
+# TYPE go_memstats_heap_idle_bytes gauge
+go_memstats_heap_idle_bytes 5.046272e+06
+# HELP go_memstats_heap_inuse_bytes Number of heap bytes that are in use. Equals to /memory/classes/heap/objects:bytes + /memory/classes/heap/unused:bytes
+# TYPE go_memstats_heap_inuse_bytes gauge
+go_memstats_heap_inuse_bytes 1.015808e+07
+# HELP go_memstats_heap_objects Number of currently allocated objects. Equals to /gc/heap/objects:objects.
+# TYPE go_memstats_heap_objects gauge
+go_memstats_heap_objects 40312
+# HELP go_memstats_heap_released_bytes Number of heap bytes released to OS. Equals to /memory/classes/heap/released:bytes.
+# TYPE go_memstats_heap_released_bytes gauge
+go_memstats_heap_released_bytes 4.841472e+06
+# HELP go_memstats_heap_sys_bytes Number of heap bytes obtained from system. Equals to /memory/classes/heap/objects:bytes + /memory/classes/heap/unused:bytes + /memory/classes/heap/released:bytes + /memory/classes/heap/free:bytes.
+# TYPE go_memstats_heap_sys_bytes gauge
+go_memstats_heap_sys_bytes 1.5204352e+07
+# HELP go_memstats_last_gc_time_seconds Number of seconds since 1970 of last garbage collection.
+# TYPE go_memstats_last_gc_time_seconds gauge
+go_memstats_last_gc_time_seconds 1.7732333033521466e+09
+# HELP go_memstats_mallocs_total Total number of heap objects allocated, both live and gc-ed. Semantically a counter version for go_memstats_heap_objects gauge. Equals to /gc/heap/allocs:objects + /gc/heap/tiny/allocs:objects.
+# TYPE go_memstats_mallocs_total counter
+go_memstats_mallocs_total 126879
+# HELP go_memstats_mcache_inuse_bytes Number of bytes in use by mcache structures. Equals to /memory/classes/metadata/mcache/inuse:bytes.
+# TYPE go_memstats_mcache_inuse_bytes gauge
+go_memstats_mcache_inuse_bytes 24160
+# HELP go_memstats_mcache_sys_bytes Number of bytes used for mcache structures obtained from system. Equals to /memory/classes/metadata/mcache/inuse:bytes + /memory/classes/metadata/mcache/free:bytes.
+# TYPE go_memstats_mcache_sys_bytes gauge
+go_memstats_mcache_sys_bytes 31408
+# HELP go_memstats_mspan_inuse_bytes Number of bytes in use by mspan structures. Equals to /memory/classes/metadata/mspan/inuse:bytes.
+# TYPE go_memstats_mspan_inuse_bytes gauge
+go_memstats_mspan_inuse_bytes 309440
+# HELP go_memstats_mspan_sys_bytes Number of bytes used for mspan structures obtained from system. Equals to /memory/classes/metadata/mspan/inuse:bytes + /memory/classes/metadata/mspan/free:bytes.
+# TYPE go_memstats_mspan_sys_bytes gauge
+go_memstats_mspan_sys_bytes 310080
+# HELP go_memstats_next_gc_bytes Number of heap bytes when next garbage collection will take place. Equals to /gc/heap/goal:bytes.
+# TYPE go_memstats_next_gc_bytes gauge
+go_memstats_next_gc_bytes 1.0524914e+07
+# HELP go_memstats_other_sys_bytes Number of bytes used for other system allocations. Equals to /memory/classes/other:bytes.
+# TYPE go_memstats_other_sys_bytes gauge
+go_memstats_other_sys_bytes 3.429739e+06
+# HELP go_memstats_stack_inuse_bytes Number of bytes obtained from system for stack allocator in non-CGO environments. Equals to /memory/classes/heap/stacks:bytes.
+# TYPE go_memstats_stack_inuse_bytes gauge
+go_memstats_stack_inuse_bytes 1.572864e+06
+# HELP go_memstats_stack_sys_bytes Number of bytes obtained from system for stack allocator. Equals to /memory/classes/heap/stacks:bytes + /memory/classes/os-stacks:bytes.
+# TYPE go_memstats_stack_sys_bytes gauge
+go_memstats_stack_sys_bytes 1.572864e+06
+# HELP go_memstats_sys_bytes Number of bytes obtained from system. Equals to /memory/classes/total:byte.
+# TYPE go_memstats_sys_bytes gauge
+go_memstats_sys_bytes 2.5516296e+07
+# HELP go_sched_gomaxprocs_threads The current runtime.GOMAXPROCS setting, or the number of operating system threads that can execute user-level Go code simultaneously. Sourced from /sched/gomaxprocs:threads.
+# TYPE go_sched_gomaxprocs_threads gauge
+go_sched_gomaxprocs_threads 20
+# HELP go_threads Number of OS threads created.
+# TYPE go_threads gauge
+go_threads 20
+# HELP process_cpu_seconds_total Total user and system CPU time spent in seconds.
+# TYPE process_cpu_seconds_total counter
+process_cpu_seconds_total 0.2
+# HELP process_max_fds Maximum number of open file descriptors.
+# TYPE process_max_fds gauge
+process_max_fds 524287
+# HELP process_network_receive_bytes_total Number of bytes received by the process over the network.
+# TYPE process_network_receive_bytes_total counter
+process_network_receive_bytes_total 21050
+# HELP process_network_transmit_bytes_total Number of bytes sent by the process over the network.
+# TYPE process_network_transmit_bytes_total counter
+process_network_transmit_bytes_total 3578
+# HELP process_open_fds Number of open file descriptors.
+# TYPE process_open_fds gauge
+process_open_fds 9
+# HELP process_resident_memory_bytes Resident memory size in bytes.
+# TYPE process_resident_memory_bytes gauge
+process_resident_memory_bytes 3.7634048e+07
+# HELP process_start_time_seconds Start time of the process since unix epoch in seconds.
+# TYPE process_start_time_seconds gauge
+process_start_time_seconds 1.77323330302e+09
+# HELP process_virtual_memory_bytes Virtual memory size in bytes.
+# TYPE process_virtual_memory_bytes gauge
+process_virtual_memory_bytes 1.291026432e+09
+# HELP process_virtual_memory_max_bytes Maximum amount of virtual memory available in bytes.
+# TYPE process_virtual_memory_max_bytes gauge
+process_virtual_memory_max_bytes 1.8446744073709552e+19
+# HELP promhttp_metric_handler_requests_in_flight Current number of scrapes being served.
+# TYPE promhttp_metric_handler_requests_in_flight gauge
+promhttp_metric_handler_requests_in_flight 1
+# HELP promhttp_metric_handler_requests_total Total number of scrapes by HTTP status code.
+# TYPE promhttp_metric_handler_requests_total counter
+promhttp_metric_handler_requests_total{code="200"} 0
+promhttp_metric_handler_requests_total{code="500"} 0
+promhttp_metric_handler_requests_total{code="503"} 0

@@ -50,7 +50,7 @@ func NewAlertmanagerProxy(alertmanager *alertmanager.Alertmanager) *httputil.Rev
 				req.Header.Set(key, val)
 			}
 
-			// drop Accept-Encoding header so we always get uncompressed reponses from
+			// drop Accept-Encoding header so we always get uncompressed responses from
 			// upstream, there's a gzip middleware that's global so we don't want it
 			// to gzip twice
 			req.Header.Del("Accept-Encoding")

@@ -125,16 +125,16 @@ func (c *karmaCollector) Collect(ch chan<- prometheus.Metric) {
 		}
 
 		// publish metrics using calculated values
-		for reciver, count := range groupsByReceiver {
+		for receiver, count := range groupsByReceiver {
 			ch <- prometheus.MustNewConstMetric(
 				c.collectedGroups,
 				prometheus.GaugeValue,
 				count,
 				am.Name,
-				reciver,
+				receiver,
 			)
 		}
-		for reciver, byState := range alertsByReceiverByState {
+		for receiver, byState := range alertsByReceiverByState {
 			for state, count := range byState {
 				ch <- prometheus.MustNewConstMetric(
 					c.collectedAlerts,
@@ -142,7 +142,7 @@ func (c *karmaCollector) Collect(ch chan<- prometheus.Metric) {
 					count,
 					am.Name,
 					state,
-					reciver,
+					receiver,
 				)
 			}
 		}
