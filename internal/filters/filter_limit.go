@@ -9,46 +9,41 @@ import (
 )
 
 type limitFilter struct {
-	alertFilter
-	value int
+	filterBase
+	limit int
 }
 
-func (filter *limitFilter) init(name string, matcher *matcherT, rawText string, isValid bool, value string) {
-	filter.Matched = name
-	if matcher != nil {
-		filter.Matcher = *matcher
-	}
-	filter.RawText = rawText
-	filter.IsValid = isValid
-	if filter.IsValid {
-		val, err := strconv.Atoi(value)
-		if err != nil || val < 1 {
-			filter.IsValid = false
-		} else {
-			filter.value = val
-		}
-	}
-}
-
-func (filter *limitFilter) GetValue() string {
-	return strconv.Itoa(filter.value)
+func (filter *limitFilter) Value() string {
+	return strconv.Itoa(filter.limit)
 }
 
 func (filter *limitFilter) Match(_ *models.Alert, matches int) bool {
-	if filter.IsValid {
-		if matches < filter.value {
-			return true
-		}
-		filter.Hits++
-		return false
+	if matches < filter.limit {
+		return true
 	}
-	e := fmt.Sprintf("Match() called on invalid filter %#v", filter)
-	panic(e)
+	filter.hits++
+	return false
 }
 
-func newLimitFilter() FilterT {
-	f := limitFilter{}
-	return &f
+func newLimitFilter(name, operator, rawText, value string) Filter {
+	val, err := strconv.Atoi(value)
+	if err != nil || val < 1 {
+		return &filterBase{rawText: rawText}
+	}
+	m, ok := buildMatcher(operator, value)
+	if !ok {
+		return &filterBase{rawText: rawText}
+	}
+	return &limitFilter{
+		filterBase: filterBase{
+			matcher: m,
+			name:    name,
+			rawText: rawText,
+			value:   value,
+			isValid: true,
+		},
+		limit: val,
+	}
 }
 
 func limitAutocomplete(name string, operators []string, _ []models.Alert, dst map[string]models.Autocomplete) {

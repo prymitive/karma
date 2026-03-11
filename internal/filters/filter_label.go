@@ -1,7 +1,6 @@
 package filters
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/prometheus/prometheus/model/labels"
@@ -26,39 +25,31 @@ func isDigits(s string) bool {
 }
 
 type labelFilter struct {
-	value string
-	alertFilter
-}
-
-func (filter *labelFilter) init(name string, matcher *matcherT, rawText string, isValid bool, value string) {
-	filter.Matched = name
-	if matcher != nil {
-		filter.Matcher = *matcher
-	}
-	filter.RawText = rawText
-	filter.IsValid = isValid
-	filter.value = value
-}
-
-func (filter *labelFilter) GetValue() string {
-	return filter.value
+	filterBase
 }
 
 func (filter *labelFilter) Match(alert *models.Alert, _ int) bool {
-	if filter.IsValid {
-		isMatch := filter.Matcher.Compare(alert.Labels.Get(filter.Matched), filter.value)
-		if isMatch {
-			filter.Hits++
-		}
-		return isMatch
+	isMatch := filter.matcher.Compare(alert.Labels.Get(filter.name), filter.value)
+	if isMatch {
+		filter.hits++
 	}
-	e := fmt.Sprintf("Match() called on invalid filter %#v", filter)
-	panic(e)
+	return isMatch
 }
 
-func newLabelFilter() FilterT {
-	f := labelFilter{}
-	return &f
+func newLabelFilter(name, operator, rawText, value string) Filter {
+	m, ok := buildMatcher(operator, value)
+	if !ok {
+		return &filterBase{rawText: rawText}
+	}
+	return &labelFilter{
+		filterBase: filterBase{
+			matcher: m,
+			name:    name,
+			rawText: rawText,
+			value:   value,
+			isValid: true,
+		},
+	}
 }
 
 func LabelAutocomplete(labelPairs [][]labels.Label, dst map[string]models.Autocomplete) {

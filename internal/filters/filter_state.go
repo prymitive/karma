@@ -1,59 +1,50 @@
 package filters
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/prymitive/karma/internal/models"
 )
 
 type stateFilter struct {
-	value string
-	alertFilter
-}
-
-func (filter *stateFilter) init(name string, matcher *matcherT, rawText string, isValid bool, value string) {
-	filter.Matched = name
-	if matcher != nil {
-		filter.Matcher = *matcher
-	}
-	filter.RawText = rawText
-	filter.IsValid = isValid
-	filter.value = value
-	if _, ok := models.AlertStateFromString(value); !ok {
-		filter.IsValid = false
-	}
-}
-
-func (filter *stateFilter) GetValue() string {
-	return filter.value
+	filterBase
 }
 
 func (filter *stateFilter) Match(alert *models.Alert, _ int) bool {
-	if filter.IsValid {
-		var isMatch bool
-		for _, am := range alert.Alertmanager {
-			if filter.Matcher.Compare(am.State.String(), filter.value) {
-				isMatch = true
-			}
+	var isMatch bool
+	for _, am := range alert.Alertmanager {
+		if filter.matcher.Compare(am.State.String(), filter.value) {
+			isMatch = true
 		}
-		if isMatch {
-			filter.Hits++
-		}
-		return isMatch
 	}
-	e := fmt.Sprintf("Match() called on invalid filter %#v", filter)
-	panic(e)
+	if isMatch {
+		filter.hits++
+	}
+	return isMatch
 }
 
 func (filter *stateFilter) MatchAlertmanager(am *models.AlertmanagerInstance) bool {
-	return filter.Matcher.Compare(am.State.String(), filter.value)
+	return filter.matcher.Compare(am.State.String(), filter.value)
 }
 
-func newStateFilter() FilterT {
-	f := stateFilter{}
-	f.IsAlertmanagerFilter = true
-	return &f
+func newStateFilter(name, operator, rawText, value string) Filter {
+	if _, ok := models.AlertStateFromString(value); !ok {
+		return &filterBase{rawText: rawText}
+	}
+	m, ok := buildMatcher(operator, value)
+	if !ok {
+		return &filterBase{rawText: rawText}
+	}
+	return &stateFilter{
+		filterBase: filterBase{
+			matcher:              m,
+			name:                 name,
+			rawText:              rawText,
+			value:                value,
+			isValid:              true,
+			isAlertmanagerFilter: true,
+		},
+	}
 }
 
 func stateAutocomplete(name string, operators []string, alerts []models.Alert, dst map[string]models.Autocomplete) {

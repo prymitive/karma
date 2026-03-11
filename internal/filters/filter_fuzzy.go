@@ -10,67 +10,59 @@ import (
 )
 
 type fuzzyFilter struct {
-	value *regexp.Regexp
-	alertFilter
+	filterBase
+	re *regexp.Regexp
 }
 
-func (filter *fuzzyFilter) init(name string, matcher *matcherT, rawText string, isValid bool, value string) {
-	filter.Matched = name
-	if matcher != nil {
-		filter.Matcher = *matcher
-	}
-	filter.RawText = rawText
-	filter.IsValid = isValid
-	var err error
-	if filter.value, err = regexp.Compile("(?i)" + value); err != nil {
-		filter.IsValid = false
-	}
-}
-
-func (filter *fuzzyFilter) GetValue() string {
-	return fmt.Sprintf("%v", filter.value)
+func (filter *fuzzyFilter) Value() string {
+	return fmt.Sprintf("%v", filter.re)
 }
 
 func (filter *fuzzyFilter) Match(alert *models.Alert, _ int) bool {
-	if filter.IsValid {
-		for _, val := range alert.Annotations {
-			if filter.value.MatchString(val.Value) {
-				filter.Hits++
-				return true
-			}
-		}
-
-		var labelMatch bool
-		alert.Labels.Range(func(l labels.Label) {
-			if filter.value.MatchString(l.Value) {
-				labelMatch = true
-			}
-		})
-		if labelMatch {
-			filter.Hits++
+	for _, val := range alert.Annotations {
+		if filter.re.MatchString(val.Value) {
+			filter.hits++
 			return true
 		}
+	}
 
-		for _, silenceID := range alert.SilencedBy {
-			for _, am := range alert.Alertmanager {
-				silence, found := am.Silences[silenceID]
-				if found {
-					if filter.value.MatchString(silence.Comment) {
-						filter.Hits++
-						return true
-					}
+	var labelMatch bool
+	alert.Labels.Range(func(l labels.Label) {
+		if filter.re.MatchString(l.Value) {
+			labelMatch = true
+		}
+	})
+	if labelMatch {
+		filter.hits++
+		return true
+	}
+
+	for _, silenceID := range alert.SilencedBy {
+		for _, am := range alert.Alertmanager {
+			silence, found := am.Silences[silenceID]
+			if found {
+				if filter.re.MatchString(silence.Comment) {
+					filter.hits++
+					return true
 				}
 			}
 		}
-
-		return false
-
 	}
-	e := fmt.Sprintf("Match() called on invalid filter %#v", filter)
-	panic(e)
+
+	return false
 }
 
-func newFuzzyFilter() FilterT {
-	f := fuzzyFilter{}
-	return &f
+func newFuzzyFilter(rawText string) Filter {
+	re, err := regexp.Compile("(?i)" + rawText)
+	if err != nil {
+		return &filterBase{rawText: rawText}
+	}
+	return &fuzzyFilter{
+		filterBase: filterBase{
+			matcher: Matcher{Operator: regexpOperator},
+			rawText: rawText,
+			isValid: true,
+		},
+		re: re,
+	}
 }

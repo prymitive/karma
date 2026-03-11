@@ -34,7 +34,7 @@ type alertmanagerMetrics struct {
 }
 
 type HealthCheck struct {
-	filters  []filters.FilterT
+	filters  []filters.Filter
 	wasFound bool
 }
 
@@ -459,14 +459,14 @@ func (am *Alertmanager) Colors() models.LabelsColorMap {
 	return colors
 }
 
-// Autocomplete returns a copy of all autocomplete data
-func (am *Alertmanager) Autocomplete() []models.Autocomplete {
+// ForEachAutocomplete calls fn for each autocomplete hint while holding a read lock.
+func (am *Alertmanager) ForEachAutocomplete(fn func(models.Autocomplete)) {
 	am.lock.RLock()
 	defer am.lock.RUnlock()
 
-	autocomplete := make([]models.Autocomplete, len(am.autocomplete))
-	copy(autocomplete, am.autocomplete)
-	return autocomplete
+	for _, hint := range am.autocomplete {
+		fn(hint)
+	}
 }
 
 // KnownLabels returns a copy of a map with known labels

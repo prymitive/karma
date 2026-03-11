@@ -4,156 +4,86 @@ import (
 	"errors"
 	"regexp"
 	"strconv"
-
-	lru "github.com/hashicorp/golang-lru/v2"
 )
 
-var matchCache, _ = lru.New[string, *regexp.Regexp](1000)
-
-type matcherT interface {
-	setOperator(operator string)
-	GetOperator() string
-	Compare(valA, valB any) bool
-}
-
-type abstractMatcher struct {
-	matcherT
+// Matcher holds the comparison operator and its implementation.
+type Matcher struct {
 	Operator string
+	Compare  func(a, b string) bool
 }
 
-func (matcher *abstractMatcher) GetOperator() string {
-	return matcher.Operator
-}
+func compareEqual(a, b string) bool    { return a == b }
+func compareNotEqual(a, b string) bool { return a != b }
 
-type equalMatcher struct {
-	abstractMatcher
-}
-
-func (matcher *equalMatcher) Compare(valA, valB any) bool {
-	return valA == valB
-}
-
-type notEqualMatcher struct {
-	abstractMatcher
-}
-
-func (matcher *notEqualMatcher) Compare(valA, valB any) bool {
-	return valA != valB
-}
-
-type moreThanMatcher struct {
-	abstractMatcher
-}
-
-func (matcher *moreThanMatcher) Compare(valA, valB any) bool {
-	if valA == nil || valA == "" || valB == nil || valB == "" {
+func compareMoreThan(a, b string) bool {
+	if a == "" || b == "" {
 		return false
 	}
-
-	intA, okA := castToInt(valA)
-	intB, okB := castToInt(valB)
-
+	intA, okA := tryAtoi(a)
+	intB, okB := tryAtoi(b)
 	if okA && okB {
 		return intA > intB
 	}
-
-	return castToString(valA) > castToString(valB)
+	return a > b
 }
 
-type lessThanMatcher struct {
-	abstractMatcher
-}
-
-func (matcher *lessThanMatcher) Compare(valA, valB any) bool {
-	if valA == nil || valA == "" || valB == nil || valB == "" {
+func compareLessThan(a, b string) bool {
+	if a == "" || b == "" {
 		return false
 	}
-
-	intA, okA := castToInt(valA)
-	intB, okB := castToInt(valB)
-
+	intA, okA := tryAtoi(a)
+	intB, okB := tryAtoi(b)
 	if okA && okB {
 		return intA < intB
 	}
-
-	return castToString(valA) < castToString(valB)
+	return a < b
 }
 
-type regexpMatcher struct {
-	abstractMatcher
-}
-
-func (matcher *regexpMatcher) Compare(valA, valB any) bool {
-	var (
-		re  *regexp.Regexp
-		err error
-		ok  bool
-	)
-	switch v := valB.(type) {
-	case *regexp.Regexp:
-		re = v
-	case string:
-		re, ok = matchCache.Get(v)
-		if !ok {
-			if re, err = regexp.Compile("(?i)" + v); err != nil {
-				return false
-			}
-			matchCache.Add(v, re)
-		}
+func compareRegexp(re *regexp.Regexp) func(a, _ string) bool {
+	return func(a, _ string) bool {
+		return re.MatchString(a)
 	}
-	return re.MatchString(castToString(valA))
 }
 
-type negativeRegexMatcher struct {
-	abstractMatcher
-}
-
-func (matcher *negativeRegexMatcher) Compare(valA, valB any) bool {
-	var (
-		re  *regexp.Regexp
-		err error
-		ok  bool
-	)
-	switch v := valB.(type) {
-	case *regexp.Regexp:
-		re = v
-	case string:
-		re, ok = matchCache.Get(v)
-		if !ok {
-			if re, err = regexp.Compile("(?i)" + v); err != nil {
-				return false
-			}
-			matchCache.Add(v, re)
-		}
+func compareNegativeRegexp(re *regexp.Regexp) func(a, _ string) bool {
+	return func(a, _ string) bool {
+		return !re.MatchString(a)
 	}
-	return !re.MatchString(castToString(valA))
 }
 
-func newMatcher(matchType string) (matcherT, error) {
-	if m, found := matcherConfig[matchType]; found {
-		return m, nil
+func newMatcher(operator string) (Matcher, error) {
+	switch operator {
+	case equalOperator:
+		return Matcher{Operator: operator, Compare: compareEqual}, nil
+	case notEqualOperator:
+		return Matcher{Operator: operator, Compare: compareNotEqual}, nil
+	case moreThanOperator:
+		return Matcher{Operator: operator, Compare: compareMoreThan}, nil
+	case lessThanOperator:
+		return Matcher{Operator: operator, Compare: compareLessThan}, nil
+	case regexpOperator, negativeRegexOperator:
+		// regex matchers need the pattern to compile, which is not known here.
+		// Return a placeholder; the caller must call newRegexpMatcher instead.
+		return Matcher{Operator: operator}, nil
 	}
-	e := matchType + " not matched with any know match type"
-	return nil, errors.New(e)
+	return Matcher{}, errors.New(operator + " not matched with any known match type")
 }
 
-func castToInt(val any) (int, bool) {
-	switch v := val.(type) {
-	case int:
+// newRegexpMatcher compiles pattern once and returns a Matcher that uses it.
+func newRegexpMatcher(operator, pattern string) (Matcher, error) {
+	re, err := regexp.Compile("(?i)" + pattern)
+	if err != nil {
+		return Matcher{}, err
+	}
+	if operator == negativeRegexOperator {
+		return Matcher{Operator: operator, Compare: compareNegativeRegexp(re)}, nil
+	}
+	return Matcher{Operator: operator, Compare: compareRegexp(re)}, nil
+}
+
+func tryAtoi(s string) (int, bool) {
+	if v, err := strconv.Atoi(s); err == nil {
 		return v, true
-	case string:
-		if atoiA, err := strconv.Atoi(v); err == nil {
-			return atoiA, true
-		}
 	}
 	return 0, false
-}
-
-func castToString(val any) string {
-	switch v := val.(type) {
-	case string:
-		return v
-	default:
-		return val.(string)
-	}
 }

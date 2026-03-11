@@ -91,16 +91,16 @@ func index(w http.ResponseWriter, _ *http.Request) {
 	})
 }
 
-func populateAPIFilters(matchFilters []filters.FilterT) []models.Filter {
+func populateAPIFilters(matchFilters []filters.Filter) []models.Filter {
 	apiFilters := []models.Filter{}
 	for _, filter := range matchFilters {
 		af := models.Filter{
-			Text:    filter.GetRawText(),
-			Name:    filter.GetName(),
-			Matcher: filter.GetMatcher(),
-			Value:   filter.GetValue(),
-			Hits:    filter.GetHits(),
-			IsValid: filter.GetIsValid(),
+			Text:    filter.RawText(),
+			Name:    filter.Name(),
+			Matcher: filter.MatcherOperation(),
+			Value:   filter.Value(),
+			Hits:    filter.Hits(),
+			IsValid: filter.Valid(),
 		}
 		if af.Text != "" {
 			apiFilters = append(apiFilters, af)
@@ -426,9 +426,9 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for _, filter := range matchFilters {
-		if filter.GetValue() != "" && filter.GetMatcher() == "=" {
-			transform.ColorLabel(colors, filter.GetName(), filter.GetValue())
-			labelSettings(filter.GetName(), resp.Settings.Labels)
+		if filter.Value() != "" && filter.MatcherOperation() == "=" {
+			transform.ColorLabel(colors, filter.Name(), filter.Value())
+			labelSettings(filter.Name(), resp.Settings.Labels)
 		}
 	}
 

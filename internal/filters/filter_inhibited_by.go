@@ -1,66 +1,54 @@
 package filters
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/prymitive/karma/internal/models"
 )
 
 type inhibitedByFilter struct {
-	value string
-	alertFilter
-}
-
-func (filter *inhibitedByFilter) init(name string, matcher *matcherT, rawText string, isValid bool, value string) {
-	filter.Matched = name
-	if matcher != nil {
-		filter.Matcher = *matcher
-	}
-	filter.RawText = rawText
-	filter.IsValid = isValid
-	filter.value = value
-}
-
-func (filter *inhibitedByFilter) GetValue() string {
-	return filter.value
+	filterBase
 }
 
 func (filter *inhibitedByFilter) Match(alert *models.Alert, _ int) bool {
-	if filter.IsValid {
-		var isMatch bool
-		for _, am := range alert.Alertmanager {
-			for _, silenceID := range am.InhibitedBy {
-				m := filter.Matcher.Compare(silenceID, filter.value)
-				if m {
-					isMatch = m
-				}
+	var isMatch bool
+	for _, am := range alert.Alertmanager {
+		for _, silenceID := range am.InhibitedBy {
+			if filter.matcher.Compare(silenceID, filter.value) {
+				isMatch = true
 			}
 		}
-		if isMatch {
-			filter.Hits++
-		}
-		return isMatch
 	}
-	e := fmt.Sprintf("Match() called on invalid filter %#v", filter)
-	panic(e)
-}
-
-func (filter *inhibitedByFilter) MatchAlertmanager(am *models.AlertmanagerInstance) bool {
-	var isMatch bool
-	for _, silenceID := range am.InhibitedBy {
-		m := filter.Matcher.Compare(silenceID, filter.value)
-		if m {
-			isMatch = m
-		}
+	if isMatch {
+		filter.hits++
 	}
 	return isMatch
 }
 
-func newInhibitedByFilter() FilterT {
-	f := inhibitedByFilter{}
-	f.IsAlertmanagerFilter = true
-	return &f
+func (filter *inhibitedByFilter) MatchAlertmanager(am *models.AlertmanagerInstance) bool {
+	for _, silenceID := range am.InhibitedBy {
+		if filter.matcher.Compare(silenceID, filter.value) {
+			return true
+		}
+	}
+	return false
+}
+
+func newInhibitedByFilter(name, operator, rawText, value string) Filter {
+	m, ok := buildMatcher(operator, value)
+	if !ok {
+		return &filterBase{rawText: rawText}
+	}
+	return &inhibitedByFilter{
+		filterBase: filterBase{
+			matcher:              m,
+			name:                 name,
+			rawText:              rawText,
+			value:                value,
+			isValid:              true,
+			isAlertmanagerFilter: true,
+		},
+	}
 }
 
 func inhibitedByAutocomplete(name string, operators []string, alerts []models.Alert, dst map[string]models.Autocomplete) {

@@ -1,72 +1,60 @@
 package filters
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/prymitive/karma/internal/models"
 )
 
 type silenceTicketFilter struct {
-	value string
-	alertFilter
-}
-
-func (filter *silenceTicketFilter) init(name string, matcher *matcherT, rawText string, isValid bool, value string) {
-	filter.Matched = name
-	if matcher != nil {
-		filter.Matcher = *matcher
-	}
-	filter.RawText = rawText
-	filter.IsValid = isValid
-	filter.value = value
-}
-
-func (filter *silenceTicketFilter) GetValue() string {
-	return filter.value
+	filterBase
 }
 
 func (filter *silenceTicketFilter) Match(alert *models.Alert, _ int) bool {
-	if filter.IsValid {
-		var isMatch bool
-		for _, am := range alert.Alertmanager {
-			for _, silenceID := range am.SilencedBy {
-				silence, found := am.Silences[silenceID]
-				if found {
-					m := filter.Matcher.Compare(silence.TicketID, filter.value)
-					if m {
-						isMatch = m
-					}
+	var isMatch bool
+	for _, am := range alert.Alertmanager {
+		for _, silenceID := range am.SilencedBy {
+			silence, found := am.Silences[silenceID]
+			if found {
+				if filter.matcher.Compare(silence.TicketID, filter.value) {
+					isMatch = true
 				}
 			}
 		}
-		if isMatch {
-			filter.Hits++
-		}
-		return isMatch
 	}
-	e := fmt.Sprintf("Match() called on invalid filter %#v", filter)
-	panic(e)
-}
-
-func (filter *silenceTicketFilter) MatchAlertmanager(am *models.AlertmanagerInstance) bool {
-	var isMatch bool
-	for _, silenceID := range am.SilencedBy {
-		silence, found := am.Silences[silenceID]
-		if found {
-			m := filter.Matcher.Compare(silence.TicketID, filter.value)
-			if m {
-				isMatch = m
-			}
-		}
+	if isMatch {
+		filter.hits++
 	}
 	return isMatch
 }
 
-func newSilenceTicketFilter() FilterT {
-	f := silenceTicketFilter{}
-	f.IsAlertmanagerFilter = true
-	return &f
+func (filter *silenceTicketFilter) MatchAlertmanager(am *models.AlertmanagerInstance) bool {
+	for _, silenceID := range am.SilencedBy {
+		silence, found := am.Silences[silenceID]
+		if found {
+			if filter.matcher.Compare(silence.TicketID, filter.value) {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+func newSilenceTicketFilter(name, operator, rawText, value string) Filter {
+	m, ok := buildMatcher(operator, value)
+	if !ok {
+		return &filterBase{rawText: rawText}
+	}
+	return &silenceTicketFilter{
+		filterBase: filterBase{
+			matcher:              m,
+			name:                 name,
+			rawText:              rawText,
+			value:                value,
+			isValid:              true,
+			isAlertmanagerFilter: true,
+		},
+	}
 }
 
 func silenceTicketIDAutocomplete(name string, operators []string, alerts []models.Alert, dst map[string]models.Autocomplete) {
