@@ -47,10 +47,8 @@ func newInhibitedFilter(name, operator, rawText, value string) Filter {
 	default:
 		return &filterBase{rawText: rawText}
 	}
-	m, ok := buildMatcher(operator, value)
-	if !ok {
-		return &filterBase{rawText: rawText}
-	}
+	// operator is pre-validated by the registry, buildMatcher cannot fail here
+	m, _ := buildMatcher(operator, value)
 	return &inhibitedFilter{
 		filterBase: filterBase{
 			matcher:              m,

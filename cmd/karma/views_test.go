@@ -331,6 +331,75 @@ func TestAlerts(t *testing.T) {
 	}
 }
 
+func TestAlertsFilterValues(t *testing.T) {
+	// verifies that the Value field in the API response is correctly populated
+	// for all filter types, including those with custom Value() overrides
+	type filterValueTest struct {
+		expression    string
+		expectedValue string
+		isValid       bool
+	}
+	tests := []filterValueTest{
+		// labelFilter — uses filterBase.Value()
+		{expression: "alertname=HTTP_Probe_Failed", expectedValue: "HTTP_Probe_Failed", isValid: true},
+		// receiverFilter — uses filterBase.Value()
+		{expression: "@receiver=by-cluster-service", expectedValue: "by-cluster-service", isValid: true},
+		// ageFilter — custom Value() returns formatted duration
+		{expression: "@age>1h", expectedValue: "-1h0m0s", isValid: true},
+		// inhibitedFilter — custom Value() returns strconv.FormatBool
+		{expression: "@inhibited=true", expectedValue: "true", isValid: true},
+		// limitFilter — custom Value() returns strconv.Itoa
+		{expression: "@limit=5", expectedValue: "5", isValid: true},
+		// fuzzyFilter — custom Value() returns the compiled regex pattern
+		{expression: "abc", expectedValue: "(?i)abc", isValid: true},
+		// invalid filter — filterBase.Value() returns empty string
+		{expression: "@state=bogus", expectedValue: "", isValid: false},
+	}
+
+	mockConfig(t.Setenv)
+	for _, version := range mock.ListAllMocks() {
+		mockAlerts(version)
+		r := testRouter()
+		setupRouter(r, nil)
+
+		for _, ft := range tests {
+			t.Run(fmt.Sprintf("%s/%s", version, ft.expression), func(t *testing.T) {
+				payload, err := json.Marshal(models.AlertsRequest{
+					Filters:           []string{ft.expression},
+					GridLimits:        map[string]int{},
+					DefaultGroupLimit: 5,
+				})
+				if err != nil {
+					t.Fatal(err)
+				}
+
+				apiCache.Purge()
+				req := httptest.NewRequest("POST", "/alerts.json", bytes.NewReader(payload))
+				resp := httptest.NewRecorder()
+				r.ServeHTTP(resp, req)
+				if resp.Code != http.StatusOK {
+					t.Fatalf("POST /alerts.json returned status %d", resp.Code)
+				}
+
+				ur := models.AlertsResponse{}
+				err = json.Unmarshal(resp.Body.Bytes(), &ur)
+				if err != nil {
+					t.Fatalf("Failed to unmarshal response: %s", err)
+				}
+				if len(ur.Filters) != 1 {
+					t.Fatalf("expected 1 filter in response, got %d", len(ur.Filters))
+				}
+				if ur.Filters[0].Value != ft.expectedValue {
+					t.Errorf("filter Value = %q, want %q", ur.Filters[0].Value, ft.expectedValue)
+				}
+				if ur.Filters[0].IsValid != ft.isValid {
+					t.Errorf("filter IsValid = %v, want %v", ur.Filters[0].IsValid, ft.isValid)
+				}
+			})
+		}
+	}
+}
+
 func TestAlertsBadRequest(t *testing.T) {
 	mockConfig(t.Setenv)
 	for _, version := range mock.ListAllMocks() {

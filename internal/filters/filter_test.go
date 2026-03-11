@@ -1028,6 +1028,32 @@ var tests = []filterTest{
 		},
 		IsMatch: true,
 	},
+
+	// invalid regex pattern triggers buildMatcher failure in regex-capable filters
+	{
+		Expression: "@alertmanager=~[",
+		IsValid:    false,
+	},
+	{
+		Expression: "@cluster=~[",
+		IsValid:    false,
+	},
+	{
+		Expression: "@receiver=~[",
+		IsValid:    false,
+	},
+	{
+		Expression: "@silence_ticket=~[",
+		IsValid:    false,
+	},
+	{
+		Expression: "@silence_author=~[",
+		IsValid:    false,
+	},
+	{
+		Expression: "node=~[",
+		IsValid:    false,
+	},
 }
 
 func TestFilters(t *testing.T) {

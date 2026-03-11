@@ -40,10 +40,8 @@ func newAgeFilter(name, operator, rawText, value string) Filter {
 	if dur > 0 {
 		dur = -dur
 	}
-	m, ok := buildMatcher(operator, value)
-	if !ok {
-		return &filterBase{rawText: rawText}
-	}
+	// operator is pre-validated by the registry, buildMatcher cannot fail here
+	m, _ := buildMatcher(operator, value)
 	return &ageFilter{
 		filterBase: filterBase{
 			matcher:              m,
