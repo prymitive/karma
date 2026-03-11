@@ -1,7 +1,6 @@
 package filters
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 
@@ -14,55 +13,55 @@ const (
 )
 
 type inhibitedFilter struct {
-	alertFilter
-	value bool
+	filterBase
+	boolValue bool
 }
 
-func (filter *inhibitedFilter) init(name string, matcher *matcherT, rawText string, isValid bool, value string) {
-	filter.Matched = name
-	if matcher != nil {
-		filter.Matcher = *matcher
-	}
-	filter.RawText = rawText
-	filter.IsValid = isValid
-	switch value {
-	case trueValue:
-		filter.value = true
-	case falseValue:
-		filter.value = false
-	default:
-		filter.IsValid = false
-	}
-}
-
-func (filter *inhibitedFilter) GetValue() string {
-	return strconv.FormatBool(filter.value)
+func (filter *inhibitedFilter) Value() string {
+	return strconv.FormatBool(filter.boolValue)
 }
 
 func (filter *inhibitedFilter) Match(alert *models.Alert, _ int) (isMatch bool) {
-	if filter.IsValid {
-		for _, am := range alert.Alertmanager {
-			if len(am.InhibitedBy) > 0 == filter.value {
-				isMatch = true
-			}
+	for _, am := range alert.Alertmanager {
+		if len(am.InhibitedBy) > 0 == filter.boolValue {
+			isMatch = true
 		}
-		if isMatch {
-			filter.Hits++
-		}
-		return isMatch
 	}
-	e := fmt.Sprintf("Match() called on invalid filter %#v", filter)
-	panic(e)
+	if isMatch {
+		filter.hits++
+	}
+	return isMatch
 }
 
 func (filter *inhibitedFilter) MatchAlertmanager(am *models.AlertmanagerInstance) bool {
-	return len(am.InhibitedBy) > 0 == filter.value
+	return len(am.InhibitedBy) > 0 == filter.boolValue
 }
 
-func newInhibitedFilter() FilterT {
-	f := inhibitedFilter{}
-	f.IsAlertmanagerFilter = true
-	return &f
+func newInhibitedFilter(name, operator, rawText, value string) Filter {
+	var bv bool
+	switch value {
+	case trueValue:
+		bv = true
+	case falseValue:
+		bv = false
+	default:
+		return &filterBase{rawText: rawText}
+	}
+	m, ok := buildMatcher(operator, value)
+	if !ok {
+		return &filterBase{rawText: rawText}
+	}
+	return &inhibitedFilter{
+		filterBase: filterBase{
+			matcher:              m,
+			name:                 name,
+			rawText:              rawText,
+			value:                value,
+			isValid:              true,
+			isAlertmanagerFilter: true,
+		},
+		boolValue: bv,
+	}
 }
 
 func inhibitedAutocomplete(name string, _ []string, _ []models.Alert, dst map[string]models.Autocomplete) {

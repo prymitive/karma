@@ -20,18 +20,12 @@ var matcherRegex = "[=!<>~]+"
 // same as matcherRegex but for the filter name part
 var filterRegex = "^(@)?[a-zA-Z_][a-zA-Z0-9_]*"
 
-var matcherConfig = map[string]matcherT{
-	equalOperator:         &equalMatcher{abstractMatcher{Operator: equalOperator}},
-	notEqualOperator:      &notEqualMatcher{abstractMatcher{Operator: notEqualOperator}},
-	moreThanOperator:      &moreThanMatcher{abstractMatcher{Operator: moreThanOperator}},
-	lessThanOperator:      &lessThanMatcher{abstractMatcher{Operator: lessThanOperator}},
-	regexpOperator:        &regexpMatcher{abstractMatcher{Operator: regexpOperator}},
-	negativeRegexOperator: &negativeRegexMatcher{abstractMatcher{Operator: negativeRegexOperator}},
-}
+// filterFactory constructs a Filter from parsed expression components.
+type filterFactory func(name, operator, rawText, value string) Filter
 
 type filterConfig struct {
 	LabelRe            *regexp.Regexp
-	Factory            newFilterFactory
+	Factory            filterFactory
 	Autocomplete       autocompleteFactory
 	Label              string
 	SupportedOperators []string
@@ -85,7 +79,7 @@ var AllFilters = []filterConfig{
 		Label:              "@receiver",
 		LabelRe:            regexp.MustCompile("^@receiver$"),
 		SupportedOperators: []string{regexpOperator, negativeRegexOperator, equalOperator, notEqualOperator},
-		Factory:            newreceiverFilter,
+		Factory:            newReceiverFilter,
 		Autocomplete:       receiverAutocomplete,
 	},
 	{
@@ -99,7 +93,7 @@ var AllFilters = []filterConfig{
 		Label:              "@silenced_by",
 		LabelRe:            regexp.MustCompile("^@silenced_by$"),
 		SupportedOperators: []string{equalOperator, notEqualOperator},
-		Factory:            newsilenceIDFilter,
+		Factory:            newSilenceIDFilter,
 		Autocomplete:       silenceIDAutocomplete,
 	},
 	{

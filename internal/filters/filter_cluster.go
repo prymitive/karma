@@ -1,56 +1,47 @@
 package filters
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/prymitive/karma/internal/models"
 )
 
 type alertmanagerClusterFilter struct {
-	value string
-	alertFilter
-}
-
-func (filter *alertmanagerClusterFilter) init(name string, matcher *matcherT, rawText string, isValid bool, value string) {
-	filter.Matched = name
-	if matcher != nil {
-		filter.Matcher = *matcher
-	}
-	filter.RawText = rawText
-	filter.IsValid = isValid
-	filter.value = value
-}
-
-func (filter *alertmanagerClusterFilter) GetValue() string {
-	return filter.value
+	filterBase
 }
 
 func (filter *alertmanagerClusterFilter) Match(alert *models.Alert, _ int) bool {
-	if filter.IsValid {
-		var isMatch bool
-		for _, am := range alert.Alertmanager {
-			if filter.Matcher.Compare(am.Cluster, filter.value) {
-				isMatch = true
-			}
+	var isMatch bool
+	for _, am := range alert.Alertmanager {
+		if filter.matcher.Compare(am.Cluster, filter.value) {
+			isMatch = true
 		}
-		if isMatch {
-			filter.Hits++
-		}
-		return isMatch
 	}
-	e := fmt.Sprintf("Match() called on invalid filter %#v", filter)
-	panic(e)
+	if isMatch {
+		filter.hits++
+	}
+	return isMatch
 }
 
 func (filter *alertmanagerClusterFilter) MatchAlertmanager(am *models.AlertmanagerInstance) bool {
-	return filter.Matcher.Compare(am.Cluster, filter.value)
+	return filter.matcher.Compare(am.Cluster, filter.value)
 }
 
-func newAlertmanagerClusterFilter() FilterT {
-	f := alertmanagerClusterFilter{}
-	f.IsAlertmanagerFilter = true
-	return &f
+func newAlertmanagerClusterFilter(name, operator, rawText, value string) Filter {
+	m, ok := buildMatcher(operator, value)
+	if !ok {
+		return &filterBase{rawText: rawText}
+	}
+	return &alertmanagerClusterFilter{
+		filterBase: filterBase{
+			matcher:              m,
+			name:                 name,
+			rawText:              rawText,
+			value:                value,
+			isValid:              true,
+			isAlertmanagerFilter: true,
+		},
+	}
 }
 
 func alertmanagerClusterAutocomplete(name string, operators []string, alerts []models.Alert, dst map[string]models.Autocomplete) {

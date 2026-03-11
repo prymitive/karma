@@ -18,8 +18,8 @@ import (
 	"github.com/prymitive/karma/internal/uri"
 )
 
-func getFiltersFromQuery(filterStrings []string) []filters.FilterT {
-	matchFilters := make([]filters.FilterT, 0, len(filterStrings))
+func getFiltersFromQuery(filterStrings []string) []filters.Filter {
+	matchFilters := make([]filters.Filter, 0, len(filterStrings))
 	for _, filterExpression := range filterStrings {
 		f := filters.NewFilter(filterExpression)
 		matchFilters = append(matchFilters, f)
@@ -324,11 +324,11 @@ func autoGridLabel(dedupedAlerts []models.AlertGroup) string {
 	return lastLabel
 }
 
-func filterAlerts(dedupedAlerts []models.AlertGroup, fl []filters.FilterT) (filteredAlerts []models.AlertGroup) {
+func filterAlerts(dedupedAlerts []models.AlertGroup, fl []filters.Filter) (filteredAlerts []models.AlertGroup) {
 	var matches int
 	var hasAMFilters bool
 	for _, filter := range fl {
-		if filter.GetIsValid() && filter.GetIsAlertmanagerFilter() {
+		if filter.Valid() && filter.IsAlertmanagerFilter() {
 			hasAMFilters = true
 			break
 		}
@@ -350,7 +350,7 @@ func filterAlerts(dedupedAlerts []models.AlertGroup, fl []filters.FilterT) (filt
 		for _, alert := range ag.Alerts {
 			var hadMismatch bool
 			for _, filter := range fl {
-				if filter.GetIsValid() {
+				if filter.Valid() {
 					if !filter.Match(&alert, matches) {
 						hadMismatch = true
 					}
@@ -364,7 +364,7 @@ func filterAlerts(dedupedAlerts []models.AlertGroup, fl []filters.FilterT) (filt
 				clear(blockedAMs)
 				for _, am := range alert.Alertmanager {
 					for _, filter := range fl {
-						if filter.GetIsValid() && filter.GetIsAlertmanagerFilter() && !filter.MatchAlertmanager(&am) {
+						if filter.Valid() && filter.IsAlertmanagerFilter() && !filter.MatchAlertmanager(&am) {
 							blockedAMs[am.Name] = struct{}{}
 						}
 					}

@@ -6,42 +6,32 @@ import (
 	"github.com/prymitive/karma/internal/models"
 )
 
-func TestMatchOnInvalidFilter(t *testing.T) {
-	for _, ft := range AllFilters {
-		f := ft.Factory()
-		m, _ := newMatcher(f.GetMatcher())
-		f.init(f.GetName(), &m, f.GetRawText(), false, f.GetValue())
-		func() {
-			didPanic := false
-			defer func() {
-				if r := recover(); r != nil {
-					didPanic = true
-				}
-			}()
-			alert := models.Alert{}
-			f.Match(&alert, 0)
-			if !didPanic {
-				t.Errorf("[%s] Match() on invalid filter didn't cause panic", ft.Label)
-			}
-		}()
+// verifies that an invalid filter (Valid()==false) returns false from Match
+// instead of panicking
+func TestMatchOnInvalidFilterReturnsFalse(t *testing.T) {
+	f := &filterBase{rawText: "invalid", isValid: false}
+	alert := models.Alert{}
+	if f.Match(&alert, 0) {
+		t.Error("Match() on invalid filterBase returned true, expected false")
 	}
 }
 
-func TestGetMatcherNil(t *testing.T) {
-	f := alertFilter{}
-	m := f.GetMatcher()
-	if m != "" {
-		t.Errorf("Got %q from empty filter GetMatcher()", m)
+// verifies that MatcherOperation returns empty string when no matcher is set
+func TestMatcherOperationEmpty(t *testing.T) {
+	f := &filterBase{}
+	if op := f.MatcherOperation(); op != "" {
+		t.Errorf("MatcherOperation() = %q, want empty string", op)
 	}
 }
 
-func TestGetMatcherNotNil(t *testing.T) {
-	matcher, _ := newMatcher("=")
-	f := alertFilter{
-		Matcher: matcher,
+// verifies that MatcherOperation returns the operator when a matcher is set
+func TestMatcherOperationSet(t *testing.T) {
+	m, err := newMatcher("=")
+	if err != nil {
+		t.Fatalf("newMatcher(\"=\") returned error: %v", err)
 	}
-	m := f.GetMatcher()
-	if m != "=" {
-		t.Errorf("Got %q from empty filter GetMatcher()", m)
+	f := &filterBase{matcher: m}
+	if op := f.MatcherOperation(); op != "=" {
+		t.Errorf("MatcherOperation() = %q, want \"=\"", op)
 	}
 }

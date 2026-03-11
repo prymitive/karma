@@ -1,186 +1,151 @@
 package filters
 
 import (
-	"regexp"
 	"testing"
-	"time"
 )
 
 type matchTest struct {
-	ValA     any
-	ValB     any
-	IsValid  bool
-	Expacted bool
+	ValA     string
+	ValB     string
+	Expected bool
 }
 
 func TestEqualMatcher(t *testing.T) {
-	now := time.Now()
 	tests := []matchTest{
-		{"a", "a", true, true},
-		{"abc", "abc", true, true},
-		{123, 123, true, true},
-		{now, now, true, true},
-		{"1", 1, true, false},
-		{"a", "ab", true, false},
-		{12, 13, true, false},
-		{&matchTest{}, &matchTest{}, true, false},
+		// identical strings match
+		{"a", "a", true},
+		{"abc", "abc", true},
+		// different strings do not match
+		{"a", "ab", false},
+		{"1", "2", false},
 	}
 	for _, mt := range tests {
-		m := equalMatcher{}
-		if result := m.Compare(mt.ValA, mt.ValB); result != mt.Expacted {
-			t.Errorf("EqualMatcher(%#v, %#v) returned %v when %v was expected", mt.ValA, mt.ValB, result, mt.Expacted)
+		if result := compareEqual(mt.ValA, mt.ValB); result != mt.Expected {
+			t.Errorf("compareEqual(%q, %q) = %v, want %v", mt.ValA, mt.ValB, result, mt.Expected)
 		}
 	}
 }
 
 func TestNotEqualMatcher(t *testing.T) {
-	now := time.Now()
 	tests := []matchTest{
-		{"a", "a", true, false},
-		{"abc", "abc", true, false},
-		{123, 123, true, false},
-		{now, now, true, false},
-		{"1", 1, true, true},
-		{"a", "ab", true, true},
-		{12, 13, true, true},
+		// identical strings do not match
+		{"a", "a", false},
+		{"abc", "abc", false},
+		// different strings match
+		{"a", "ab", true},
+		{"1", "2", true},
 	}
 	for _, mt := range tests {
-		m := notEqualMatcher{}
-		if result := m.Compare(mt.ValA, mt.ValB); result != mt.Expacted {
-			t.Errorf("NotEqualMatcher(%#v, %#v) returned %v when %v was expected", mt.ValA, mt.ValB, result, mt.Expacted)
+		if result := compareNotEqual(mt.ValA, mt.ValB); result != mt.Expected {
+			t.Errorf("compareNotEqual(%q, %q) = %v, want %v", mt.ValA, mt.ValB, result, mt.Expected)
 		}
 	}
 }
 
 func TestMoreThanMatcher(t *testing.T) {
 	tests := []matchTest{
-		{10, 1, true, true},
-		{"10", "1", true, true},
-		{8, 8, true, false},
-		{"8", "8", true, false},
-		{4, 9, true, false},
-		{"4", "9", true, false},
-		{"b", "a", true, true},
-		{"a", "a", true, false},
-		{"a", "b", true, false},
-		{"", "", true, false},
+		// numeric comparison
+		{"10", "1", true},
+		{"8", "8", false},
+		{"4", "9", false},
+		// string comparison when non-numeric
+		{"b", "a", true},
+		{"a", "a", false},
+		{"a", "b", false},
+		// empty strings return false
+		{"", "", false},
+		{"1", "", false},
+		{"", "1", false},
 	}
 	for _, mt := range tests {
-		m := moreThanMatcher{}
-		if result := m.Compare(mt.ValA, mt.ValB); result != mt.Expacted {
-			t.Errorf("MoreThanMatcher(%#v, %#v) returned %v when %v was expected", mt.ValA, mt.ValB, result, mt.Expacted)
+		if result := compareMoreThan(mt.ValA, mt.ValB); result != mt.Expected {
+			t.Errorf("compareMoreThan(%q, %q) = %v, want %v", mt.ValA, mt.ValB, result, mt.Expected)
 		}
 	}
 }
 
 func TestLessThanMatcher(t *testing.T) {
 	tests := []matchTest{
-		{10, 1, true, false},
-		{"10", "1", true, false},
-		{8, 8, true, false},
-		{"8", "8", true, false},
-		{4, 9, true, true},
-		{"4", "9", true, true},
-		{"b", "a", true, false},
-		{"a", "a", true, false},
-		{"a", "b", true, true},
-		{"", "", true, false},
+		// numeric comparison
+		{"10", "1", false},
+		{"8", "8", false},
+		{"4", "9", true},
+		// string comparison when non-numeric
+		{"b", "a", false},
+		{"a", "a", false},
+		{"a", "b", true},
+		// empty strings return false
+		{"", "", false},
+		{"1", "", false},
+		{"", "1", false},
 	}
 	for _, mt := range tests {
-		m := lessThanMatcher{}
-		if result := m.Compare(mt.ValA, mt.ValB); result != mt.Expacted {
-			t.Errorf("LessThanMatcher(%#v, %#v) returned %v when %v was expected", mt.ValA, mt.ValB, result, mt.Expacted)
+		if result := compareLessThan(mt.ValA, mt.ValB); result != mt.Expected {
+			t.Errorf("compareLessThan(%q, %q) = %v, want %v", mt.ValA, mt.ValB, result, mt.Expected)
 		}
 	}
 }
 
 func TestRegexpMatcher(t *testing.T) {
 	tests := []matchTest{
-		{"abcdef", "^abc", true, true},
-		{"abc", "^abc", true, true},
-		{"xxabcxx", "abc", true, true},
-		{"123", "123", true, true},
-		{"5", "^[0-9]+", true, true},
-		{"xb", "abc", true, false},
-		{"13", "12", true, false},
+		// matching patterns
+		{"abcdef", "^abc", true},
+		{"abc", "^abc", true},
+		{"xxabcxx", "abc", true},
+		{"123", "123", true},
+		{"5", "^[0-9]+", true},
+		// non-matching patterns
+		{"xb", "abc", false},
+		{"13", "12", false},
 	}
 	for _, mt := range tests {
-		m := regexpMatcher{}
-		if result := m.Compare(mt.ValA, regexp.MustCompile(mt.ValB.(string))); result != mt.Expacted {
-			t.Errorf("RegexpMatcher(%#v, %#v) returned %v when %v was expected", mt.ValA, mt.ValB, result, mt.Expacted)
+		m, err := newRegexpMatcher(regexpOperator, mt.ValB)
+		if err != nil {
+			t.Fatalf("newRegexpMatcher(%q, %q) error: %v", regexpOperator, mt.ValB, err)
 		}
-
+		if result := m.Compare(mt.ValA, ""); result != mt.Expected {
+			t.Errorf("regexpMatcher(%q, %q) = %v, want %v", mt.ValA, mt.ValB, result, mt.Expected)
+		}
 	}
 }
 
 func TestNegativeRegexpMatcher(t *testing.T) {
 	tests := []matchTest{
-		{"abcdef", "^abc", true, false},
-		{"abc", "^abc", true, false},
-		{"xxabcxx", "abc", true, false},
-		{"123", "123", true, false},
-		{"5", "^[0-9]+", true, false},
-		{"xb", "abc", true, true},
-		{"13", "12", true, true},
+		// matching patterns return false (negated)
+		{"abcdef", "^abc", false},
+		{"abc", "^abc", false},
+		{"xxabcxx", "abc", false},
+		{"123", "123", false},
+		{"5", "^[0-9]+", false},
+		// non-matching patterns return true (negated)
+		{"xb", "abc", true},
+		{"13", "12", true},
 	}
 	for _, mt := range tests {
-		m := negativeRegexMatcher{}
-		if result := m.Compare(mt.ValA, regexp.MustCompile(mt.ValB.(string))); result != mt.Expacted {
-			t.Errorf("NegativeRegexMatcher(%#v, %#v) returned %v when %v was expected", mt.ValA, mt.ValB, result, mt.Expacted)
+		m, err := newRegexpMatcher(negativeRegexOperator, mt.ValB)
+		if err != nil {
+			t.Fatalf("newRegexpMatcher(%q, %q) error: %v", negativeRegexOperator, mt.ValB, err)
 		}
-
-	}
-}
-
-func TestRegexpMatcherWithStringValB(t *testing.T) {
-	tests := []matchTest{
-		// verifies that passing a raw string pattern (not pre-compiled) compiles and matches
-		{"abcdef", "^abc", true, true},
-		// verifies cache hit on the same string pattern
-		{"abcdef", "^abc", true, true},
-		// verifies that a non-matching raw string pattern returns false
-		{"xyz", "^abc", true, false},
-	}
-	for _, mt := range tests {
-		m := regexpMatcher{}
-		if result := m.Compare(mt.ValA, mt.ValB); result != mt.Expacted {
-			t.Errorf("RegexpMatcher(%#v, %#v string) returned %v when %v was expected", mt.ValA, mt.ValB, result, mt.Expacted)
+		if result := m.Compare(mt.ValA, ""); result != mt.Expected {
+			t.Errorf("negativeRegexpMatcher(%q, %q) = %v, want %v", mt.ValA, mt.ValB, result, mt.Expected)
 		}
 	}
 }
 
+// verifies that an invalid regex pattern returns an error from newRegexpMatcher
 func TestRegexpMatcherWithInvalidPattern(t *testing.T) {
-	// verifies that an invalid regex pattern string returns false instead of panicking
-	m := regexpMatcher{}
-	result := m.Compare("foo", "[invalid")
-	if result != false {
-		t.Errorf("RegexpMatcher with invalid pattern returned %v, expected false", result)
+	_, err := newRegexpMatcher(regexpOperator, "[invalid")
+	if err == nil {
+		t.Error("newRegexpMatcher with invalid pattern should return an error")
 	}
 }
 
-func TestNegativeRegexpMatcherWithStringValB(t *testing.T) {
-	tests := []matchTest{
-		// verifies that passing a raw string pattern (not pre-compiled) compiles and negation works
-		{"abcdef", "^abcdef$", true, false},
-		// verifies cache hit on the same string pattern
-		{"abcdef", "^abcdef$", true, false},
-		// verifies that a non-matching raw string pattern returns true (negated)
-		{"xyz", "^abcdef$", true, true},
-	}
-	for _, mt := range tests {
-		m := negativeRegexMatcher{}
-		if result := m.Compare(mt.ValA, mt.ValB); result != mt.Expacted {
-			t.Errorf("NegativeRegexMatcher(%#v, %#v string) returned %v when %v was expected", mt.ValA, mt.ValB, result, mt.Expacted)
-		}
-	}
-}
-
+// verifies that an invalid regex pattern returns an error from newRegexpMatcher
+// for the negative variant
 func TestNegativeRegexpMatcherWithInvalidPattern(t *testing.T) {
-	// verifies that an invalid regex pattern string returns false instead of panicking
-	m := negativeRegexMatcher{}
-	result := m.Compare("foo", "[invalid")
-	if result != false {
-		t.Errorf("NegativeRegexMatcher with invalid pattern returned %v, expected false", result)
+	_, err := newRegexpMatcher(negativeRegexOperator, "[invalid")
+	if err == nil {
+		t.Error("newRegexpMatcher with invalid pattern should return an error")
 	}
 }
 
@@ -231,21 +196,19 @@ func TestNewMatcher(t *testing.T) {
 	for _, operator := range operators {
 		m, err := newMatcher(operator)
 		if err != nil {
-			t.Errorf("NewMatcher(%s) returned error: %s", operator, err.Error())
+			t.Errorf("newMatcher(%s) returned error: %s", operator, err.Error())
 		}
-		if m.GetOperator() != operator {
-			t.Errorf("Got wrong matcher for %s: %s", operator, m.GetOperator())
+		if m.Operator != operator {
+			t.Errorf("Got wrong matcher for %s: %s", operator, m.Operator)
 		}
 	}
 }
 
+// verifies that an unknown operator returns an error
 func TestInvalidMatcher(t *testing.T) {
 	operator := "<>"
-	m, err := newMatcher(operator)
+	_, err := newMatcher(operator)
 	if err == nil {
-		t.Errorf("NewMatcher(%s) didn't return any error: %s", operator, m)
-	}
-	if m != nil {
-		t.Errorf("NewMatcher(%s) returned non-nil value: %s", operator, m)
+		t.Errorf("newMatcher(%s) didn't return any error", operator)
 	}
 }

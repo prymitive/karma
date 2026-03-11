@@ -180,11 +180,11 @@ func WithHealthchecks(val map[string][]string) Option {
 		healthchecks := map[string]HealthCheck{}
 		for name, filterExpressions := range val {
 			hc := HealthCheck{
-				filters: []filters.FilterT{},
+				filters: []filters.Filter{},
 			}
 			for _, filterExpression := range filterExpressions {
 				f := filters.NewFilter(filterExpression)
-				if f == nil || !f.GetIsValid() {
+				if f == nil || !f.Valid() {
 					return fmt.Errorf("%q is not a valid filter", filterExpression)
 				}
 				hc.filters = append(hc.filters, f)

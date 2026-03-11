@@ -193,35 +193,34 @@ func DedupColors() models.LabelsColorMap {
 // DedupAutocomplete returns a list of autocomplete hints merged from all
 // Alertmanager upstreams
 func DedupAutocomplete() []models.Autocomplete {
-	uniqueAutocomplete := map[string]*models.Autocomplete{}
-
 	upstreams := GetAlertmanagers()
 
+	var result []models.Autocomplete
+	index := map[string]int{}
+
 	for _, am := range upstreams {
-		ac := am.Autocomplete()
-		for _, hint := range ac {
-			h, found := uniqueAutocomplete[hint.Value]
-			if found {
-				for _, token := range hint.Tokens {
-					if !slices.Contains(h.Tokens, token) {
-						h.Tokens = append(h.Tokens, token)
-					}
-				}
-			} else {
-				uniqueAutocomplete[hint.Value] = &models.Autocomplete{
-					Value:  hint.Value,
-					Tokens: hint.Tokens,
-				}
+		am.ForEachAutocomplete(func(hint models.Autocomplete) {
+			mergeAutocompleteHint(&result, index, hint)
+		})
+	}
+
+	return result
+}
+
+func mergeAutocompleteHint(result *[]models.Autocomplete, index map[string]int, hint models.Autocomplete) {
+	if idx, found := index[hint.Value]; found {
+		for _, token := range hint.Tokens {
+			if !slices.Contains((*result)[idx].Tokens, token) {
+				(*result)[idx].Tokens = append((*result)[idx].Tokens, token)
 			}
 		}
+	} else {
+		index[hint.Value] = len(*result)
+		*result = append(*result, models.Autocomplete{
+			Value:  hint.Value,
+			Tokens: hint.Tokens,
+		})
 	}
-
-	dedupedAutocomplete := make([]models.Autocomplete, 0, len(uniqueAutocomplete))
-	for _, hint := range uniqueAutocomplete {
-		dedupedAutocomplete = append(dedupedAutocomplete, *hint)
-	}
-
-	return dedupedAutocomplete
 }
 
 // DedupKnownLabels returns a deduplicated slice of all known label names

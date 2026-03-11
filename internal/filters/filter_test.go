@@ -1063,18 +1063,18 @@ func TestFilters(t *testing.T) {
 			if f == nil {
 				t.Errorf("[%s] No filter found", ft.Expression)
 			}
-			if f.GetHits() != 0 {
-				t.Errorf("[%s] Hits = %#v after init(), expected 0", ft.Expression, f.GetHits())
+			if f.Hits() != 0 {
+				t.Errorf("[%s] Hits = %#v after init(), expected 0", ft.Expression, f.Hits())
 			}
-			if f.GetIsValid() != ft.IsValid {
-				t.Errorf("[%s] GetIsValid() returned %#v while %#v was expected", ft.Expression, f.GetIsValid(), ft.IsValid)
+			if f.Valid() != ft.IsValid {
+				t.Errorf("[%s] Valid() returned %#v while %#v was expected", ft.Expression, f.Valid(), ft.IsValid)
 			}
-			if f.GetIsValid() {
+			if f.Valid() {
 				isAlertmanagerFilter := slices.Contains(
 					[]string{"@age", "@alertmanager", "@cluster", "@inhibited", "@inhibited_by", "@state", "@silenced_by", "@silence_ticket", "@silence_author", "@fingerprint"},
-					f.GetName())
-				if isAlertmanagerFilter != f.GetIsAlertmanagerFilter() {
-					t.Errorf("[%s] GetIsAlertmanagerFilter() returned %#v while %#v was expected", ft.Expression, f.GetIsAlertmanagerFilter(), isAlertmanagerFilter)
+					f.Name())
+				if isAlertmanagerFilter != f.IsAlertmanagerFilter() {
+					t.Errorf("[%s] IsAlertmanagerFilter() returned %#v while %#v was expected", ft.Expression, f.IsAlertmanagerFilter(), isAlertmanagerFilter)
 				}
 
 				m := f.Match(&alert, 0)
@@ -1083,17 +1083,17 @@ func TestFilters(t *testing.T) {
 					s, _ := json.Marshal(ft.Silence)
 					t.Errorf("[%s] Match() returned %#v while %#v was expected\nalert used: %s\nsilence used: %s", ft.Expression, m, ft.IsMatch, j, s)
 				}
-				if ft.IsMatch && f.GetHits() != 1 {
-					t.Errorf("[%s] GetHits() returned %#v after match, expected 1", ft.Expression, f.GetHits())
+				if ft.IsMatch && f.Hits() != 1 {
+					t.Errorf("[%s] Hits() returned %#v after match, expected 1", ft.Expression, f.Hits())
 				}
-				if !ft.IsMatch && f.GetHits() != 0 {
-					t.Errorf("[%s] GetHits() returned %#v after non-match, expected 0", ft.Expression, f.GetHits())
+				if !ft.IsMatch && f.Hits() != 0 {
+					t.Errorf("[%s] Hits() returned %#v after non-match, expected 0", ft.Expression, f.Hits())
 				}
-				if f.GetRawText() != strings.Trim(ft.Expression, " \t") {
-					t.Errorf("[%s] GetRawText() returned %#v != %s passed as the expression", ft.Expression, f.GetRawText(), ft.Expression)
+				if f.RawText() != strings.Trim(ft.Expression, " \t") {
+					t.Errorf("[%s] RawText() returned %#v != %s passed as the expression", ft.Expression, f.RawText(), ft.Expression)
 				}
 
-				if m && f.GetIsAlertmanagerFilter() {
+				if m && f.IsAlertmanagerFilter() {
 					for _, am := range alert.Alertmanager {
 						m := f.MatchAlertmanager(&am)
 						if m != ft.IsAlertmanagerMatch {
@@ -1105,19 +1105,11 @@ func TestFilters(t *testing.T) {
 					}
 				}
 			}
-			if !f.GetIsValid() {
-				func() {
-					didPanic := false
-					defer func() {
-						if r := recover(); r != nil {
-							didPanic = true
-						}
-					}()
-					f.Match(&alert, 0)
-					if !didPanic {
-						t.Errorf("[%s] Match() on invalid filter didn't cause panic", ft.Expression)
-					}
-				}()
+			if !f.Valid() {
+				m := f.Match(&alert, 0)
+				if m {
+					t.Errorf("[%s] Match() on invalid filter returned true, expected false", ft.Expression)
+				}
 			}
 		})
 	}
@@ -1181,13 +1173,13 @@ func TestLimitFilter(t *testing.T) {
 		if f == nil {
 			t.Errorf("[%s] No filter found", ft.Expression)
 		}
-		if f.GetHits() != 0 {
-			t.Errorf("[%s] Hits = %#v after init(), expected 0", ft.Expression, f.GetHits())
+		if f.Hits() != 0 {
+			t.Errorf("[%s] Hits = %#v after init(), expected 0", ft.Expression, f.Hits())
 		}
-		if f.GetIsValid() != ft.IsValid {
-			t.Errorf("[%s] GetIsValid() returned %#v while %#v was expected", ft.Expression, f.GetIsValid(), ft.IsValid)
+		if f.Valid() != ft.IsValid {
+			t.Errorf("[%s] Valid() returned %#v while %#v was expected", ft.Expression, f.Valid(), ft.IsValid)
 		}
-		if f.GetIsValid() {
+		if f.Valid() {
 			alert := models.Alert{}
 			var index int
 			for _, isMatch := range ft.IsMatch {
@@ -1195,28 +1187,20 @@ func TestLimitFilter(t *testing.T) {
 				if m != isMatch {
 					t.Errorf("[%s] Match() returned %#v while %#v was expected, index %d", ft.Expression, m, isMatch, index)
 				}
-				if f.GetRawText() != ft.Expression {
-					t.Errorf("[%s] GetRawText() returned %#v != %s passed as the expression", ft.Expression, f.GetRawText(), ft.Expression)
+				if f.RawText() != ft.Expression {
+					t.Errorf("[%s] RawText() returned %#v != %s passed as the expression", ft.Expression, f.RawText(), ft.Expression)
 				}
 				index++
 			}
-			if f.GetHits() != ft.Hits {
-				t.Errorf("[%s] GetHits() returned %#v hits, expected %d", ft.Expression, f.GetHits(), ft.Hits)
+			if f.Hits() != ft.Hits {
+				t.Errorf("[%s] Hits() returned %#v hits, expected %d", ft.Expression, f.Hits(), ft.Hits)
 			}
 		} else {
-			func() {
-				didPanic := false
-				defer func() {
-					if r := recover(); r != nil {
-						didPanic = true
-					}
-				}()
-				alert := models.Alert{}
-				f.Match(&alert, 0)
-				if !didPanic {
-					t.Errorf("[%s] Match() on invalid filter didn't cause panic", ft.Expression)
-				}
-			}()
+			alert := models.Alert{}
+			m := f.Match(&alert, 0)
+			if m {
+				t.Errorf("[%s] Match() on invalid filter returned true, expected false", ft.Expression)
+			}
 		}
 	}
 }

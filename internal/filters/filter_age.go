@@ -2,6 +2,7 @@ package filters
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 	"time"
 
@@ -9,55 +10,51 @@ import (
 )
 
 type ageFilter struct {
-	alertFilter
-	value time.Duration
+	filterBase
+	duration time.Duration
 }
 
-func (filter *ageFilter) init(name string, matcher *matcherT, rawText string, isValid bool, value string) {
-	filter.Matched = name
-	if matcher != nil {
-		filter.Matcher = *matcher
-	}
-	filter.RawText = rawText
-	filter.IsValid = isValid
-
-	dur, err := time.ParseDuration(value)
-	if err != nil {
-		filter.IsValid = false
-	}
-	if dur > 0 {
-		filter.value = -dur
-	} else {
-		filter.value = dur
-	}
-}
-
-func (filter *ageFilter) GetValue() string {
-	return fmt.Sprintf("%v", filter.value)
+func (filter *ageFilter) Value() string {
+	return fmt.Sprintf("%v", filter.duration)
 }
 
 func (filter *ageFilter) Match(alert *models.Alert, _ int) bool {
-	if filter.IsValid {
-		ts := time.Now().Add(filter.value)
-		isMatch := filter.Matcher.Compare(int(ts.Unix()), int(alert.StartsAt.Unix()))
-		if isMatch {
-			filter.Hits++
-		}
-		return isMatch
+	ts := time.Now().Add(filter.duration)
+	isMatch := filter.matcher.Compare(strconv.Itoa(int(ts.Unix())), strconv.Itoa(int(alert.StartsAt.Unix())))
+	if isMatch {
+		filter.hits++
 	}
-	e := fmt.Sprintf("Match() called on invalid filter %#v", filter)
-	panic(e)
+	return isMatch
 }
 
 func (filter *ageFilter) MatchAlertmanager(am *models.AlertmanagerInstance) bool {
-	ts := time.Now().Add(filter.value)
-	return filter.Matcher.Compare(int(ts.Unix()), int(am.StartsAt.Unix()))
+	ts := time.Now().Add(filter.duration)
+	return filter.matcher.Compare(strconv.Itoa(int(ts.Unix())), strconv.Itoa(int(am.StartsAt.Unix())))
 }
 
-func newAgeFilter() FilterT {
-	f := ageFilter{}
-	f.IsAlertmanagerFilter = true
-	return &f
+func newAgeFilter(name, operator, rawText, value string) Filter {
+	dur, err := time.ParseDuration(value)
+	if err != nil {
+		return &filterBase{rawText: rawText}
+	}
+	if dur > 0 {
+		dur = -dur
+	}
+	m, ok := buildMatcher(operator, value)
+	if !ok {
+		return &filterBase{rawText: rawText}
+	}
+	return &ageFilter{
+		filterBase: filterBase{
+			matcher:              m,
+			name:                 name,
+			rawText:              rawText,
+			value:                value,
+			isValid:              true,
+			isAlertmanagerFilter: true,
+		},
+		duration: dur,
+	}
 }
 
 func ageAutocomplete(name string, operators []string, _ []models.Alert, dst map[string]models.Autocomplete) {

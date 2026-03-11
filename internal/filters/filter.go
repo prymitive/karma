@@ -9,70 +9,70 @@ import (
 	"github.com/prymitive/karma/internal/models"
 )
 
-// FilterT provides methods for interacting with alert filters
-type FilterT interface {
-	init(name string, matcher *matcherT, rawText string, isValid bool, value string)
+// Filter provides methods for interacting with alert filters.
+type Filter interface {
 	Match(alert *models.Alert, matches int) bool
 	MatchAlertmanager(am *models.AlertmanagerInstance) bool
-	GetRawText() string
-	GetHits() int
-	GetIsValid() bool
-	GetName() string
-	GetMatcher() string
-	GetValue() string
-	GetIsAlertmanagerFilter() bool
+	RawText() string
+	Hits() int
+	Valid() bool
+	Name() string
+	MatcherOperation() string
+	Value() string
+	IsAlertmanagerFilter() bool
 }
 
-type alertFilter struct {
-	FilterT
-	Matcher              matcherT
-	Matched              string
-	RawText              string
-	Hits                 int
-	IsValid              bool
-	IsAlertmanagerFilter bool
+// filterBase holds common state shared by all filter implementations.
+// Concrete filters embed this struct and override Match and optionally
+// MatchAlertmanager and Value.
+type filterBase struct {
+	matcher              Matcher
+	name                 string
+	rawText              string
+	value                string
+	hits                 int
+	isValid              bool
+	isAlertmanagerFilter bool
 }
 
-func (filter *alertFilter) GetRawText() string {
-	return filter.RawText
-}
+func (f *filterBase) RawText() string            { return f.rawText }
+func (f *filterBase) Hits() int                  { return f.hits }
+func (f *filterBase) Valid() bool                { return f.isValid }
+func (f *filterBase) Name() string               { return f.name }
+func (f *filterBase) Value() string              { return f.value }
+func (f *filterBase) IsAlertmanagerFilter() bool { return f.isAlertmanagerFilter }
+func (f *filterBase) MatcherOperation() string   { return f.matcher.Operator }
 
-func (filter *alertFilter) GetHits() int {
-	return filter.Hits
-}
+func (f *filterBase) Match(*models.Alert, int) bool                       { return false }
+func (f *filterBase) MatchAlertmanager(*models.AlertmanagerInstance) bool { return false }
 
-func (filter *alertFilter) GetIsValid() bool {
-	return filter.IsValid
-}
-
-func (filter *alertFilter) GetName() string {
-	return filter.Matched
-}
-
-func (filter *alertFilter) GetMatcher() string {
-	if filter.Matcher == nil {
-		return ""
+// buildMatcher creates a Matcher for the given operator and value.
+// For regex operators it compiles the pattern; for others it delegates to newMatcher.
+func buildMatcher(operator, value string) (Matcher, bool) {
+	switch operator {
+	case regexpOperator, negativeRegexOperator:
+		m, err := newRegexpMatcher(operator, value)
+		if err != nil {
+			return Matcher{}, false
+		}
+		return m, true
+	default:
+		m, err := newMatcher(operator)
+		if err != nil {
+			return Matcher{}, false
+		}
+		return m, true
 	}
-	return filter.Matcher.GetOperator()
 }
 
-func (filter *alertFilter) GetIsAlertmanagerFilter() bool {
-	return filter.IsAlertmanagerFilter
-}
-
-type newFilterFactory func() FilterT
-
-// NewFilter creates new filter object from filter expression like "key=value"
-// expression will be parsed and best filter implementation and value matcher
-// will be selected
-func NewFilter(expression string) FilterT {
+// NewFilter creates a new filter from a filter expression like "key=value".
+// The expression is parsed and the best filter implementation and value
+// matcher are selected.
+func NewFilter(expression string) Filter {
 	trimmed := strings.Trim(expression, " \t")
 
-	invalid := alwaysInvalidFilter{}
-	invalid.init("", nil, trimmed, false, trimmed)
-
 	if trimmed == "" {
-		return &invalid
+		return &filterBase{rawText: trimmed}
 	}
 
 	reExp := fmt.Sprintf("^(?P<matched>(%s))(?P<operator>(%s))(?P<value>(.*))", filterRegex, matcherRegex)
@@ -90,33 +90,22 @@ func NewFilter(expression string) FilterT {
 	value := result["value"]
 
 	if matched == "" && operator == "" && value == "" {
-		// no "filter=" part, just the value, use fuzzy filter
-		f := newFuzzyFilter()
-		matcher, _ := newMatcher(regexpOperator)
-		f.init("", &matcher, trimmed, true, trimmed)
-		return f
+		return newFuzzyFilter(trimmed)
 	}
 
 	if value == "" {
-		// there's no value, so it's always invalid
-		return &invalid
+		return &filterBase{rawText: trimmed}
 	}
 
-	// we have "filter=" part, lookup filter that matches
 	for _, fc := range AllFilters {
-		f := fc.Factory()
 		if !fc.LabelRe.MatchString(matched) {
-			// filter name doesn't match, keep searching
 			continue
 		}
 		if !slices.Contains(fc.SupportedOperators, operator) {
-			return &invalid
+			return &filterBase{rawText: trimmed}
 		}
-		// we validate operator above, no need to re-check
-		matcher, _ := newMatcher(operator)
-		f.init(matched, &matcher, trimmed, true, value)
-		return f
+		return fc.Factory(matched, operator, trimmed, value)
 	}
 
-	return &invalid
+	return &filterBase{rawText: trimmed}
 }
