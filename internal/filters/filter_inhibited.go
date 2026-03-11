@@ -65,22 +65,14 @@ func newInhibitedFilter() FilterT {
 	return &f
 }
 
-func inhibitedAutocomplete(name string, _ []string, _ []models.Alert) []models.Autocomplete {
-	tokens := map[string]*models.Autocomplete{}
-
+func inhibitedAutocomplete(name string, _ []string, _ []models.Alert, dst map[string]models.Autocomplete) {
 	for _, val := range []string{trueValue, falseValue} {
 		token := name + equalOperator + val
-		hint := makeAC(token, []string{
+		setAC(dst, token, []string{
 			name,
 			strings.TrimPrefix(name, "@"),
 			name + equalOperator,
 			val,
 		})
-		tokens[token] = &hint
 	}
-	acData := make([]models.Autocomplete, 0, len(tokens))
-	for _, token := range tokens {
-		acData = append(acData, *token)
-	}
-	return acData
 }

@@ -136,11 +136,12 @@ func TestBuildAutocomplete(t *testing.T) {
 			labelPairs = append(labelPairs, pairs)
 		}
 
-		result := make([]string, 0, len(acTest.Alerts))
-		for _, hint := range filters.BuildAutocomplete(acTest.Alerts) {
-			result = append(result, hint.Value)
-		}
-		for _, hint := range filters.LabelAutocomplete(labelPairs) {
+		dst := map[string]models.Autocomplete{}
+		filters.BuildAutocomplete(acTest.Alerts, dst)
+		filters.LabelAutocomplete(labelPairs, dst)
+
+		result := make([]string, 0, len(dst))
+		for _, hint := range dst {
 			result = append(result, hint.Value)
 		}
 
@@ -174,9 +175,21 @@ func BenchmarkAutocomplete(b *testing.B) {
 		})
 		labelPairs = append(labelPairs, pairs)
 	}
-	b.ReportAllocs()
-	for i := 0; i < b.N; i++ {
-		filters.BuildAutocomplete(alerts)
-		filters.LabelAutocomplete(labelPairs)
-	}
+	b.Run("fresh", func(b *testing.B) {
+		b.ReportAllocs()
+		for i := 0; i < b.N; i++ {
+			dst := map[string]models.Autocomplete{}
+			filters.BuildAutocomplete(alerts, dst)
+			filters.LabelAutocomplete(labelPairs, dst)
+		}
+	})
+	b.Run("reuse", func(b *testing.B) {
+		dst := map[string]models.Autocomplete{}
+		b.ReportAllocs()
+		for i := 0; i < b.N; i++ {
+			clear(dst)
+			filters.BuildAutocomplete(alerts, dst)
+			filters.LabelAutocomplete(labelPairs, dst)
+		}
+	})
 }

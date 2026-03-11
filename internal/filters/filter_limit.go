@@ -51,25 +51,17 @@ func newLimitFilter() FilterT {
 	return &f
 }
 
-func limitAutocomplete(name string, operators []string, _ []models.Alert) []models.Autocomplete {
-	tokens := make([]models.Autocomplete, 0, len(operators)*2)
+func limitAutocomplete(name string, operators []string, _ []models.Alert, dst map[string]models.Autocomplete) {
 	for _, operator := range operators {
-		tokens = append(tokens, makeAC(
-			fmt.Sprintf("%s%s10", name, operator),
-			[]string{
-				name,
-				strings.TrimPrefix(name, "@"),
-				name + operator,
-			},
-		))
-		tokens = append(tokens, makeAC(
-			fmt.Sprintf("%s%s50", name, operator),
-			[]string{
-				name,
-				strings.TrimPrefix(name, "@"),
-				name + operator,
-			},
-		))
+		setAC(dst, fmt.Sprintf("%s%s10", name, operator), []string{
+			name,
+			strings.TrimPrefix(name, "@"),
+			name + operator,
+		})
+		setAC(dst, fmt.Sprintf("%s%s50", name, operator), []string{
+			name,
+			strings.TrimPrefix(name, "@"),
+			name + operator,
+		})
 	}
-	return tokens
 }

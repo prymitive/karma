@@ -62,10 +62,11 @@ type Alertmanager struct {
 	// CORS credentials
 	CORSCredentials string `json:"corsCredentials"`
 	// fields for storing pulled data
-	alertGroups    []models.AlertGroup
-	autocomplete   []models.Autocomplete
-	knownLabels    []string
-	RequestTimeout time.Duration `json:"timeout"`
+	alertGroups     []models.AlertGroup
+	autocomplete    []models.Autocomplete
+	autocompleteMap map[string]models.Autocomplete
+	knownLabels     []string
+	RequestTimeout  time.Duration `json:"timeout"`
 	// lock protects data access while updating
 	lock sync.RWMutex
 	// whenever this instance should be proxied
@@ -238,7 +239,11 @@ func (am *Alertmanager) pullAlerts(version string) error {
 
 	dedupedGroups := make([]models.AlertGroup, 0, len(uniqueGroups))
 	colors := models.LabelsColorMap{}
-	autocompleteMap := map[string]*models.Autocomplete{}
+	if am.autocompleteMap == nil {
+		am.autocompleteMap = map[string]models.Autocomplete{}
+	} else {
+		clear(am.autocompleteMap)
+	}
 	expiredSilences := am.ExpiredSilences()
 
 	log.Info().
@@ -310,12 +315,8 @@ func (am *Alertmanager) pullAlerts(version string) error {
 			alerts = append(alerts, alert)
 		}
 
-		for _, hint := range filters.BuildAutocomplete(alerts) {
-			autocompleteMap[hint.Value] = &hint
-		}
-		for _, hint := range filters.LabelAutocomplete(labelPairs) {
-			autocompleteMap[hint.Value] = &hint
-		}
+		filters.BuildAutocomplete(alerts, am.autocompleteMap)
+		filters.LabelAutocomplete(labelPairs, am.autocompleteMap)
 
 		slices.SortFunc(alerts, models.CompareAlerts)
 		ag.Alerts = alerts
@@ -328,11 +329,11 @@ func (am *Alertmanager) pullAlerts(version string) error {
 
 	log.Info().
 		Str("alertmanager", am.Name).
-		Int("hints", len(autocompleteMap)).
+		Int("hints", len(am.autocompleteMap)).
 		Msg("Merging autocomplete hints")
-	autocomplete := make([]models.Autocomplete, 0, len(autocompleteMap))
-	for _, hint := range autocompleteMap {
-		autocomplete = append(autocomplete, *hint)
+	autocomplete := make([]models.Autocomplete, 0, len(am.autocompleteMap))
+	for _, hint := range am.autocompleteMap {
+		autocomplete = append(autocomplete, hint)
 	}
 
 	knownLabels := make([]string, 0, len(knownLabelsMap))
