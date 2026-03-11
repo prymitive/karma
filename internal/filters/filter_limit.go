@@ -30,10 +30,8 @@ func newLimitFilter(name, operator, rawText, value string) Filter {
 	if err != nil || val < 1 {
 		return &filterBase{rawText: rawText}
 	}
-	m, ok := buildMatcher(operator, value)
-	if !ok {
-		return &filterBase{rawText: rawText}
-	}
+	// operator is pre-validated by the registry, buildMatcher cannot fail here
+	m, _ := buildMatcher(operator, value)
 	return &limitFilter{
 		filterBase: filterBase{
 			matcher: m,

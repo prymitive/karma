@@ -26,10 +26,8 @@ func (filter *fingerprintFilter) MatchAlertmanager(am *models.AlertmanagerInstan
 }
 
 func newFingerprintFilter(name, operator, rawText, value string) Filter {
-	m, ok := buildMatcher(operator, value)
-	if !ok {
-		return &filterBase{rawText: rawText}
-	}
+	// operator is pre-validated by the registry, buildMatcher cannot fail here
+	m, _ := buildMatcher(operator, value)
 	return &fingerprintFilter{
 		filterBase: filterBase{
 			matcher:              m,

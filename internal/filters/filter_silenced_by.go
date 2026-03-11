@@ -35,10 +35,8 @@ func (filter *silenceIDFilter) MatchAlertmanager(am *models.AlertmanagerInstance
 }
 
 func newSilenceIDFilter(name, operator, rawText, value string) Filter {
-	m, ok := buildMatcher(operator, value)
-	if !ok {
-		return &filterBase{rawText: rawText}
-	}
+	// operator is pre-validated by the registry, buildMatcher cannot fail here
+	m, _ := buildMatcher(operator, value)
 	return &silenceIDFilter{
 		filterBase: filterBase{
 			matcher:              m,
