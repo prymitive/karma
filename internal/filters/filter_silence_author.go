@@ -69,8 +69,7 @@ func newSilenceAuthorFilter() FilterT {
 	return &f
 }
 
-func silenceAuthorAutocomplete(name string, operators []string, alerts []models.Alert) []models.Autocomplete {
-	tokens := map[string]*models.Autocomplete{}
+func silenceAuthorAutocomplete(name string, operators []string, alerts []models.Alert, dst map[string]models.Autocomplete) {
 	for _, alert := range alerts {
 		for _, am := range alert.Alertmanager {
 			for _, silenceID := range am.SilencedBy {
@@ -79,24 +78,16 @@ func silenceAuthorAutocomplete(name string, operators []string, alerts []models.
 					if found {
 						for _, operator := range operators {
 							token := name + operator + silence.CreatedBy
-							if _, ok := tokens[token]; !ok {
-								hint := makeAC(token, []string{
-									name,
-									strings.TrimPrefix(name, "@"),
-									name + operator,
-									silence.CreatedBy,
-								})
-								tokens[token] = &hint
-							}
+							setAC(dst, token, []string{
+								name,
+								strings.TrimPrefix(name, "@"),
+								name + operator,
+								silence.CreatedBy,
+							})
 						}
 					}
 				}
 			}
 		}
 	}
-	acData := make([]models.Autocomplete, 0, len(tokens))
-	for _, token := range tokens {
-		acData = append(acData, *token)
-	}
-	return acData
 }

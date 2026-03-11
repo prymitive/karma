@@ -184,6 +184,42 @@ func TestNegativeRegexpMatcherWithInvalidPattern(t *testing.T) {
 	}
 }
 
+func TestIsDigits(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected bool
+	}{
+		// empty string returns false
+		{input: "", expected: false},
+		// plain digits
+		{input: "0", expected: true},
+		{input: "123", expected: true},
+		// positive sign prefix
+		{input: "+1", expected: true},
+		{input: "+999", expected: true},
+		// negative sign prefix
+		{input: "-1", expected: true},
+		{input: "-42", expected: true},
+		// bare sign with no digits returns false
+		{input: "+", expected: false},
+		{input: "-", expected: false},
+		// non-digit characters return false
+		{input: "abc", expected: false},
+		{input: "12a", expected: false},
+		{input: "1.5", expected: false},
+		// sign in the middle returns false
+		{input: "1+2", expected: false},
+	}
+	for _, tt := range tests {
+		t.Run(tt.input, func(t *testing.T) {
+			got := isDigits(tt.input)
+			if got != tt.expected {
+				t.Errorf("isDigits(%q) = %v, want %v", tt.input, got, tt.expected)
+			}
+		})
+	}
+}
+
 func TestNewMatcher(t *testing.T) {
 	operators := []string{
 		equalOperator,

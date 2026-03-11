@@ -132,6 +132,18 @@ func TestSortOrderedLabels(t *testing.T) {
 				{Name: "bar", Value: "1"},
 			},
 		},
+		// verifies that two distinct labels both in config order sort by their position in the order list
+		{
+			order: []string{"bar", "foo"},
+			in: models.OrderedLabels{
+				{Name: "foo", Value: "1"},
+				{Name: "bar", Value: "1"},
+			},
+			out: models.OrderedLabels{
+				{Name: "bar", Value: "1"},
+				{Name: "foo", Value: "1"},
+			},
+		},
 		// verifies that identical labels stay in their original positions
 		{
 			order: []string{},
@@ -183,6 +195,17 @@ func TestSortOrderedLabels(t *testing.T) {
 				t.FailNow()
 			}
 		})
+	}
+}
+
+func TestCompareOrderedLabelsIdentical(t *testing.T) {
+	// verifies that comparing two identical labels returns 0
+	config.Config.Labels.Order = []string{}
+	a := models.OrderedLabel{Name: "foo", Value: "bar"}
+	b := models.OrderedLabel{Name: "foo", Value: "bar"}
+	got := models.CompareOrderedLabels(a, b)
+	if got != 0 {
+		t.Errorf("CompareOrderedLabels(%v, %v) = %d, want 0", a, b, got)
 	}
 }
 
@@ -265,6 +288,70 @@ func TestAlertStateUnmarshalJSONError(t *testing.T) {
 	err := json.Unmarshal([]byte(`{invalid`), &s)
 	if err == nil {
 		t.Error("json.Unmarshal should have returned an error for invalid JSON")
+	}
+}
+
+func TestAlertStateStringUnknown(t *testing.T) {
+	// verifies that an out-of-range AlertState falls back to "unprocessed"
+	unknown := models.AlertState(99)
+	if unknown.String() != "unprocessed" {
+		t.Errorf("AlertState(99).String() = %q, want %q", unknown.String(), "unprocessed")
+	}
+}
+
+func TestParseAlertStateUnknown(t *testing.T) {
+	// verifies that parsing an unknown string returns AlertStateUnprocessed
+	got := models.ParseAlertState("bogus")
+	if got != models.AlertStateUnprocessed {
+		t.Errorf("ParseAlertState(%q) = %v, want %v", "bogus", got, models.AlertStateUnprocessed)
+	}
+}
+
+func TestAlertStateMarshalText(t *testing.T) {
+	// verifies that MarshalText produces the expected string representation
+	tests := []struct {
+		state    models.AlertState
+		expected string
+	}{
+		{state: models.AlertStateUnprocessed, expected: "unprocessed"},
+		{state: models.AlertStateActive, expected: "active"},
+		{state: models.AlertStateSuppressed, expected: "suppressed"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.expected, func(t *testing.T) {
+			data, err := tt.state.MarshalText()
+			if err != nil {
+				t.Fatalf("MarshalText() error: %v", err)
+			}
+			if string(data) != tt.expected {
+				t.Errorf("MarshalText() = %q, want %q", string(data), tt.expected)
+			}
+		})
+	}
+}
+
+func TestAlertStateUnmarshalText(t *testing.T) {
+	// verifies that UnmarshalText correctly parses known and unknown state strings
+	tests := []struct {
+		input    string
+		expected models.AlertState
+	}{
+		{input: "active", expected: models.AlertStateActive},
+		{input: "suppressed", expected: models.AlertStateSuppressed},
+		{input: "unprocessed", expected: models.AlertStateUnprocessed},
+		{input: "unknown", expected: models.AlertStateUnprocessed},
+	}
+	for _, tt := range tests {
+		t.Run(tt.input, func(t *testing.T) {
+			var s models.AlertState
+			err := s.UnmarshalText([]byte(tt.input))
+			if err != nil {
+				t.Fatalf("UnmarshalText(%q) error: %v", tt.input, err)
+			}
+			if s != tt.expected {
+				t.Errorf("UnmarshalText(%q) = %v, want %v", tt.input, s, tt.expected)
+			}
+		})
 	}
 }
 

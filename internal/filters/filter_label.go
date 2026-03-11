@@ -2,13 +2,28 @@ package filters
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
 
 	"github.com/prometheus/prometheus/model/labels"
 
 	"github.com/prymitive/karma/internal/models"
 )
+
+func isDigits(s string) bool {
+	if s == "" {
+		return false
+	}
+	for i := range len(s) {
+		c := s[i]
+		if c < '0' || c > '9' {
+			if i == 0 && (c == '+' || c == '-') && len(s) > 1 {
+				continue
+			}
+			return false
+		}
+	}
+	return true
+}
 
 type labelFilter struct {
 	value string
@@ -46,68 +61,59 @@ func newLabelFilter() FilterT {
 	return &f
 }
 
-func LabelAutocomplete(labelPairs [][]labels.Label) []models.Autocomplete {
-	tokens := map[string]*models.Autocomplete{}
+func LabelAutocomplete(labelPairs [][]labels.Label, dst map[string]models.Autocomplete) {
+	var b strings.Builder
 	for _, pairs := range labelPairs {
 		for _, l := range pairs {
 			for _, operator := range labelFilterOperators {
 				switch operator {
 				case equalOperator, notEqualOperator:
-					token := l.Name + operator + l.Value
-					if _, ok := tokens[token]; !ok {
-						hint := makeAC(
-							token,
-							[]string{
+					b.Reset()
+					b.Grow(len(l.Name) + len(operator) + len(l.Value))
+					b.WriteString(l.Name)
+					b.WriteString(operator)
+					b.WriteString(l.Value)
+					token := b.String()
+					setAC(dst, token, []string{
+						l.Name,
+						l.Name + operator,
+						l.Value,
+					})
+				case regexpOperator, negativeRegexOperator:
+					if strings.Contains(l.Value, " ") {
+						for substring := range strings.SplitSeq(l.Value, " ") {
+							b.Reset()
+							b.Grow(len(l.Name) + len(operator) + len(substring))
+							b.WriteString(l.Name)
+							b.WriteString(operator)
+							b.WriteString(substring)
+							token := b.String()
+							setAC(dst, token, []string{
 								l.Name,
 								l.Name + operator,
 								l.Value,
-							},
-						)
-						tokens[token] = &hint
-					}
-				case regexpOperator, negativeRegexOperator:
-					substrings := strings.Split(l.Value, " ")
-					if len(substrings) > 1 {
-						for _, substring := range substrings {
-							token := l.Name + operator + substring
-							if _, ok := tokens[token]; !ok {
-								hint := makeAC(
-									token,
-									[]string{
-										l.Name,
-										l.Name + operator,
-										l.Value,
-										substring,
-									},
-								)
-								tokens[token] = &hint
-							}
+								substring,
+							})
 						}
 					}
 				case moreThanOperator, lessThanOperator:
-					if _, err := strconv.Atoi(l.Value); err == nil {
-						token := l.Name + operator + l.Value
-						if _, ok := tokens[token]; !ok {
-							hint := makeAC(
-								token,
-								[]string{
-									l.Name,
-									l.Name + operator,
-									l.Value,
-								},
-							)
-							tokens[token] = &hint
-						}
+					if isDigits(l.Value) {
+						b.Reset()
+						b.Grow(len(l.Name) + len(operator) + len(l.Value))
+						b.WriteString(l.Name)
+						b.WriteString(operator)
+						b.WriteString(l.Value)
+						token := b.String()
+						setAC(dst, token, []string{
+							l.Name,
+							l.Name + operator,
+							l.Value,
+						})
 					}
 				}
 			}
 		}
 	}
-	acData := make([]models.Autocomplete, 0, len(tokens))
-	for _, token := range tokens {
-		acData = append(acData, *token)
-	}
-	return acData
 }
 
 var labelFilterOperators = []string{regexpOperator, negativeRegexOperator, equalOperator, notEqualOperator, lessThanOperator, moreThanOperator}

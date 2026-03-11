@@ -257,6 +257,23 @@ func TestAnnotationsCustomOrderSort(t *testing.T) {
 	}
 }
 
+func TestAnnotationsSortBothInOrder(t *testing.T) {
+	// verifies that when both annotations appear in the configured order list,
+	// they sort strictly by their position in that list regardless of alphabetical order
+	config.Config.Annotations.Order = []string{"zzz", "aaa"}
+	annotations := models.Annotations{
+		{Name: "aaa", Value: "v1", Visible: true},
+		{Name: "zzz", Value: "v2", Visible: true},
+	}
+	models.SortAnnotations(annotations)
+	if annotations[0].Name != "zzz" {
+		t.Errorf("Expected 'zzz' (order index 0) to be first, got %q", annotations[0].Name)
+	}
+	if annotations[1].Name != "aaa" {
+		t.Errorf("Expected 'aaa' (order index 1) to be second, got %q", annotations[1].Name)
+	}
+}
+
 func TestAnnotationsSortIdenticalNames(t *testing.T) {
 	// verifies that annotations with the same name are treated as equal by the comparator
 	config.Config.Annotations.Order = []string{}

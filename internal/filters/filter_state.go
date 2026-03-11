@@ -56,27 +56,15 @@ func newStateFilter() FilterT {
 	return &f
 }
 
-func stateAutocomplete(name string, operators []string, alerts []models.Alert) []models.Autocomplete {
-	tokens := map[string]*models.Autocomplete{}
+func stateAutocomplete(name string, operators []string, alerts []models.Alert, dst map[string]models.Autocomplete) {
 	for _, operator := range operators {
 		for _, alert := range alerts {
 			token := name + operator + alert.State.String()
-			if _, ok := tokens[token]; !ok {
-				hint := makeAC(
-					token,
-					[]string{
-						name,
-						strings.TrimPrefix(name, "@"),
-						name + operator,
-					},
-				)
-				tokens[token] = &hint
-			}
+			setAC(dst, token, []string{
+				name,
+				strings.TrimPrefix(name, "@"),
+				name + operator,
+			})
 		}
 	}
-	acData := make([]models.Autocomplete, 0, len(tokens))
-	for _, token := range tokens {
-		acData = append(acData, *token)
-	}
-	return acData
 }

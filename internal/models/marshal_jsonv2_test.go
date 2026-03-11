@@ -431,6 +431,63 @@ func TestMarshalJSONTo_MatchesV1(t *testing.T) {
 			},
 		},
 		{
+			// API grid with populated alert groups containing actual alerts,
+			// exercising the inner alert marshaling loop in APIGrid.MarshalJSONTo
+			name: "APIGrid/with_alerts",
+			val: models.APIGrid{
+				StateCount: map[string]int{"active": 1},
+				LabelName:  "cluster",
+				LabelValue: "prod",
+				AlertGroups: []models.APIAlertGroup{
+					{
+						AllLabels: map[string]map[string][]string{
+							"active": {"alertname": {"Test"}},
+						},
+						AlertmanagerCount: map[string]int{"am1": 1},
+						StateCount:        map[string]int{"active": 1},
+						Receiver:          "default",
+						ID:                "group-1",
+						Shared: models.APIAlertGroupSharedMaps{
+							Annotations: models.Annotations{},
+							Labels:      models.OrderedLabels{{Name: "job", Value: "test"}},
+							Silences:    map[string][]string{},
+							Sources:     []string{"http://am1:9093"},
+							Clusters:    []string{"cluster1"},
+						},
+						Labels: models.OrderedLabels{{Name: "alertname", Value: "Test"}},
+						Alerts: []models.APIAlert{
+							{
+								StartsAt: ts,
+								State:    "active",
+								Receiver: "default",
+								LabelsFP: "fp1",
+								Annotations: models.Annotations{
+									{Name: "summary", Value: "test", Visible: true},
+								},
+								Labels: models.OrderedLabels{
+									{Name: "instance", Value: "localhost:9090"},
+								},
+								Alertmanager: []models.AlertmanagerInstance{
+									{
+										StartsAt:    ts,
+										Fingerprint: "fp1",
+										Name:        "am1",
+										Cluster:     "cluster1",
+										Source:      "http://am1:9093",
+										SilencedBy:  []string{},
+										InhibitedBy: []string{},
+										State:       models.AlertStateActive,
+									},
+								},
+							},
+						},
+						TotalAlerts: 1,
+					},
+				},
+				TotalGroups: 1,
+			},
+		},
+		{
 			// full alert group with all nested structures populated
 			name: "APIAlertGroup/full",
 			val: models.APIAlertGroup{

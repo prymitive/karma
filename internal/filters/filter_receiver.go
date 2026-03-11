@@ -43,51 +43,32 @@ func newreceiverFilter() FilterT {
 	return &f
 }
 
-func receiverAutocomplete(name string, operators []string, alerts []models.Alert) []models.Autocomplete {
-	tokens := map[string]*models.Autocomplete{}
+func receiverAutocomplete(name string, operators []string, alerts []models.Alert, dst map[string]models.Autocomplete) {
 	for _, alert := range alerts {
 		if alert.Receiver != "" {
 			for _, operator := range operators {
 				switch operator {
 				case equalOperator, notEqualOperator:
 					token := name + operator + alert.Receiver
-					if _, ok := tokens[token]; !ok {
-						hint := makeAC(
-							token,
-							[]string{
+					setAC(dst, token, []string{
+						name,
+						strings.TrimPrefix(name, "@"),
+						name + operator,
+					})
+				case regexpOperator, negativeRegexOperator:
+					if strings.Contains(alert.Receiver, " ") {
+						for substring := range strings.SplitSeq(alert.Receiver, " ") {
+							token := name + operator + substring
+							setAC(dst, token, []string{
 								name,
 								strings.TrimPrefix(name, "@"),
 								name + operator,
-							},
-						)
-						tokens[token] = &hint
-					}
-				case regexpOperator, negativeRegexOperator:
-					substrings := strings.Split(alert.Receiver, " ")
-					if len(substrings) > 1 {
-						for _, substring := range substrings {
-							token := name + operator + substring
-							if _, ok := tokens[token]; !ok {
-								hint := makeAC(
-									token,
-									[]string{
-										name,
-										strings.TrimPrefix(name, "@"),
-										name + operator,
-										substring,
-									},
-								)
-								tokens[token] = &hint
-							}
+								substring,
+							})
 						}
 					}
 				}
 			}
 		}
 	}
-	acData := make([]models.Autocomplete, 0, len(tokens))
-	for _, token := range tokens {
-		acData = append(acData, *token)
-	}
-	return acData
 }
