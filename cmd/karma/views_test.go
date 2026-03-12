@@ -2582,61 +2582,61 @@ func TestAlertList(t *testing.T) {
 		{
 			args: "",
 			alerts: AlertList{
-				Alerts: []promlabels.Labels{
-					promlabels.FromStrings("alertname", "Free_Disk_Space_Too_Low", "cluster", "staging", "disk", "sda", "instance", "server5", "job", "node_exporter"),
-					promlabels.FromStrings("alertname", "HTTP_Probe_Failed", "cluster", "dev", "instance", "web1", "job", "node_exporter"),
-					promlabels.FromStrings("alertname", "HTTP_Probe_Failed", "cluster", "dev", "instance", "web2", "job", "node_exporter"),
-					promlabels.FromStrings("alertname", "Host_Down", "cluster", "dev", "instance", "server6", "ip", "127.0.0.6", "job", "node_ping"),
-					promlabels.FromStrings("alertname", "Host_Down", "cluster", "dev", "instance", "server7", "ip", "127.0.0.7", "job", "node_ping"),
-					promlabels.FromStrings("alertname", "Host_Down", "cluster", "dev", "instance", "server8", "ip", "127.0.0.8", "job", "node_ping"),
-					promlabels.FromStrings("alertname", "Host_Down", "cluster", "prod", "instance", "server1", "ip", "127.0.0.1", "job", "node_ping"),
-					promlabels.FromStrings("alertname", "Host_Down", "cluster", "prod", "instance", "server2", "ip", "127.0.0.2", "job", "node_ping"),
-					promlabels.FromStrings("alertname", "Host_Down", "cluster", "staging", "instance", "server3", "ip", "127.0.0.3", "job", "node_ping"),
-					promlabels.FromStrings("alertname", "Host_Down", "cluster", "staging", "instance", "server4", "ip", "127.0.0.4", "job", "node_ping"),
-					promlabels.FromStrings("alertname", "Host_Down", "cluster", "staging", "instance", "server5", "ip", "127.0.0.5", "job", "node_ping"),
-					promlabels.FromStrings("alertname", "Memory_Usage_Too_High", "cluster", "prod", "instance", "server2", "job", "node_exporter"),
+				Alerts: []models.OrderedLabels{
+					models.LabelsToOrderedLabels(promlabels.FromStrings("alertname", "Free_Disk_Space_Too_Low", "cluster", "staging", "disk", "sda", "instance", "server5", "job", "node_exporter")),
+					models.LabelsToOrderedLabels(promlabels.FromStrings("alertname", "HTTP_Probe_Failed", "cluster", "dev", "instance", "web1", "job", "node_exporter")),
+					models.LabelsToOrderedLabels(promlabels.FromStrings("alertname", "HTTP_Probe_Failed", "cluster", "dev", "instance", "web2", "job", "node_exporter")),
+					models.LabelsToOrderedLabels(promlabels.FromStrings("alertname", "Host_Down", "cluster", "dev", "instance", "server6", "ip", "127.0.0.6", "job", "node_ping")),
+					models.LabelsToOrderedLabels(promlabels.FromStrings("alertname", "Host_Down", "cluster", "dev", "instance", "server7", "ip", "127.0.0.7", "job", "node_ping")),
+					models.LabelsToOrderedLabels(promlabels.FromStrings("alertname", "Host_Down", "cluster", "dev", "instance", "server8", "ip", "127.0.0.8", "job", "node_ping")),
+					models.LabelsToOrderedLabels(promlabels.FromStrings("alertname", "Host_Down", "cluster", "prod", "instance", "server1", "ip", "127.0.0.1", "job", "node_ping")),
+					models.LabelsToOrderedLabels(promlabels.FromStrings("alertname", "Host_Down", "cluster", "prod", "instance", "server2", "ip", "127.0.0.2", "job", "node_ping")),
+					models.LabelsToOrderedLabels(promlabels.FromStrings("alertname", "Host_Down", "cluster", "staging", "instance", "server3", "ip", "127.0.0.3", "job", "node_ping")),
+					models.LabelsToOrderedLabels(promlabels.FromStrings("alertname", "Host_Down", "cluster", "staging", "instance", "server4", "ip", "127.0.0.4", "job", "node_ping")),
+					models.LabelsToOrderedLabels(promlabels.FromStrings("alertname", "Host_Down", "cluster", "staging", "instance", "server5", "ip", "127.0.0.5", "job", "node_ping")),
+					models.LabelsToOrderedLabels(promlabels.FromStrings("alertname", "Memory_Usage_Too_High", "cluster", "prod", "instance", "server2", "job", "node_exporter")),
 				},
 			},
 		},
 		{
 			args: "q=alertname=Free_Disk_Space_Too_Low",
 			alerts: AlertList{
-				Alerts: []promlabels.Labels{
-					promlabels.FromStrings("alertname", "Free_Disk_Space_Too_Low", "cluster", "staging", "disk", "sda", "instance", "server5", "job", "node_exporter"),
+				Alerts: []models.OrderedLabels{
+					models.LabelsToOrderedLabels(promlabels.FromStrings("alertname", "Free_Disk_Space_Too_Low", "cluster", "staging", "disk", "sda", "instance", "server5", "job", "node_exporter")),
 				},
 			},
 		},
 		{
 			args: "q=alertname=HTTP_Probe_Failed",
 			alerts: AlertList{
-				Alerts: []promlabels.Labels{
-					promlabels.FromStrings("alertname", "HTTP_Probe_Failed", "cluster", "dev", "instance", "web1", "job", "node_exporter"),
-					promlabels.FromStrings("alertname", "HTTP_Probe_Failed", "cluster", "dev", "instance", "web2", "job", "node_exporter"),
+				Alerts: []models.OrderedLabels{
+					models.LabelsToOrderedLabels(promlabels.FromStrings("alertname", "HTTP_Probe_Failed", "cluster", "dev", "instance", "web1", "job", "node_exporter")),
+					models.LabelsToOrderedLabels(promlabels.FromStrings("alertname", "HTTP_Probe_Failed", "cluster", "dev", "instance", "web2", "job", "node_exporter")),
 				},
 			},
 		},
 		{
 			args: "q=instance=server2",
 			alerts: AlertList{
-				Alerts: []promlabels.Labels{
-					promlabels.FromStrings("alertname", "Host_Down", "cluster", "prod", "instance", "server2", "ip", "127.0.0.2", "job", "node_ping"),
-					promlabels.FromStrings("alertname", "Memory_Usage_Too_High", "cluster", "prod", "instance", "server2", "job", "node_exporter"),
+				Alerts: []models.OrderedLabels{
+					models.LabelsToOrderedLabels(promlabels.FromStrings("alertname", "Host_Down", "cluster", "prod", "instance", "server2", "ip", "127.0.0.2", "job", "node_ping")),
+					models.LabelsToOrderedLabels(promlabels.FromStrings("alertname", "Memory_Usage_Too_High", "cluster", "prod", "instance", "server2", "job", "node_exporter")),
 				},
 			},
 		},
 		{
 			args: "q=alertname=Host_Down&q=cluster=prod",
 			alerts: AlertList{
-				Alerts: []promlabels.Labels{
-					promlabels.FromStrings("alertname", "Host_Down", "cluster", "prod", "instance", "server1", "ip", "127.0.0.1", "job", "node_ping"),
-					promlabels.FromStrings("alertname", "Host_Down", "cluster", "prod", "instance", "server2", "ip", "127.0.0.2", "job", "node_ping"),
+				Alerts: []models.OrderedLabels{
+					models.LabelsToOrderedLabels(promlabels.FromStrings("alertname", "Host_Down", "cluster", "prod", "instance", "server1", "ip", "127.0.0.1", "job", "node_ping")),
+					models.LabelsToOrderedLabels(promlabels.FromStrings("alertname", "Host_Down", "cluster", "prod", "instance", "server2", "ip", "127.0.0.2", "job", "node_ping")),
 				},
 			},
 		},
 		{
 			args: "q=foo=bar",
 			alerts: AlertList{
-				Alerts: []promlabels.Labels{},
+				Alerts: []models.OrderedLabels{},
 			},
 		},
 	}
@@ -2675,85 +2675,85 @@ func TestAlertList(t *testing.T) {
 
 func TestSortSliceOfLabels(t *testing.T) {
 	type testCaseT struct {
-		labels   []promlabels.Labels
+		labels   []models.OrderedLabels
 		sortKeys []string
 		fallback string
-		output   []promlabels.Labels
+		output   []models.OrderedLabels
 	}
 
 	testCases := []testCaseT{
 		{
-			labels: []promlabels.Labels{
-				promlabels.FromStrings("alertname", "alert2"),
-				promlabels.FromStrings("alertname", "alert1"),
+			labels: []models.OrderedLabels{
+				{{Name: "alertname", Value: "alert2"}},
+				{{Name: "alertname", Value: "alert1"}},
 			},
 			sortKeys: []string{},
 			fallback: "",
-			output: []promlabels.Labels{
-				promlabels.FromStrings("alertname", "alert2"),
-				promlabels.FromStrings("alertname", "alert1"),
+			output: []models.OrderedLabels{
+				{{Name: "alertname", Value: "alert2"}},
+				{{Name: "alertname", Value: "alert1"}},
 			},
 		},
 		{
-			labels: []promlabels.Labels{
-				promlabels.FromStrings("alertname", "alert2"),
-				promlabels.FromStrings("alertname", "alert1"),
+			labels: []models.OrderedLabels{
+				{{Name: "alertname", Value: "alert2"}},
+				{{Name: "alertname", Value: "alert1"}},
 			},
 			sortKeys: []string{"alertname"},
 			fallback: "alertname",
-			output: []promlabels.Labels{
-				promlabels.FromStrings("alertname", "alert1"),
-				promlabels.FromStrings("alertname", "alert2"),
+			output: []models.OrderedLabels{
+				{{Name: "alertname", Value: "alert1"}},
+				{{Name: "alertname", Value: "alert2"}},
 			},
 		},
 		{
-			labels: []promlabels.Labels{
-				promlabels.FromStrings("alertname", "alert2"),
-				promlabels.FromStrings("alertname", "alert1"),
+			labels: []models.OrderedLabels{
+				{{Name: "alertname", Value: "alert2"}},
+				{{Name: "alertname", Value: "alert1"}},
 			},
 			sortKeys: []string{},
 			fallback: "alertname",
-			output: []promlabels.Labels{
-				promlabels.FromStrings("alertname", "alert1"),
-				promlabels.FromStrings("alertname", "alert2"),
+			output: []models.OrderedLabels{
+				{{Name: "alertname", Value: "alert1"}},
+				{{Name: "alertname", Value: "alert2"}},
 			},
 		},
 		{
-			labels: []promlabels.Labels{
-				promlabels.FromStrings("alertname", "alert2"),
-				promlabels.FromStrings("alertname", "alert1"),
+			labels: []models.OrderedLabels{
+				{{Name: "alertname", Value: "alert2"}},
+				{{Name: "alertname", Value: "alert1"}},
 			},
 			sortKeys: []string{"foo"},
 			fallback: "alertname",
-			output: []promlabels.Labels{
-				promlabels.FromStrings("alertname", "alert1"),
-				promlabels.FromStrings("alertname", "alert2"),
+			output: []models.OrderedLabels{
+				{{Name: "alertname", Value: "alert1"}},
+				{{Name: "alertname", Value: "alert2"}},
 			},
 		},
 		{
-			labels: []promlabels.Labels{
-				promlabels.FromStrings("alertname", "alert1"),
-				promlabels.FromStrings("alertname", "alert1"),
+			labels: []models.OrderedLabels{
+				{{Name: "alertname", Value: "alert1"}},
+				{{Name: "alertname", Value: "alert1"}},
 			},
 			sortKeys: []string{"alertname"},
 			fallback: "alertname",
-			output: []promlabels.Labels{
-				promlabels.FromStrings("alertname", "alert1"),
-				promlabels.FromStrings("alertname", "alert1"),
+			output: []models.OrderedLabels{
+				{{Name: "alertname", Value: "alert1"}},
+				{{Name: "alertname", Value: "alert1"}},
 			},
 		},
 		{
-			labels: []promlabels.Labels{
-				promlabels.FromStrings("alertname", "alert2", "job", "a"),
-				promlabels.FromStrings("alertname", "alert1"),
-				promlabels.FromStrings("alertname", "alert3", "job", "b"),
+			labels: []models.OrderedLabels{
+				{{Name: "alertname", Value: "alert2"}, {Name: "job", Value: "a"}},
+				{{Name: "alertname", Value: "alert1"}},
+				{{Name: "alertname", Value: "alert3"}, {Name: "job", Value: "b"}},
 			},
 			sortKeys: []string{"job"},
 			fallback: "alertname",
-			output: []promlabels.Labels{
-				promlabels.FromStrings("alertname", "alert2", "job", "a"),
-				promlabels.FromStrings("alertname", "alert3", "job", "b"),
-				promlabels.FromStrings("alertname", "alert1"),
+			output: []models.OrderedLabels{
+				{{Name: "alertname", Value: "alert2"}, {Name: "job", Value: "a"}},
+				{{Name: "alertname", Value: "alert3"}, {Name: "job", Value: "b"}},
+				{{Name: "alertname", Value: "alert1"}},
 			},
 		},
 	}
@@ -2761,7 +2761,7 @@ func TestSortSliceOfLabels(t *testing.T) {
 	for i, tc := range testCases {
 		t.Run(fmt.Sprintf("%d:%v", i, tc.sortKeys), func(t *testing.T) {
 			sortSliceOfLabels(tc.labels, tc.sortKeys, tc.fallback)
-			if diff := cmp.Diff(tc.output, tc.labels, cmpLabels); diff != "" {
+			if diff := cmp.Diff(tc.output, tc.labels); diff != "" {
 				t.Errorf("Wrong labels order after sorting (-want +got):\n%s", diff)
 			}
 		})

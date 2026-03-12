@@ -672,7 +672,7 @@ func silences(w http.ResponseWriter, r *http.Request) {
 }
 
 type AlertList struct {
-	Alerts []promlabels.Labels `json:"alerts"`
+	Alerts []models.OrderedLabels `json:"alerts"`
 }
 
 func alertList(w http.ResponseWriter, r *http.Request) {
@@ -719,10 +719,10 @@ func alertList(w http.ResponseWriter, r *http.Request) {
 	sort.Strings(sortKeys)
 
 	al := AlertList{
-		Alerts: []promlabels.Labels{},
+		Alerts: []models.OrderedLabels{},
 	}
 	for _, lm := range labelMap {
-		al.Alerts = append(al.Alerts, models.LabelsFromMap(lm))
+		al.Alerts = append(al.Alerts, models.LabelsToOrderedLabels(models.LabelsFromMap(lm)))
 	}
 	sortSliceOfLabels(al.Alerts, sortKeys, "alertname")
 
@@ -733,7 +733,7 @@ func alertList(w http.ResponseWriter, r *http.Request) {
 	_, _ = w.Write(data)
 }
 
-func sortSliceOfLabels(ls []promlabels.Labels, sortKeys []string, fallback string) {
+func sortSliceOfLabels(ls []models.OrderedLabels, sortKeys []string, fallback string) {
 	sort.SliceStable(ls, func(i, j int) bool {
 		for _, k := range sortKeys {
 			vi := ls[i].Get(k)
