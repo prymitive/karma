@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.128
+
+### Fixed
+
+- Fixed errors when creating silences - #6637.
+
 ## v0.127
 
 ### Changed
