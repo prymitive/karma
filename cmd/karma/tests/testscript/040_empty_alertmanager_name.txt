@@ -4,10 +4,10 @@ exec karma --config.file=karma.yaml --check-config
 cmp stderr stderr.txt
 
 -- stderr.txt --
-level=info msg="Reading configuration file" path=karma.yaml
-level=info msg="Version: dev"
-level=info msg="Configured Alertmanager source" cluster=default name=default proxy=false readonly=false uri=http://127.0.0.1:9093
-level=info msg="Configuration is valid"
+level=INFO msg="Reading configuration file" path=karma.yaml
+level=INFO msg="Version: dev"
+level=INFO msg="Configured Alertmanager source" name=default cluster=default uri=http://127.0.0.1:9093 proxy=false readonly=false
+level=INFO msg="Configuration is valid"
 -- karma.yaml --
 alertmanager:
   servers:

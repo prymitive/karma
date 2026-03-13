@@ -7,26 +7,26 @@ cmp stderr stderr.txt
 wait
 
 -- stderr.txt --
-level=info msg="Reading configuration file" path=karma.yaml
-level=info msg="Version: dev"
-level=info msg="Configured Alertmanager source" cluster=proxied name=proxied proxy=true readonly=false uri=http://127.0.0.1:9094
-level=info msg="Setting up proxy endpoints" alertmanager=proxied
-level=info msg="Writing PID file" path=karma.pid
-level=info msg="Initial Alertmanager collection"
-level=info msg="Pulling latest alerts and silences from Alertmanager"
-level=info msg="Collecting alerts and silences" alertmanager=proxied
-level=info msg="GET request" timeout=40 uri=http://127.0.0.1:9094/metrics
-level=error msg="Request failed" error="Get \"http://127.0.0.1:9094/metrics\": dial tcp 127.0.0.1:9094: connect: connection refused" alertmanager=proxied uri=http://127.0.0.1:9094
-level=error msg="Collection failed" error="Get \"http://127.0.0.1:9094/api/v2/silences\": dial tcp 127.0.0.1:9094: connect: connection refused" alertmanager=proxied try=1/2
-level=info msg="GET request" timeout=40 uri=http://127.0.0.1:9094/metrics
-level=error msg="Request failed" error="Get \"http://127.0.0.1:9094/metrics\": dial tcp 127.0.0.1:9094: connect: connection refused" alertmanager=proxied uri=http://127.0.0.1:9094
-level=error msg="Collection failed" error="Get \"http://127.0.0.1:9094/api/v2/silences\": dial tcp 127.0.0.1:9094: connect: connection refused" alertmanager=proxied try=2/2
-level=info msg="Collection completed"
-level=info msg="Done, starting HTTP server"
-level=info msg="Starting HTTP server" address=127.0.0.1:8094
-level=info msg="Shutting down HTTP server" signal=terminated
-level=info msg="Removing PID file" path=karma.pid
-level=fatal msg="Execution failed" error="shutdown error: context deadline exceeded"
+level=INFO msg="Reading configuration file" path=karma.yaml
+level=INFO msg="Version: dev"
+level=INFO msg="Configured Alertmanager source" name=proxied cluster=proxied uri=http://127.0.0.1:9094 proxy=true readonly=false
+level=INFO msg="Setting up proxy endpoints" alertmanager=proxied
+level=INFO msg="Writing PID file" path=karma.pid
+level=INFO msg="Initial Alertmanager collection"
+level=INFO msg="Pulling latest alerts and silences from Alertmanager"
+level=INFO msg="Collecting alerts and silences" alertmanager=proxied
+level=INFO msg="GET request" uri=http://127.0.0.1:9094/metrics timeout=40s
+level=ERROR msg="Request failed" error="Get \"http://127.0.0.1:9094/metrics\": dial tcp 127.0.0.1:9094: connect: connection refused" alertmanager=proxied uri=http://127.0.0.1:9094
+level=ERROR msg="Collection failed" error="Get \"http://127.0.0.1:9094/api/v2/silences\": dial tcp 127.0.0.1:9094: connect: connection refused" alertmanager=proxied try=1/2
+level=INFO msg="GET request" uri=http://127.0.0.1:9094/metrics timeout=40s
+level=ERROR msg="Request failed" error="Get \"http://127.0.0.1:9094/metrics\": dial tcp 127.0.0.1:9094: connect: connection refused" alertmanager=proxied uri=http://127.0.0.1:9094
+level=ERROR msg="Collection failed" error="Get \"http://127.0.0.1:9094/api/v2/silences\": dial tcp 127.0.0.1:9094: connect: connection refused" alertmanager=proxied try=2/2
+level=INFO msg="Collection completed"
+level=INFO msg="Done, starting HTTP server"
+level=INFO msg="Starting HTTP server" address=127.0.0.1:8094
+level=INFO msg="Shutting down HTTP server" signal=terminated
+level=INFO msg="Removing PID file" path=karma.pid
+level=ERROR msg="Execution failed" error="shutdown error: context deadline exceeded"
 -- karma.yaml --
 alertmanager:
   servers:

@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/prometheus/prometheus/model/labels"
-	"github.com/rs/zerolog"
 
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/filters"
@@ -1057,8 +1056,6 @@ var tests = []filterTest{
 }
 
 func TestFilters(t *testing.T) {
-	zerolog.SetGlobalLevel(zerolog.ErrorLevel)
-
 	am, err := alertmanager.NewAlertmanager("HA", "test", "http://localhost", alertmanager.WithRequestTimeout(time.Second))
 	if err != nil {
 		t.Error(err)

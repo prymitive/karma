@@ -2,6 +2,7 @@ package filters_test
 
 import (
 	"fmt"
+	"log/slog"
 	"sort"
 	"strconv"
 	"testing"
@@ -10,6 +11,7 @@ import (
 	"github.com/prometheus/prometheus/model/labels"
 
 	"github.com/prymitive/karma/internal/filters"
+	"github.com/prymitive/karma/internal/log"
 	"github.com/prymitive/karma/internal/models"
 )
 
@@ -155,6 +157,8 @@ func TestBuildAutocomplete(t *testing.T) {
 }
 
 func BenchmarkAutocomplete(b *testing.B) {
+	log.SetLevel(slog.LevelError)
+
 	const n = 10000
 	alerts := make([]models.Alert, 0, n)
 	labelPairs := make([][]labels.Label, 0, n)

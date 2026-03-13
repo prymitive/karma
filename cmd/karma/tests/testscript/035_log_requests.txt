@@ -3,8 +3,8 @@
 exec bash -x ./test.sh &
 exec karma --pid-file=karma.pid --alertmanager.uri=http://127.0.0.1:7035 --listen.address=127.0.0.1 --listen.port=8035 --log.requests
 ! stdout .
-stderr 'msg="Request completed" address=127.0.0.1:[0-9]+ bytes=[0-9]+ code=200 duration=.+ method=POST path=/alerts.json'
-stderr 'msg="Request completed" address=127.0.0.1:[0-9]+ bytes=[0-9]+ code=200 duration=.+ method=POST path=/alerts.json'
+stderr 'level=INFO msg="Request completed" address=127.0.0.1:[0-9]+ path=/alerts.json duration=.+ method=POST code=200 bytes=[0-9]+'
+stderr 'level=INFO msg="Request completed" address=127.0.0.1:[0-9]+ path=/alerts.json duration=.+ method=POST code=200 bytes=[0-9]+'
 wait
 
 -- test.sh --

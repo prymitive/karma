@@ -4,7 +4,7 @@
 cmp stderr stderr.txt
 
 -- stderr.txt --
-level=fatal msg="Execution failed" error="failed to parse configuration file \"karma.yaml\": yaml: unmarshal errors:\n  line 5: field authorizationFoo not found in type config.configSchema"
+level=ERROR msg="Execution failed" error="failed to parse configuration file \"karma.yaml\": yaml: unmarshal errors:\n  line 5: field authorizationFoo not found in type config.configSchema"
 -- karma.yaml --
 authentication:
   header:

@@ -4,4 +4,4 @@
 cmp stderr stderr.txt
 
 -- stderr.txt --
-level=fatal msg="Execution failed" error="unknown log level 'foobar'"
+level=ERROR msg="Execution failed" error="unknown log level 'foobar'"

@@ -2,21 +2,22 @@ package alertmanager_test
 
 import (
 	"fmt"
+	"log/slog"
 	"testing"
 	"time"
 
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
+	"github.com/prymitive/karma/internal/log"
 	"github.com/prymitive/karma/internal/mock"
 
 	"github.com/jarcoal/httpmock"
-	"github.com/rs/zerolog"
-	"github.com/rs/zerolog/log"
 	"github.com/spf13/pflag"
 )
 
 func init() {
-	zerolog.SetGlobalLevel(zerolog.ErrorLevel)
+	log.SetLevel(slog.LevelError)
+
 	httpmock.Activate()
 
 	for _, version := range mock.ListAllMocks() {
@@ -24,7 +25,7 @@ func init() {
 		uri := fmt.Sprintf("http://%s.localhost", version)
 		am, err := alertmanager.NewAlertmanager("cluster", name, uri, alertmanager.WithRequestTimeout(time.Second))
 		if err != nil {
-			log.Fatal().Err(err).Msg("Error")
+			panic(fmt.Sprintf("Error: %v", err))
 		}
 		err = alertmanager.RegisterAlertmanager(am)
 		if err != nil {
@@ -180,7 +181,6 @@ func TestStripReceivers(t *testing.T) {
 }
 
 func TestClearData(t *testing.T) {
-	zerolog.SetGlobalLevel(zerolog.ErrorLevel)
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
 

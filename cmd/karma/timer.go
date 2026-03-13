@@ -2,12 +2,11 @@ package main
 
 import (
 	"fmt"
+	"log/slog"
 	"runtime"
 	"sync"
 
 	"github.com/prymitive/karma/internal/alertmanager"
-
-	"github.com/rs/zerolog/log"
 )
 
 const (
@@ -18,7 +17,7 @@ func pullFromAlertmanager() {
 	// always flush cache once we're done
 	defer apiCache.Purge()
 
-	log.Info().Msg("Pulling latest alerts and silences from Alertmanager")
+	slog.Info("Pulling latest alerts and silences from Alertmanager")
 
 	upstreams := alertmanager.GetAlertmanagers()
 	wg := sync.WaitGroup{}
@@ -26,15 +25,16 @@ func pullFromAlertmanager() {
 
 	for _, upstream := range upstreams {
 		go func(am *alertmanager.Alertmanager) {
-			log.Info().Str("alertmanager", am.Name).Msg("Collecting alerts and silences")
+			slog.Info("Collecting alerts and silences", slog.String("alertmanager", am.Name))
 			for i := 1; i <= maxTries; i++ {
 				err := am.Pull()
 				if err != nil {
-					log.Error().
-						Err(err).
-						Str("alertmanager", am.Name).
-						Str("try", fmt.Sprintf("%d/%d", i, maxTries)).
-						Msg("Collection failed")
+					slog.Error(
+						"Collection failed",
+						slog.Any("error", err),
+						slog.String("alertmanager", am.Name),
+						slog.String("try", fmt.Sprintf("%d/%d", i, maxTries)),
+					)
 				} else {
 					break
 				}
@@ -45,7 +45,7 @@ func pullFromAlertmanager() {
 
 	wg.Wait()
 
-	log.Info().Msg("Collection completed")
+	slog.Info("Collection completed")
 	runtime.GC()
 }
 

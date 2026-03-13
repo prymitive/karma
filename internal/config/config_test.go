@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/rs/zerolog"
 	"github.com/spf13/pflag"
 
 	"github.com/prymitive/karma/internal/uri"
@@ -199,7 +198,6 @@ func mockConfigRead() (string, error) {
 }
 
 func TestReadConfig(t *testing.T) {
-	zerolog.SetGlobalLevel(zerolog.ErrorLevel)
 	t.Setenv("ALERTMANAGER_INTERVAL", "1s")
 	t.Setenv("ALERTMANAGER_URI", "http://localhost")
 	t.Setenv("ALERTMANAGER_EXTERNAL_URI", "http://example.com")
@@ -224,7 +222,6 @@ func TestReadConfig(t *testing.T) {
 }
 
 func TestReadSimpleConfig(t *testing.T) {
-	zerolog.SetGlobalLevel(zerolog.ErrorLevel)
 	t.Setenv("ALERTMANAGER_URI", "http://localhost")
 	t.Setenv("ALERTMANAGER_EXTERNAL_URI", "http://localhost:9090")
 	t.Setenv("ALERTMANAGER_NAME", "single")
@@ -382,7 +379,6 @@ func TestInvalidStripRegex(t *testing.T) {
 }
 
 func TestDefaultConfig(t *testing.T) {
-	zerolog.SetGlobalLevel(zerolog.ErrorLevel)
 	_, _ = mockConfigRead()
 
 	expectedConfig := configSchema{}

@@ -4,17 +4,17 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"log/slog"
 	"net/http/httptest"
 	"testing"
 
-	"github.com/rs/zerolog"
-
+	"github.com/prymitive/karma/internal/log"
 	"github.com/prymitive/karma/internal/mock"
 	"github.com/prymitive/karma/internal/models"
 )
 
 func BenchmarkPullAlerts(b *testing.B) {
-	zerolog.SetGlobalLevel(zerolog.FatalLevel)
+	log.SetLevel(slog.LevelError)
 
 	mockConfig(b.Setenv)
 	for _, version := range mock.ListAllMocks() {
@@ -29,7 +29,7 @@ func BenchmarkPullAlerts(b *testing.B) {
 }
 
 func BenchmarkAlertsAPIMisses(b *testing.B) {
-	zerolog.SetGlobalLevel(zerolog.FatalLevel)
+	log.SetLevel(slog.LevelError)
 
 	payload, err := json.Marshal(models.AlertsRequest{
 		Filters:           []string{},
@@ -65,7 +65,7 @@ func BenchmarkAlertsAPIMisses(b *testing.B) {
 }
 
 func BenchmarkAlertsAPIMissesAutoGrid(b *testing.B) {
-	zerolog.SetGlobalLevel(zerolog.FatalLevel)
+	log.SetLevel(slog.LevelError)
 
 	mockConfig(b.Setenv)
 	for _, version := range mock.ListAllMocks() {
@@ -102,7 +102,7 @@ func BenchmarkAlertsAPIMissesAutoGrid(b *testing.B) {
 }
 
 func BenchmarkAlertsAPIHits(b *testing.B) {
-	zerolog.SetGlobalLevel(zerolog.FatalLevel)
+	log.SetLevel(slog.LevelError)
 
 	payload, err := json.Marshal(models.AlertsRequest{
 		Filters:           []string{},

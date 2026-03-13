@@ -4,7 +4,7 @@
 cmp stderr stderr.txt
 
 -- stderr.txt --
-level=fatal msg="Execution failed" error="'members' is required for every authorization group"
+level=ERROR msg="Execution failed" error="'members' is required for every authorization group"
 -- karma.yaml --
 authentication:
   header:

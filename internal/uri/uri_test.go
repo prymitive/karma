@@ -12,7 +12,6 @@ import (
 	"time"
 
 	"github.com/klauspost/compress/gzip"
-	"github.com/rs/zerolog"
 
 	"github.com/prymitive/karma/internal/uri"
 )
@@ -110,7 +109,6 @@ func readAll(source io.ReadCloser) (int64, error) {
 }
 
 func TestHTTPReader(t *testing.T) {
-	zerolog.SetGlobalLevel(zerolog.FatalLevel)
 	for _, testCase := range httpTransportTests {
 		t.Run(testCase.name, func(t *testing.T) {
 			handler := func(w http.ResponseWriter, _ *http.Request) {

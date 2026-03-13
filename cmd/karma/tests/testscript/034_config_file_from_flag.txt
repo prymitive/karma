@@ -5,11 +5,11 @@ exec karma --check-config --config.file foo.yaml
 cmp stderr stderr.txt
 
 -- stderr.txt --
-level=info msg="Reading configuration file" path=foo.yaml
-level=info msg="Version: dev"
-level=info msg="Configured Alertmanager source" cluster=cwd name=cwd proxy=true readonly=false uri=http://127.0.0.1:8080
-level=info msg="Setting up proxy endpoints" alertmanager=cwd
-level=info msg="Configuration is valid"
+level=INFO msg="Reading configuration file" path=foo.yaml
+level=INFO msg="Version: dev"
+level=INFO msg="Configured Alertmanager source" name=cwd cluster=cwd uri=http://127.0.0.1:8080 proxy=true readonly=false
+level=INFO msg="Setting up proxy endpoints" alertmanager=cwd
+level=INFO msg="Configuration is valid"
 -- foo.yaml --
 alertmanager:
   servers:

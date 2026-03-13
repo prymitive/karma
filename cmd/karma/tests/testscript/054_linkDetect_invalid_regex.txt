@@ -4,9 +4,9 @@
 cmp stderr stderr.txt
 
 -- stderr.txt --
-level=info msg="Reading configuration file" path=karma.yaml
-level=info msg="Version: dev"
-level=fatal msg="Execution failed" error="invalid link detect rule 'foo++++++': error parsing regexp: invalid nested repetition operator: `++`"
+level=INFO msg="Reading configuration file" path=karma.yaml
+level=INFO msg="Version: dev"
+level=ERROR msg="Execution failed" error="invalid link detect rule 'foo++++++': error parsing regexp: invalid nested repetition operator: `++`"
 -- karma.yaml --
 alertmanager:
   servers:

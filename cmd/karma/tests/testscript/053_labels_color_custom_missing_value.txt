@@ -4,7 +4,7 @@
 cmp stderr stderr.txt
 
 -- stderr.txt --
-level=fatal msg="Execution failed" error="custom label color for 'region' is missing 'value' or 'value_re'"
+level=ERROR msg="Execution failed" error="custom label color for 'region' is missing 'value' or 'value_re'"
 -- karma.yaml --
 alertmanager:
   servers:

@@ -8,7 +8,6 @@ import (
 
 	"github.com/jarcoal/httpmock"
 	"github.com/prometheus/prometheus/model/labels"
-	"github.com/rs/zerolog"
 
 	"github.com/prymitive/karma/internal/config"
 	internalModels "github.com/prymitive/karma/internal/models"
@@ -218,7 +217,6 @@ func TestAlertmanagerSanitizedURI(t *testing.T) {
 }
 
 func TestAlertmanagerPullWithInvalidURI(t *testing.T) {
-	zerolog.SetGlobalLevel(zerolog.PanicLevel)
 	am, _ := NewAlertmanager("cluster", "test", "%gh&%ij")
 	err := am.Pull()
 	if err == nil {
@@ -227,7 +225,6 @@ func TestAlertmanagerPullWithInvalidURI(t *testing.T) {
 }
 
 func TestAlertmanagerPullAlertsWithInvalidVersion(t *testing.T) {
-	zerolog.SetGlobalLevel(zerolog.PanicLevel)
 	am, _ := NewAlertmanager("cluster", "test", "http://localhost")
 	err := am.pullAlerts("0.0.1")
 	if err == nil {
@@ -236,7 +233,6 @@ func TestAlertmanagerPullAlertsWithInvalidVersion(t *testing.T) {
 }
 
 func TestAlertmanagerPullSilencesWithInvalidVersion(t *testing.T) {
-	zerolog.SetGlobalLevel(zerolog.PanicLevel)
 	am, _ := NewAlertmanager("cluster", "test", "http://localhost")
 	err := am.pullSilences("0.0.1")
 	if err == nil {
@@ -246,9 +242,6 @@ func TestAlertmanagerPullSilencesWithInvalidVersion(t *testing.T) {
 
 func TestProbeVersionHTTPError(t *testing.T) {
 	// verifies that probeVersion returns empty string when the metrics endpoint is unreachable
-	zerolog.SetGlobalLevel(zerolog.PanicLevel)
-	defer zerolog.SetGlobalLevel(zerolog.ErrorLevel)
-
 	uri := "http://probe-http-error.localhost"
 	httpmock.RegisterResponder("GET", uri+"/metrics",
 		httpmock.NewErrorResponder(errors.New("connection refused")))
@@ -265,9 +258,6 @@ func TestProbeVersionHTTPError(t *testing.T) {
 
 func TestProbeVersionInvalidMetrics(t *testing.T) {
 	// verifies that probeVersion returns empty string when metrics response contains no version info
-	zerolog.SetGlobalLevel(zerolog.PanicLevel)
-	defer zerolog.SetGlobalLevel(zerolog.ErrorLevel)
-
 	uri := "http://probe-invalid-metrics.localhost"
 	httpmock.RegisterResponder("GET", uri+"/metrics",
 		httpmock.NewStringResponder(200, "some_random_metric 1\n"))

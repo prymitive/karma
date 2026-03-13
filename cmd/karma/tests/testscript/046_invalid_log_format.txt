@@ -4,4 +4,4 @@
 cmp stderr stderr.txt
 
 -- stderr.txt --
-level=fatal msg="Execution failed" error="unknown log format 'xml'"
+level=ERROR msg="Execution failed" error="unknown log format 'xml'"

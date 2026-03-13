@@ -28,9 +28,7 @@ require (
 	github.com/prometheus/prometheus v0.310.0
 	github.com/prymitive/randomcolor v0.0.0-20210705210145-26c3401033a6
 	github.com/rogpeppe/go-internal v1.14.1
-	github.com/rs/zerolog v1.34.0
 	github.com/spf13/pflag v1.0.10
-	go.uber.org/automaxprocs v1.6.0
 	go.yaml.in/yaml/v3 v3.0.4
 	gopkg.in/go-playground/colors.v1 v1.2.0
 )
@@ -41,8 +39,6 @@ require (
 	github.com/grafana/regexp v0.0.0-20250905093917-f7b3be9d1853 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/knadh/koanf/maps v0.1.2 // indirect
-	github.com/mattn/go-colorable v0.1.14 // indirect
-	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mitchellh/copystructure v1.2.0 // indirect
 	github.com/mitchellh/reflectwalk v1.0.2 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect

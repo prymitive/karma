@@ -5,7 +5,7 @@
 cmp stderr stderr.txt
 
 -- stderr.txt --
-level=fatal msg="Execution failed" error="listen.tls.key must be set when listen.tls.cert is set"
+level=ERROR msg="Execution failed" error="listen.tls.key must be set when listen.tls.cert is set"
 -- karma.yaml --
 alertmanager:
   servers:

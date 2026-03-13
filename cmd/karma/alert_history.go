@@ -6,6 +6,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"io"
+	"log/slog"
 	"net/http"
 	"net/url"
 	"slices"
@@ -20,7 +21,6 @@ import (
 	"github.com/prometheus/client_golang/api"
 	v1 "github.com/prometheus/client_golang/api/prometheus/v1"
 	"github.com/prometheus/common/model"
-	"github.com/rs/zerolog/log"
 
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
@@ -133,7 +133,7 @@ type historyPoller struct {
 }
 
 func newHistoryPoller(queueSize int, queryTimeout time.Duration) *historyPoller {
-	log.Debug().Int("queue", queueSize).Dur("timeout", queryTimeout).Msg("Starting history poller")
+	slog.Debug("Starting history poller", slog.Int("queue", queueSize), slog.Duration("timeout", queryTimeout))
 	cache, _ := lru.New[string, *cachedOffsets](1000)
 	knownBad, _ := lru.New[string, *knownBadUpstream](100)
 	return &historyPoller{
@@ -156,7 +156,7 @@ func (hp *historyPoller) run(workers int) {
 }
 
 func (hp *historyPoller) stop() {
-	log.Debug().Msg("Stopping history poller")
+	slog.Debug("Stopping history poller")
 	hp.isRunning.Store(false)
 	close(hp.queue)
 }
@@ -190,50 +190,54 @@ func (hp *historyPoller) knownBadLookup(key string) (*knownBadUpstream, bool) {
 }
 
 func (hp *historyPoller) startWorker(wid int) {
-	log.Debug().Int("worker", wid).Int("queue", cap(hp.queue)).Dur("timeout", hp.queryTimeout).Msg("Starting history poller")
+	slog.Debug("Starting history poller", slog.Int("worker", wid), slog.Int("queue", cap(hp.queue)), slog.Duration("timeout", hp.queryTimeout))
 	for j := range hp.queue {
 		sourceURI, headers := rewriteSource(config.Config.History.Rewrite, j.uri)
 		expiredAt := time.Now().Add(time.Minute * -5)
 		key := hashQuery(sourceURI, j.labels)
 		if kb, found := hp.knownBadLookup(key); found && kb.timestamp.After(expiredAt) {
-			log.Debug().
-				Int("worker", wid).
-				Str("uri", sourceURI).
-				Interface("labels", j.labels).
-				Str("key", key).
-				Msg("Upstream already marked as invalid, skipping")
+			slog.Debug(
+				"Upstream already marked as invalid, skipping",
+				slog.Int("worker", wid),
+				slog.String("uri", sourceURI),
+				slog.Any("labels", j.labels),
+				slog.String("key", key),
+			)
 			j.result <- historyQueryResult{values: nil, err: kb.err}
 			continue
 		}
 		if v := hp.cacheLookup(key); v != nil && v.timestamp.After(expiredAt) {
-			log.Debug().
-				Int("worker", wid).
-				Str("uri", sourceURI).
-				Interface("labels", j.labels).
-				Str("key", key).
-				Msg("Got results from cache")
+			slog.Debug(
+				"Got results from cache",
+				slog.Int("worker", wid),
+				slog.String("uri", sourceURI),
+				slog.Any("labels", j.labels),
+				slog.String("key", key),
+			)
 			j.result <- historyQueryResult{values: v.values, err: nil}
 			continue
 		}
 		transport, err := rewriteTransport(config.Config.History.Rewrite, j.uri)
 		if err != nil {
-			log.Warn().
-				Int("worker", wid).
-				Str("uri", sourceURI).
-				Err(err).
-				Msg("Error while configuring HTTP transport for history request")
+			slog.Warn(
+				"Error while configuring HTTP transport for history request",
+				slog.Int("worker", wid),
+				slog.String("uri", sourceURI),
+				slog.Any("error", err),
+			)
 		}
 		if len(headers) > 0 {
 			transport = mapper.SetHeaders(transport, headers)
 		}
 		values, err := countAlerts(sourceURI, hp.queryTimeout, transport, j.labels)
 		if err != nil {
-			log.Error().
-				Err(err).
-				Int("worker", wid).
-				Str("uri", sourceURI).
-				Interface("labels", j.labels).
-				Msg("History query failed")
+			slog.Error(
+				"History query failed",
+				slog.Any("error", err),
+				slog.Int("worker", wid),
+				slog.String("uri", sourceURI),
+				slog.Any("labels", j.labels),
+			)
 			hp.knownBadSave(key, knownBadUpstream{timestamp: time.Now(), err: err})
 		} else {
 			hp.cacheSave(key, values)
@@ -265,7 +269,7 @@ func rewriteSource(rules []config.HistoryRewrite, uri string) (string, map[strin
 		for _, submatches := range rule.SourceRegex.FindAllStringSubmatchIndex(uri, -1) {
 			result = rule.SourceRegex.ExpandString(result, rule.URI, uri, submatches)
 		}
-		log.Debug().Str("source", uri).Str("uri", string(result)).Msg("Alert history source rewrite")
+		slog.Debug("Alert history source rewrite", slog.String("source", uri), slog.String("uri", string(result)))
 		return string(result), rule.Headers
 	}
 	return uri, nil
@@ -341,12 +345,13 @@ func countAlerts(uri string, timeout time.Duration, transport http.RoundTripper,
 		}
 	}
 	q := fmt.Sprintf("changes(ALERTS_FOR_STATE%s[1h])", lv)
-	log.Debug().
-		Str("uri", uri).
-		Interface("labels", labels).
-		Str("query", q).
-		Dur("timeout", timeout).
-		Msg("Send alert count query")
+	slog.Debug(
+		"Send alert count query",
+		slog.String("uri", uri),
+		slog.Any("labels", labels),
+		slog.String("query", q),
+		slog.Duration("timeout", timeout),
+	)
 
 	result, _, err := v1api.QueryRange(ctx, q, r)
 	if err != nil {
@@ -355,9 +360,9 @@ func countAlerts(uri string, timeout time.Duration, transport http.RoundTripper,
 
 	if samples, ok := result.(model.Matrix); ok {
 		for _, sample := range samples {
-			log.Debug().Int("values", len(sample.Values)).Msg("Sample values")
+			slog.Debug("Sample values", slog.Int("values", len(sample.Values)))
 			for _, pair := range sample.Values {
-				log.Debug().Int("value", int(pair.Value)).Time("timestamp", pair.Timestamp.Time()).Msg("Sample")
+				slog.Debug("Sample", slog.Int("value", int(pair.Value)), slog.Time("timestamp", pair.Timestamp.Time()))
 				ret = append(ret, OffsetSample{
 					Timestamp: pair.Timestamp.Time(),
 					Value:     int(pair.Value),

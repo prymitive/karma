@@ -4,4 +4,4 @@
 cmp stderr stderr.txt
 
 -- stderr.txt --
-level=fatal msg="Execution failed" error="invalid alertmanager.interval value '-4s'"
+level=ERROR msg="Execution failed" error="invalid alertmanager.interval value '-4s'"

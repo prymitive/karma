@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"log/slog"
 	"net/http"
 	"net/http/httptest"
 	"regexp"
@@ -15,10 +16,10 @@ import (
 	lru "github.com/hashicorp/golang-lru/v2"
 	"github.com/jarcoal/httpmock"
 	"github.com/pmezard/go-difflib/difflib"
-	"github.com/rs/zerolog"
 
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
+	"github.com/prymitive/karma/internal/log"
 	"github.com/prymitive/karma/internal/mock"
 )
 
@@ -530,7 +531,7 @@ func TestProxyUserRewrite(t *testing.T) {
 		httpmock.Activate()
 		defer httpmock.DeactivateAndReset()
 
-		zerolog.SetGlobalLevel(zerolog.FatalLevel)
+		log.SetLevel(slog.LevelError)
 		t.Run(testCase.name, func(t *testing.T) {
 			for _, version := range mock.ListAllMocks() {
 				t.Logf("Testing alerts using mock files from Alertmanager %s", version)
@@ -1294,7 +1295,7 @@ func TestProxySilenceACL(t *testing.T) {
 		httpmock.Activate()
 		defer httpmock.DeactivateAndReset()
 
-		zerolog.SetGlobalLevel(zerolog.FatalLevel)
+		log.SetLevel(slog.LevelError)
 		t.Run(testCase.name, func(t *testing.T) {
 			for _, version := range mock.ListAllMocks() {
 				t.Logf("Testing alerts using mock files from Alertmanager %s", version)
@@ -1395,7 +1396,7 @@ func TestProxyRequestReadFailure(t *testing.T) {
 }
 
 func TestProxyRequestToUnsupportedAlertmanager(t *testing.T) {
-	zerolog.SetGlobalLevel(zerolog.FatalLevel)
+	log.SetLevel(slog.LevelError)
 
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()

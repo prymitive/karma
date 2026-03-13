@@ -4,7 +4,7 @@
 cmp stderr stderr.txt
 
 -- stderr.txt --
-level=fatal msg="Execution failed" error="failed to parse custom color regex rule '.++++' for 'region' label: error parsing regexp: invalid nested repetition operator: `++`"
+level=ERROR msg="Execution failed" error="failed to parse custom color regex rule '.++++' for 'region' label: error parsing regexp: invalid nested repetition operator: `++`"
 -- karma.yaml --
 alertmanager:
   servers:

@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 	"fmt"
+	"log/slog"
 	"net/http"
 	"runtime"
 	"slices"
@@ -23,8 +24,6 @@ import (
 	"github.com/prymitive/karma/internal/models"
 	sliceutils "github.com/prymitive/karma/internal/slices"
 	"github.com/prymitive/karma/internal/transform"
-
-	"github.com/rs/zerolog/log"
 )
 
 func marshalJSON(v any) ([]byte, error) {
@@ -208,7 +207,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 	gridLabel := request.GridLabel
 	if gridLabel == "@auto" {
 		gridLabel = autoGridLabel(filtered)
-		log.Debug().Str("label", gridLabel).Msg("Selected automatic grid label")
+		slog.Debug("Selected automatic grid label", slog.String("label", gridLabel))
 	}
 
 	var matches int

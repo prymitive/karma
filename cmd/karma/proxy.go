@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"log/slog"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
@@ -16,8 +17,6 @@ import (
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/mapper"
-
-	"github.com/rs/zerolog/log"
 )
 
 func proxyPathPrefix(name string) string {
@@ -63,11 +62,12 @@ func NewAlertmanagerProxy(alertmanager *alertmanager.Alertmanager) *httputil.Rev
 				req.URL.Path = strings.TrimSuffix(upstreamURL.Path, "/") + req.URL.Path
 			}
 
-			log.Debug().
-				Str("alertmanager", alertmanager.Name).
-				Str("uri", req.RequestURI).
-				Str("forwardedURI", req.URL.String()).
-				Msg("Forwarding request")
+			slog.Debug(
+				"Forwarding request",
+				slog.String("alertmanager", alertmanager.Name),
+				slog.String("uri", req.RequestURI),
+				slog.String("forwardedURI", req.URL.String()),
+			)
 		},
 		Transport: alertmanager.HTTPTransport,
 		ModifyResponse: func(resp *http.Response) error {
@@ -82,19 +82,18 @@ func NewAlertmanagerProxy(alertmanager *alertmanager.Alertmanager) *httputil.Rev
 
 func handlePostRequest(alertmanager *alertmanager.Alertmanager, h http.Handler) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		log.Debug().
-			Str("alertmanager", alertmanager.Name).
-			Str("uri", r.RequestURI).
-			Msg("Proxy request")
+		slog.Debug("Proxy request", slog.String("alertmanager", alertmanager.Name), slog.String("uri", r.RequestURI))
 
 		defer r.Body.Close()
 		body, err := io.ReadAll(r.Body)
 		if err != nil {
-			log.Error().Err(err).
-				Str("alertmanager", alertmanager.Name).
-				Str("method", r.Method).
-				Str("uri", r.RequestURI).
-				Msg("Failed to read proxied request")
+			slog.Error(
+				"Failed to read proxied request",
+				slog.Any("error", err),
+				slog.String("alertmanager", alertmanager.Name),
+				slog.String("method", r.Method),
+				slog.String("uri", r.RequestURI),
+			)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -102,11 +101,13 @@ func handlePostRequest(alertmanager *alertmanager.Alertmanager, h http.Handler) 
 		ver := alertmanager.Version()
 		m, err := mapper.GetSilenceMapper(ver)
 		if err != nil {
-			log.Error().Err(err).
-				Str("alertmanager", alertmanager.Name).
-				Str("method", r.Method).
-				Str("uri", r.RequestURI).
-				Msg("Failed to proxy a request")
+			slog.Error(
+				"Failed to proxy a request",
+				slog.Any("error", err),
+				slog.String("alertmanager", alertmanager.Name),
+				slog.String("method", r.Method),
+				slog.String("uri", r.RequestURI),
+			)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -114,12 +115,13 @@ func handlePostRequest(alertmanager *alertmanager.Alertmanager, h http.Handler) 
 		if len(silenceACLs) > 0 {
 			silence, err := m.Unmarshal(body)
 			if err != nil {
-				log.Error().
-					Err(err).
-					Str("alertmanager", alertmanager.Name).
-					Str("method", r.Method).
-					Str("uri", r.RequestURI).
-					Msg("Failed to unmarshal silence body")
+				slog.Error(
+					"Failed to unmarshal silence body",
+					slog.Any("error", err),
+					slog.String("alertmanager", alertmanager.Name),
+					slog.String("method", r.Method),
+					slog.String("uri", r.RequestURI),
+				)
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
 			}
@@ -127,13 +129,15 @@ func handlePostRequest(alertmanager *alertmanager.Alertmanager, h http.Handler) 
 			for i, acl := range silenceACLs {
 				groups := getGroupsFromContext(r)
 				isAllowed, err := acl.isAllowed(alertmanager.Name, silence, groups)
-				log.Debug().Int("index", i).Bool("allowed", isAllowed).Err(err).Msg("ACL rule check")
+				slog.Debug("ACL rule check", slog.Int("index", i), slog.Bool("allowed", isAllowed), slog.Any("error", err))
 				if err != nil {
-					log.Warn().Err(err).
-						Str("alertmanager", alertmanager.Name).
-						Str("method", r.Method).
-						Str("uri", r.RequestURI).
-						Msg("Proxy request was blocked by ACL rule")
+					slog.Warn(
+						"Proxy request was blocked by ACL rule",
+						slog.Any("error", err),
+						slog.String("alertmanager", alertmanager.Name),
+						slog.String("method", r.Method),
+						slog.String("uri", r.RequestURI),
+					)
 					http.Error(w, err.Error(), http.StatusBadRequest)
 					return
 				}
@@ -147,11 +151,13 @@ func handlePostRequest(alertmanager *alertmanager.Alertmanager, h http.Handler) 
 			username := getUserFromContext(r)
 			newBody, err := m.RewriteUsername(body, username)
 			if err != nil {
-				log.Error().Err(err).
-					Str("alertmanager", alertmanager.Name).
-					Str("method", r.Method).
-					Str("uri", r.RequestURI).
-					Msg("Failed to rewrite silence body")
+				slog.Error(
+					"Failed to rewrite silence body",
+					slog.Any("error", err),
+					slog.String("alertmanager", alertmanager.Name),
+					slog.String("method", r.Method),
+					slog.String("uri", r.RequestURI),
+				)
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
 			}
