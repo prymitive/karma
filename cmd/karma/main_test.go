@@ -2,24 +2,22 @@ package main
 
 import (
 	"fmt"
+	"log/slog"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
 
 	"github.com/prymitive/karma/internal/config"
-
-	"github.com/rs/zerolog"
+	"github.com/prymitive/karma/internal/log"
 )
 
 func TestLogConfig(t *testing.T) {
-	logLevels := map[string]zerolog.Level{
-		"debug":   zerolog.DebugLevel,
-		"info":    zerolog.InfoLevel,
-		"warning": zerolog.WarnLevel,
-		"error":   zerolog.ErrorLevel,
-		"fatal":   zerolog.FatalLevel,
-		"panic":   zerolog.PanicLevel,
+	logLevels := map[string]slog.Level{
+		"debug":   slog.LevelDebug,
+		"info":    slog.LevelInfo,
+		"warning": slog.LevelWarn,
+		"error":   slog.LevelError,
 	}
 
 	for val, level := range logLevels {
@@ -29,8 +27,8 @@ func TestLogConfig(t *testing.T) {
 		if err != nil {
 			t.Error(err)
 		}
-		if zerolog.GlobalLevel() != level {
-			t.Errorf("Config.Log.Level=%s resulted in invalid log level %s", val, zerolog.GlobalLevel())
+		if log.Level.Level() != level {
+			t.Errorf("Config.Log.Level=%s resulted in invalid log level %s", val, log.Level.Level())
 		}
 	}
 }

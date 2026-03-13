@@ -10,8 +10,8 @@ import (
 )
 
 type fuzzyFilter struct {
-	filterBase
 	re *regexp.Regexp
+	filterBase
 }
 
 func (filter *fuzzyFilter) Value() string {

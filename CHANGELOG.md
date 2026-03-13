@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.129
+
+### Changed
+
+- Switched logging from zerolog to slog. Log output format has changed.
+- Removed `fatal` and `panic` log levels, use `error` instead.
+- Removed [uber-go/automaxprocs](https://github.com/uber-go/automaxprocs).
+
 ## v0.128
 
 ### Fixed

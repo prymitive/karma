@@ -1137,7 +1137,7 @@ log:
 
 - `config` - if set to `true` karma will log used configuration on startup
 - `level` - log level to set for karma, possible values are `debug`, `info`,
-  `warning`, `error`, `fatal` and `panic`.
+  `warning` and `error`.
 - `format` - controls how log messages are formatted, possible values are
   `text` and `json`. If set to `json` each log will be a JSON object
 - `requests` - if set to `true` karma will log all requests

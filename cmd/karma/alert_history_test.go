@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"log/slog"
 	"net/http/httptest"
 	"regexp"
 	"strconv"
@@ -13,9 +14,9 @@ import (
 	"github.com/google/go-cmp/cmp"
 	"github.com/jarcoal/httpmock"
 	"github.com/prometheus/common/model"
-	"github.com/rs/zerolog"
 
 	"github.com/prymitive/karma/internal/config"
+	"github.com/prymitive/karma/internal/log"
 	"github.com/prymitive/karma/internal/regex"
 )
 
@@ -608,7 +609,7 @@ func TestAlertHistory(t *testing.T) {
 		return true
 	})
 
-	zerolog.SetGlobalLevel(zerolog.FatalLevel)
+	log.SetLevel(slog.LevelError)
 	for i, tc := range testCases {
 		t.Run(fmt.Sprintf("%d/enabled=%v", i, tc.config.enabled), func(t *testing.T) {
 			httpmock.Activate()

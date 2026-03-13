@@ -4,7 +4,7 @@
 cmp stderr stderr.txt
 
 -- stderr.txt --
-level=fatal msg="Execution failed" error="both authentication.basicAuth.users and authentication.header.name is set, only one can be enabled"
+level=ERROR msg="Execution failed" error="both authentication.basicAuth.users and authentication.header.name is set, only one can be enabled"
 -- karma.yaml --
 alertmanager:
   servers:

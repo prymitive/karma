@@ -3,7 +3,7 @@
 cmp stderr stderr.txt
 
 -- stderr.txt --
-level=fatal msg="Execution failed" error="authentication.header.group_value_re is required when authentication.header.group_name is set"
+level=ERROR msg="Execution failed" error="authentication.header.group_value_re is required when authentication.header.group_name is set"
 -- karma.yaml --
 alertmanager:
   servers:

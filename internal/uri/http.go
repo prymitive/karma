@@ -3,10 +3,10 @@ package uri
 import (
 	"fmt"
 	"io"
+	"log/slog"
 	"net/http"
 
 	"github.com/klauspost/compress/gzip"
-	"github.com/rs/zerolog/log"
 )
 
 // HTTPURIReader can read data from http:// and https:// URIs
@@ -16,10 +16,7 @@ type HTTPURIReader struct {
 
 func (r *HTTPURIReader) Read(uri string, headers map[string]string) (io.ReadCloser, error) {
 	suri := SanitizeURI(uri)
-	log.Info().
-		Str("uri", suri).
-		Dur("timeout", r.client.Timeout).
-		Msg("GET request")
+	slog.Info("GET request", slog.String("uri", suri), slog.Duration("timeout", r.client.Timeout))
 
 	request, err := http.NewRequest("GET", uri, nil)
 	if err != nil {

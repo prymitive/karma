@@ -2,6 +2,7 @@ package alertmanager
 
 import (
 	"fmt"
+	"log/slog"
 	"net/http"
 	"net/url"
 	"sort"
@@ -11,8 +12,6 @@ import (
 	"github.com/prymitive/karma/internal/filters"
 	"github.com/prymitive/karma/internal/models"
 	"github.com/prymitive/karma/internal/uri"
-
-	"github.com/rs/zerolog/log"
 )
 
 // Option allows to pass functional options to NewAlertmanager()
@@ -77,13 +76,14 @@ func RegisterAlertmanager(am *Alertmanager) error {
 
 	upstreams[am.Name] = am
 	// am.Name, uri.SanitizeURI(am.URI), am.ProxyRequests, am.ReadOnly
-	log.Info().
-		Str("name", am.Name).
-		Str("cluster", am.Cluster).
-		Str("uri", uri.SanitizeURI(am.URI)).
-		Bool("proxy", am.ProxyRequests).
-		Bool("readonly", am.ReadOnly).
-		Msg("Configured Alertmanager source")
+	slog.Info(
+		"Configured Alertmanager source",
+		slog.String("name", am.Name),
+		slog.String("cluster", am.Cluster),
+		slog.String("uri", uri.SanitizeURI(am.URI)),
+		slog.Bool("proxy", am.ProxyRequests),
+		slog.Bool("readonly", am.ReadOnly),
+	)
 	return nil
 }
 

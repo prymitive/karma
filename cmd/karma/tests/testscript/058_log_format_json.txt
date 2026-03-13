@@ -7,16 +7,16 @@ cmp stderr stderr.txt
 wait
 
 -- stderr.txt --
-{"level":"info","message":"Version: dev"}
-{"level":"info","path":"karma.pid","message":"Writing PID file"}
-{"level":"info","message":"Initial Alertmanager collection"}
-{"level":"info","message":"Pulling latest alerts and silences from Alertmanager"}
-{"level":"info","message":"Collection completed"}
-{"level":"info","message":"Done, starting HTTP server"}
-{"level":"info","address":"127.0.0.1:8058","message":"Starting HTTP server"}
-{"level":"info","signal":"terminated","message":"Shutting down HTTP server"}
-{"level":"info","message":"HTTP server shut down"}
-{"level":"info","path":"karma.pid","message":"Removing PID file"}
+{"level":"INFO","msg":"Version: dev"}
+{"level":"INFO","msg":"Writing PID file","path":"karma.pid"}
+{"level":"INFO","msg":"Initial Alertmanager collection"}
+{"level":"INFO","msg":"Pulling latest alerts and silences from Alertmanager"}
+{"level":"INFO","msg":"Collection completed"}
+{"level":"INFO","msg":"Done, starting HTTP server"}
+{"level":"INFO","msg":"Starting HTTP server","address":"127.0.0.1:8058"}
+{"level":"INFO","msg":"Shutting down HTTP server","signal":15}
+{"level":"INFO","msg":"HTTP server shut down"}
+{"level":"INFO","msg":"Removing PID file","path":"karma.pid"}
 -- test.sh --
 while [ ! -f karma.pid ]; do sleep 1 ; done
 sleep 5

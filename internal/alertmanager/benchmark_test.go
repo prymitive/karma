@@ -1,6 +1,7 @@
 package alertmanager_test
 
 import (
+	"log/slog"
 	"testing"
 
 	"github.com/jarcoal/httpmock"
@@ -8,10 +9,13 @@ import (
 
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
+	"github.com/prymitive/karma/internal/log"
 	"github.com/prymitive/karma/internal/mock"
 )
 
 func BenchmarkDedupAlerts(b *testing.B) {
+	log.SetLevel(slog.LevelError)
+
 	version := mock.ListAllMocks()[0]
 	mock.RegisterURL("http://localhost/metrics", version, "metrics.txt")
 	mock.RegisterURL("http://localhost/api/v2/status", version, "api/v2/status.json")
@@ -35,6 +39,8 @@ func BenchmarkDedupAlerts(b *testing.B) {
 }
 
 func BenchmarkDedupAutocomplete(b *testing.B) {
+	log.SetLevel(slog.LevelError)
+
 	version := mock.ListAllMocks()[0]
 	mock.RegisterURL("http://localhost/metrics", version, "metrics.txt")
 	mock.RegisterURL("http://localhost/api/v2/status", version, "api/v2/status.json")
@@ -58,6 +64,8 @@ func BenchmarkDedupAutocomplete(b *testing.B) {
 }
 
 func BenchmarkDedupColors(b *testing.B) {
+	log.SetLevel(slog.LevelError)
+
 	b.Setenv("LABELS_COLOR_UNIQUE", "cluster instance @receiver")
 	f := pflag.NewFlagSet(".", pflag.ExitOnError)
 	config.SetupFlags(f)

@@ -3,8 +3,8 @@
 exec bash -x ./test.sh &
 exec karma --log.format=json --log.timestamp=true --pid-file=karma.pid --listen.address=127.0.0.1 --listen.port=8064
 ! stdout .
-stderr '{"level":"info","time":"[0-9]+-[0-9]+-[0-9]+T[0-9]+:[0-9]+:[0-9]+.*","message":"Version: dev"}'
-stderr '{"level":"info","time":"[0-9]+-[0-9]+-[0-9]+T[0-9]+:[0-9]+:[0-9]+.*","message":"Pulling latest alerts and silences from Alertmanager"}'
+stderr '{"time":"[0-9]+-[0-9]+-[0-9]+T[0-9]+:[0-9]+:[0-9]+.*","level":"INFO","msg":"Version: dev"}'
+stderr '{"time":"[0-9]+-[0-9]+-[0-9]+T[0-9]+:[0-9]+:[0-9]+.*","level":"INFO","msg":"Pulling latest alerts and silences from Alertmanager"}'
 wait
 
 -- test.sh --

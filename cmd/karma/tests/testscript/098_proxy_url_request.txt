@@ -4,15 +4,15 @@ exec bash -x ./test.sh &
 exec bash -c 'I=0 ; while [ ! -f alertmanager.pid ] && [ $I -lt 30 ]; do sleep 1; I=$((I+1)); done'
 exec karma --pid-file=karma.pid
 ! stdout .
-stderr 'level=info msg="Configured Alertmanager source" cluster=proxy-url name=proxy-url proxy=false readonly=false uri=http://am.example.com'
-stderr 'level=info msg="GET request" timeout=10 uri=http://am.example.com/metrics'
-stderr 'level=info msg="Upstream version" alertmanager=proxy-url version=0.24.0'
-stderr 'level=info msg="Got silences" alertmanager=proxy-url duration=.+ silences=0'
-stderr 'level=info msg="Collected alert groups" alertmanager=proxy-url duration=.+ groups=0'
-stderr 'level=info msg="Deduplicating alert groups" alertmanager=proxy-url groups=0'
-stderr 'level=info msg="Processing deduplicated alert groups" alertmanager=proxy-url groups=0'
-stderr 'level=info msg="Merging autocomplete hints" alertmanager=proxy-url hints=0'
-stderr 'level=info msg="Collection completed"'
+stderr 'level=INFO msg="Configured Alertmanager source" name=proxy-url cluster=proxy-url uri=http://am.example.com proxy=false readonly=false'
+stderr 'level=INFO msg="GET request" uri=http://am.example.com/metrics timeout=10s'
+stderr 'level=INFO msg="Upstream version" version=0.24.0 alertmanager=proxy-url'
+stderr 'level=INFO msg="Got silences" alertmanager=proxy-url silences=0 duration=.+'
+stderr 'level=INFO msg="Collected alert groups" alertmanager=proxy-url groups=0 duration=.+'
+stderr 'level=INFO msg="Deduplicating alert groups" alertmanager=proxy-url groups=0'
+stderr 'level=INFO msg="Processing deduplicated alert groups" alertmanager=proxy-url groups=0'
+stderr 'level=INFO msg="Merging autocomplete hints" alertmanager=proxy-url hints=0'
+stderr 'level=INFO msg="Collection completed"'
 wait
 
 -- test.sh --

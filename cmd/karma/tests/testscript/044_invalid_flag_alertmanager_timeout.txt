@@ -63,7 +63,7 @@ Usage of karma:
       --listen.tls.key string                      TLS key path (enables HTTPS)
       --log.config                                 Log used configuration to log on startup
       --log.format string                          Log format, one of: text, json (default "text")
-      --log.level string                           Log level, one of: debug, info, warning, error, fatal and panic (default "info")
+      --log.level string                           Log level, one of: debug, info, warning, error (default "info")
       --log.requests                               Enable request logging
       --log.timestamp                              Add timestamps to all log messages
       --pid-file string                            If set PID of karma process will be written to this file

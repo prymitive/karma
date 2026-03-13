@@ -5,7 +5,9 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"html/template"
 	"io"
+	"log/slog"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -22,15 +24,15 @@ import (
 
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
+	"github.com/prymitive/karma/internal/log"
 	"github.com/prymitive/karma/internal/mock"
 	"github.com/prymitive/karma/internal/models"
 	"github.com/prymitive/karma/internal/regex"
+	"github.com/prymitive/karma/ui"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/google/go-cmp/cmp"
 	"github.com/jarcoal/httpmock"
-	"github.com/rs/zerolog"
-	"github.com/rs/zerolog/log"
 	"github.com/spf13/pflag"
 )
 
@@ -43,7 +45,7 @@ var cmpLabels = cmp.Comparer(func(x, y promlabels.Labels) bool {
 type setenvFunc func(key, val string)
 
 func mockConfig(setenv setenvFunc) {
-	zerolog.SetGlobalLevel(zerolog.ErrorLevel)
+	log.SetLevel(slog.LevelError)
 	setenv("ALERTMANAGER_URI", "http://localhost")
 	setenv("LABELS_COLOR_UNIQUE", "alertname @receiver @alertmanager @cluster")
 
@@ -51,14 +53,14 @@ func mockConfig(setenv setenvFunc) {
 	config.SetupFlags(f)
 	_, err := config.Config.Read(f)
 	if err != nil {
-		log.Fatal().Err(err).Msg("Error")
+		slog.Error("Error", slog.Any("error", err))
 	}
 
 	if !upstreamSetup {
 		upstreamSetup = true
 		err := setupUpstreams()
 		if err != nil {
-			log.Fatal().Err(err).Msg("Error")
+			slog.Error("Error", slog.Any("error", err))
 		}
 	}
 }
@@ -66,12 +68,7 @@ func mockConfig(setenv setenvFunc) {
 func testRouter() *chi.Mux {
 	router := chi.NewRouter()
 	router.Use(proxyPathFixMiddleware)
-
-	err := loadTemplates()
-	if err != nil {
-		panic(err)
-	}
-
+	indexTemplate, _ = template.ParseFS(ui.StaticFiles, "dist/index.html")
 	return router
 }
 
@@ -1829,7 +1826,7 @@ func TestAuthentication(t *testing.T) {
 		},
 	}
 
-	zerolog.SetGlobalLevel(zerolog.FatalLevel)
+	log.SetLevel(slog.LevelError)
 	for _, testCase := range authTests {
 		t.Run(testCase.name, func(t *testing.T) {
 			config.Config.Authentication.Header.Name = testCase.headerName
@@ -2028,7 +2025,7 @@ func TestHealthcheckAlerts(t *testing.T) {
 		},
 	}
 
-	zerolog.SetGlobalLevel(zerolog.FatalLevel)
+	log.SetLevel(slog.LevelError)
 	for i, testCase := range testCases {
 		for _, version := range mock.ListAllMocks() {
 			t.Run(fmt.Sprintf("%d/%s", i, version), func(t *testing.T) {
@@ -2791,7 +2788,7 @@ func TestCounters(t *testing.T) {
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
 
-	zerolog.SetGlobalLevel(zerolog.ErrorLevel)
+	log.SetLevel(slog.LevelError)
 	mockCache()
 	version := mock.ListAllMocks()[0]
 
@@ -2958,7 +2955,7 @@ func TestLabelSettings(t *testing.T) {
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
 
-	zerolog.SetGlobalLevel(zerolog.ErrorLevel)
+	log.SetLevel(slog.LevelError)
 	mockCache()
 	version := mock.ListAllMocks()[0]
 

@@ -2,6 +2,7 @@ package alertmanager
 
 import (
 	"fmt"
+	"log/slog"
 	"maps"
 	"net/http"
 	"net/url"
@@ -19,8 +20,6 @@ import (
 	"github.com/prymitive/karma/internal/transform"
 	"github.com/prymitive/karma/internal/uri"
 	"github.com/prymitive/karma/internal/verprobe"
-
-	"github.com/rs/zerolog/log"
 )
 
 const (
@@ -78,33 +77,23 @@ type Alertmanager struct {
 func (am *Alertmanager) probeVersion() string {
 	url, err := uri.JoinURL(am.URI, "metrics")
 	if err != nil {
-		log.Error().
-			Err(err).
-			Str("uri", am.SanitizedURI()).
-			Msg("Failed to join url with /metrics path")
+		slog.Error("Failed to join url with /metrics path", slog.Any("error", err), slog.String("uri", am.SanitizedURI()))
 		return ""
 	}
 
 	source, err := am.reader.Read(url, am.HTTPHeaders)
 	if err != nil {
-		log.Error().
-			Err(err).
-			Str("alertmanager", am.Name).
-			Str("uri", am.SanitizedURI()).
-			Msg("Request failed")
+		slog.Error("Request failed", slog.Any("error", err), slog.String("alertmanager", am.Name), slog.String("uri", am.SanitizedURI()))
 		return ""
 	}
 	defer source.Close()
 
 	version, err := verprobe.Detect(source)
 	if err != nil {
-		log.Error().Err(err).Str("alertmanager", am.Name).Msg("Error while discovering version")
+		slog.Error("Error while discovering version", slog.Any("error", err), slog.String("alertmanager", am.Name))
 		return ""
 	}
-	log.Info().
-		Str("version", version).
-		Str("alertmanager", am.Name).
-		Msg("Upstream version")
+	slog.Info("Upstream version", slog.String("version", version), slog.String("alertmanager", am.Name))
 
 	return version
 }
@@ -132,16 +121,14 @@ func (am *Alertmanager) pullSilences(version string) error {
 	if err != nil {
 		return err
 	}
-	log.Info().
-		Str("alertmanager", am.Name).
-		Int("silences", len(silences)).
-		Dur("duration", time.Since(start)).
-		Msg("Got silences")
+	slog.Info(
+		"Got silences",
+		slog.String("alertmanager", am.Name),
+		slog.Int("silences", len(silences)),
+		slog.Duration("duration", time.Since(start)),
+	)
 
-	log.Info().
-		Str("alertmanager", am.Name).
-		Int("silences", len(silences)).
-		Msg("Detecting ticket links in silences")
+	slog.Info("Detecting ticket links in silences", slog.String("alertmanager", am.Name), slog.Int("silences", len(silences)))
 	silenceMap := make(map[string]models.Silence, len(silences))
 	for _, silence := range silences {
 		silence.TicketID, silence.TicketURL = transform.DetectLinks(&silence)
@@ -198,16 +185,14 @@ func (am *Alertmanager) pullAlerts(version string) error {
 	if err != nil {
 		return err
 	}
-	log.Info().
-		Str("alertmanager", am.Name).
-		Int("groups", len(groups)).
-		Dur("duration", time.Since((start))).
-		Msg("Collected alert groups")
+	slog.Info(
+		"Collected alert groups",
+		slog.String("alertmanager", am.Name),
+		slog.Int("groups", len(groups)),
+		slog.Duration("duration", time.Since(start)),
+	)
 
-	log.Info().
-		Str("alertmanager", am.Name).
-		Int("groups", len(groups)).
-		Msg("Deduplicating alert groups")
+	slog.Info("Deduplicating alert groups", slog.String("alertmanager", am.Name), slog.Int("groups", len(groups)))
 	uniqueGroups := map[string]models.AlertGroup{}
 	uniqueAlerts := map[string]map[string]models.Alert{}
 	knownLabelsMap := map[string]struct{}{}
@@ -246,10 +231,7 @@ func (am *Alertmanager) pullAlerts(version string) error {
 	}
 	expiredSilences := am.ExpiredSilences()
 
-	log.Info().
-		Str("alertmanager", am.Name).
-		Int("groups", len(uniqueGroups)).
-		Msg("Processing deduplicated alert groups")
+	slog.Info("Processing deduplicated alert groups", slog.String("alertmanager", am.Name), slog.Int("groups", len(uniqueGroups)))
 	for _, ag := range uniqueGroups {
 		alerts := make(models.AlertList, 0, len(uniqueAlerts[ag.ID]))
 		labelPairs := make([][]labels.Label, 0, len(uniqueAlerts[ag.ID]))
@@ -327,10 +309,7 @@ func (am *Alertmanager) pullAlerts(version string) error {
 		dedupedGroups = append(dedupedGroups, ag)
 	}
 
-	log.Info().
-		Str("alertmanager", am.Name).
-		Int("hints", len(am.autocompleteMap)).
-		Msg("Merging autocomplete hints")
+	slog.Info("Merging autocomplete hints", slog.String("alertmanager", am.Name), slog.Int("hints", len(am.autocompleteMap)))
 	autocomplete := make([]models.Autocomplete, 0, len(am.autocompleteMap))
 	for _, hint := range am.autocompleteMap {
 		autocomplete = append(autocomplete, hint)
@@ -361,7 +340,7 @@ func (am *Alertmanager) Pull() error {
 	am.lastVersionProbe = version
 	am.lock.Unlock()
 
-	log.Debug().Str("alertmanager", am.Name).Str("version", version).Msg("Probed alertmanager version")
+	slog.Debug("Probed alertmanager version", slog.String("alertmanager", am.Name), slog.String("version", version))
 
 	// verify that URI is correct
 	_, err := url.Parse(am.URI)
@@ -543,10 +522,7 @@ func (am *Alertmanager) IsHealthCheckAlert(alert *models.Alert) (string, *Health
 		negativeMatch := false
 		for _, hcFilter := range hc.filters {
 			if hcFilter.Match(alert, 0) {
-				log.Debug().
-					Str("alertmanager", am.Name).
-					Str("healthcheck", name).
-					Msg("Healthcheck alert matched")
+				slog.Debug("Healthcheck alert matched", slog.String("alertmanager", am.Name), slog.String("healthcheck", name))
 				positiveMatch = true
 			} else {
 				negativeMatch = true

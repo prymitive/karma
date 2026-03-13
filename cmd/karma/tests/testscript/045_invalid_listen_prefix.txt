@@ -4,4 +4,4 @@
 cmp stderr stderr.txt
 
 -- stderr.txt --
-level=fatal msg="Execution failed" error="listen.prefix must start with '/', got \"karma\""
+level=ERROR msg="Execution failed" error="listen.prefix must start with '/', got \"karma\""

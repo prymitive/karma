@@ -8,8 +8,8 @@ import (
 
 // Matcher holds the comparison operator and its implementation.
 type Matcher struct {
-	Operator string
 	Compare  func(a, b string) bool
+	Operator string
 }
 
 func compareEqual(a, b string) bool    { return a == b }

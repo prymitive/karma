@@ -2,14 +2,13 @@ package main
 
 import (
 	"io"
+	"log/slog"
 	"mime"
 	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
 	"time"
-
-	"github.com/rs/zerolog/log"
 
 	"github.com/prymitive/karma/ui"
 )
@@ -46,22 +45,28 @@ func serverStaticFiles(prefix, root string) func(next http.Handler) http.Handler
 			fixedPath := strings.TrimPrefix(r.URL.Path, prefix)
 			filePath := strings.TrimSuffix(root, "/") + "/" + strings.TrimPrefix(fixedPath, "/")
 
-			log.Debug().Str("path", r.URL.Path).Str("root", root).Str("prefix", prefix).Str("filePath", filePath).Msg("Static file request")
+			slog.Debug(
+				"Static file request",
+				slog.String("path", r.URL.Path),
+				slog.String("root", root),
+				slog.String("prefix", prefix),
+				slog.String("filePath", filePath),
+			)
 
 			if !strings.HasPrefix(r.URL.Path, prefix) {
-				log.Debug().Str("path", r.URL.Path).Str("prefix", prefix).Msg("Ignoring static file request")
+				slog.Debug("Ignoring static file request", slog.String("path", r.URL.Path), slog.String("prefix", prefix))
 				next.ServeHTTP(w, r)
 				return
 			}
 
 			fl, err := ui.StaticFiles.Open(filePath)
 			if err != nil {
-				log.Debug().Str("path", r.URL.Path).Msg("Static file not found")
+				slog.Debug("Static file not found", slog.String("path", r.URL.Path))
 				next.ServeHTTP(w, r)
 				return
 			}
 			defer fl.Close()
-			log.Debug().Str("path", r.URL.Path).Msg("Static file found")
+			slog.Debug("Static file found", slog.String("path", r.URL.Path))
 
 			ct := mime.TypeByExtension(filepath.Ext(filePath))
 			if ct == "" {

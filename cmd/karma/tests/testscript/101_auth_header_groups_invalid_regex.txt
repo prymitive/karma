@@ -3,7 +3,7 @@
 cmp stderr stderr.txt
 
 -- stderr.txt --
-level=fatal msg="Execution failed" error="invalid regex for authentication.header.group_value_re: error parsing regexp: invalid nested repetition operator: `++`"
+level=ERROR msg="Execution failed" error="invalid regex for authentication.header.group_value_re: error parsing regexp: invalid nested repetition operator: `++`"
 -- karma.yaml --
 alertmanager:
   servers:

@@ -4,6 +4,7 @@ import (
 	"crypto/sha1"
 	"image/color"
 	"io"
+	"log/slog"
 	"math/rand"
 	"slices"
 
@@ -11,7 +12,6 @@ import (
 	"github.com/prymitive/karma/internal/models"
 
 	"github.com/prymitive/randomcolor"
-	"github.com/rs/zerolog/log"
 	plcolors "gopkg.in/go-playground/colors.v1"
 )
 
@@ -39,11 +39,12 @@ func rgbToBrightness(r, g, b uint8) int32 {
 func parseCustomColor(colorStore models.LabelsColorMap, key, val, customColor string) {
 	color, err := plcolors.Parse(customColor)
 	if err != nil {
-		log.Warn().
-			Err(err).
-			Str("key", key).
-			Str("value", val).
-			Msg("Failed to parse custom color")
+		slog.Warn(
+			"Failed to parse custom color",
+			slog.Any("error", err),
+			slog.String("key", key),
+			slog.String("value", val),
+		)
 		return
 	}
 	rgb := color.ToRGB()

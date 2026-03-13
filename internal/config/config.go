@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"log/slog"
 	"os"
 	"regexp"
 	"slices"
@@ -21,7 +22,6 @@ import (
 	"github.com/knadh/koanf/providers/file"
 	"github.com/knadh/koanf/providers/posflag"
 	"github.com/knadh/koanf/v2"
-	"github.com/rs/zerolog/log"
 	"github.com/spf13/pflag"
 
 	yaml "go.yaml.in/yaml/v3"
@@ -119,7 +119,7 @@ func SetupFlags(f *pflag.FlagSet) {
 
 	f.Bool("log.config", false, "Log used configuration to log on startup")
 	f.String("log.level", "info",
-		"Log level, one of: debug, info, warning, error, fatal and panic")
+		"Log level, one of: debug, info, warning, error")
 	f.String("log.format", "text",
 		"Log format, one of: text, json")
 	f.Bool("log.requests", false, "Enable request logging")
@@ -537,9 +537,9 @@ func (config *configSchema) LogValues() {
 	enc.SetIndent(2)
 	_ = enc.Encode(cfg)
 
-	log.Info().Msg("Parsed configuration:")
+	slog.Info("Parsed configuration:")
 	scanner := bufio.NewScanner(&buf)
 	for scanner.Scan() {
-		log.Info().Msg(scanner.Text())
+		slog.Info(scanner.Text())
 	}
 }

@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"html/template"
+	"log/slog"
 	"mime"
 	"net"
 	"net/http"
@@ -20,6 +21,7 @@ import (
 
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
+	"github.com/prymitive/karma/internal/log"
 	"github.com/prymitive/karma/internal/models"
 	"github.com/prymitive/karma/internal/transform"
 	"github.com/prymitive/karma/internal/uri"
@@ -31,10 +33,7 @@ import (
 	lru "github.com/hashicorp/golang-lru/v2"
 	"github.com/klauspost/compress/flate"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"github.com/rs/zerolog"
-	"github.com/rs/zerolog/log"
 	"github.com/spf13/pflag"
-	"go.uber.org/automaxprocs/maxprocs"
 )
 
 var (
@@ -172,18 +171,13 @@ func setupRouter(router *chi.Mux, historyPoller *historyPoller) {
 
 	for _, am := range alertmanager.GetAlertmanagers() {
 		if am.ProxyRequests {
-			log.Info().
-				Str("alertmanager", am.Name).
-				Msg("Setting up proxy endpoints")
+			slog.Info("Setting up proxy endpoints", slog.String("alertmanager", am.Name))
 			setupRouterProxyHandlers(router, am)
 		}
 	}
 
 	walkFunc := func(method, route string, _ http.Handler, _ ...func(http.Handler) http.Handler) error {
-		log.Debug().
-			Str("method", method).
-			Str("route", route).
-			Msg("Registered handler")
+		slog.Debug("Registered handler", slog.String("method", method), slog.String("route", route))
 		return nil
 	}
 	_ = chi.Walk(router, walkFunc)
@@ -245,93 +239,14 @@ func setupUpstreams() error {
 	return nil
 }
 
-func msgFormatter(msg any) string {
-	return fmt.Sprintf("msg=%q", msg)
-}
-
-func lvlFormatter(level any) string {
-	if level == nil {
-		return ""
-	}
-	return fmt.Sprintf("level=%s", level)
-}
-
-func discardFormatter(_ any) string {
-	return ""
-}
-
-func initLogger() {
-	log.Logger = log.Logger.Output(zerolog.ConsoleWriter{
-		Out:           os.Stderr,
-		NoColor:       true,
-		FormatLevel:   lvlFormatter,
-		FormatMessage: msgFormatter,
-		FormatTimestamp: func(any) string {
-			return ""
-		},
-	})
-}
-
 func setupLogger() error {
-	zerolog.DurationFieldUnit = time.Second
-
-	switch config.Config.Log.Format {
-	case "text":
-		if config.Config.Log.Timestamp {
-			log.Logger = log.Logger.Output(zerolog.ConsoleWriter{
-				Out:           os.Stderr,
-				NoColor:       true,
-				FormatLevel:   lvlFormatter,
-				FormatMessage: msgFormatter,
-				TimeFormat:    "15:04:05",
-			})
-		} else {
-			log.Logger = zerolog.New(os.Stderr).Output(zerolog.ConsoleWriter{
-				Out:             os.Stderr,
-				NoColor:         true,
-				FormatLevel:     lvlFormatter,
-				FormatMessage:   msgFormatter,
-				FormatTimestamp: discardFormatter,
-			})
-		}
-	case "json":
-		if config.Config.Log.Timestamp {
-			log.Logger = zerolog.New(os.Stderr).With().Timestamp().Logger()
-		} else {
-			log.Logger = zerolog.New(os.Stderr).With().Logger()
-		}
-	default:
-		return fmt.Errorf("unknown log format '%s'", config.Config.Log.Format)
-	}
-
-	switch config.Config.Log.Level {
-	case "debug":
-		zerolog.SetGlobalLevel(zerolog.DebugLevel)
-	case "info":
-		zerolog.SetGlobalLevel(zerolog.InfoLevel)
-	case "warning":
-		zerolog.SetGlobalLevel(zerolog.WarnLevel)
-	case "error":
-		zerolog.SetGlobalLevel(zerolog.ErrorLevel)
-	case "fatal":
-		zerolog.SetGlobalLevel(zerolog.FatalLevel)
-	case "panic":
-		zerolog.SetGlobalLevel(zerolog.PanicLevel)
-	default:
-		return fmt.Errorf("unknown log level '%s'", config.Config.Log.Level)
-	}
-
-	return nil
-}
-
-func loadTemplates() error {
-	var t *template.Template
-	t, err := template.ParseFS(ui.StaticFiles, "dist/index.html")
+	level, err := log.ParseLevel(config.Config.Log.Level)
 	if err != nil {
-		return fmt.Errorf("failed to load template: %w", err)
+		return err
 	}
-	indexTemplate = t
-	return nil
+	log.SetLevel(level)
+
+	return log.SetupLogger(config.Config.Log.Format, config.Config.Log.Timestamp)
 }
 
 func mainSetup(errorHandling pflag.ErrorHandling) (*chi.Mux, *historyPoller, error) {
@@ -363,9 +278,7 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*chi.Mux, *historyPoller, err
 	}
 
 	if configFile != "" {
-		log.Info().
-			Str("path", configFile).
-			Msg("Reading configuration file")
+		slog.Info("Reading configuration file", slog.String("path", configFile))
 	}
 
 	// timer duration cannot be zero second or a negative one
@@ -373,7 +286,7 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*chi.Mux, *historyPoller, err
 		return nil, nil, fmt.Errorf("invalid alertmanager.interval value '%v'", config.Config.Alertmanager.Interval)
 	}
 
-	log.Info().Msgf("Version: %s", version)
+	slog.Info("Version: " + version)
 	if config.Config.Log.Config {
 		config.Config.LogValues()
 	}
@@ -400,9 +313,7 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*chi.Mux, *historyPoller, err
 	}
 
 	if config.Config.Authorization.ACL.Silences != "" {
-		log.Info().
-			Str("path", config.Config.Authorization.ACL.Silences).
-			Msg("Reading silence ACL config file")
+		slog.Info("Reading silence ACL config file", slog.String("path", config.Config.Authorization.ACL.Silences))
 		var aclConfig *config.SilencesACLSchema
 		aclConfig, err = config.ReadSilenceACLConfig(config.Config.Authorization.ACL.Silences)
 		if err != nil {
@@ -417,13 +328,10 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*chi.Mux, *historyPoller, err
 			}
 			silenceACLs = append(silenceACLs, acl)
 		}
-		log.Info().Int("rules", len(silenceACLs)).Msg("Parsed ACL rules")
+		slog.Info("Parsed ACL rules", slog.Int("rules", len(silenceACLs)))
 	}
 
-	err = loadTemplates()
-	if err != nil {
-		return nil, nil, err
-	}
+	indexTemplate, _ = template.ParseFS(ui.StaticFiles, "dist/index.html")
 
 	router := chi.NewRouter()
 
@@ -431,7 +339,7 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*chi.Mux, *historyPoller, err
 	setupRouter(router, historyPoller)
 
 	if *validateConfig {
-		log.Info().Msg("Configuration is valid")
+		slog.Info("Configuration is valid")
 		return nil, nil, nil
 	}
 
@@ -440,7 +348,7 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*chi.Mux, *historyPoller, err
 
 func writePidFile() error {
 	if pidFile != "" {
-		log.Info().Str("path", pidFile).Msg("Writing PID file")
+		slog.Info("Writing PID file", slog.String("path", pidFile))
 		pid := os.Getpid()
 		err := os.WriteFile(pidFile, []byte(strconv.Itoa(pid)), 0o644)
 		if err != nil {
@@ -452,7 +360,7 @@ func writePidFile() error {
 
 func removePidFile() error {
 	if pidFile != "" {
-		log.Info().Str("path", pidFile).Msg("Removing PID file")
+		slog.Info("Removing PID file", slog.String("path", pidFile))
 		err := os.Remove(pidFile)
 		if err != nil {
 			return fmt.Errorf("failed to remove PID file: %w", err)
@@ -475,18 +383,14 @@ func serve(errorHandling pflag.ErrorHandling) error {
 		return err
 	}
 
-	_, _ = maxprocs.Set(maxprocs.Logger(func(format string, v ...any) {
-		log.Debug().Msgf(format, v)
-	}))
-
 	if config.Config.History.Enabled {
 		go historyPoller.run(config.Config.History.Workers)
 	}
 
 	// before we start try to fetch data from Alertmanager
-	log.Info().Msg("Initial Alertmanager collection")
+	slog.Info("Initial Alertmanager collection")
 	pullFromAlertmanager()
-	log.Info().Msg("Done, starting HTTP server")
+	slog.Info("Done, starting HTTP server")
 
 	// background loop that will fetch updates from Alertmanager
 	ticker = time.NewTicker(config.Config.Alertmanager.Interval)
@@ -508,20 +412,20 @@ func serve(errorHandling pflag.ErrorHandling) error {
 	quit := make(chan os.Signal, 1)
 
 	if config.Config.Listen.TLS.Cert != "" {
-		log.Info().Str("address", listener.Addr().String()).Msg("Starting HTTPS server")
+		slog.Info("Starting HTTPS server", slog.String("address", listener.Addr().String()))
 		go func() {
 			err := httpServer.ServeTLS(listener, config.Config.Listen.TLS.Cert, config.Config.Listen.TLS.Key)
 			if !errors.Is(err, http.ErrServerClosed) {
-				log.Error().Err(err).Msg("HTTPS server startup error")
+				slog.Error("HTTPS server startup error", slog.Any("error", err))
 				quit <- syscall.SIGTERM
 			}
 		}()
 	} else {
-		log.Info().Str("address", listener.Addr().String()).Msg("Starting HTTP server")
+		slog.Info("Starting HTTP server", slog.String("address", listener.Addr().String()))
 		go func() {
 			err := httpServer.Serve(listener)
 			if !errors.Is(err, http.ErrServerClosed) {
-				log.Error().Err(err).Msg("HTTP server startup error")
+				slog.Error("HTTP server startup error", slog.Any("error", err))
 				quit <- syscall.SIGTERM
 			}
 		}()
@@ -529,7 +433,7 @@ func serve(errorHandling pflag.ErrorHandling) error {
 
 	signal.Notify(quit, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
 	s := <-quit
-	log.Info().Stringer("signal", s).Msg("Shutting down HTTP server")
+	slog.Info("Shutting down HTTP server", slog.Any("signal", s))
 
 	historyPoller.stop()
 
@@ -540,14 +444,15 @@ func serve(errorHandling pflag.ErrorHandling) error {
 		return fmt.Errorf("shutdown error: %w", err)
 	}
 
-	log.Info().Msg("HTTP server shut down")
+	slog.Info("HTTP server shut down")
 	return removePidFile()
 }
 
 func main() {
-	initLogger()
+	_ = log.SetupLogger("text", false)
 	err := serve(pflag.ExitOnError)
 	if err != nil {
-		log.Fatal().Err(err).Msg("Execution failed")
+		slog.Error("Execution failed", slog.Any("error", err))
+		os.Exit(1)
 	}
 }

@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log/slog"
 	"maps"
 	"math"
 	"slices"
@@ -9,7 +10,6 @@ import (
 
 	"github.com/fvbommel/sortorder"
 	promlabels "github.com/prometheus/prometheus/model/labels"
-	"github.com/rs/zerolog/log"
 
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
@@ -288,7 +288,7 @@ func autoGridLabel(dedupedAlerts []models.AlertGroup) string {
 			})
 		}
 	}
-	log.Debug().Int("alerts", alertsCount).Int("groups", alertGroupsCount).Msg("Alerts count for automatic grid label")
+	slog.Debug("Alerts count for automatic grid label", slog.Int("alerts", alertsCount), slog.Int("groups", alertGroupsCount))
 
 	candidates := map[string]int{}
 	for key, vals := range labelToAlertCount {
@@ -301,7 +301,7 @@ func autoGridLabel(dedupedAlerts []models.AlertGroup) string {
 			total += cnt
 			uniqueValues[val] = struct{}{}
 		}
-		log.Debug().Str("label", key).Int("alerts", total).Msg("Number of alerts per label")
+		slog.Debug("Number of alerts per label", slog.String("label", key), slog.Int("alerts", total))
 		if total < alertsCount {
 			continue
 		}
@@ -312,10 +312,16 @@ func autoGridLabel(dedupedAlerts []models.AlertGroup) string {
 	var lastCnt int
 	for key, uniqueValues := range candidates {
 		if uniqueValues == 1 || uniqueValues >= alertsCount || uniqueValues >= alertGroupsCount {
-			log.Debug().Int("variants", uniqueValues).Int("alerts", alertsCount).Int("groups", alertGroupsCount).Str("label", key).Msg("Excluding label from automatic grid selection")
+			slog.Debug(
+				"Excluding label from automatic grid selection",
+				slog.Int("variants", uniqueValues),
+				slog.Int("alerts", alertsCount),
+				slog.Int("groups", alertGroupsCount),
+				slog.String("label", key),
+			)
 			continue
 		}
-		log.Debug().Int("variants", uniqueValues).Str("label", key).Msg("Automatic grid label candidate")
+		slog.Debug("Automatic grid label candidate", slog.Int("variants", uniqueValues), slog.String("label", key))
 		if lastCnt == 0 || uniqueValues < lastCnt || (uniqueValues == lastCnt && isPreferredLabel(key, lastLabel)) {
 			lastLabel = key
 			lastCnt = uniqueValues
