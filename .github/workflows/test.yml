@@ -145,7 +145,7 @@ jobs:
         with:
           name: visual-regression-diffs
           path: ui/src/e2e/results/
-          retention-days: 30
+          retention-days: 7
 
   lint-js:
     name: Lint JS code
