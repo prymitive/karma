@@ -26,6 +26,12 @@
       "groupName": "bootstrap"
     },
     {
+      "description": "Vite packages",
+      "matchDatasources": ["npm"],
+      "matchPackageNames": ["/^@vitejs/", "/^vite$/", "/^vite-.+$/"],
+      "groupName": "vite"
+    },
+    {
       "description": "Update snapshots after npm upgrades",
       "matchManagers": ["npm"],
       "postUpgradeTasks": {
