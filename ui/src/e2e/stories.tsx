@@ -668,7 +668,7 @@ const StoryRenderer = ({ storyFn }: { storyFn: () => React.ReactNode }) => (
 );
 
 const VisualTestApp = () => {
-  const storyName = window.location.hash.replace("#", "") || "";
+  const storyName = window.location.hash.replace("#", "").split("?")[0] || "";
   const storyFn = stories[storyName];
 
   if (!storyFn) {

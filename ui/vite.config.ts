@@ -23,6 +23,10 @@ export default defineConfig({
       },
     },
   },
+  legacy: {
+    // e2e tests broke after upgrade to Vite v8, this fixes it.
+    inconsistentCjsInterop: true,
+  },
   build: {
     sourcemap: true,
   },
