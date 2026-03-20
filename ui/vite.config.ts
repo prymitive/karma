@@ -1,11 +1,10 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import viteTsconfigPaths from "vite-tsconfig-paths";
 import legacy from "@vitejs/plugin-legacy";
 
 export default defineConfig({
   base: "./",
-  plugins: [react(), viteTsconfigPaths(), legacy()],
+  plugins: [react(), legacy()],
   server: {
     open: true,
     port: 3000,
@@ -27,4 +26,7 @@ export default defineConfig({
   build: {
     sourcemap: true,
   },
+  resolve: {
+    tsconfigPaths: true
+  }
 });
