@@ -183,6 +183,11 @@ $body-secondary-color: $gray-600;
     --bs-popover-bg: #{$white};
   }
 
+  .tooltip {
+    --bs-tooltip-bg: #{$dark};
+    --bs-tooltip-color: #{$white};
+  }
+
   // unused
   // .offcanvas {
   //   --bs-offcanvas-bg: #{$white};
