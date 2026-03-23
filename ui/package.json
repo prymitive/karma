@@ -72,7 +72,7 @@
     "terser": "5.46.1",
     "ts-jest": "29.4.6",
     "typescript": "5.9.3",
-    "typescript-eslint": "8.57.1",
+    "typescript-eslint": "8.57.2",
     "vite": "8.0.2"
   },
   "scripts": {
