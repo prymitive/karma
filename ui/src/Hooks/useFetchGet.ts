@@ -1,7 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 
-import merge from "lodash.merge";
-
 import promiseRetry from "promise-retry";
 
 import { CommonOptions, FetchRetryConfig } from "Common/Fetch";
@@ -65,19 +63,11 @@ const useFetchGet = <T>(
 
       const res = await promiseRetry(
         (retry: (err: Error) => Promise<Response>, n: number) =>
-          (fetcher || fetch)(
-            uri,
-            merge(
-              {},
-              {
-                method: "GET",
-              },
-              CommonOptions,
-              {
-                mode: n <= FetchRetryConfig.retries ? "cors" : "no-cors",
-              },
-            ) as RequestInit,
-          ).catch((err: Error) => {
+          (fetcher || fetch)(uri, {
+            ...{ method: "GET" },
+            ...CommonOptions,
+            mode: n <= FetchRetryConfig.retries ? "cors" : "no-cors",
+          } as RequestInit).catch((err: Error) => {
             if (!isCanceledRef.current) {
               setResponse((r) => ({
                 ...r,

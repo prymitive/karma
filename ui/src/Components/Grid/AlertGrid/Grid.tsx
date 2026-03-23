@@ -12,7 +12,7 @@ import React, {
 
 import { observer } from "mobx-react-lite";
 
-import debounce from "lodash.debounce";
+import { debounce } from "es-toolkit";
 
 import type { SizeDetail } from "bricks.js";
 

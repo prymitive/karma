@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 
-import merge from "lodash.merge";
-
 import { CommonOptions } from "Common/Fetch";
 
 type useFetchDeleteDepsT = string[] | number[];
@@ -28,10 +26,11 @@ const useFetchDelete = (
     const fetchData = async () => {
       try {
         setIsDeleting(true);
-        const res = await fetch(
-          uri,
-          merge({}, { method: "DELETE" }, CommonOptions, options),
-        );
+        const res = await fetch(uri, {
+          ...{ method: "DELETE" },
+          ...CommonOptions,
+          ...options,
+        });
         const text = await res.text();
 
         if (!isCancelled) {

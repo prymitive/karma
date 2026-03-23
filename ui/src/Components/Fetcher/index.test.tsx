@@ -25,7 +25,7 @@ beforeEach(() => {
     .spyOn(alertStore, "fetchWithThrottle")
     .mockImplementation(() => {
       alertStore.status.setIdle();
-      return new Promise((success) => {
+      return new Promise<void>((success) => {
         success();
       });
     });

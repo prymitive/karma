@@ -1,7 +1,5 @@
 import { CommonOptions, FetchGet, FetchRetryConfig } from "./Fetch";
 
-import merge from "lodash.merge";
-
 import fetchMock from "@fetch-mock/jest";
 
 beforeEach(() => {
@@ -31,9 +29,10 @@ describe("Fetch", () => {
       const request = func("http://example.com/", {}, jest.fn());
       await expect(request).resolves.toMatchObject({ status: 200 });
       expect(fetchMock.callHistory.lastCall()?.url).toBe("http://example.com/");
-      expect(fetchMock.callHistory.lastCall()?.options).toEqual(
-        merge({}, CommonOptions, methodOptions[name]),
-      );
+      expect(fetchMock.callHistory.lastCall()?.options).toEqual({
+        ...CommonOptions,
+        ...methodOptions[name],
+      });
     });
 
     it(`${name}: custom keys are merged with defaults`, async () => {
@@ -46,15 +45,11 @@ describe("Fetch", () => {
       );
       await expect(request).resolves.toMatchObject({ status: 200 });
       expect(fetchMock.callHistory.lastCall()?.url).toBe("http://example.com/");
-      expect(fetchMock.callHistory.lastCall()?.options).toEqual(
-        merge(
-          {},
-          CommonOptions,
-          methodOptions[name],
-          { keepalive: false },
-          () => {},
-        ),
-      );
+      expect(fetchMock.callHistory.lastCall()?.options).toEqual({
+        ...CommonOptions,
+        ...methodOptions[name],
+        keepalive: false,
+      });
     });
 
     it(`${name}: custom credentials are used when passed`, async () => {
@@ -68,12 +63,12 @@ describe("Fetch", () => {
       );
       await expect(request).resolves.toMatchObject({ status: 200 });
       expect(fetchMock.callHistory.lastCall()?.url).toBe("http://example.com/");
-      expect(fetchMock.callHistory.lastCall()?.options).toEqual(
-        merge({}, CommonOptions, methodOptions[name], {
-          credentials: "omit",
-          redirect: "follow",
-        }),
-      );
+      expect(fetchMock.callHistory.lastCall()?.options).toEqual({
+        ...CommonOptions,
+        ...methodOptions[name],
+        credentials: "omit",
+        redirect: "follow",
+      });
     });
   }
 

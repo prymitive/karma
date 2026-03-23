@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 
-import debounce from "lodash.debounce";
+import { debounce } from "es-toolkit";
 
 import { Range } from "react-range";
 
