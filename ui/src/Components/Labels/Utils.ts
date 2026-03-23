@@ -10,7 +10,7 @@ import type { AlertStore } from "Stores/AlertStore";
 
 const isBackgroundDark = (brightness: number) => brightness <= 130;
 
-export interface ClassAndStyleT {
+interface ClassAndStyleT {
   style: { [key: string]: string | number };
   className: string;
   baseClassNames: string[];

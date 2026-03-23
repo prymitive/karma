@@ -47,10 +47,11 @@ update-e2e:
 	npx playwright test --update-snapshots
 
 .PHONY: lint
-lint: $(NODE_PATH)/eslint $(NODE_PATH)/stylelint
+lint: $(NODE_PATH)/eslint $(NODE_PATH)/stylelint $(NODE_PATH)/knip
 	eslint
 	tsc --noEmit -p .
 	stylelint 'src/**/*.scss' 'src/**/*.css'
+	knip
 
 .PHONY: lint-typescript
 lint-typescript:

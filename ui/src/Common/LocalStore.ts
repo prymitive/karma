@@ -50,4 +50,3 @@ function localStored<T extends object>(
 }
 
 export { localStored };
-export type { LocalStoreResult };

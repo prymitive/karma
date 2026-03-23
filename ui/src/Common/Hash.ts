@@ -25,4 +25,4 @@ const hashString = (s: string): number =>
 const hashObject = (o: { [key: string]: any }): number =>
   hashString(JSON.stringify(o, normalize(), 2));
 
-export { normalize, hashString, hashObject };
+export { hashObject };

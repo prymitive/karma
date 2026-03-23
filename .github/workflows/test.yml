@@ -203,19 +203,6 @@ jobs:
       - name: Check for local changes
         run: git diff --exit-code
 
-  deps-js:
-    name: Check JS dependencies
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v6
-
-      - name: depcheck
-        uses: prymitive/depcheck-action@v1.4.3
-        with:
-          workdir: "./ui"
-          config: "./ui/.depcheckrc.yaml"
-
   package-lock:
     name: Check package-lock.json
     runs-on: ubuntu-latest
@@ -293,7 +280,6 @@ jobs:
       - lint-js
       - format-go
       - format-js
-      - deps-js
       - package-lock
       - lint-versions
       - typescript
