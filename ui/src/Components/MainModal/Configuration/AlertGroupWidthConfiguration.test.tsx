@@ -5,7 +5,12 @@ import { AlertGroupWidthConfiguration } from "./AlertGroupWidthConfiguration";
 
 let settingsStore: Settings;
 beforeEach(() => {
+  jest.useFakeTimers();
   settingsStore = new Settings(null);
+});
+
+afterEach(() => {
+  jest.useRealTimers();
 });
 
 const renderConfiguration = () => {
@@ -27,6 +32,7 @@ describe("<AlertGroupWidthConfiguration />", () => {
 
     fireEvent.keyDown(slider!, { key: "ArrowLeft", keyCode: 37 });
     fireEvent.keyUp(slider!, { key: "ArrowLeft", keyCode: 37 });
+    jest.advanceTimersByTime(250);
 
     expect(settingsStore.gridConfig.config.groupWidth).toBe(410);
 
@@ -34,6 +40,7 @@ describe("<AlertGroupWidthConfiguration />", () => {
     fireEvent.keyUp(slider!, { key: "ArrowRight", keyCode: 39 });
     fireEvent.keyDown(slider!, { key: "ArrowRight", keyCode: 39 });
     fireEvent.keyUp(slider!, { key: "ArrowRight", keyCode: 39 });
+    jest.advanceTimersByTime(250);
 
     expect(settingsStore.gridConfig.config.groupWidth).toBe(430);
   });

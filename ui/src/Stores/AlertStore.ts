@@ -1,6 +1,6 @@
 import { observable, action, computed, toJS } from "mobx";
 
-import throttle from "lodash.throttle";
+import { throttle } from "es-toolkit";
 
 import { FetchGet } from "Common/Fetch";
 import type {

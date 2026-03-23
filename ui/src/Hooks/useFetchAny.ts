@@ -1,7 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
 
-import merge from "lodash.merge";
-
 import { CommonOptions } from "Common/Fetch";
 
 export interface UpstreamT {
@@ -67,10 +65,11 @@ const useFetchAny = <T>(
         inProgress: true,
       });
       try {
-        const res = await (fetcher || fetch)(
-          uri,
-          merge({}, { method: "GET" }, CommonOptions, options) as RequestInit,
-        );
+        const res = await (fetcher || fetch)(uri, {
+          ...{ method: "GET" },
+          ...CommonOptions,
+          ...options,
+        } as RequestInit);
 
         if (!isCancelled) {
           let body;

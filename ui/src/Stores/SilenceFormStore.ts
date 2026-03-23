@@ -1,7 +1,5 @@
 import { observable, action, computed } from "mobx";
 
-import uniqueId from "lodash.uniqueid";
-
 import { parseISO } from "date-fns/parseISO";
 import { addHours } from "date-fns/addHours";
 import { addMinutes } from "date-fns/addMinutes";
@@ -19,6 +17,9 @@ import type {
 } from "Models/APITypes";
 import { StringToOption, OptionT, MultiValueOptionT } from "Common/Select";
 import { QueryOperators } from "Common/Query";
+
+let idCounter = 0;
+const uniqueId = (): string => String(++idCounter);
 
 export interface MatcherT {
   name: string;
