@@ -4,6 +4,7 @@ $duration: 0.5s;
 .components-animation-fade-enter {
   opacity: 0;
 }
+
 .components-animation-fade-appear-active,
 .components-animation-fade-enter-active {
   opacity: 1;
@@ -13,6 +14,7 @@ $duration: 0.5s;
 .components-animation-fade-exit {
   opacity: 1;
 }
+
 .components-animation-fade-exit-active {
   opacity: 0;
   transition: opacity $duration ease-out;
@@ -22,6 +24,7 @@ $duration: 0.5s;
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }

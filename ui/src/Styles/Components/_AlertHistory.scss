@@ -5,6 +5,7 @@
   height: 4px;
   line-height: 4px;
 }
+
 svg.alert-history {
   height: 4px;
   line-height: 4px;
@@ -15,6 +16,7 @@ svg.alert-history {
   &:not(:first-child) {
     margin-left: 1px;
   }
+
   &:not(:last-child) {
     margin-right: 1px;
   }
@@ -28,7 +30,6 @@ svg.alert-history {
   rect {
     width: 100%;
     height: 100%;
-
     transition-property: fill;
     transition-duration: 0.3s;
 
@@ -36,31 +37,39 @@ svg.alert-history {
       &.firing-0 {
         fill: #fadbd8;
       }
+
       &.firing-1 {
         fill: #f3a69e;
       }
+
       &.firing-2 {
         fill: #ee8277;
       }
+
       &.firing-3 {
         fill: #e95e50;
       }
+
       &.firing-4 {
         fill: #d04436;
       }
+
       &.firing-5 {
         fill: #a2352a;
       }
     }
+
     &.inactive {
       fill: var(--karma-alert-history-inactive);
     }
+
     &.fetching {
       fill: var(--karma-alert-history-inactive);
       animation-timing-function: ease-out;
       animation-duration: 12s;
       animation-iteration-count: infinite;
     }
+
     &.error {
       fill: $warning;
     }
@@ -73,6 +82,7 @@ svg.alert-history {
     $start: ($step * $i) - $step;
     $middle: ($step * $i);
     $stop: ($step * $i) + $step;
+
     0% {
       opacity: 1;
     }
@@ -85,6 +95,7 @@ svg.alert-history {
     #{$stop * 1%} {
       opacity: 1;
     }
+
     100% {
       opacity: 1;
     }

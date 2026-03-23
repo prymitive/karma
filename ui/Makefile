@@ -28,8 +28,8 @@ dist/index.html: $(NODE_INSTALL) $(NODE_PATH)/vite $(call rwildcard, public src,
 .PHONY: build
 build: dist/index.html
 
-.PHONY: test-js
-test-js: $(NODE_PATH)/vite $(NODE_PATH)/jest
+.PHONY: test
+test: $(NODE_PATH)/vite $(NODE_PATH)/jest
 	CI=true npm test -- --coverage
 
 .PHONY: e2e
@@ -46,10 +46,11 @@ update-e2e:
 	npx playwright install
 	npx playwright test --update-snapshots
 
-.PHONY: lint-js
-lint-js: $(NODE_PATH)/eslint
+.PHONY: lint
+lint: $(NODE_PATH)/eslint $(NODE_PATH)/stylelint
 	eslint
 	tsc --noEmit -p .
+	stylelint 'src/**/*.scss' 'src/**/*.css'
 
 .PHONY: lint-typescript
 lint-typescript:

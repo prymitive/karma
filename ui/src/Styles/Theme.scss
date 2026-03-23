@@ -1,3 +1,4 @@
+@use "sass:color";
 @use "bootswatch/dist/flatly/variables" as flatly;
 @use "bootswatch/dist/darkly/variables" as darkly;
 
@@ -5,25 +6,21 @@ $lead-font-weight: 400;
 
 // custom "dark" color, little less dark than flatly
 $blue: #455a64;
+
 // default is ~0.97rem
 $font-size-base: 1rem;
 
 // make dark darker, default it's $gray-700
 $dark: #3b4247;
-
 $enable-shadows: true;
 $enable-dark-mode: false;
-
 $btn-box-shadow: 0;
 $btn-focus-box-shadow: 0;
 $btn-active-box-shadow: 0;
-
 $tooltip-max-width: 400px;
-
 $body-bg: #455a64;
 
 @import "./Fonts";
-
 @import "bootstrap/scss/functions";
 
 // Import flatly (light) variables as base
@@ -31,7 +28,6 @@ $body-bg: #455a64;
 
 // make links light gray by default instead of green
 $link-color: $gray-700;
-
 $navbar-dark-brand-color: $navbar-dark-color;
 $navbar-dark-brand-hover-color: $gray-200;
 $navbar-dark-hover-color: $gray-200;
@@ -49,21 +45,15 @@ $pagination-hover-bg: $gray-700;
 $pagination-active-bg: $pagination-hover-bg;
 $pagination-disabled-color: $white;
 $pagination-disabled-bg: $gray-300;
-
-$progress-bg: darken($light, 10%);
-
+$progress-bg: color.adjust($light, $lightness: -10%);
 $accordion-active-bg: $gray-100;
 $accordion-button-bg: $gray-100;
 $accordion-button-active-bg: $gray-100;
 $accordion-border-color: $gray-300;
-
 $modal-header-border-color: $gray-300;
-
 $table-bg: transparent;
 $table-accent-bg: transparent;
-
 $card-cap-bg: inherit;
-
 $kbd-color: $white;
 $kbd-bg: $dark;
 
@@ -96,6 +86,7 @@ $body-secondary-color: $gray-600;
 @import "bootstrap/scss/navbar";
 @import "bootstrap/scss/card";
 @import "bootstrap/scss/accordion";
+
 // @import "bootstrap/scss/breadcrumb"; // unused
 @import "bootstrap/scss/pagination";
 @import "bootstrap/scss/badge";
@@ -107,8 +98,10 @@ $body-secondary-color: $gray-600;
 @import "bootstrap/scss/modal";
 @import "bootstrap/scss/tooltip";
 @import "bootstrap/scss/popover";
+
 // @import "bootstrap/scss/carousel"; // unused
 @import "bootstrap/scss/spinners";
+
 // @import "bootstrap/scss/offcanvas"; // unused
 // @import "bootstrap/scss/placeholders"; // unused
 
@@ -122,25 +115,25 @@ $body-secondary-color: $gray-600;
 // Light color mode — flatly colors
 [data-bs-theme="light"] {
   background-color: #455a64;
+
   --bs-body-bg: #455a64;
   --bs-body-bg-rgb: 69, 90, 100;
-
   --karma-alert-bg: #{$white};
-  --karma-alert-history-inactive: #{lighten($light, 1%)};
+  --karma-alert-history-inactive: #{color.adjust($light, $lightness: 1%)};
   --karma-alertgroup-body-bg: #{$white};
   --karma-alertgroup-footer-bg: #{$gray-100};
   --karma-silence-id: #{$dark};
   --karma-silence-color: #{$dark};
-  --karma-silence-bg: #{lighten($gray-200, 4%)};
+  --karma-silence-bg: #{color.adjust($gray-200, $lightness: 4%)};
   --karma-silence-border: #{$gray-700};
   --karma-silence-comment-color: #{$gray-800};
   --karma-filter-input-hoover-bg: #{$white};
   --karma-filter-input-hoover-color: #{$black};
   --karma-placeholder-color: #{$secondary};
   --karma-filterinput-border: #{$navbar-dark-color};
-  --karma-grid-swimlane-bg: #{lighten($dark, 2%)};
-  --karma-bg-focused: #{lighten($blue, 5%)};
-  --karma-bg-focused-rgb: #{red(lighten($blue, 5%))}, #{green(lighten($blue, 5%))}, #{blue(lighten($blue, 5%))};
+  --karma-grid-swimlane-bg: #{color.adjust($dark, $lightness: 2%)};
+  --karma-bg-focused: #{color.adjust($blue, $lightness: 5%)};
+  --karma-bg-focused-rgb: #{color.red(color.adjust($blue, $lightness: 5%))}, #{color.green(color.adjust($blue, $lightness: 5%))}, #{color.blue(color.adjust($blue, $lightness: 5%))};
   --karma-annotation-link-border: #{$light};
   --karma-components-date-range-sub-color: #{$black};
   --karma-input-range-track-background: #{$gray-400};
@@ -151,17 +144,17 @@ $body-secondary-color: $gray-600;
   --karma-with-click-light: #{$black};
   --karma-accordion-border-color: #{$gray-300};
   --karma-link-color: #{$gray-700};
-  --karma-toast-bg: #{darken($dark, 5%)};
-  --karma-toast-bg-rgb: #{red(darken($dark, 5%))}, #{green(darken($dark, 5%))}, #{blue(darken($dark, 5%))};
-  --karma-progress-bg: #{darken($light, 10%)};
-  --karma-label-primary-border: #{lighten($primary, 2%)};
-  --karma-label-secondary-border: #{darken($secondary, 1%)};
-  --karma-label-secondary-bg: #{darken($secondary, 2%)};
-  --karma-label-success-border: #{darken($success, 2%)};
-  --karma-label-danger-border: #{lighten($danger, 2%)};
-  --karma-label-warning-border: #{lighten($warning, 3%)};
-  --karma-label-info-border: #{darken($info, 2%)};
-  --karma-label-dark-border: #{darken($dark, 2%)};
+  --karma-toast-bg: #{color.adjust($dark, $lightness: -5%)};
+  --karma-toast-bg-rgb: #{color.red(color.adjust($dark, $lightness: -5%))}, #{color.green(color.adjust($dark, $lightness: -5%))}, #{color.blue(color.adjust($dark, $lightness: -5%))};
+  --karma-progress-bg: #{color.adjust($light, $lightness: -10%)};
+  --karma-label-primary-border: #{color.adjust($primary, $lightness: 2%)};
+  --karma-label-secondary-border: #{color.adjust($secondary, $lightness: -1%)};
+  --karma-label-secondary-bg: #{color.adjust($secondary, $lightness: -2%)};
+  --karma-label-success-border: #{color.adjust($success, $lightness: -2%)};
+  --karma-label-danger-border: #{color.adjust($danger, $lightness: 2%)};
+  --karma-label-warning-border: #{color.adjust($warning, $lightness: 3%)};
+  --karma-label-info-border: #{color.adjust($info, $lightness: -2%)};
+  --karma-label-dark-border: #{color.adjust($dark, $lightness: -2%)};
 
   .modal {
     --bs-modal-bg: #{$white};
@@ -221,51 +214,50 @@ $body-secondary-color: $gray-600;
 [data-bs-theme="dark"] {
   background-color: #455a64;
   color: #{darkly.$body-color};
+
   --bs-body-bg: #455a64;
   --bs-body-bg-rgb: 69, 90, 100;
-
   --bs-body-color: #{darkly.$body-color};
   --bs-emphasis-color: #{darkly.$white};
   --bs-secondary-color: #{rgba(darkly.$gray-300, 0.75)};
   --bs-secondary-bg: #{darkly.$secondary};
   --bs-tertiary-color: #{rgba(darkly.$gray-300, 0.5)};
-  --bs-tertiary-bg: #{darken(darkly.$gray-800, 2%)};
+  --bs-tertiary-bg: #{color.adjust(darkly.$gray-800, $lightness: -2%)};
   --bs-primary: #455a64;
   --bs-secondary: #{darkly.$secondary};
   --bs-success: #{darkly.$success};
   --bs-info: #{darkly.$info};
   --bs-warning: #{darkly.$warning};
   --bs-danger: #{darkly.$danger};
-  --bs-light: #{lighten(darkly.$gray-800, 5%)};
-  --bs-dark: #{darken(darkly.$dark, 4%)};
+  --bs-light: #{color.adjust(darkly.$gray-800, $lightness: 5%)};
+  --bs-dark: #{color.adjust(darkly.$dark, $lightness: -4%)};
   --bs-primary-rgb: 69, 90, 100;
-  --bs-secondary-rgb: #{red(darkly.$secondary)}, #{green(darkly.$secondary)}, #{blue(darkly.$secondary)};
-  --bs-success-rgb: #{red(darkly.$success)}, #{green(darkly.$success)}, #{blue(darkly.$success)};
-  --bs-info-rgb: #{red(darkly.$info)}, #{green(darkly.$info)}, #{blue(darkly.$info)};
-  --bs-warning-rgb: #{red(darkly.$warning)}, #{green(darkly.$warning)}, #{blue(darkly.$warning)};
-  --bs-danger-rgb: #{red(darkly.$danger)}, #{green(darkly.$danger)}, #{blue(darkly.$danger)};
-  --bs-light-rgb: #{red(lighten(darkly.$gray-800, 5%))}, #{green(lighten(darkly.$gray-800, 5%))}, #{blue(lighten(darkly.$gray-800, 5%))};
-  --bs-dark-rgb: #{red(darken(darkly.$dark, 4%))}, #{green(darken(darkly.$dark, 4%))}, #{blue(darken(darkly.$dark, 4%))};
+  --bs-secondary-rgb: #{color.red(darkly.$secondary)}, #{color.green(darkly.$secondary)}, #{color.blue(darkly.$secondary)};
+  --bs-success-rgb: #{color.red(darkly.$success)}, #{color.green(darkly.$success)}, #{color.blue(darkly.$success)};
+  --bs-info-rgb: #{color.red(darkly.$info)}, #{color.green(darkly.$info)}, #{color.blue(darkly.$info)};
+  --bs-warning-rgb: #{color.red(darkly.$warning)}, #{color.green(darkly.$warning)}, #{color.blue(darkly.$warning)};
+  --bs-danger-rgb: #{color.red(darkly.$danger)}, #{color.green(darkly.$danger)}, #{color.blue(darkly.$danger)};
+  --bs-light-rgb: #{color.red(color.adjust(darkly.$gray-800, $lightness: 5%))}, #{color.green(color.adjust(darkly.$gray-800, $lightness: 5%))}, #{color.blue(color.adjust(darkly.$gray-800, $lightness: 5%))};
+  --bs-dark-rgb: #{color.red(color.adjust(darkly.$dark, $lightness: -4%))}, #{color.green(color.adjust(darkly.$dark, $lightness: -4%))}, #{color.blue(color.adjust(darkly.$dark, $lightness: -4%))};
   --bs-link-color: #{darkly.$gray-400};
-  --bs-link-hover-color: #{lighten(darkly.$gray-400, 10%)};
+  --bs-link-hover-color: #{color.adjust(darkly.$gray-400, $lightness: 10%)};
   --bs-border-color: #{darkly.$secondary};
-
   --karma-alert-bg: #{darkly.$gray-800};
-  --karma-alert-history-inactive: #{lighten(darkly.$gray-700, 2%)};
-  --karma-alertgroup-body-bg: #{lighten(darkly.$gray-700, 5%)};
-  --karma-alertgroup-footer-bg: #{lighten(darkly.$gray-700, 2%)};
+  --karma-alert-history-inactive: #{color.adjust(darkly.$gray-700, $lightness: 2%)};
+  --karma-alertgroup-body-bg: #{color.adjust(darkly.$gray-700, $lightness: 5%)};
+  --karma-alertgroup-footer-bg: #{color.adjust(darkly.$gray-700, $lightness: 2%)};
   --karma-silence-id: #{darkly.$white};
   --karma-silence-color: #{darkly.$white};
-  --karma-silence-bg: #{lighten(darkly.$gray-900, 4%)};
+  --karma-silence-bg: #{color.adjust(darkly.$gray-900, $lightness: 4%)};
   --karma-silence-border: #{darkly.$black};
   --karma-silence-comment-color: #{darkly.$gray-500};
   --karma-filter-input-hoover-bg: #{darkly.$gray-700};
   --karma-filter-input-hoover-color: #{darkly.$white};
   --karma-placeholder-color: #{darkly.$gray-600};
   --karma-filterinput-border: #{darkly.$navbar-dark-color};
-  --karma-grid-swimlane-bg: #{lighten(darken(darkly.$dark, 4%), 2%)};
-  --karma-bg-focused: #{darken(#455a64, 5%)};
-  --karma-bg-focused-rgb: #{red(darken(#455a64, 5%))}, #{green(darken(#455a64, 5%))}, #{blue(darken(#455a64, 5%))};
+  --karma-grid-swimlane-bg: #{color.adjust(color.adjust(darkly.$dark, $lightness: -4%), $lightness: 2%)};
+  --karma-bg-focused: #{color.adjust(#455a64, $lightness: -5%)};
+  --karma-bg-focused-rgb: #{color.red(color.adjust(#455a64, $lightness: -5%))}, #{color.green(color.adjust(#455a64, $lightness: -5%))}, #{color.blue(color.adjust(#455a64, $lightness: -5%))};
   --karma-annotation-link-border: #{darkly.$secondary};
   --karma-components-date-range-sub-color: #{darkly.$white};
   --karma-input-range-track-background: #{darkly.$secondary};
@@ -274,19 +266,19 @@ $body-secondary-color: $gray-600;
   --karma-with-click-default: #{darkly.$white};
   --karma-with-click-dark: #{darkly.$white};
   --karma-with-click-light: #{darkly.$dark};
-  --karma-accordion-border-color: #{lighten(darkly.$gray-700, 5%)};
+  --karma-accordion-border-color: #{color.adjust(darkly.$gray-700, $lightness: 5%)};
   --karma-link-color: #{darkly.$gray-400};
-  --karma-toast-bg: #{darken(darken(darkly.$dark, 4%), 5%)};
-  --karma-toast-bg-rgb: #{red(darken(darken(darkly.$dark, 4%), 5%))}, #{green(darken(darken(darkly.$dark, 4%), 5%))}, #{blue(darken(darken(darkly.$dark, 4%), 5%))};
+  --karma-toast-bg: #{color.adjust(color.adjust(darkly.$dark, $lightness: -4%), $lightness: -5%)};
+  --karma-toast-bg-rgb: #{color.red(color.adjust(color.adjust(darkly.$dark, $lightness: -4%), $lightness: -5%))}, #{color.green(color.adjust(color.adjust(darkly.$dark, $lightness: -4%), $lightness: -5%))}, #{color.blue(color.adjust(color.adjust(darkly.$dark, $lightness: -4%), $lightness: -5%))};
   --karma-progress-bg: #{darkly.$black};
-  --karma-label-primary-border: #{lighten(darkly.$primary, 2%)};
-  --karma-label-secondary-border: #{darken(darkly.$secondary, 1%)};
-  --karma-label-secondary-bg: #{darken(darkly.$secondary, 2%)};
-  --karma-label-success-border: #{darken(darkly.$success, 2%)};
-  --karma-label-danger-border: #{lighten(darkly.$danger, 2%)};
-  --karma-label-warning-border: #{lighten(darkly.$warning, 3%)};
-  --karma-label-info-border: #{darken(darkly.$info, 2%)};
-  --karma-label-dark-border: #{darken(darkly.$dark, 2%)};
+  --karma-label-primary-border: #{color.adjust(darkly.$primary, $lightness: 2%)};
+  --karma-label-secondary-border: #{color.adjust(darkly.$secondary, $lightness: -1%)};
+  --karma-label-secondary-bg: #{color.adjust(darkly.$secondary, $lightness: -2%)};
+  --karma-label-success-border: #{color.adjust(darkly.$success, $lightness: -2%)};
+  --karma-label-danger-border: #{color.adjust(darkly.$danger, $lightness: 2%)};
+  --karma-label-warning-border: #{color.adjust(darkly.$warning, $lightness: 3%)};
+  --karma-label-info-border: #{color.adjust(darkly.$info, $lightness: -2%)};
+  --karma-label-dark-border: #{color.adjust(darkly.$dark, $lightness: -2%)};
 
   // Component overrides for dark theme
   .badge,
@@ -298,6 +290,7 @@ $body-secondary-color: $gray-600;
     @supports (backdrop-filter: blur(12px)) {
       background-color: rgba(#455a64, 0.85);
     }
+
     @supports not (backdrop-filter: blur(12px)) {
       background-color: rgba(#455a64, 0.95);
     }
@@ -353,7 +346,7 @@ $body-secondary-color: $gray-600;
   }
 
   .dropdown-menu {
-    --bs-dropdown-bg: #{darken(darkly.$gray-800, 2%)};
+    --bs-dropdown-bg: #{color.adjust(darkly.$gray-800, $lightness: -2%)};
     --bs-dropdown-border-color: #{darkly.$gray-700};
     --bs-dropdown-divider-bg: #{darkly.$gray-700};
     --bs-dropdown-link-color: #{darkly.$white};
@@ -369,10 +362,10 @@ $body-secondary-color: $gray-600;
   .btn-secondary {
     --bs-btn-bg: #{darkly.$secondary};
     --bs-btn-border-color: #{darkly.$secondary};
-    --bs-btn-hover-bg: #{lighten(darkly.$secondary, 5%)};
-    --bs-btn-hover-border-color: #{lighten(darkly.$secondary, 5%)};
-    --bs-btn-active-bg: #{lighten(darkly.$secondary, 8%)};
-    --bs-btn-active-border-color: #{lighten(darkly.$secondary, 8%)};
+    --bs-btn-hover-bg: #{color.adjust(darkly.$secondary, $lightness: 5%)};
+    --bs-btn-hover-border-color: #{color.adjust(darkly.$secondary, $lightness: 5%)};
+    --bs-btn-active-bg: #{color.adjust(darkly.$secondary, $lightness: 8%)};
+    --bs-btn-active-border-color: #{color.adjust(darkly.$secondary, $lightness: 8%)};
     --bs-btn-disabled-bg: #{darkly.$secondary};
     --bs-btn-disabled-border-color: #{darkly.$secondary};
   }
@@ -409,7 +402,7 @@ $body-secondary-color: $gray-600;
     --bs-accordion-bg: #{darkly.$gray-800};
     --bs-accordion-btn-bg: #{darkly.$gray-700};
     --bs-accordion-active-bg: #{darkly.$gray-700};
-    --bs-accordion-border-color: #{lighten(darkly.$gray-700, 5%)};
+    --bs-accordion-border-color: #{color.adjust(darkly.$gray-700, $lightness: 5%)};
     --bs-accordion-btn-color: #{darkly.$white};
   }
 
@@ -451,7 +444,7 @@ $body-secondary-color: $gray-600;
     --bs-pagination-hover-color: #{darkly.$white};
     --bs-pagination-hover-bg: #455a64;
     --bs-pagination-active-bg: #455a64;
-    --bs-pagination-border-color: #{darken(darkly.$dark, 4%)};
+    --bs-pagination-border-color: #{color.adjust(darkly.$dark, $lightness: -4%)};
     --bs-pagination-disabled-color: #{darkly.$gray-600};
     --bs-pagination-disabled-bg: #{darkly.$gray-700};
   }
@@ -504,6 +497,7 @@ $body-secondary-color: $gray-600;
   // }
 }
 
+/* stylelint-disable-next-line no-invalid-position-at-import-rule */
 @import "./Components";
 
 a {

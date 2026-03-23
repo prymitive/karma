@@ -5,6 +5,7 @@ $duration: 0.5s;
   opacity: 0.01;
   transform: translateY(-100%);
 }
+
 .components-animation-navbar-appear-active,
 .components-animation-navbar-enter-active {
   opacity: 1;
@@ -16,6 +17,7 @@ $duration: 0.5s;
   opacity: 1;
   transform: translateY(0);
 }
+
 .components-animation-navbar-exit-active {
   opacity: 0.01;
   transform: translateY(-100%);

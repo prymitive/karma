@@ -1,3 +1,5 @@
+@use "sass:color";
+
 .components-label-with-hover:hover {
   filter: brightness(0.85);
   cursor: pointer;
@@ -9,6 +11,7 @@
 
 .components-label {
   border: 1px solid transparent;
+
   &:hover {
     border: 1px solid transparent;
   }
@@ -17,9 +20,9 @@
   max-width: 100%;
   text-overflow: ellipsis;
   white-space: nowrap;
+
   /* https://stackoverflow.com/a/20566810 */
   vertical-align: bottom !important;
-
   margin-top: 2px;
   margin-bottom: 2px;
 }
@@ -28,6 +31,7 @@
 .bg-default {
   background-color: var(--karma-color-default);
 }
+
 .border-default {
   border: 1px solid var(--karma-color-default);
 }
@@ -42,27 +46,33 @@
   &.btn-primary {
     border: 1px solid var(--karma-label-primary-border);
   }
+
   &.bg-secondary,
   &.btn-secondary {
     border: 1px solid var(--karma-label-secondary-border);
     background-color: var(--karma-label-secondary-bg) !important;
   }
+
   &.bg-success,
   &.btn-success {
     border: 1px solid var(--karma-label-success-border);
   }
+
   &.bg-danger,
   &.btn-danger {
     border: 1px solid var(--karma-label-danger-border);
   }
+
   &.bg-warning,
   &.btn-warning {
     border: 1px solid var(--karma-label-warning-border);
   }
+
   &.bg-info,
   &.btn-info {
     border: 1px solid var(--karma-label-info-border);
   }
+
   &.bg-dark,
   &.btn-dark {
     border: 1px solid var(--karma-label-dark-border);
@@ -74,10 +84,12 @@ span.badge.components-label:not(.rounded-pill) {
   padding-left: 0.4rem;
   padding-right: 0.4rem;
 }
+
 span.badge.components-label.rounded-pill {
   padding-right: 0.6rem;
   padding-left: 0.6rem;
 }
+
 span.badge.components-label {
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
@@ -87,20 +99,24 @@ button.components-label-bright,
 span.components-label-bright,
 .components-label-bright {
   color: $black;
+
   &:hover {
     color: $black;
   }
 
   &.components-label-name,
   .components-label-name {
-    color: lighten($black, 20%);
+    color: color.adjust($black, $lightness: 20%);
+
     &:hover {
-      color: lighten($black, 20%);
+      color: color.adjust($black, $lightness: 20%);
     }
   }
+
   &.components-label-value,
   .components-label-value {
     color: $black;
+
     &:hover {
       color: $black;
     }
@@ -108,7 +124,7 @@ span.components-label-bright,
 
   @for $i from 10 through 11 {
     &.components-label-brightness-#{$i} {
-      border: 1px solid darken(#fff, $i * 1.1%);
+      border: 1px solid color.adjust(#fff, $lightness: (-$i * 1.1%));
     }
   }
 }
@@ -117,21 +133,24 @@ button.components-label-dark,
 span.components-label-dark,
 .components-label-dark {
   color: $white;
+
   &:hover {
     color: $white;
   }
 
   &.components-label-name,
   .components-label-name {
-    color: darken($white, 10%);
+    color: color.adjust($white, $lightness: -10%);
+
     &:hover {
-      color: darken($white, 10%);
+      color: color.adjust($white, $lightness: -10%);
     }
   }
 
   &.components-label-value,
   .components-label-value {
     color: $white;
+
     &:hover {
       color: $white;
     }

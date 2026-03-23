@@ -12,14 +12,9 @@
 .form-control.components-filterinput {
   cursor: text;
   height: auto;
-
   box-shadow: none;
   background-clip: unset;
-
-  padding-top: 1px;
-  padding-bottom: 1px;
-  padding-left: 0.25rem;
-  padding-right: 0.25rem;
+  padding: 1px 0.25rem;
 }
 
 input.components-filterinput-wrapper {
@@ -40,8 +35,9 @@ input.components-filterinput-wrapper {
 .bg-focused {
   @supports (backdrop-filter: blur(12px)) {
     // TODO: why is this hardcoding colors?
-    background-color: rgba(var(--karma-bg-focused-rgb, 81, 113, 132), 0.5);
+    background-color: rgb(var(--karma-bg-focused-rgb, 81, 113, 132), 0.5);
   }
+
   @supports not (backdrop-filter: blur(12px)) {
     background-color: var(--karma-bg-focused);
   }

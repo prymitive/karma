@@ -1,3 +1,4 @@
+/* stylelint-disable selector-class-pattern, custom-property-pattern -- react-day-picker uses underscore class names */
 .components-date-range {
   &.rdp-root {
     --rdp-cell-size: 40px;
@@ -61,7 +62,7 @@
       border-radius: 0.5rem;
     }
 
-    &:not(.rdp-disabled):not(.rdp-range_middle):not(.rdp-selected):hover {
+    &:not(.rdp-disabled, .rdp-range_middle, .rdp-selected):hover {
       background-color: var(--bs-light);
     }
   }
@@ -107,7 +108,7 @@
     color: var(--bs-white);
   }
 
-  .rdp-day.rdp-selected.rdp-range_middle:not(.rdp-range_start):not(.rdp-range_end) .rdp-day_button {
+  .rdp-day.rdp-selected.rdp-range_middle:not(.rdp-range_start, .rdp-range_end) .rdp-day_button {
     background-color: var(--bs-light);
     color: var(--karma-components-date-range-sub-color);
   }

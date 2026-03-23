@@ -4,7 +4,7 @@
   overflow: hidden;
   transform: translate3d(0, 0, 0);
 
-  &:after {
+  &::after {
     content: "";
     display: block;
     position: absolute;
@@ -25,7 +25,7 @@
     transition: transform 0.4s, opacity 0.4s;
   }
 
-  &.with-click-dark:after {
+  &.with-click-dark::after {
     background-image: radial-gradient(
       circle,
       var(--karma-with-click-dark) 10%,
@@ -33,7 +33,7 @@
     );
   }
 
-  &.with-click-light:after {
+  &.with-click-light::after {
     background-image: radial-gradient(
       circle,
       var(--karma-with-click-light) 10%,
@@ -41,7 +41,7 @@
     );
   }
 
-  &:active:after {
+  &:active::after {
     transform: scale(0, 0);
     opacity: 0.2;
     transition: 0s;
