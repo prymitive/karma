@@ -6,10 +6,12 @@
 .components-grid-annotation-link {
   text-decoration: none;
   color: var(--karma-link-color);
+
   &.border {
     border-color: var(--karma-annotation-link-border) !important;
   }
 }
+
 .components-grid-annotation-link:hover {
   text-decoration: none;
 }

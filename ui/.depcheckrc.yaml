@@ -20,3 +20,5 @@ ignores:
   - jest
   - "@playwright/test"
   - terser
+  - stylelint
+  - stylelint-config-standard-scss

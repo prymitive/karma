@@ -1,9 +1,7 @@
 $duration-modal: 0.2s;
 $move: -50px;
 $opacity-modal: 0;
-
 $duration-bg: 0.2s;
-
 $easing-enter: ease-out;
 $easing-exit: ease-in;
 
@@ -11,20 +9,24 @@ $easing-exit: ease-in;
   will-change: opacity, transform;
   transform: translateZ(0) scale(1);
 }
+
 .components-animation-modal-enter .modal-dialog {
   opacity: $opacity-modal;
   transform: translate(0, $move) scale(0.95);
 }
+
 .components-animation-modal-enter-active .modal-dialog {
   opacity: 1;
   transition: transform $duration-modal $easing-enter,
     opacity $duration-modal $easing-enter;
   transform: translate(0, 0) scale(1);
 }
+
 .components-animation-modal-exit .modal-dialog {
   opacity: 1;
   transform: translate(0, 0) scale(1);
 }
+
 .components-animation-modal-exit-active .modal-dialog {
   opacity: $opacity-modal;
   transform: translate(0, $move) scale(0.95);
@@ -36,23 +38,28 @@ $easing-exit: ease-in;
   will-change: background-color;
   transform: translateZ(0);
 }
+
 .components-animation-backdrop-enter {
-  background-color: rgba(30, 30, 30, 0.01);
+  background-color: rgb(30 30 30 / 1%);
 }
+
 .components-animation-backdrop-enter-active {
-  background-color: rgba(30, 30, 30, 0.8);
+  background-color: rgb(30 30 30 / 80%);
   transition: opacity $duration-bg $easing-exit;
   backdrop-filter: saturate(50%) blur(12px);
 }
+
 .components-animation-backdrop-enter-done {
-  background-color: rgba(30, 30, 30, 0.8);
+  background-color: rgb(30 30 30 / 80%);
   transition: opacity $duration-bg $easing-exit;
   backdrop-filter: saturate(50%) blur(12px);
 }
+
 .components-animation-backdrop-exit {
-  background-color: rgba(30, 30, 30, 0.8);
+  background-color: rgb(30 30 30 / 80%);
 }
+
 .components-animation-backdrop-exit-active {
-  background-color: rgba(30, 30, 30, 0.01);
+  background-color: rgb(30 30 30 / 1%);
   transition: opacity $duration-bg $easing-exit;
 }

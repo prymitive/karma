@@ -25,7 +25,7 @@ const TableRows: FC<{
       <tr key={nameStats.name}>
         <td width="25%" className="text-nowrap mw-100 p-1">
           <span className="badge bg-light components-label mx-0 mt-0 mb-auto ps-0 text-start">
-            <span className="bg-primary text-white me-1 px-1 components-labelWithPercent-percent">
+            <span className="bg-primary text-white me-1 px-1 components-label-with-percent-percent">
               {nameStats.hits}
             </span>
             {nameStats.name}

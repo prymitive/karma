@@ -1,14 +1,14 @@
-.components-labelWithPercent-percent {
+.components-label-with-percent-percent {
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
 }
 
-.components-labelWithPercent-progress.progress {
+.components-label-with-percent-progress.progress {
   height: 2px;
   margin-top: 2px;
   background-color: var(--karma-progress-bg);
 }
 
-.components-labelWithPercent-progress.progress > .progress-bar {
+.components-label-with-percent-progress.progress > .progress-bar {
   height: 2px;
 }

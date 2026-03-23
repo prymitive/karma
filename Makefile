@@ -6,12 +6,12 @@ include make/lint-versions.mk
 
 .PHONY: lint
 lint: lint-go lint-bootstrap-version
-	make -C ui lint-js
+	make -C ui lint
 
 .PHONY: test
 test: lint
 	make test-go
-	make -C ui test-js
+	make -C ui test
 
 .PHONY: clean
 clean:

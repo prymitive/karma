@@ -9,7 +9,7 @@ exports[`<LabelWithPercent /> matches snapshot with isActive=true 1`] = `
       class="components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start"
     >
       <span
-        class="me-1 px-1 bg-primary text-white components-labelWithPercent-percent"
+        class="me-1 px-1 bg-primary text-white components-label-with-percent-percent"
       >
         25
       </span>
@@ -36,7 +36,7 @@ exports[`<LabelWithPercent /> matches snapshot with isActive=true 1`] = `
       </svg>
     </span>
     <div
-      class="progress components-labelWithPercent-progress me-1"
+      class="progress components-label-with-percent-progress me-1"
     >
       <div
         aria-valuemax="100"
@@ -60,7 +60,7 @@ exports[`<LabelWithPercent /> matches snapshot with offset=0 1`] = `
       class="components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start"
     >
       <span
-        class="me-1 px-1 bg-primary text-white components-labelWithPercent-percent"
+        class="me-1 px-1 bg-primary text-white components-label-with-percent-percent"
       >
         25
       </span>
@@ -73,7 +73,7 @@ exports[`<LabelWithPercent /> matches snapshot with offset=0 1`] = `
       </span>
     </span>
     <div
-      class="progress components-labelWithPercent-progress me-1"
+      class="progress components-label-with-percent-progress me-1"
     >
       <div
         aria-valuemax="100"
@@ -97,7 +97,7 @@ exports[`<LabelWithPercent /> matches snapshot with offset=25 1`] = `
       class="components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start"
     >
       <span
-        class="me-1 px-1 bg-primary text-white components-labelWithPercent-percent"
+        class="me-1 px-1 bg-primary text-white components-label-with-percent-percent"
       >
         25
       </span>
@@ -110,7 +110,7 @@ exports[`<LabelWithPercent /> matches snapshot with offset=25 1`] = `
       </span>
     </span>
     <div
-      class="progress components-labelWithPercent-progress me-1"
+      class="progress components-label-with-percent-progress me-1"
     >
       <div
         aria-valuemax="100"

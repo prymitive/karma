@@ -1,17 +1,17 @@
 @use "sass:math";
 
-$totalWidth: 2.6rem;
-$fetcherWidth: 2rem;
-$pixSize: math.div($fetcherWidth, 5);
+$total-width: 2.6rem;
+$fetcher-width: 2rem;
+$pix-size: math.div($fetcher-width, 5);
 
 .invisible .components-fetcher {
   display: none;
 }
 
 .components-fetcher {
-  padding: math.div($totalWidth - $fetcherWidth, 2);
-  width: ($pixSize * 5);
-  height: ($pixSize * 5);
+  padding: math.div($total-width - $fetcher-width, 2);
+  width: ($pix-size * 5);
+  height: ($pix-size * 5);
 
   &.fetching,
   &.processing,
@@ -19,6 +19,7 @@ $pixSize: math.div($fetcherWidth, 5);
     & > .dot.dot-middle {
       opacity: 0;
     }
+
     & > .dot:not(.dot-middle) {
       animation-name: dots;
     }
@@ -27,9 +28,11 @@ $pixSize: math.div($fetcherWidth, 5);
   &.fetching > .dot {
     background-color: var(--bs-warning);
   }
+
   &.processing > .dot {
     background-color: var(--bs-success);
   }
+
   &.retrying > .dot {
     background-color: var(--bs-danger);
   }
@@ -37,32 +40,30 @@ $pixSize: math.div($fetcherWidth, 5);
   .dot {
     position: absolute;
     margin: 0.1rem;
-    width: ($pixSize - 0.1rem);
-    height: ($pixSize - 0.1rem);
+    width: ($pix-size - 0.1rem);
+    height: ($pix-size - 0.1rem);
     border-radius: 100%;
-
     transition-property: opacity, background-color;
     transition-duration: 0.2s;
     transition-timing-function: ease-in-out;
-
     background-color: var(--bs-white);
-
     animation-duration: 0.9s;
     animation-iteration-count: infinite;
-
     opacity: 0;
+
     &.visible {
       opacity: 1;
     }
 
     $num: 0;
+
     @for $i from 1 through 9 {
-      @if $i%3 == 1 {
+      @if $i % 3 == 1 {
         $num: 0;
       }
 
-      $tx: (($pixSize * 2) * $num);
-      $ty: (($pixSize * 2) * (floor(math.div(($i - 1), 3))));
+      $tx: (($pix-size * 2) * $num);
+      $ty: (($pix-size * 2) * (math.floor(math.div(($i - 1), 3))));
 
       &:nth-of-type(#{$i}) {
         transform: translate($tx, $ty);
@@ -74,24 +75,31 @@ $pixSize: math.div($fetcherWidth, 5);
     &:nth-of-type(1) {
       animation-delay: (0.1s);
     }
+
     &:nth-of-type(2) {
       animation-delay: (0.2s);
     }
+
     &:nth-of-type(3) {
       animation-delay: (0.3s);
     }
+
     &:nth-of-type(6) {
       animation-delay: (0.4s);
     }
+
     &:nth-of-type(9) {
       animation-delay: (0.5s);
     }
+
     &:nth-of-type(8) {
       animation-delay: (0.6s);
     }
+
     &:nth-of-type(7) {
       animation-delay: (0.7s);
     }
+
     &:nth-of-type(4) {
       animation-delay: (0.8s);
     }
@@ -104,6 +112,7 @@ $pixSize: math.div($fetcherWidth, 5);
   100% {
     opacity: 0;
   }
+
   70% {
     opacity: 1;
   }

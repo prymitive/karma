@@ -55,24 +55,31 @@ button.components-label.btn {
   &.btn-primary:hover {
     background-color: var(--bs-primary);
   }
+
   &.btn-secondary:hover {
     background-color: var(--bs-secondary);
   }
+
   &.btn-success:hover {
     background-color: var(--bs-success);
   }
+
   &.btn-info:hover {
     background-color: var(--bs-info);
   }
+
   &.btn-warning:hover {
     background-color: var(--bs-warning);
   }
+
   &.btn-danger:hover {
     background-color: var(--bs-danger);
   }
+
   &.btn-light:hover {
     background-color: var(--bs-light);
   }
+
   &.btn-dark:hover {
     background-color: var(--bs-dark);
   }

@@ -56,7 +56,7 @@ const LabelWithPercent: FC<{
   return (
     <div className="d-inline-block mw-100">
       <span className={cs.className} style={cs.style}>
-        <span className="me-1 px-1 bg-primary text-white components-labelWithPercent-percent">
+        <span className="me-1 px-1 bg-primary text-white components-label-with-percent-percent">
           {hits}
         </span>
         <span onClick={handleClick}>
@@ -71,7 +71,7 @@ const LabelWithPercent: FC<{
           />
         ) : null}
       </span>
-      <div className="progress components-labelWithPercent-progress me-1">
+      <div className="progress components-label-with-percent-progress me-1">
         {offset === 0 ? null : (
           <div
             className="progress-bar bg-transparent"

@@ -2,10 +2,11 @@
   font-size: 1.4rem;
   background-color: var(--karma-grid-swimlane-bg);
   color: $white;
+
   --bs-secondary-color: #{rgba($white, .75)};
+
   margin-left: 0.3rem;
   margin-right: 0.3rem;
-
   position: sticky;
   z-index: 101;
 }

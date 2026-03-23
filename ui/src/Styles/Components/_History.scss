@@ -1,6 +1,6 @@
 .dropdown-menu.components-navbar-historymenu {
   white-space: nowrap;
-  overflow: overlay;
+  overflow: auto;
   width: 100%;
 }
 
@@ -16,17 +16,19 @@
   border-left: 3px solid;
 }
 
-@media screen and (min-width: 1px) and (max-width: 599px) {
+@media screen and (width >= 1px) and (width <= 599px) {
   .dropdown-menu.components-navbar-historymenu {
     max-width: 100%;
   }
 }
-@media screen and (min-width: 600px) and (max-width: 999px) {
+
+@media screen and (width >= 600px) and (width <= 999px) {
   .dropdown-menu.components-navbar-historymenu {
     max-width: 500px;
   }
 }
-@media screen and (min-width: 1000px) {
+
+@media screen and (width >= 1000px) {
   .dropdown-menu.components-navbar-historymenu {
     max-width: 600px;
   }
@@ -36,6 +38,7 @@ button.btn.component-history-button {
   margin-right: 0.5rem;
   margin-bottom: 0.5rem;
 }
+
 button.btn.component-history-button:last-child {
   margin-right: 0;
 }

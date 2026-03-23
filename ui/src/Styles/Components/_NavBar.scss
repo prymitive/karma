@@ -13,6 +13,7 @@
     background-color: rgba($primary, 0.85);
     backdrop-filter: saturate(50%) blur(12px);
   }
+
   @supports not (backdrop-filter: blur(12px)) {
     background-color: rgba($primary, 0.95);
   }
@@ -29,18 +30,17 @@
 
   & .components-navbar-button {
     &.navbar-brand {
-      padding-top: 0.4rem;
-      padding-bottom: 0.4rem;
-      padding-left: 0.3rem;
-      padding-right: 0.3rem;
+      padding: 0.4rem 0.3rem;
       line-height: 1.8rem;
     }
 
     &:hover {
       border-radius: 0.4rem;
+
       @supports (backdrop-filter: blur(12px)) {
-        background-color: rgba(var(--karma-bg-focused-rgb, 81, 113, 132), 0.5);
+        background-color: rgb(var(--karma-bg-focused-rgb, 81, 113, 132), 0.5);
       }
+
       @supports not (backdrop-filter: blur(12px)) {
         background-color: var(--karma-bg-focused);
       }

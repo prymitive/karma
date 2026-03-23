@@ -105,7 +105,7 @@ jobs:
           cache-dependency-path: "ui/package-lock.json"
 
       - name: Test Node JS code
-        run: ${{ matrix.env }} make -C ui test-js
+        run: ${{ matrix.env }} make -C ui test
         env:
           NODE_ENV: test
 
@@ -162,7 +162,7 @@ jobs:
           cache-dependency-path: "ui/package-lock.json"
 
       - name: Lint Node JS code
-        run: make -C ui lint-js
+        run: make -C ui lint
 
   format-go:
     name: Check Go code formatting

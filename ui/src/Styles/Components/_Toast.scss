@@ -2,9 +2,7 @@
   position: fixed;
   bottom: 0.5rem;
   right: 0.6rem;
-
   z-index: 2500;
-
   max-width: 500px;
 
   code {
@@ -12,7 +10,7 @@
   }
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (width <= 600px) {
   .components-toast-container {
     max-width: 100%;
     bottom: 0;
@@ -22,9 +20,10 @@
 
 .bg-toast {
   @supports (backdrop-filter: blur(12px)) {
-    background-color: rgba(var(--karma-toast-bg-rgb, 21, 21, 21), 0.85);
+    background-color: rgb(var(--karma-toast-bg-rgb, 21, 21, 21), 0.85);
     backdrop-filter: saturate(50%) blur(12px);
   }
+
   @supports not (backdrop-filter: blur(12px)) {
     background-color: var(--karma-toast-bg);
   }
@@ -32,14 +31,15 @@
 
 .toast-upgrade-progressbar {
   animation-duration: 20s;
-  animation-name: upgradeProgress;
+  animation-name: upgrade-progress;
   animation-timing-function: linear;
 }
 
-@keyframes upgradeProgress {
+@keyframes upgrade-progress {
   0% {
     width: 100%;
   }
+
   100% {
     width: 0%;
   }
