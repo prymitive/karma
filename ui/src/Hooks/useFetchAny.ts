@@ -14,7 +14,7 @@ export type FetchFunctionT = (
   init?: RequestInit | undefined,
 ) => Promise<Response>;
 
-export interface FetchAnyOptionsT {
+interface FetchAnyOptionsT {
   fetcher?: null | FetchFunctionT;
 }
 

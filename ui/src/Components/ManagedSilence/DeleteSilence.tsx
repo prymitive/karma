@@ -207,4 +207,4 @@ const DeleteSilence: FC<{
   );
 };
 
-export { DeleteSilence, DeleteSilenceModalContent, DeleteResult };
+export { DeleteSilence, DeleteSilenceModalContent };

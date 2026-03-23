@@ -64,16 +64,14 @@
     "@types/react-dom": "19.2.3",
     "@vitejs/plugin-legacy": "8.0.0",
     "@vitejs/plugin-react": "6.0.1",
-    "csstype": "3.2.3",
     "eslint": "10.1.0",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-jest": "29.15.0",
     "eslint-plugin-react-compiler": "19.1.0-rc.2",
-    "fetch-mock": "12.6.0",
     "identity-obj-proxy": "3.0.0",
     "jest": "30.3.0",
     "jest-environment-jsdom": "30.3.0",
-    "node-fetch": "3.3.2",
+    "knip": "6.0.2",
     "prettier": "3.8.1",
     "sass": "1.98.0",
     "stylelint": "17.5.0",
@@ -88,7 +86,8 @@
     "start": "vite",
     "build": "tsc && vite build",
     "test": "jest",
-    "analyze": "npx source-map-explorer 'dist/assets/*.js'"
+    "analyze": "npx source-map-explorer 'dist/assets/*.js'",
+    "knip": "knip"
   },
   "jest": {
     "collectCoverageFrom": [

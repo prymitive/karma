@@ -4,9 +4,9 @@ import merge from "lodash.merge";
 
 import { CommonOptions } from "Common/Fetch";
 
-export type useFetchDeleteDepsT = string[] | number[];
+type useFetchDeleteDepsT = string[] | number[];
 
-export interface ResponseStateT {
+interface ResponseStateT {
   response: null | string;
   error: null | string;
   isDeleting: boolean;

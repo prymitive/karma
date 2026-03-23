@@ -31,4 +31,4 @@ const GetGridElementWidth = (
     (innerWidth - outerPadding) / GetColumnsCount(outerWidth, baseWidth),
   );
 
-export { GridSizesConfig, GetColumnsCount, GetGridElementWidth };
+export { GridSizesConfig, GetGridElementWidth };

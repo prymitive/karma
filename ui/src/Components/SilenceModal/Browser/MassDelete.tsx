@@ -194,7 +194,7 @@ const SilenceDeleteModalContent: FC<{
   );
 };
 
-export const MassDeleteProgress: FC<{
+const MassDeleteProgress: FC<{
   alertStore: AlertStore;
   silences: ClusterSilenceT[];
 }> = observer(({ alertStore, silences }) => {

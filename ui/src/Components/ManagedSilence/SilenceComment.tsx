@@ -132,4 +132,4 @@ const SilenceComment: FC<{
   },
 );
 
-export { SilenceComment, SilenceProgress };
+export { SilenceComment };

@@ -81,7 +81,7 @@ export const EscapeRegex = (v: string): string => {
   return v.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
 };
 
-export const UnescapeRegex = (v: string): string => {
+const UnescapeRegex = (v: string): string => {
   return v.replaceAll("\\", "");
 };
 
@@ -270,8 +270,8 @@ const UnpackRegexMatcherValues = (isRegex: boolean, value: string) => {
   }
 };
 
-export type SilenceFormTabT = "editor" | "browser";
-export type SilenceFormStageT = "form" | "preview" | "submit";
+type SilenceFormTabT = "editor" | "browser";
+type SilenceFormStageT = "form" | "preview" | "submit";
 
 interface SilenceFormStoreToggleT {
   visible: boolean;
@@ -709,7 +709,6 @@ export {
   NewEmptyMatcher,
   AlertmanagerClustersToOption,
   MatchersFromGroup,
-  MatchersFromAlerts,
   GenerateAlertmanagerSilenceData,
   NewClusterRequest,
   MatcherToOperator,

@@ -266,4 +266,4 @@ const Fetcher: FC<{
   );
 });
 
-export { Fetcher, Dots, PlayButton, PauseButton };
+export { Fetcher, Dots };
