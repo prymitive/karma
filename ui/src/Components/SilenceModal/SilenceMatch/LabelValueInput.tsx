@@ -1,4 +1,4 @@
-import { use, FC, useEffect } from "react";
+import { use, FC, useEffect, useMemo } from "react";
 
 import { action } from "mobx";
 
@@ -98,6 +98,11 @@ const LabelValueInput: FC<{
 
   const context = use(ThemeContext);
 
+  const ValueContainer = useMemo(
+    () => makeValueContainer(silenceFormStore, matcher),
+    [silenceFormStore, matcher],
+  );
+
   return (
     <Creatable
       styles={context.reactSelectStyles}
@@ -118,7 +123,7 @@ const LabelValueInput: FC<{
       hideSelectedOptions
       isMulti
       components={{
-        ValueContainer: makeValueContainer(silenceFormStore, matcher),
+        ValueContainer: ValueContainer,
         Placeholder: Placeholder,
         Menu: AnimatedMenuMultiple,
       }}

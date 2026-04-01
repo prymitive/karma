@@ -35,6 +35,32 @@ import { DateTimeSelect } from "./DateTimeSelect";
 import PayloadPreview from "./PayloadPreview";
 import { IconInput, AuthenticatedAuthorInput } from "./AuthorInput";
 
+const CommentInput: FC<{
+  silenceFormStore: SilenceFormStore;
+}> = observer(({ silenceFormStore }) => (
+  <IconInput
+    type="text"
+    autoComplete="on"
+    placeholder="Comment"
+    icon={faCommentDots}
+    value={silenceFormStore.data.comment}
+    onChange={(event) => silenceFormStore.data.setComment(event.target.value)}
+  />
+));
+
+const AuthorInput: FC<{
+  silenceFormStore: SilenceFormStore;
+}> = observer(({ silenceFormStore }) => (
+  <IconInput
+    type="text"
+    autoComplete="email"
+    placeholder="Author"
+    icon={faUser}
+    value={silenceFormStore.data.author}
+    onChange={(event) => silenceFormStore.data.setAuthor(event.target.value)}
+  />
+));
+
 const ShareButton: FC<{
   silenceFormStore: SilenceFormStore;
 }> = observer(({ silenceFormStore }) => {
@@ -170,14 +196,6 @@ const SilenceForm: FC<{
     silenceFormStore.data.addEmptyMatcher();
   };
 
-  const onAuthorChange = (author: string) => {
-    silenceFormStore.data.setAuthor(author);
-  };
-
-  const onCommentChange = (comment: string) => {
-    silenceFormStore.data.setComment(comment);
-  };
-
   const handleSubmit = action((event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -230,24 +248,10 @@ const SilenceForm: FC<{
       {alertStore.info.authentication.enabled ? (
         <AuthenticatedAuthorInput alertStore={alertStore} />
       ) : (
-        <IconInput
-          type="text"
-          autoComplete="email"
-          placeholder="Author"
-          icon={faUser}
-          value={silenceFormStore.data.author}
-          onChange={(event) => onAuthorChange(event.target.value)}
-        />
+        <AuthorInput silenceFormStore={silenceFormStore} />
       )}
 
-      <IconInput
-        type="text"
-        autoComplete="on"
-        placeholder="Comment"
-        icon={faCommentDots}
-        value={silenceFormStore.data.comment}
-        onChange={(event) => onCommentChange(event.target.value)}
-      />
+      <CommentInput silenceFormStore={silenceFormStore} />
       <div className="d-flex flex-row justify-content-between">
         <span
           className="badge components-label cursor-pointer with-click text-muted my-auto"
