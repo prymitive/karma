@@ -38,7 +38,7 @@ const generateUpstreams = (): APIAlertsResponseUpstreamsT => ({
 
 beforeEach(() => {
   jest.useFakeTimers();
-  jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 30, 0)));
+  jest.setSystemTime(Date.UTC(2000, 0, 1, 0, 30, 0));
 
   alertStore = new AlertStore([]);
   silenceFormStore = new SilenceFormStore();
@@ -321,7 +321,7 @@ describe("<DeleteSilenceModalContent />", () => {
     fireEvent.click(button!);
     expect(useFetchDelete).toHaveBeenCalledTimes(1);
 
-    jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 30, 1)));
+    jest.setSystemTime(Date.UTC(2000, 0, 1, 0, 30, 1));
     const retryBtn = screen.getByText("Retry");
     fireEvent.click(retryBtn);
     expect(useFetchDelete).toHaveBeenCalledTimes(2);

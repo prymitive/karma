@@ -65,14 +65,14 @@ const renderSilenceDetails = () => {
 
 describe("<SilenceDetails />", () => {
   it("unexpired silence endsAt label doesn't use 'danger' class", () => {
-    jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 30, 0)));
+    jest.setSystemTime(Date.UTC(2000, 0, 1, 0, 30, 0));
     const { container } = renderSilenceDetails();
     const badges = container.querySelectorAll("span.badge");
     expect(badges[1]?.outerHTML).not.toMatch(/text-danger/);
   });
 
   it("expired silence endsAt label uses 'danger' class", () => {
-    jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 23, 0, 0)));
+    jest.setSystemTime(Date.UTC(2000, 0, 1, 23, 0, 0));
     const { container } = renderSilenceDetails();
     const badges = container.querySelectorAll("span.badge");
     expect(badges[1]?.outerHTML).toMatch(/text-danger/);
