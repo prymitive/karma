@@ -18,7 +18,7 @@ let requestAnimationFrameSpy: any;
 
 beforeEach(() => {
   jest.useFakeTimers();
-  jest.setSystemTime(new Date(Date.UTC(2000, 1, 1, 0, 0, 0)));
+  jest.setSystemTime(Date.UTC(2000, 1, 1, 0, 0, 0));
 
   alertStore = new AlertStore(["label=value"]);
   fetchSpy = jest
@@ -67,9 +67,7 @@ describe("<Fetcher />", () => {
     render(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     expect(fetchSpy).toHaveBeenCalledTimes(1);
 
-    jest.setSystemTime(
-      new Date(Date.UTC(2000, 1, 1, 0, 0, 0)).getTime() + 3 * 1000,
-    );
+    jest.setSystemTime(Date.UTC(2000, 1, 1, 0, 0, 0) + 3 * 1000);
     act(() => {
       jest.runOnlyPendingTimers();
     });
@@ -77,33 +75,25 @@ describe("<Fetcher />", () => {
 
     settingsStore.fetchConfig.setInterval(600);
 
-    jest.setSystemTime(
-      new Date(Date.UTC(2000, 1, 1, 0, 0, 0)).getTime() + 6 * 1000,
-    );
+    jest.setSystemTime(Date.UTC(2000, 1, 1, 0, 0, 0) + 6 * 1000);
     act(() => {
       jest.runOnlyPendingTimers();
     });
     expect(fetchSpy).toHaveBeenCalledTimes(2);
 
-    jest.setSystemTime(
-      new Date(Date.UTC(2000, 1, 1, 0, 0, 0)).getTime() + 38 * 1000,
-    );
+    jest.setSystemTime(Date.UTC(2000, 1, 1, 0, 0, 0) + 38 * 1000);
     act(() => {
       jest.runOnlyPendingTimers();
     });
     expect(fetchSpy).toHaveBeenCalledTimes(2);
 
-    jest.setSystemTime(
-      new Date(Date.UTC(2000, 1, 1, 0, 0, 0)).getTime() + 100 * 1000,
-    );
+    jest.setSystemTime(Date.UTC(2000, 1, 1, 0, 0, 0) + 100 * 1000);
     act(() => {
       jest.runOnlyPendingTimers();
     });
     expect(fetchSpy).toHaveBeenCalledTimes(2);
 
-    jest.setSystemTime(
-      new Date(Date.UTC(2000, 1, 1, 0, 0, 0)).getTime() + 702 * 1000,
-    );
+    jest.setSystemTime(Date.UTC(2000, 1, 1, 0, 0, 0) + 702 * 1000);
     act(() => {
       jest.runOnlyPendingTimers();
     });
@@ -131,25 +121,19 @@ describe("<Fetcher />", () => {
     render(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     expect(fetchSpy).toHaveBeenCalledTimes(1);
 
-    jest.setSystemTime(
-      new Date(Date.UTC(2000, 1, 1, 0, 0, 0)).getTime() + 62 * 1000,
-    );
+    jest.setSystemTime(Date.UTC(2000, 1, 1, 0, 0, 0) + 62 * 1000);
     act(() => {
       jest.runOnlyPendingTimers();
     });
     expect(fetchSpy).toHaveBeenCalledTimes(2);
 
-    jest.setSystemTime(
-      new Date(Date.UTC(2000, 1, 1, 0, 0, 0)).getTime() + 124 * 1000,
-    );
+    jest.setSystemTime(Date.UTC(2000, 1, 1, 0, 0, 0) + 124 * 1000);
     act(() => {
       jest.runOnlyPendingTimers();
     });
     expect(fetchSpy).toHaveBeenCalledTimes(3);
 
-    jest.setSystemTime(
-      new Date(Date.UTC(2000, 1, 1, 0, 0, 0)).getTime() + 186 * 1000,
-    );
+    jest.setSystemTime(Date.UTC(2000, 1, 1, 0, 0, 0) + 186 * 1000);
     act(() => {
       jest.runOnlyPendingTimers();
     });
@@ -423,9 +407,7 @@ describe("<Fetcher />", () => {
     act(() => {
       alertStore.status.resume();
     });
-    jest.setSystemTime(
-      new Date(Date.UTC(2000, 1, 1, 0, 0, 0)).getTime() + 2 * 1000,
-    );
+    jest.setSystemTime(Date.UTC(2000, 1, 1, 0, 0, 0) + 2 * 1000);
     act(() => {
       jest.runOnlyPendingTimers();
     });

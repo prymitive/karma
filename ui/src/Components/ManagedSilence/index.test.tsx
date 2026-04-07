@@ -18,7 +18,7 @@ let silence: APISilenceT;
 
 beforeEach(() => {
   jest.useFakeTimers();
-  jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 30, 0)));
+  jest.setSystemTime(Date.UTC(2000, 0, 1, 0, 30, 0));
 
   alertStore = new AlertStore([]);
   silenceFormStore = new SilenceFormStore();
@@ -172,7 +172,7 @@ describe("<ManagedSilence />", () => {
   });
 
   it("shows Recreate button on expired silence", () => {
-    jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 23, 30, 0)));
+    jest.setSystemTime(Date.UTC(2000, 0, 1, 23, 30, 0));
     const { container } = renderManagedSilence();
     const toggle = container.querySelector("svg.text-muted.cursor-pointer");
     fireEvent.click(toggle!);
@@ -203,49 +203,49 @@ describe("<ManagedSilence />", () => {
 
 describe("<ManagedSilence progress bar />", () => {
   it("renders with class 'danger' and no progressbar when expired", () => {
-    jest.setSystemTime(new Date(Date.UTC(2001, 0, 1, 23, 0, 0)));
+    jest.setSystemTime(Date.UTC(2001, 0, 1, 23, 0, 0));
     const { container } = renderManagedSilence();
     expect(container.innerHTML).toMatch(/bg-danger/);
     expect(screen.getByText(/Expired 1 year ago/)).toBeInTheDocument();
   });
 
   it("renders with class 'warning' if <= 5m is left", () => {
-    jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 56, 0)));
+    jest.setSystemTime(Date.UTC(2000, 0, 1, 0, 56, 0));
     const { container } = renderManagedSilence();
     expect(container.innerHTML).toMatch(/bg-warning/);
     expect(screen.getByText(/Expires in 4 minutes/)).toBeInTheDocument();
   });
 
   it("progressbar uses class 'danger' when > 90%", () => {
-    jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 55, 0)));
+    jest.setSystemTime(Date.UTC(2000, 0, 1, 0, 55, 0));
     const { container } = renderManagedSilence();
     expect(container.innerHTML).toMatch(/progress-bar bg-danger/);
   });
 
   it("progressbar uses class 'danger' when > 75%", () => {
-    jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 50, 0)));
+    jest.setSystemTime(Date.UTC(2000, 0, 1, 0, 50, 0));
     const { container } = renderManagedSilence();
     expect(container.innerHTML).toMatch(/progress-bar bg-warning/);
   });
 
   it("progressbar uses class 'success' when <= 75%", () => {
-    jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 30, 0)));
+    jest.setSystemTime(Date.UTC(2000, 0, 1, 0, 30, 0));
     const { container } = renderManagedSilence();
     expect(container.innerHTML).toMatch(/progress-bar bg-success/);
   });
 
   it("progressbar is updated every 30 seconds", () => {
-    jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 30, 0)));
+    jest.setSystemTime(Date.UTC(2000, 0, 1, 0, 30, 0));
     const { container } = renderManagedSilence();
     expect(container.innerHTML).toMatch(/progress-bar bg-success/);
 
-    jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 50, 0)));
+    jest.setSystemTime(Date.UTC(2000, 0, 1, 0, 50, 0));
     act(() => {
       jest.runOnlyPendingTimers();
     });
     expect(container.innerHTML).toMatch(/progress-bar bg-warning/);
 
-    jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 55, 0)));
+    jest.setSystemTime(Date.UTC(2000, 0, 1, 0, 55, 0));
     act(() => {
       jest.runOnlyPendingTimers();
     });

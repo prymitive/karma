@@ -14,7 +14,7 @@ describe("<RenderSilence />", () => {
     silenceFormStore = new SilenceFormStore();
 
     jest.useFakeTimers();
-    jest.setSystemTime(new Date(Date.UTC(2000, 1, 1, 0, 0, 0)));
+    jest.setSystemTime(Date.UTC(2000, 1, 1, 0, 0, 0));
   });
 
   afterEach(() => {

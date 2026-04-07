@@ -551,12 +551,12 @@ describe("<Grid />", () => {
 
   it("doesn't throw errors after FontFaceObserver timeout", () => {
     jest.useFakeTimers();
-    jest.setSystemTime(new Date(Date.UTC(2000, 1, 1, 0, 0, 0)));
+    jest.setSystemTime(Date.UTC(2000, 1, 1, 0, 0, 0));
 
     MockGroupList(1, 1);
     renderGrid();
     // skip a minute to trigger FontFaceObserver timeout handler
-    jest.setSystemTime(new Date(Date.UTC(2000, 1, 1, 0, 1, 0)));
+    jest.setSystemTime(Date.UTC(2000, 1, 1, 0, 1, 0));
     act(() => {
       jest.runOnlyPendingTimers();
     });

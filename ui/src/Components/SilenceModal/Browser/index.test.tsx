@@ -25,7 +25,7 @@ declare let global: any;
 
 beforeEach(() => {
   jest.useFakeTimers();
-  jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 30, 0)));
+  jest.setSystemTime(Date.UTC(2000, 0, 1, 0, 30, 0));
 
   alertStore = new AlertStore([]);
   silenceFormStore = new SilenceFormStore();
@@ -105,17 +105,17 @@ describe("<Browser />", () => {
     settingsStore.fetchConfig.setInterval(1);
     renderBrowser();
 
-    jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 30, 2)));
+    jest.setSystemTime(Date.UTC(2000, 0, 1, 0, 30, 2));
     act(() => {
       jest.runOnlyPendingTimers();
     });
 
-    jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 30, 4)));
+    jest.setSystemTime(Date.UTC(2000, 0, 1, 0, 30, 4));
     act(() => {
       jest.runOnlyPendingTimers();
     });
 
-    jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 30, 6)));
+    jest.setSystemTime(Date.UTC(2000, 0, 1, 0, 30, 6));
     act(() => {
       jest.runOnlyPendingTimers();
     });
@@ -471,7 +471,7 @@ describe("<Browser />", () => {
     unmount();
 
     act(() => {
-      jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 30, 59)));
+      jest.setSystemTime(Date.UTC(2000, 0, 1, 0, 30, 59));
       jest.runOnlyPendingTimers();
     });
 

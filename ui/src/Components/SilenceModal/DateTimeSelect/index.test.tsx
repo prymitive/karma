@@ -51,7 +51,7 @@ describe("<DateTimeSelect />", () => {
   });
 
   it("'Duration' tab matches snapshot", () => {
-    jest.setSystemTime(new Date(2060, 1, 1, 0, 0, 0));
+    jest.setSystemTime(new Date(2060, 1, 1, 0, 0, 0).getTime());
     const { asFragment } = renderDateTimeSelect();
     expect(asFragment()).toMatchSnapshot();
   });
@@ -72,7 +72,7 @@ describe("<DateTimeSelect />", () => {
   });
 
   it("'Starts' tab matches snapshot", () => {
-    jest.setSystemTime(new Date(2060, 1, 1, 0, 0, 0));
+    jest.setSystemTime(new Date(2060, 1, 1, 0, 0, 0).getTime());
     const { container, asFragment } = renderDateTimeSelect();
     fireEvent.click(container.querySelectorAll(".nav-link")[0]);
     expect(asFragment()).toMatchSnapshot();
@@ -95,7 +95,7 @@ describe("<DateTimeSelect />", () => {
   });
 
   it("'Ends' tab matches snapshot", () => {
-    jest.setSystemTime(new Date(2060, 1, 1, 0, 0, 0));
+    jest.setSystemTime(new Date(2060, 1, 1, 0, 0, 0).getTime());
     const { container, asFragment } = renderDateTimeSelect();
     fireEvent.click(container.querySelectorAll(".nav-link")[1]);
     expect(asFragment()).toMatchSnapshot();
@@ -120,7 +120,7 @@ describe("<DateTimeSelect />", () => {
 
   it("'Ends' tab offset badge is updated after 1 minute", () => {
     jest.useFakeTimers();
-    jest.setSystemTime(new Date(2060, 1, 1, 12, 0, 0));
+    jest.setSystemTime(new Date(2060, 1, 1, 12, 0, 0).getTime());
     silenceFormStore.data.setStart(new Date(2060, 1, 1, 12, 0, 0));
     silenceFormStore.data.setEnd(new Date(2060, 1, 1, 13, 0, 0));
 
@@ -129,7 +129,7 @@ describe("<DateTimeSelect />", () => {
       "Endsin 1h ",
     );
 
-    jest.setSystemTime(new Date(2060, 1, 1, 12, 1, 0));
+    jest.setSystemTime(new Date(2060, 1, 1, 12, 1, 0).getTime());
     act(() => {
       jest.runOnlyPendingTimers();
     });

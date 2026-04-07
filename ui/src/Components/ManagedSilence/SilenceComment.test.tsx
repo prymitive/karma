@@ -10,7 +10,7 @@ let alertStore: AlertStore;
 
 beforeEach(() => {
   jest.useFakeTimers();
-  jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 30, 0)));
+  jest.setSystemTime(Date.UTC(2000, 0, 1, 0, 30, 0));
 
   silence = MockSilence();
   alertStore = new AlertStore([]);

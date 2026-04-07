@@ -21,7 +21,7 @@ let silenceFormStore: SilenceFormStore;
 
 beforeEach(() => {
   jest.useFakeTimers();
-  jest.setSystemTime(new Date(Date.UTC(2018, 7, 15, 20, 40, 0)));
+  jest.setSystemTime(Date.UTC(2018, 7, 15, 20, 40, 0));
   alertStore = new AlertStore([]);
   silenceFormStore = new SilenceFormStore();
 });
@@ -404,7 +404,7 @@ describe("<Alert />", () => {
   it("alert timestamp is updated every minute", () => {
     jest.useFakeTimers();
 
-    jest.setSystemTime(new Date(Date.UTC(2018, 7, 14, 17, 36, 41)));
+    jest.setSystemTime(Date.UTC(2018, 7, 14, 17, 36, 41));
 
     const alert = MockedAlert();
     const group = MockAlertGroup([], [alert], [], [], {});
@@ -415,31 +415,31 @@ describe("<Alert />", () => {
       )?.textContent;
     expect(getTimestamp()).toBe("just now");
 
-    jest.setSystemTime(new Date(Date.UTC(2018, 7, 14, 17, 36, 42)));
+    jest.setSystemTime(Date.UTC(2018, 7, 14, 17, 36, 42));
     act(() => {
       jest.advanceTimersByTime(31 * 1000);
     });
     expect(getTimestamp()).toBe("a few seconds ago");
 
-    jest.setSystemTime(new Date(Date.UTC(2018, 7, 14, 17, 37, 41)));
+    jest.setSystemTime(Date.UTC(2018, 7, 14, 17, 37, 41));
     act(() => {
       jest.advanceTimersByTime(31 * 1000);
     });
     expect(getTimestamp()).toBe("1 minute ago");
 
-    jest.setSystemTime(new Date(Date.UTC(2018, 7, 14, 18, 36, 41)));
+    jest.setSystemTime(Date.UTC(2018, 7, 14, 18, 36, 41));
     act(() => {
       jest.advanceTimersByTime(31 * 1000);
     });
     expect(getTimestamp()).toBe("1 hour ago");
 
-    jest.setSystemTime(new Date(Date.UTC(2018, 7, 14, 19, 36, 41)));
+    jest.setSystemTime(Date.UTC(2018, 7, 14, 19, 36, 41));
     act(() => {
       jest.advanceTimersByTime(31 * 1000);
     });
     expect(getTimestamp()).toBe("2 hours ago");
 
-    jest.setSystemTime(new Date(Date.UTC(2018, 7, 16, 19, 36, 41)));
+    jest.setSystemTime(Date.UTC(2018, 7, 16, 19, 36, 41));
     act(() => {
       jest.advanceTimersByTime(31 * 1000);
     });
