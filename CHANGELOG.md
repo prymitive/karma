@@ -2,6 +2,10 @@
 
 ## v0.129
 
+### Fixed
+
+- Settings from the config file were not being pushed to the UI - #6696.
+
 ### Changed
 
 - Switched logging from zerolog to slog. Log output format has changed.
