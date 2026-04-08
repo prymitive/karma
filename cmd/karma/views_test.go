@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"context"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"html/template"
@@ -3004,6 +3005,109 @@ func TestLabelSettings(t *testing.T) {
 				if diff := cmp.Diff(tc.labels, ur.Settings.Labels); diff != "" {
 					t.Errorf("Wrong labels returned (-want +got):\n%s", diff)
 				}
+			}
+		})
+	}
+}
+
+func TestIndexUIDefaultsJSON(t *testing.T) {
+	// Verifies that the index handler embeds a complete, valid JSON object
+	// in the <script id="defaults"> tag, with all UI config fields present
+	// and Refresh serialized as a nanosecond integer.
+	type uiDefaults struct {
+		Refresh              float64 `json:"Refresh"`
+		HideFiltersWhenIdle  bool    `json:"HideFiltersWhenIdle"`
+		ColorTitlebar        bool    `json:"ColorTitlebar"`
+		Theme                string  `json:"Theme"`
+		Animations           bool    `json:"Animations"`
+		MinimalGroupWidth    int     `json:"MinimalGroupWidth"`
+		AlertsPerGroup       int     `json:"AlertsPerGroup"`
+		CollapseGroups       string  `json:"CollapseGroups"`
+		MultiGridLabel       string  `json:"MultiGridLabel"`
+		MultiGridSortReverse bool    `json:"MultiGridSortReverse"`
+	}
+
+	type testCaseT struct {
+		// scenario describes the behaviour being tested
+		name                string
+		refresh             time.Duration
+		expectedRefreshNs   float64
+		alertsPerGroup      int
+		multiGridLabel      string
+		hideFiltersWhenIdle bool
+	}
+
+	testCases := []testCaseT{
+		{
+			// default config values produce correct JSON with 30s refresh
+			name:                "default 30s refresh",
+			refresh:             30 * time.Second,
+			expectedRefreshNs:   30000000000,
+			alertsPerGroup:      5,
+			multiGridLabel:      "",
+			hideFiltersWhenIdle: true,
+		},
+		{
+			// custom config values are all reflected in the embedded JSON
+			name:                "custom config values",
+			refresh:             45 * time.Second,
+			expectedRefreshNs:   45000000000,
+			alertsPerGroup:      15,
+			multiGridLabel:      "cluster",
+			hideFiltersWhenIdle: false,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			mockConfig(t.Setenv)
+			config.Config.UI.Refresh = tc.refresh
+			config.Config.UI.AlertsPerGroup = tc.alertsPerGroup
+			config.Config.UI.MultiGridLabel = tc.multiGridLabel
+			config.Config.UI.HideFiltersWhenIdle = tc.hideFiltersWhenIdle
+
+			r := testRouter()
+			setupRouter(r, nil)
+			mockCache()
+			req := httptest.NewRequest("GET", "/", nil)
+			resp := httptest.NewRecorder()
+			r.ServeHTTP(resp, req)
+			if resp.Code != http.StatusOK {
+				t.Fatalf("GET / returned status %d", resp.Code)
+			}
+
+			body := resp.Body.String()
+			re := regexp.MustCompile(`<script type="text/plain" id="defaults">\s*([A-Za-z0-9+/=]+)\s*</script>`)
+			matches := re.FindStringSubmatch(body)
+			if len(matches) < 2 {
+				t.Fatal("Could not find <script id=\"defaults\"> content in HTML response")
+			}
+
+			decoded, err := base64.StdEncoding.DecodeString(matches[1])
+			if err != nil {
+				t.Fatalf("Failed to base64-decode defaults: %v", err)
+			}
+
+			var got uiDefaults
+			if err := json.Unmarshal(decoded, &got); err != nil {
+				t.Fatalf("Failed to parse defaults JSON: %v\nraw: %s", err, string(decoded))
+			}
+
+			expected := uiDefaults{
+				Refresh:              tc.expectedRefreshNs,
+				HideFiltersWhenIdle:  tc.hideFiltersWhenIdle,
+				ColorTitlebar:        config.Config.UI.ColorTitlebar,
+				Theme:                config.Config.UI.Theme,
+				Animations:           config.Config.UI.Animations,
+				MinimalGroupWidth:    config.Config.UI.MinimalGroupWidth,
+				AlertsPerGroup:       tc.alertsPerGroup,
+				CollapseGroups:       config.Config.UI.CollapseGroups,
+				MultiGridLabel:       tc.multiGridLabel,
+				MultiGridSortReverse: config.Config.UI.MultiGridSortReverse,
+			}
+
+			if diff := cmp.Diff(expected, got); diff != "" {
+				t.Errorf("UI defaults mismatch (-want +got):\n%s", diff)
 			}
 		})
 	}
