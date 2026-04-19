@@ -10,11 +10,6 @@ file.
 Every release tag name will follow `vX.Y.Z` naming scheme, example: `v0.1.0`.
 All releases are tagged against the `main` branch.
 
-## Commit messages
-
-[Conventional Commits](https://www.conventionalcommits.org) format is required
-for all commits.
-
 ## Testing changes
 
 To run included tests and linters run:
