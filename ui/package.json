@@ -71,7 +71,7 @@
     "stylelint-config-standard-scss": "17.0.0",
     "terser": "5.46.2",
     "ts-jest": "29.4.9",
-    "typescript": "5.9.3",
+    "typescript": "6.0.3",
     "typescript-eslint": "8.59.1",
     "vite": "8.0.10"
   },
