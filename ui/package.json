@@ -67,7 +67,7 @@
     "knip": "6.6.1",
     "prettier": "3.8.3",
     "sass": "1.99.0",
-    "stylelint": "17.9.0",
+    "stylelint": "17.9.1",
     "stylelint-config-standard-scss": "17.0.0",
     "terser": "5.46.2",
     "ts-jest": "29.4.9",
