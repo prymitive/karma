@@ -4,7 +4,7 @@ import promiseRetry from "promise-retry";
 
 import { CommonOptions, FetchRetryConfig } from "Common/Fetch";
 
-export type FetchFunctionT = (
+type FetchFunctionT = (
   input: RequestInfo | URL,
   init?: RequestInit | undefined,
 ) => Promise<Response>;

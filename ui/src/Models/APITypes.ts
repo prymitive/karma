@@ -1,6 +1,6 @@
 export type AlertStateT = "unprocessed" | "active" | "suppressed";
 
-export interface LabelT {
+interface LabelT {
   name: string;
   value: string;
 }
@@ -52,7 +52,7 @@ export interface APIAlertT {
   receiver: string;
 }
 
-export interface StateCountT {
+interface StateCountT {
   active: number;
   suppressed: number;
   unprocessed: number;
@@ -120,7 +120,7 @@ export interface APIAlertmanagerUpstreamT {
   clusterMembers: string[];
 }
 
-export interface APIFilterT {
+interface APIFilterT {
   text: string;
   name: string;
   matcher: string;
@@ -129,7 +129,7 @@ export interface APIFilterT {
   isValid: boolean;
 }
 
-export interface APIAlertsResponseUpstreamsCountersT {
+interface APIAlertsResponseUpstreamsCountersT {
   total: number;
   healthy: number;
   failed: number;
@@ -143,7 +143,7 @@ export type APIAlertsResponseSilenceMapT = {
   [clusterName: string]: { [silenceID: string]: APISilenceT };
 };
 
-export interface APIAlertsResponseAuthenticationT {
+interface APIAlertsResponseAuthenticationT {
   enabled: boolean;
   username: string;
 }
@@ -162,7 +162,7 @@ export interface APIAlertsResponseUpstreamsT {
   clusters: APIAlertsResponseUpstreamsClusterMapT;
 }
 
-export interface APILabelCounterValueT {
+interface APILabelCounterValueT {
   value: string;
   raw: string;
   hits: number;
@@ -176,12 +176,12 @@ export interface APILabelCounterT {
   hits: number;
 }
 
-export interface APILabelSettingsT {
+interface APILabelSettingsT {
   isStatic: boolean;
   isValueOnly: boolean;
 }
 
-export type APILabelsSettingsT = { [key: string]: APILabelSettingsT };
+type APILabelsSettingsT = { [key: string]: APILabelSettingsT };
 
 export interface APISettingsT {
   annotationsDefaultHidden: boolean;
@@ -230,7 +230,7 @@ export interface APIAlertsResponseT {
   receivers: string[];
 }
 
-export interface HistorySampleT {
+interface HistorySampleT {
   timestamp: string;
   value: number;
 }
