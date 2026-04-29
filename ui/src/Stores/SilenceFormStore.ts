@@ -128,6 +128,7 @@ const MatchersFromAlerts = (
 
   // add matchers for all shared labels in this group
   for (const [key, value] of Object.entries(
+    // eslint-disable-next-line @eslint-react/purity -- false positive: called from MobX action, not from render
     Object.assign(
       {},
       Object.fromEntries(group.labels.map((l) => [l.name, l.value])),

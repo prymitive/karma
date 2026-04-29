@@ -75,7 +75,7 @@ const Browser: FC<{
   const [showExpired, setShowExpired] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [activePage, setActivePage] = useState<number>(1);
-  const [currentTime, setCurrentTime] = useState<number>(
+  const [currentTime, setCurrentTime] = useState<number>(() =>
     Math.floor(Date.now() / 1000),
   );
 

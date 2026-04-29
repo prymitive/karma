@@ -1,4 +1,4 @@
-import { Fragment, FC } from "react";
+import { Fragment, FC, useState } from "react";
 
 import { observer } from "mobx-react-lite";
 
@@ -18,7 +18,8 @@ import { StaticLabels } from "Common/Query";
 const SilenceProgress: FC<{
   silence: APISilenceT;
 }> = ({ silence }) => {
-  const diff = differenceInSeconds(parseISO(silence.endsAt), new Date());
+  const [now] = useState(() => new Date());
+  const diff = differenceInSeconds(parseISO(silence.endsAt), now);
   if (diff <= 0) {
     return (
       <span className="badge bg-danger components-label">
