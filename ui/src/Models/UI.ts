@@ -1,6 +1,6 @@
 export type ThemeT = "light" | "dark" | "auto";
 
-export type CollapseGroupsT = "expanded" | "collapsed" | "collapsedOnMobile";
+type CollapseGroupsT = "expanded" | "collapsed" | "collapsedOnMobile";
 
 export interface UIDefaults {
   Refresh: number;
