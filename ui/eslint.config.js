@@ -43,8 +43,10 @@ export default defineConfig(
           allowTernary: true,
         },
       ],
+      // MobX autorun/reaction manage their own reactive subscriptions inside useEffect; react-compiler plugin already covers standard hooks
+      "@eslint-react/exhaustive-deps": "off",
       // setState in useEffect is the standard pattern for async fetches, MobX reactions, and timer-driven updates
-      "@eslint-react/hooks-extra/no-direct-set-state-in-use-effect": "off",
+      "@eslint-react/set-state-in-effect": "off",
       // index keys are used in static display-only lists (split strings, SVG samples, error messages) with no stable ID
       "@eslint-react/no-array-index-key": "off",
       // cloneElement is used by react-transition-group integration, replacing it would require a major refactor
@@ -52,7 +54,7 @@ export default defineConfig(
       // Children.map is used by the Toast container with react-transition-group TransitionGroup
       "@eslint-react/no-children-map": "off",
       // dangerouslySetInnerHTML is intentional for rendering trusted server-provided HTML
-      "@eslint-react/dom/no-dangerously-set-innerhtml": "off",
+      "@eslint-react/dom-no-dangerously-set-innerhtml": "off",
     },
   },
   {

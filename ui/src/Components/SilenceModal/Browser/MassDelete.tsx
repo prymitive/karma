@@ -244,7 +244,7 @@ const MassDeleteProgress: FC<{
       const ams = readWriteAlertmanagers.filter(
         (u) => u.cluster === silence.cluster,
       );
-      // eslint-disable-next-line @eslint-react/web-api/no-leaked-timeout -- false positive: timers are collected and cleared in the useEffect cleanup below
+      // eslint-disable-next-line @eslint-react/web-api-no-leaked-timeout -- false positive: timers are collected and cleared in the useEffect cleanup below
       const timer = setTimeout(
         () => deleteSilence(silence.cluster, silence.id, ams),
         50 * index,

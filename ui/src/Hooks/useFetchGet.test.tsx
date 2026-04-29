@@ -9,6 +9,26 @@ import { useFetchGet } from "./useFetchGet";
 
 jest.unmock("./useFetchGet");
 
+const FetchGetTestComponent = ({
+  url,
+  fetcher,
+}: {
+  url: string;
+  fetcher?: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>;
+}) => {
+  const { response, error, isLoading } = useFetchGet<string>(
+    url,
+    fetcher ? { fetcher } : undefined,
+  );
+  return (
+    <span>
+      <span>{response}</span>
+      <span>{error}</span>
+      <span>{isLoading}</span>
+    </span>
+  );
+};
+
 describe("useFetchGet", () => {
   beforeEach(() => {
     jest.useFakeTimers();
@@ -354,21 +374,10 @@ describe("useFetchGet", () => {
       body: JSON.stringify({ status: "ok" }),
     });
 
-    const Component = () => {
-      const { response, error, isLoading } = useFetchGet<string>(
-        "http://localhost/slow/ok",
-      );
-      return (
-        <span>
-          <span>{response}</span>
-          <span>{error}</span>
-          <span>{isLoading}</span>
-        </span>
-      );
-    };
-
     act(() => {
-      const { unmount } = render(<Component />);
+      const { unmount } = render(
+        <FetchGetTestComponent url="http://localhost/slow/ok" />,
+      );
       unmount();
     });
 
@@ -385,21 +394,10 @@ describe("useFetchGet", () => {
       body: JSON.stringify({ status: "error" }),
     });
 
-    const Component = () => {
-      const { response, error, isLoading } = useFetchGet<string>(
-        "http://localhost/slow/500",
-      );
-      return (
-        <span>
-          <span>{response}</span>
-          <span>{error}</span>
-          <span>{isLoading}</span>
-        </span>
-      );
-    };
-
     act(() => {
-      const { unmount } = render(<Component />);
+      const { unmount } = render(
+        <FetchGetTestComponent url="http://localhost/slow/500" />,
+      );
       unmount();
     });
 
@@ -415,21 +413,10 @@ describe("useFetchGet", () => {
       throws: new TypeError("failed to fetch"),
     });
 
-    const Component = () => {
-      const { response, error, isLoading } = useFetchGet<string>(
-        "http://localhost/slow/error",
-      );
-      return (
-        <span>
-          <span>{response}</span>
-          <span>{error}</span>
-          <span>{isLoading}</span>
-        </span>
-      );
-    };
-
     act(() => {
-      const { unmount } = render(<Component />);
+      const { unmount } = render(
+        <FetchGetTestComponent url="http://localhost/slow/error" />,
+      );
       unmount();
     });
 
@@ -446,21 +433,10 @@ describe("useFetchGet", () => {
       body: "this is not a valid JSON body",
     });
 
-    const Component = () => {
-      const { response, error, isLoading } = useFetchGet<string>(
-        "http://localhost/slow/json/invalid",
-      );
-      return (
-        <span>
-          <span>{response}</span>
-          <span>{error}</span>
-          <span>{isLoading}</span>
-        </span>
-      );
-    };
-
     act(() => {
-      const { unmount } = render(<Component />);
+      const { unmount } = render(
+        <FetchGetTestComponent url="http://localhost/slow/json/invalid" />,
+      );
       unmount();
     });
 
@@ -474,21 +450,10 @@ describe("useFetchGet", () => {
       body: "ok",
     });
 
-    const Component = () => {
-      const { response, error, isLoading } = useFetchGet<string>(
-        "http://localhost/slow/text",
-      );
-      return (
-        <span>
-          <span>{response}</span>
-          <span>{error}</span>
-          <span>{isLoading}</span>
-        </span>
-      );
-    };
-
     act(() => {
-      const { unmount } = render(<Component />);
+      const { unmount } = render(
+        <FetchGetTestComponent url="http://localhost/slow/text" />,
+      );
       unmount();
     });
 
@@ -514,22 +479,13 @@ describe("useFetchGet", () => {
       } as unknown as Response);
     jest.useRealTimers();
 
-    const Component = () => {
-      const { response, error, isLoading } = useFetchGet<string>(
-        "http://localhost/slow/body",
-        { fetcher: fetcher },
-      );
-      return (
-        <span>
-          <span>{response}</span>
-          <span>{error}</span>
-          <span>{isLoading}</span>
-        </span>
-      );
-    };
-
     act(() => {
-      const { unmount } = render(<Component />);
+      const { unmount } = render(
+        <FetchGetTestComponent
+          url="http://localhost/slow/body"
+          fetcher={fetcher}
+        />,
+      );
       unmountFn = unmount;
     });
   });
