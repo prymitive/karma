@@ -39,7 +39,7 @@ const SilenceIDCopyButton: FC<{
           ref={ref}
           className="badge bg-secondary px-1 me-1 components-label cursor-pointer"
           onClick={() => {
-            copy(id);
+            void copy(id);
             setClickCount(clickCount + 1);
           }}
         >

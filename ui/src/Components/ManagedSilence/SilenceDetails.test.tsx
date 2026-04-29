@@ -1,8 +1,9 @@
+import { act } from "react";
+
 import { render, fireEvent } from "@testing-library/react";
 
-import copy from "copy-to-clipboard";
-
 import { MockSilence } from "__fixtures__/Alerts";
+import { mockClipboard } from "__fixtures__/Clipboard";
 import type { APIAlertsResponseUpstreamsT, APISilenceT } from "Models/APITypes";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
@@ -12,6 +13,7 @@ let alertStore: AlertStore;
 let silenceFormStore: SilenceFormStore;
 let cluster: string;
 let silence: APISilenceT;
+let writeText: jest.Mock;
 
 const MockEditSilence = jest.fn();
 
@@ -43,6 +45,7 @@ beforeEach(() => {
   alertStore.data.setUpstreams(generateUpstreams());
 
   jest.restoreAllMocks();
+  writeText = mockClipboard();
   jest.useFakeTimers();
 });
 
@@ -86,12 +89,14 @@ describe("<SilenceDetails />", () => {
     );
   });
 
-  it("clicking on the copy button copies silence ID to the clipboard", () => {
+  it("clicking on the copy button copies silence ID to the clipboard", async () => {
     const { container } = renderSilenceDetails();
     const button = container.querySelector("span.badge.bg-secondary");
     fireEvent.click(button!);
-    expect(copy).toHaveBeenCalledTimes(1);
-    expect(copy).toHaveBeenCalledWith(silence.id);
+    // flush async clipboard write from copy-to-clipboard
+    await act(() => jest.advanceTimersByTimeAsync(0));
+    expect(writeText).toHaveBeenCalledTimes(1);
+    expect(writeText).toHaveBeenCalledWith(silence.id);
   });
 
   it("Edit silence button is disabled when all alertmanager instances are read-only", () => {

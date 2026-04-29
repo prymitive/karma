@@ -2,9 +2,8 @@ import { act } from "react";
 
 import { render, fireEvent } from "@testing-library/react";
 
-import copy from "copy-to-clipboard";
-
 import { MockAlertGroup } from "__fixtures__/Alerts";
+import { mockClipboard } from "__fixtures__/Clipboard";
 import type {
   APIAlertGroupT,
   APIAlertsResponseUpstreamsT,
@@ -18,6 +17,7 @@ let silenceFormStore: SilenceFormStore;
 
 let MockAfterClick: () => void;
 let MockSetIsMenuOpen: () => void;
+let writeText: jest.Mock;
 
 const generateUpstreams = (): APIAlertsResponseUpstreamsT => ({
   counters: { total: 3, healthy: 3, failed: 0 },
@@ -68,6 +68,7 @@ beforeEach(() => {
 
   jest.useFakeTimers();
   jest.clearAllMocks();
+  writeText = mockClipboard();
   MockAfterClick = jest.fn();
   MockSetIsMenuOpen = jest.fn();
 
@@ -188,7 +189,7 @@ const renderMenuContent = (group: APIAlertGroupT) => {
 };
 
 describe("<MenuContent />", () => {
-  it("clicking on 'Copy' icon copies the link to clickboard", () => {
+  it("clicking on 'Copy' icon copies the link to clickboard", async () => {
     const group = MockAlertGroup(
       [{ name: "alertname", value: "Fake Alert" }],
       [],
@@ -199,7 +200,9 @@ describe("<MenuContent />", () => {
     const { container } = renderMenuContent(group);
     const buttons = container.querySelectorAll(".dropdown-item");
     fireEvent.click(buttons[0]);
-    expect(copy).toHaveBeenCalledTimes(1);
+    // flush async clipboard write from copy-to-clipboard
+    await act(() => jest.advanceTimersByTimeAsync(0));
+    expect(writeText).toHaveBeenCalledTimes(1);
   });
 
   it("clicking on 'Silence' icon opens the silence form modal", () => {

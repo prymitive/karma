@@ -1,15 +1,18 @@
+import { act } from "react";
+
 import { render, screen, fireEvent } from "@testing-library/react";
 
-import copy from "copy-to-clipboard";
-
 import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
+import { mockClipboard } from "__fixtures__/Clipboard";
 
 import FilteringLabel from ".";
 
 let alertStore: AlertStore;
+let writeText: jest.Mock;
 
 beforeEach(() => {
   alertStore = new AlertStore([]);
+  writeText = mockClipboard();
 });
 
 const renderFilteringLabel = (name: string, value: string) => {
@@ -60,9 +63,12 @@ describe("<FilteringLabel />", () => {
     );
   });
 
-  it("calling onClick() while holding Shift key copies label value to clipboard", () => {
+  it("calling onClick() while holding Shift key copies label value to clipboard", async () => {
     renderAndClick("foo", "bar", { shiftKey: true });
-    expect(copy).toHaveBeenCalledWith("bar");
+    // flush async clipboard write from copy-to-clipboard
+    await act(async () => {});
+    expect(writeText).toHaveBeenCalledTimes(1);
+    expect(writeText).toHaveBeenCalledWith("bar");
   });
 
   it("label with dark background color should have 'components-label-dark' class", () => {

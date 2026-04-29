@@ -118,7 +118,7 @@ const MenuContent: FC<{
           <div
             className="dropdown-item cursor-pointer"
             onClick={() => {
-              copy(groupLink);
+              void copy(groupLink);
               afterClick();
             }}
           >

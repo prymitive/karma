@@ -92,7 +92,7 @@ const ShareButton: FC<{
         ref={ref}
         className="input-group-text text-muted cursor-pointer"
         onClick={() => {
-          copy(`${baseURL}?m=${silenceFormStore.data.toBase64}`);
+          void copy(`${baseURL}?m=${silenceFormStore.data.toBase64}`);
           setClickCount(clickCount + 1);
         }}
       >
