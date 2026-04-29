@@ -44,6 +44,8 @@
     "@eslint/js": "10.0.1",
     "@fetch-mock/jest": "0.2.20",
     "@playwright/test": "1.59.1",
+    "@swc/core": "1.15.32",
+    "@swc/jest": "0.2.39",
     "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "16.3.2",
     "@testing-library/user-event": "14.6.1",
@@ -70,8 +72,7 @@
     "stylelint": "17.9.1",
     "stylelint-config-standard-scss": "17.0.0",
     "terser": "5.46.2",
-    "ts-jest": "29.4.9",
-    "typescript": "5.9.3",
+    "typescript": "6.0.3",
     "typescript-eslint": "8.59.1",
     "vite": "8.0.10"
   },
@@ -92,7 +93,24 @@
       "!src/Models/*.ts",
       "!src/testEnvironment.ts"
     ],
-    "preset": "ts-jest/presets/js-with-ts",
+    "transform": {
+      "^.+\\.[tj]sx?$": [
+        "@swc/jest",
+        {
+          "jsc": {
+            "parser": {
+              "syntax": "typescript",
+              "tsx": true
+            },
+            "transform": {
+              "react": {
+                "runtime": "automatic"
+              }
+            }
+          }
+        }
+      ]
+    },
     "testEnvironment": "<rootDir>/src/testEnvironment.ts",
     "transformIgnorePatterns": [
       "node_modules/(?!(react-hotkeys-hook|react-idle-timer)/)"
