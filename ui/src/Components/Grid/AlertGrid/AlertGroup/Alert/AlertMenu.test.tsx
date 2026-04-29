@@ -2,9 +2,8 @@ import { act, createRef } from "react";
 
 import { render, fireEvent } from "@testing-library/react";
 
-import copy from "copy-to-clipboard";
-
 import { MockAlertGroup, MockAlert } from "__fixtures__/Alerts";
+import { mockClipboard } from "__fixtures__/Clipboard";
 import type {
   APIAlertGroupT,
   APIAlertT,
@@ -22,6 +21,7 @@ let group: APIAlertGroupT;
 
 let MockAfterClick: () => void;
 let MockSetIsMenuOpen: () => void;
+let writeText: jest.Mock;
 
 const generateUpstreams = (): APIAlertsResponseUpstreamsT => ({
   counters: { total: 1, healthy: 1, failed: 0 },
@@ -68,6 +68,7 @@ const generateUpstreams = (): APIAlertsResponseUpstreamsT => ({
 
 beforeEach(() => {
   jest.useFakeTimers();
+  writeText = mockClipboard();
 
   alertStore = new AlertStore([]);
   silenceFormStore = new SilenceFormStore();
@@ -286,7 +287,10 @@ describe("<MenuContent />", () => {
     const { container } = renderMenuContent(group);
     const buttons = container.querySelectorAll(".dropdown-item");
     fireEvent.click(buttons[1]);
-    expect(copy).toHaveBeenCalledWith(
+    // flush async clipboard write from copy-to-clipboard
+    await act(() => jest.advanceTimersByTimeAsync(0));
+    expect(writeText).toHaveBeenCalledTimes(1);
+    expect(writeText).toHaveBeenCalledWith(
       JSON.stringify(alertToJSON(group, alert)),
     );
   });

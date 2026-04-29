@@ -1,7 +1,8 @@
+import { act } from "react";
+
 import { render, fireEvent } from "@testing-library/react";
 
-import copy from "copy-to-clipboard";
-
+import { mockClipboard } from "__fixtures__/Clipboard";
 import { MockThemeContext } from "__fixtures__/Theme";
 import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
@@ -14,6 +15,7 @@ import type { APIAlertsResponseUpstreamsT } from "Models/APITypes";
 let alertStore: AlertStore;
 let settingsStore: Settings;
 let silenceFormStore: SilenceFormStore;
+let writeText: jest.Mock;
 
 const generateUpstreams = (
   version = "0.24.0",
@@ -47,6 +49,7 @@ beforeEach(() => {
   settingsStore = new Settings(null);
   silenceFormStore = new SilenceFormStore();
   alertStore.data.setUpstreams(generateUpstreams());
+  writeText = mockClipboard();
 });
 
 const renderSilenceForm = () => {
@@ -510,7 +513,7 @@ describe("<SilenceForm /> preview", () => {
     expect(container.querySelector(".mt-4")).toBeNull();
   });
 
-  it("clicking on the copy button copies form link to the clipboard", () => {
+  it("clicking on the copy button copies form link to the clipboard", async () => {
     const matcher = NewEmptyMatcher();
     matcher.name = "job";
     matcher.values = [
@@ -531,7 +534,9 @@ describe("<SilenceForm /> preview", () => {
     );
     expect(button?.innerHTML).toMatch(/fa-copy/);
     fireEvent.click(button!);
-    expect(copy).toHaveBeenCalledTimes(1);
+    // flush async clipboard write from copy-to-clipboard
+    await act(async () => {});
+    expect(writeText).toHaveBeenCalledTimes(1);
   });
 
   it("silence form share link doesn't change on new input", () => {

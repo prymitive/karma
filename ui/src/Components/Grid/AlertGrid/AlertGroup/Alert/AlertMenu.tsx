@@ -127,7 +127,7 @@ const MenuContent = observer(
           <div
             className="dropdown-item cursor-pointer"
             onClick={() => {
-              copy(JSON.stringify(alertToJSON(group, alert)));
+              void copy(JSON.stringify(alertToJSON(group, alert)));
               afterClick();
             }}
           >

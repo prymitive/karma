@@ -23,7 +23,7 @@ const FilteringLabel: FC<{
       event.preventDefault();
 
       if (event.shiftKey) {
-        copy(value);
+        void copy(value);
         return;
       }
 
