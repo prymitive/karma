@@ -40,7 +40,7 @@
     "typeface-open-sans": "1.1.13"
   },
   "devDependencies": {
-    "@eslint-react/eslint-plugin": "5.6.0",
+    "@eslint-react/eslint-plugin": "5.6.4",
     "@eslint/js": "10.0.1",
     "@fetch-mock/jest": "0.2.20",
     "@playwright/test": "1.59.1",
