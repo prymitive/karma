@@ -3,7 +3,7 @@ module github.com/prymitive/karma
 go 1.26.0
 
 require (
-	github.com/Masterminds/semver/v3 v3.4.0
+	github.com/Masterminds/semver/v3 v3.5.0
 	github.com/beme/abide v0.0.0-20190723115211-635a09831760
 	github.com/cespare/xxhash/v2 v2.3.0
 	github.com/cnf/structhash v0.0.0-20250313080605-df4c6cc74a9a
