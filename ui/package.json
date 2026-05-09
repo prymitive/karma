@@ -71,7 +71,7 @@
     "sass": "1.99.0",
     "stylelint": "17.10.0",
     "stylelint-config-standard-scss": "17.0.0",
-    "terser": "5.46.2",
+    "terser": "5.47.1",
     "typescript": "6.0.3",
     "typescript-eslint": "8.59.2",
     "vite": "8.0.10"
