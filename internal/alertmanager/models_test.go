@@ -274,7 +274,8 @@ func TestProbeVersionInvalidMetrics(t *testing.T) {
 
 func TestIsHealthCheckAlertAllMatch(t *testing.T) {
 	// verifies that an alert matching all healthcheck filters is identified as a healthcheck
-	am, err := NewAlertmanager("cluster", "hc-test", "http://localhost",
+	am, err := NewAlertmanager(
+		"cluster", "hc-test", "http://localhost",
 		WithHealthchecks(map[string][]string{
 			"prom1": {"alertname=Watchdog"},
 		}),
@@ -297,7 +298,8 @@ func TestIsHealthCheckAlertAllMatch(t *testing.T) {
 
 func TestIsHealthCheckAlertPartialMatch(t *testing.T) {
 	// verifies that an alert matching only some healthcheck filters is NOT identified as a healthcheck
-	am, err := NewAlertmanager("cluster", "hc-test-partial", "http://localhost",
+	am, err := NewAlertmanager(
+		"cluster", "hc-test-partial", "http://localhost",
 		WithHealthchecks(map[string][]string{
 			"prom1": {"alertname=Watchdog", "severity=critical"},
 		}),
@@ -320,7 +322,8 @@ func TestIsHealthCheckAlertPartialMatch(t *testing.T) {
 
 func TestIsHealthCheckAlertNoMatch(t *testing.T) {
 	// verifies that an alert not matching any healthcheck filters returns empty result
-	am, err := NewAlertmanager("cluster", "hc-test-none", "http://localhost",
+	am, err := NewAlertmanager(
+		"cluster", "hc-test-none", "http://localhost",
 		WithHealthchecks(map[string][]string{
 			"prom1": {"alertname=Watchdog"},
 		}),

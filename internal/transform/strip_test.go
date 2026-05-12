@@ -231,7 +231,8 @@ func TestStripReceivers(t *testing.T) {
 				if stripped != testCase.stripped {
 					t.Errorf("StripReceivers failed, expected %v, got %v", testCase.stripped, stripped)
 				}
-			})
+			},
+		)
 	}
 }
 

@@ -1095,7 +1095,8 @@ func TestFilters(t *testing.T) {
 			if f.Valid() {
 				isAlertmanagerFilter := slices.Contains(
 					[]string{"@age", "@alertmanager", "@cluster", "@inhibited", "@inhibited_by", "@state", "@silenced_by", "@silence_ticket", "@silence_author", "@fingerprint"},
-					f.Name())
+					f.Name(),
+				)
 				if isAlertmanagerFilter != f.IsAlertmanagerFilter() {
 					t.Errorf("[%s] IsAlertmanagerFilter() returned %#v while %#v was expected", ft.Expression, f.IsAlertmanagerFilter(), isAlertmanagerFilter)
 				}

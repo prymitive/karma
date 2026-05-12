@@ -69,7 +69,8 @@ func SetupFlags(f *pflag.FlagSet) {
 
 	f.Bool(
 		"annotations.default.hidden", false,
-		"Hide all annotations by default unless explicitly listed in the 'visible' list")
+		"Hide all annotations by default unless explicitly listed in the 'visible' list",
+	)
 	f.StringSlice("annotations.hidden", []string{},
 		"List of annotations that are hidden by default")
 	f.StringSlice("annotations.visible", []string{},
