@@ -10,7 +10,7 @@ require (
 	github.com/fvbommel/sortorder v1.1.0
 	github.com/go-chi/chi/v5 v5.2.5
 	github.com/go-chi/cors v1.2.2
-	github.com/go-json-experiment/json v0.0.0-20260504200034-64a0a05799db
+	github.com/go-json-experiment/json v0.0.0-20260505212615-e40f80bf6836
 	github.com/go-viper/mapstructure/v2 v2.5.0
 	github.com/google/go-cmp v0.7.0
 	github.com/hashicorp/golang-lru/v2 v2.0.7
@@ -48,8 +48,8 @@ require (
 	github.com/prometheus/procfs v0.20.1 // indirect
 	github.com/sergi/go-diff v1.4.0 // indirect
 	go.yaml.in/yaml/v2 v2.4.4 // indirect
-	golang.org/x/sys v0.43.0 // indirect
-	golang.org/x/text v0.36.0 // indirect
-	golang.org/x/tools v0.43.0 // indirect
+	golang.org/x/sys v0.44.0 // indirect
+	golang.org/x/text v0.37.0 // indirect
+	golang.org/x/tools v0.44.0 // indirect
 	google.golang.org/protobuf v1.36.11 // indirect
 )
