@@ -177,13 +177,15 @@ func setupRouterProxyHandlers(router *chi.Mux, alertmanager *alertmanager.Alertm
 	proxy := NewAlertmanagerProxy(alertmanager)
 	router.Post(
 		proxyPath(alertmanager.Name, "/api/v2/silences"),
-		handlePostRequest(alertmanager, http.StripPrefix(proxyPathPrefix(alertmanager.Name), proxy)))
+		handlePostRequest(alertmanager, http.StripPrefix(proxyPathPrefix(alertmanager.Name), proxy)),
+	)
 	router.Delete(
 		proxyPath(alertmanager.Name, "/api/v2/silence/{id}"),
 		http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			h := http.StripPrefix(proxyPathPrefix(alertmanager.Name), proxy)
 			h.ServeHTTP(w, r)
-		}))
+		}),
+	)
 }
 
 // this fixes a problem with go-chi usage of RawPath

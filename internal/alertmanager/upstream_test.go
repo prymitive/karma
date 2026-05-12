@@ -195,7 +195,8 @@ func TestGetAlertmanagerByName(t *testing.T) {
 
 func TestWithHealthchecksVisible(t *testing.T) {
 	// verifies that WithHealthchecksVisible sets the healthchecksVisible field
-	am, err := NewAlertmanager("cluster", "hcv-test", "http://localhost",
+	am, err := NewAlertmanager(
+		"cluster", "hcv-test", "http://localhost",
 		WithHealthchecksVisible(true),
 	)
 	if err != nil {

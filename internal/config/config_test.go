@@ -429,7 +429,7 @@ func TestDefaultConfig(t *testing.T) {
 }
 
 func TestValidateConfigMissingFile(t *testing.T) {
-	err := validateConfigFile(("/foo/bar/xxx/yyy.yaml"))
+	err := validateConfigFile("/foo/bar/xxx/yyy.yaml")
 	if err == nil {
 		t.Errorf("validateConfigFile didn't return any error")
 	}

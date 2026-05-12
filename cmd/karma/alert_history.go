@@ -327,7 +327,8 @@ func countAlerts(uri string, timeout time.Duration, transport http.RoundTripper,
 		ctx,
 		[]string{`{__name__="ALERTS_FOR_STATE"}`},
 		time.Now().Add(time.Minute*-5),
-		time.Now())
+		time.Now(),
+	)
 	if err != nil {
 		return nil, fmt.Errorf("failed to query Prometheus for label names: %w", err)
 	}
