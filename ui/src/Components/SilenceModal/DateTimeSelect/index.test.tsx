@@ -228,11 +228,13 @@ describe("<TabContentStart />", () => {
       "February 2060",
     );
     fireEvent.click(container.querySelector("button.rdp-button_next")!);
-    expect(container.querySelector(".rdp-month_caption")?.textContent).toBe(
+    const captionsAfterNext = container.querySelectorAll(".rdp-month_caption");
+    expect(captionsAfterNext[captionsAfterNext.length - 1].textContent).toBe(
       "March 2060",
     );
     fireEvent.click(container.querySelector("button.btn.btn-light.btn-sm")!);
-    expect(container.querySelector(".rdp-month_caption")?.textContent).toBe(
+    const captionsAfterToday = container.querySelectorAll(".rdp-month_caption");
+    expect(captionsAfterToday[captionsAfterToday.length - 1].textContent).toBe(
       format(new Date(), "LLLL yyyy"),
     );
   });

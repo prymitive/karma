@@ -1201,6 +1201,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
             <nav
               aria-label="Navigation bar"
               class="rdp-nav"
+              data-animated-nav="true"
             >
               <button
                 aria-label="Go to the Previous Month"
@@ -1237,9 +1238,11 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
             </nav>
             <div
               class="rdp-month"
+              data-animated-month="true"
             >
               <div
                 class="rdp-month_caption"
+                data-animated-caption="true"
               >
                 <span
                   aria-live="polite"
@@ -1260,14 +1263,8 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 >
                   <tr
                     class="rdp-weekdays"
+                    data-animated-weekdays="true"
                   >
-                    <th
-                      aria-label="Sunday"
-                      class="rdp-weekday"
-                      scope="col"
-                    >
-                      Su
-                    </th>
                     <th
                       aria-label="Monday"
                       class="rdp-weekday"
@@ -1310,14 +1307,76 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                     >
                       Sa
                     </th>
+                    <th
+                      aria-label="Sunday"
+                      class="rdp-weekday"
+                      scope="col"
+                    >
+                      Su
+                    </th>
                   </tr>
                 </thead>
                 <tbody
                   class="rdp-weeks"
+                  data-animated-weeks="true"
                 >
                   <tr
                     class="rdp-week"
                   >
+                    <td
+                      class="rdp-day rdp-disabled rdp-hidden rdp-outside"
+                      data-day="2060-01-26"
+                      data-disabled="true"
+                      data-hidden="true"
+                      data-month="2060-01"
+                      data-outside="true"
+                      role="gridcell"
+                    />
+                    <td
+                      class="rdp-day rdp-disabled rdp-hidden rdp-outside"
+                      data-day="2060-01-27"
+                      data-disabled="true"
+                      data-hidden="true"
+                      data-month="2060-01"
+                      data-outside="true"
+                      role="gridcell"
+                    />
+                    <td
+                      class="rdp-day rdp-disabled rdp-hidden rdp-outside"
+                      data-day="2060-01-28"
+                      data-disabled="true"
+                      data-hidden="true"
+                      data-month="2060-01"
+                      data-outside="true"
+                      role="gridcell"
+                    />
+                    <td
+                      class="rdp-day rdp-disabled rdp-hidden rdp-outside"
+                      data-day="2060-01-29"
+                      data-disabled="true"
+                      data-hidden="true"
+                      data-month="2060-01"
+                      data-outside="true"
+                      role="gridcell"
+                    />
+                    <td
+                      class="rdp-day rdp-disabled rdp-hidden rdp-outside"
+                      data-day="2060-01-30"
+                      data-disabled="true"
+                      data-hidden="true"
+                      data-month="2060-01"
+                      data-outside="true"
+                      role="gridcell"
+                    />
+                    <td
+                      class="rdp-day rdp-disabled rdp-hidden rdp-outside"
+                      data-day="2060-01-31"
+                      data-disabled="true"
+                      data-hidden="true"
+                      data-month="2060-01"
+                      data-outside="true"
+                      role="gridcell"
+                    />
                     <td
                       aria-selected="true"
                       class="rdp-day rdp-today rdp-selected rdp-range_start"
@@ -1335,6 +1394,10 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                         1
                       </button>
                     </td>
+                  </tr>
+                  <tr
+                    class="rdp-week"
+                  >
                     <td
                       aria-selected="true"
                       class="rdp-day rdp-selected rdp-range_middle"
@@ -1431,10 +1494,6 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                         7
                       </button>
                     </td>
-                  </tr>
-                  <tr
-                    class="rdp-week"
-                  >
                     <td
                       aria-selected="true"
                       class="rdp-day rdp-selected rdp-range_middle"
@@ -1451,6 +1510,10 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                         8
                       </button>
                     </td>
+                  </tr>
+                  <tr
+                    class="rdp-week"
+                  >
                     <td
                       aria-selected="true"
                       class="rdp-day rdp-selected rdp-range_middle"
@@ -1547,10 +1610,6 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                         14
                       </button>
                     </td>
-                  </tr>
-                  <tr
-                    class="rdp-week"
-                  >
                     <td
                       aria-selected="true"
                       class="rdp-day rdp-selected rdp-range_middle"
@@ -1567,6 +1626,10 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                         15
                       </button>
                     </td>
+                  </tr>
+                  <tr
+                    class="rdp-week"
+                  >
                     <td
                       aria-selected="true"
                       class="rdp-day rdp-selected rdp-range_middle"
@@ -1663,10 +1726,6 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                         21
                       </button>
                     </td>
-                  </tr>
-                  <tr
-                    class="rdp-week"
-                  >
                     <td
                       aria-selected="true"
                       class="rdp-day rdp-selected rdp-range_middle"
@@ -1683,6 +1742,10 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                         22
                       </button>
                     </td>
+                  </tr>
+                  <tr
+                    class="rdp-week"
+                  >
                     <td
                       aria-selected="true"
                       class="rdp-day rdp-selected rdp-range_middle"
@@ -1779,10 +1842,6 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                         28
                       </button>
                     </td>
-                  </tr>
-                  <tr
-                    class="rdp-week"
-                  >
                     <td
                       aria-selected="true"
                       class="rdp-day rdp-selected rdp-range_middle"
@@ -1799,66 +1858,6 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                         29
                       </button>
                     </td>
-                    <td
-                      aria-selected="true"
-                      class="rdp-day rdp-hidden rdp-outside rdp-selected rdp-range_middle"
-                      data-day="2060-03-01"
-                      data-hidden="true"
-                      data-month="2060-03"
-                      data-outside="true"
-                      data-selected="true"
-                      role="gridcell"
-                    />
-                    <td
-                      aria-selected="true"
-                      class="rdp-day rdp-hidden rdp-outside rdp-selected rdp-range_middle"
-                      data-day="2060-03-02"
-                      data-hidden="true"
-                      data-month="2060-03"
-                      data-outside="true"
-                      data-selected="true"
-                      role="gridcell"
-                    />
-                    <td
-                      aria-selected="true"
-                      class="rdp-day rdp-hidden rdp-outside rdp-selected rdp-range_middle"
-                      data-day="2060-03-03"
-                      data-hidden="true"
-                      data-month="2060-03"
-                      data-outside="true"
-                      data-selected="true"
-                      role="gridcell"
-                    />
-                    <td
-                      aria-selected="true"
-                      class="rdp-day rdp-hidden rdp-outside rdp-selected rdp-range_middle"
-                      data-day="2060-03-04"
-                      data-hidden="true"
-                      data-month="2060-03"
-                      data-outside="true"
-                      data-selected="true"
-                      role="gridcell"
-                    />
-                    <td
-                      aria-selected="true"
-                      class="rdp-day rdp-hidden rdp-outside rdp-selected rdp-range_middle"
-                      data-day="2060-03-05"
-                      data-hidden="true"
-                      data-month="2060-03"
-                      data-outside="true"
-                      data-selected="true"
-                      role="gridcell"
-                    />
-                    <td
-                      aria-selected="true"
-                      class="rdp-day rdp-hidden rdp-outside rdp-selected rdp-range_middle"
-                      data-day="2060-03-06"
-                      data-hidden="true"
-                      data-month="2060-03"
-                      data-outside="true"
-                      data-selected="true"
-                      role="gridcell"
-                    />
                   </tr>
                 </tbody>
               </table>
