@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.130
+
+### Fixed
+
+- Calendar now uses Monday as the first day of the wek - #6715.
+
 ## v0.129
 
 ### Fixed
