@@ -1,10 +1,16 @@
 # Changelog
 
+## v0.131
+
+### Fixed
+
+- Calendar `Ends` tab now uses Monday as the first day of the week - #6715.
+
 ## v0.130
 
 ### Fixed
 
-- Calendar now uses Monday as the first day of the wek - #6715.
+- Calendar now uses Monday as the first day of the week - #6715.
 
 ## v0.129
 

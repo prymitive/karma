@@ -379,6 +379,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
             <nav
               aria-label="Navigation bar"
               class="rdp-nav"
+              data-animated-nav="true"
             >
               <button
                 aria-label="Go to the Previous Month"
@@ -415,9 +416,11 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
             </nav>
             <div
               class="rdp-month"
+              data-animated-month="true"
             >
               <div
                 class="rdp-month_caption"
+                data-animated-caption="true"
               >
                 <span
                   aria-live="polite"
@@ -438,14 +441,8 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 >
                   <tr
                     class="rdp-weekdays"
+                    data-animated-weekdays="true"
                   >
-                    <th
-                      aria-label="Sunday"
-                      class="rdp-weekday"
-                      scope="col"
-                    >
-                      Su
-                    </th>
                     <th
                       aria-label="Monday"
                       class="rdp-weekday"
@@ -488,24 +485,22 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                     >
                       Sa
                     </th>
+                    <th
+                      aria-label="Sunday"
+                      class="rdp-weekday"
+                      scope="col"
+                    >
+                      Su
+                    </th>
                   </tr>
                 </thead>
                 <tbody
                   class="rdp-weeks"
+                  data-animated-weeks="true"
                 >
                   <tr
                     class="rdp-week"
                   >
-                    <td
-                      aria-selected="true"
-                      class="rdp-day rdp-hidden rdp-outside rdp-selected rdp-range_middle"
-                      data-day="2061-01-30"
-                      data-hidden="true"
-                      data-month="2061-01"
-                      data-outside="true"
-                      data-selected="true"
-                      role="gridcell"
-                    />
                     <td
                       aria-selected="true"
                       class="rdp-day rdp-hidden rdp-outside rdp-selected rdp-range_middle"
@@ -588,10 +583,6 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                         5
                       </button>
                     </td>
-                  </tr>
-                  <tr
-                    class="rdp-week"
-                  >
                     <td
                       class="rdp-day"
                       data-day="2061-02-06"
@@ -606,6 +597,10 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                         6
                       </button>
                     </td>
+                  </tr>
+                  <tr
+                    class="rdp-week"
+                  >
                     <td
                       class="rdp-day"
                       data-day="2061-02-07"
@@ -690,10 +685,6 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                         12
                       </button>
                     </td>
-                  </tr>
-                  <tr
-                    class="rdp-week"
-                  >
                     <td
                       class="rdp-day"
                       data-day="2061-02-13"
@@ -708,6 +699,10 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                         13
                       </button>
                     </td>
+                  </tr>
+                  <tr
+                    class="rdp-week"
+                  >
                     <td
                       class="rdp-day"
                       data-day="2061-02-14"
@@ -792,10 +787,6 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                         19
                       </button>
                     </td>
-                  </tr>
-                  <tr
-                    class="rdp-week"
-                  >
                     <td
                       class="rdp-day"
                       data-day="2061-02-20"
@@ -810,6 +801,10 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                         20
                       </button>
                     </td>
+                  </tr>
+                  <tr
+                    class="rdp-week"
+                  >
                     <td
                       class="rdp-day"
                       data-day="2061-02-21"
@@ -894,10 +889,6 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                         26
                       </button>
                     </td>
-                  </tr>
-                  <tr
-                    class="rdp-week"
-                  >
                     <td
                       class="rdp-day"
                       data-day="2061-02-27"
@@ -912,6 +903,10 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                         27
                       </button>
                     </td>
+                  </tr>
+                  <tr
+                    class="rdp-week"
+                  >
                     <td
                       class="rdp-day"
                       data-day="2061-02-28"
@@ -961,6 +956,14 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                     <td
                       class="rdp-day rdp-hidden rdp-outside"
                       data-day="2061-03-05"
+                      data-hidden="true"
+                      data-month="2061-03"
+                      data-outside="true"
+                      role="gridcell"
+                    />
+                    <td
+                      class="rdp-day rdp-hidden rdp-outside"
+                      data-day="2061-03-06"
                       data-hidden="true"
                       data-month="2061-03"
                       data-outside="true"

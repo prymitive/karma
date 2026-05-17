@@ -166,6 +166,8 @@ const TabContentEnd: FC<{ silenceFormStore: SilenceFormStore }> = observer(
               start: silenceFormStore.data.startsAt,
               end: silenceFormStore.data.endsAt,
             }}
+            weekStartsOn={1}
+            animate
           />
         </div>
         <HourMinute
