@@ -80,8 +80,8 @@ func setupRouter(router *chi.Mux, historyPoller *historyPoller) {
 	_ = mime.AddExtensionType(".ico", "image/x-icon")
 
 	router.Use(proxyPathFixMiddleware)
+	router.Use(middleware.ClientIPFromRemoteAddr)
 	router.Use(promMiddleware)
-	router.Use(middleware.RealIP)
 
 	compressor := middleware.NewCompressor(flate.DefaultCompression)
 	router.Use(compressor.Handler)
