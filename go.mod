@@ -8,7 +8,7 @@ require (
 	github.com/cespare/xxhash/v2 v2.3.0
 	github.com/cnf/structhash v0.0.0-20250313080605-df4c6cc74a9a
 	github.com/fvbommel/sortorder v1.1.0
-	github.com/go-chi/chi/v5 v5.2.5
+	github.com/go-chi/chi/v5 v5.3.0
 	github.com/go-chi/cors v1.2.2
 	github.com/go-json-experiment/json v0.0.0-20260520185125-572e7c383686
 	github.com/go-viper/mapstructure/v2 v2.5.0
