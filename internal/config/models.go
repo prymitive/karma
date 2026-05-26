@@ -3,6 +3,9 @@ package config
 import (
 	"regexp"
 	"time"
+
+	jsonv2 "github.com/go-json-experiment/json"
+	"github.com/go-json-experiment/json/jsontext"
 )
 
 type AlertmanagerCORS struct {
@@ -217,16 +220,30 @@ type configSchema struct {
 		DefaultAlertmanagers []string `yaml:"defaultAlertmanagers" koanf:"defaultAlertmanagers"`
 	} `yaml:"silenceForm" koanf:"silenceForm"`
 	// nolint: maligned
-	UI struct {
-		Refresh              time.Duration `json:",format:nano"`
-		HideFiltersWhenIdle  bool          `yaml:"hideFiltersWhenIdle" koanf:"hideFiltersWhenIdle"`
-		ColorTitlebar        bool          `yaml:"colorTitlebar" koanf:"colorTitlebar"`
-		Theme                string        `yaml:"theme" koanf:"theme"`
-		Animations           bool          `yaml:"animations" koanf:"animations"`
-		MinimalGroupWidth    int           `yaml:"minimalGroupWidth" koanf:"minimalGroupWidth"`
-		AlertsPerGroup       int           `yaml:"alertsPerGroup" koanf:"alertsPerGroup"`
-		CollapseGroups       string        `yaml:"collapseGroups" koanf:"collapseGroups"`
-		MultiGridLabel       string        `yaml:"multiGridLabel" koanf:"multiGridLabel"`
-		MultiGridSortReverse bool          `yaml:"multiGridSortReverse" koanf:"multiGridSortReverse"`
+	UI UIConfig
+}
+
+type UIConfig struct {
+	Refresh              time.Duration `json:"Refresh"`
+	HideFiltersWhenIdle  bool          `yaml:"hideFiltersWhenIdle" koanf:"hideFiltersWhenIdle"`
+	ColorTitlebar        bool          `yaml:"colorTitlebar" koanf:"colorTitlebar"`
+	Theme                string        `yaml:"theme" koanf:"theme"`
+	Animations           bool          `yaml:"animations" koanf:"animations"`
+	MinimalGroupWidth    int           `yaml:"minimalGroupWidth" koanf:"minimalGroupWidth"`
+	AlertsPerGroup       int           `yaml:"alertsPerGroup" koanf:"alertsPerGroup"`
+	CollapseGroups       string        `yaml:"collapseGroups" koanf:"collapseGroups"`
+	MultiGridLabel       string        `yaml:"multiGridLabel" koanf:"multiGridLabel"`
+	MultiGridSortReverse bool          `yaml:"multiGridSortReverse" koanf:"multiGridSortReverse"`
+}
+
+func (ui UIConfig) MarshalJSON() ([]byte, error) {
+	type uiAlias UIConfig
+	aux := struct {
+		uiAlias
+		Refresh int64 `json:"Refresh"`
+	}{
+		uiAlias: uiAlias(ui),
+		Refresh: int64(ui.Refresh),
 	}
+	return jsonv2.Marshal(aux, jsontext.EscapeForHTML(true))
 }
