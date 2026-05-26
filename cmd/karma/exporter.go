@@ -71,7 +71,7 @@ func promMiddleware(next http.Handler) http.Handler {
 		if config.Config.Log.Requests {
 			slog.Info(
 				"Request completed",
-				slog.String("address", r.RemoteAddr),
+				slog.String("address", middleware.GetClientIP(r.Context())),
 				slog.String("path", r.URL.RequestURI()),
 				slog.String("duration", time.Since(start).String()),
 				slog.String("method", r.Method),
