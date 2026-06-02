@@ -10,7 +10,7 @@ require (
 	github.com/fvbommel/sortorder v1.1.0
 	github.com/go-chi/chi/v5 v5.3.0
 	github.com/go-chi/cors v1.2.2
-	github.com/go-json-experiment/json v0.0.0-20260520185125-572e7c383686
+	github.com/go-json-experiment/json v0.0.0-20260601182631-00ed12fed2a6
 	github.com/go-viper/mapstructure/v2 v2.5.0
 	github.com/google/go-cmp v0.7.0
 	github.com/hashicorp/golang-lru/v2 v2.0.7
