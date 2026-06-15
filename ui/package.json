@@ -43,7 +43,7 @@
     "@eslint-react/eslint-plugin": "5.9.0",
     "@eslint/js": "10.0.1",
     "@fetch-mock/jest": "0.2.20",
-    "@playwright/test": "1.60.0",
+    "@playwright/test": "1.61.0",
     "@swc/core": "1.15.41",
     "@swc/jest": "0.2.39",
     "@testing-library/jest-dom": "6.9.1",
