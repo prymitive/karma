@@ -30,7 +30,7 @@
     "react-dom": "19.2.7",
     "react-hotkeys-hook": "5.3.3",
     "react-idle-timer": "5.7.3",
-    "react-intersection-observer": "10.0.3",
+    "react-intersection-observer": "10.1.0",
     "react-json-pretty": "2.2.0",
     "react-linkify": "0.2.2",
     "react-media-hook": "0.5.1",
