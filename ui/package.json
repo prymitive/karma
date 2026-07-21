@@ -24,7 +24,7 @@
     "mobx": "6.16.1",
     "mobx-react-lite": "4.1.1",
     "promise-retry": "2.0.1",
-    "react": "19.2.7",
+    "react": "19.2.8",
     "react-cool-dimensions": "3.0.1",
     "react-day-picker": "10.0.1",
     "react-dom": "19.2.7",
