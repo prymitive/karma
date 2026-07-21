@@ -341,7 +341,7 @@ func countAlerts(uri string, timeout time.Duration, transport http.RoundTripper,
 
 	lv := model.LabelSet{}
 	for k, v := range labels {
-		if slices.Contains(names, k) {
+		if slices.Contains(names, model.LabelName(k)) {
 			lv[model.LabelName(k)] = model.LabelValue(v)
 		}
 	}
