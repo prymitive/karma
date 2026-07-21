@@ -7,16 +7,12 @@
     "src/e2e/stories.tsx"
   ],
   "ignore": [
-    "src/Styles/**",
-    "vite-env.d.ts"
+    "src/Styles/**"
   ],
   "ignoreDependencies": [
     "bootstrap",
     "bootswatch",
     "typeface-open-sans",
     "prettier"
-  ],
-  "ignoreBinaries": [
-    "source-map-explorer"
   ]
 }
