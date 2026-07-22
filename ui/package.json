@@ -46,7 +46,7 @@
     "@playwright/test": "1.61.1",
     "@swc/core": "1.15.46",
     "@swc/jest": "0.2.39",
-    "@testing-library/jest-dom": "6.9.1",
+    "@testing-library/jest-dom": "7.0.0",
     "@testing-library/react": "16.3.2",
     "@testing-library/user-event": "14.6.1",
     "@types/body-scroll-lock": "3.1.2",
