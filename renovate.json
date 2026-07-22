@@ -1,58 +1,127 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended", "group:monorepos"],
+  "extends": [
+    "config:recommended",
+    "group:monorepos"
+  ],
   "dependencyDashboardApproval": false,
   "gitAuthor": "Łukasz Mierzwa <l.mierzwa@gmail.com>",
-  "schedule": ["at any time"],
+  "schedule": [
+    "at any time"
+  ],
   "timezone": "UTC",
   "automerge": false,
   "platformAutomerge": false,
+  "postUpdateOptions": [
+    "gomodTidy",
+    "gomodUpdateImportPaths"
+  ],
   "packageRules": [
     {
       "description": "Require dashboard approval for major updates",
-      "matchUpdateTypes": ["major"],
+      "matchUpdateTypes": [
+        "major"
+      ],
       "dependencyDashboardApproval": true
     },
     {
       "description": "Docker base images",
-      "matchDatasources": ["docker"],
-      "matchPackageNames": ["/^debian$/", "/^node$/", "/^golang$/"],
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackageNames": [
+        "/^debian$/",
+        "/^node$/",
+        "/^golang$/"
+      ],
       "groupName": "docker-base-images"
     },
     {
       "description": "Bootstrap packages",
-      "matchDatasources": ["npm"],
-      "matchPackageNames": ["/^bootstrap$/", "/^bootswatch$/"],
+      "matchDatasources": [
+        "npm"
+      ],
+      "matchPackageNames": [
+        "/^bootstrap$/",
+        "/^bootswatch$/"
+      ],
       "groupName": "bootstrap"
     },
     {
       "description": "Vite packages",
-      "matchDatasources": ["npm"],
-      "matchPackageNames": ["/^@vitejs/", "/^vite$/", "/^vite-.+$/"],
+      "matchDatasources": [
+        "npm"
+      ],
+      "matchPackageNames": [
+        "/^@vitejs/",
+        "/^vite$/",
+        "/^vite-.+$/"
+      ],
       "groupName": "vite"
     },
     {
+      "description": "ESLint packages",
+      "matchDatasources": [
+        "npm"
+      ],
+      "matchPackageNames": [
+        "/^@eslint/",
+        "/^eslint/"
+      ],
+      "groupName": "eslint"
+    },
+    {
+      "description": "React packages",
+      "matchDatasources": [
+        "npm"
+      ],
+      "matchPackageNames": [
+        "/^react/",
+        "^react-dom$",
+        "^@types/react$",
+        "^@types/react-dom$"
+      ],
+      "groupName": "react"
+    },
+    {
       "description": "Update snapshots after npm upgrades",
-      "matchManagers": ["npm"],
+      "matchManagers": [
+        "npm"
+      ],
       "postUpgradeTasks": {
-        "commands": ["bash -c 'cd ui && npm install && npm test -- -u'"],
-        "fileFilters": ["ui/src/**/__snapshots__/**"],
+        "commands": [
+          "bash -c 'cd ui && npm install && npm test -- -u'"
+        ],
+        "fileFilters": [
+          "ui/src/**/__snapshots__/**"
+        ],
         "executionMode": "branch"
       }
     },
     {
       "description": "GitHub Actions",
-      "matchManagers": ["github-actions"],
+      "matchManagers": [
+        "github-actions"
+      ],
       "groupName": "github-actions"
     },
     {
       "description": "Go modules for tools",
-      "matchManagers": ["gomod"],
-      "matchFileNames": ["tools/**/go.mod"],
+      "matchManagers": [
+        "gomod"
+      ],
+      "matchFileNames": [
+        "tools/**/go.mod"
+      ],
       "groupName": "go-tools",
       "postUpgradeTasks": {
-        "commands": ["make tools-go-mod-tidy"],
-        "fileFilters": ["tools/**/go.mod", "tools/**/go.sum"],
+        "commands": [
+          "make tools-go-mod-tidy"
+        ],
+        "fileFilters": [
+          "tools/**/go.mod",
+          "tools/**/go.sum"
+        ],
         "executionMode": "branch"
       }
     }
