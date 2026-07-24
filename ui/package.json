@@ -40,7 +40,7 @@
     "typeface-open-sans": "1.1.13"
   },
   "devDependencies": {
-    "@eslint-react/eslint-plugin": "5.17.3",
+    "@eslint-react/eslint-plugin": "5.18.0",
     "@eslint/js": "10.0.1",
     "@fetch-mock/jest": "0.2.20",
     "@playwright/test": "1.61.1",
@@ -59,9 +59,9 @@
     "@types/react-dom": "19.2.3",
     "@vitejs/plugin-legacy": "8.2.2",
     "@vitejs/plugin-react": "6.0.4",
-    "eslint": "10.7.0",
+    "eslint": "10.8.0",
     "eslint-config-prettier": "10.1.8",
-    "eslint-plugin-jest": "29.15.5",
+    "eslint-plugin-jest": "29.16.0",
     "eslint-plugin-react-compiler": "19.1.0-rc.2",
     "identity-obj-proxy": "3.0.0",
     "jest": "30.4.2",
