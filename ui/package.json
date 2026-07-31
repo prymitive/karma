@@ -22,7 +22,7 @@
     "favico.js": "0.3.10",
     "fontfaceobserver": "2.3.0",
     "mobx": "6.16.1",
-    "mobx-react-lite": "4.1.1",
+    "mobx-react-lite": "5.0.0",
     "promise-retry": "2.0.1",
     "react": "19.2.8",
     "react-cool-dimensions": "3.0.1",
