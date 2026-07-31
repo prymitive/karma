@@ -21,7 +21,7 @@
     "es-toolkit": "1.50.0",
     "favico.js": "0.3.10",
     "fontfaceobserver": "2.3.0",
-    "mobx": "6.16.1",
+    "mobx": "7.0.0",
     "mobx-react-lite": "4.1.1",
     "promise-retry": "2.0.1",
     "react": "19.2.8",
