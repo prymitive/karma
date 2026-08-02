@@ -84,6 +84,16 @@
       "groupName": "react"
     },
     {
+      "description": "Mobx packages",
+      "matchDatasources": [
+        "npm"
+      ],
+      "matchPackageNames": [
+        "/^mobx/"
+      ],
+      "groupName": "mobx"
+    },
+    {
       "description": "Update snapshots after npm upgrades",
       "matchManagers": [
         "npm"
