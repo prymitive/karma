@@ -17,6 +17,7 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
 import type {
   APIAlertmanagerUpstreamT,
   APIManagedSilenceT,
+  ReadOnly,
 } from "Models/APITypes";
 import type { AlertStore } from "Stores/AlertStore";
 import type { SilenceFormStore } from "Stores/SilenceFormStore";
@@ -207,7 +208,7 @@ const MassDeleteProgress: FC<{
     const deleteSilence = async (
       cluster: string,
       id: string,
-      ams: APIAlertmanagerUpstreamT[],
+      ams: ReadOnly<APIAlertmanagerUpstreamT>[],
     ) => {
       let err = "";
       for (const am of ams) {

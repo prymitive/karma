@@ -14,6 +14,7 @@ import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclama
 import type {
   APIAlertGroupT,
   AlertmanagerSilencePayloadT,
+  ReadOnly,
 } from "Models/APITypes";
 import type { AlertStore } from "Stores/AlertStore";
 import {
@@ -37,7 +38,7 @@ interface PostResponseT {
 const AlertAck: FC<{
   alertStore: AlertStore;
   silenceFormStore: SilenceFormStore;
-  group: APIAlertGroupT;
+  group: ReadOnly<APIAlertGroupT>;
 }> = observer(({ alertStore, silenceFormStore, group }) => {
   const [clusters, setClusters] = useState<ClusterT[]>([]);
   const [upstreams, setUpstreams] = useState<UpstreamT[]>([]);

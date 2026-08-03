@@ -1,6 +1,6 @@
 import type { FC, MouseEvent } from "react";
 
-import type { APIAlertGroupT } from "Models/APITypes";
+import type { APIAlertGroupT, ReadOnly } from "Models/APITypes";
 import type { AlertStore } from "Stores/AlertStore";
 import type { SilenceFormStore } from "Stores/SilenceFormStore";
 import FilteringLabel from "Components/Labels/FilteringLabel";
@@ -13,7 +13,7 @@ import { GroupMenu } from "./GroupMenu";
 const GroupHeader: FC<{
   isCollapsed: boolean;
   setIsCollapsed: (isCollapsed: boolean) => void;
-  group: APIAlertGroupT;
+  group: ReadOnly<APIAlertGroupT>;
   alertStore: AlertStore;
   silenceFormStore: SilenceFormStore;
   themedCounters: boolean;

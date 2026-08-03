@@ -5,7 +5,11 @@ import { action } from "mobx";
 import { parseISO } from "date-fns/parseISO";
 import { getUnixTime } from "date-fns/getUnixTime";
 
-import type { APISilenceT, APIAlertmanagerUpstreamT } from "Models/APITypes";
+import type {
+  APISilenceT,
+  APIAlertmanagerUpstreamT,
+  ReadOnly,
+} from "Models/APITypes";
 import type { AlertStore } from "Stores/AlertStore";
 import type { SilenceFormStore } from "Stores/SilenceFormStore";
 import { SilenceComment } from "./SilenceComment";
@@ -14,7 +18,7 @@ import { SilenceDetails } from "./SilenceDetails";
 const GetAlertmanager = (
   alertStore: AlertStore,
   cluster: string,
-): APIAlertmanagerUpstreamT =>
+): ReadOnly<APIAlertmanagerUpstreamT> =>
   alertStore.data.readWriteAlertmanagers
     .filter((u) => u.cluster === cluster)
     .slice(0, 1)[0];
@@ -31,7 +35,7 @@ const ManagedSilence: FC<{
   cluster: string;
   alertCount: number;
   alertCountAlwaysVisible: boolean;
-  silence: APISilenceT;
+  silence: ReadOnly<APISilenceT>;
   alertStore: AlertStore;
   silenceFormStore: SilenceFormStore;
   isOpen?: boolean;

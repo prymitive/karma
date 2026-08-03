@@ -5,7 +5,7 @@ import { faGrip } from "@fortawesome/free-solid-svg-icons/faGrip";
 
 import type { AlertStore } from "Stores/AlertStore";
 import type { Settings } from "Stores/Settings";
-import type { APIGridT } from "Models/APITypes";
+import type { APIGridT, ReadOnly } from "Models/APITypes";
 import FilteringLabel from "Components/Labels/FilteringLabel";
 import FilteringCounterBadge from "Components/Labels/FilteringCounterBadge";
 import { TooltipWrapper } from "Components/TooltipWrapper";
@@ -15,7 +15,7 @@ import { GridLabelSelect } from "./GridLabelSelect";
 interface SwimlaneProps {
   alertStore: AlertStore;
   settingsStore: Settings;
-  grid: APIGridT;
+  grid: ReadOnly<APIGridT>;
   isExpanded: boolean;
   onToggle: (event: MouseEvent) => void;
   paddingTop: number;

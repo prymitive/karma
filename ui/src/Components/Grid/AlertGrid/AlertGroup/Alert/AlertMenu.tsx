@@ -17,6 +17,7 @@ import type {
   APIAlertT,
   APIAlertGroupT,
   APIAnnotationT,
+  ReadOnly,
 } from "Models/APITypes";
 import type { AlertStore } from "Stores/AlertStore";
 import {
@@ -33,8 +34,8 @@ import { alertToJSON } from "Common/Alert";
 const onSilenceClick = (
   alertStore: AlertStore,
   silenceFormStore: SilenceFormStore,
-  group: APIAlertGroupT,
-  alert: APIAlertT,
+  group: ReadOnly<APIAlertGroupT>,
+  alert: ReadOnly<APIAlertT>,
 ) => {
   const clusters: { [cluster: string]: string[] } = {};
   Object.entries(alertStore.data.clustersWithoutReadOnly).forEach(
@@ -61,8 +62,8 @@ interface MenuContentProps {
   y: number;
   floating: Ref<HTMLDivElement> | null;
   strategy: CSSProperties["position"];
-  group: APIAlertGroupT;
-  alert: APIAlertT;
+  group: ReadOnly<APIAlertGroupT>;
+  alert: ReadOnly<APIAlertT>;
   afterClick: () => void;
   alertStore: AlertStore;
   silenceFormStore: SilenceFormStore;
@@ -173,8 +174,8 @@ const MenuContent = observer(
 );
 
 interface AlertMenuProps {
-  group: APIAlertGroupT;
-  alert: APIAlertT;
+  group: ReadOnly<APIAlertGroupT>;
+  alert: ReadOnly<APIAlertT>;
   alertStore: AlertStore;
   silenceFormStore: SilenceFormStore;
   setIsMenuOpen: (isOpen: boolean) => void;

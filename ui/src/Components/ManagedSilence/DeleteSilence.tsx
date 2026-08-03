@@ -9,7 +9,7 @@ import { faCheckCircle } from "@fortawesome/free-solid-svg-icons/faCheckCircle";
 import { faRedo } from "@fortawesome/free-solid-svg-icons/faRedo";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons/faCircleNotch";
 
-import type { APISilenceT } from "Models/APITypes";
+import type { APISilenceT, ReadOnly } from "Models/APITypes";
 import type { AlertStore } from "Stores/AlertStore";
 import type { SilenceFormStore } from "Stores/SilenceFormStore";
 import { FormatQuery, QueryOperators, StaticLabels } from "Common/Query";
@@ -109,7 +109,7 @@ const DeleteSilenceModalContent: FC<{
   alertStore: AlertStore;
   silenceFormStore: SilenceFormStore;
   cluster: string;
-  silence: APISilenceT;
+  silence: ReadOnly<APISilenceT>;
   onHide: () => void;
 }> = ({ alertStore, silenceFormStore, cluster, silence, onHide }) => {
   const [confirm, setConfirm] = useState<boolean>(false);
@@ -167,7 +167,7 @@ const DeleteSilence: FC<{
   alertStore: AlertStore;
   silenceFormStore: SilenceFormStore;
   cluster: string;
-  silence: APISilenceT;
+  silence: ReadOnly<APISilenceT>;
   isUpper?: boolean;
 }> = ({ alertStore, silenceFormStore, cluster, silence, isUpper = false }) => {
   const [visible, setVisible] = useState<boolean>(false);

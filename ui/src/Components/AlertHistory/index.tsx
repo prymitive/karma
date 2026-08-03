@@ -7,6 +7,7 @@ import type {
   APIAlertGroupT,
   APIGridT,
   HistoryResponseT,
+  ReadOnly,
 } from "Models/APITypes";
 import { useFetchAny, UpstreamT } from "Hooks/useFetchAny";
 import { TooltipWrapper } from "Components/TooltipWrapper";
@@ -26,10 +27,10 @@ const GetUTCSeconds = (): number => {
   return (now.getTime() + now.getTimezoneOffset()) / 1000;
 };
 
-export const AlertHistory: FC<{ group: APIAlertGroupT; grid: APIGridT }> = ({
-  group,
-  grid,
-}) => {
+export const AlertHistory: FC<{
+  group: ReadOnly<APIAlertGroupT>;
+  grid: ReadOnly<APIGridT>;
+}> = ({ group, grid }) => {
   const [ref, inView] = useInView({ triggerOnce: true });
 
   const [lastUpdate, setLastUpdate] = useState<number>(() => GetUTCSeconds());

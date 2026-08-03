@@ -1,6 +1,6 @@
 import { FC, memo } from "react";
 
-import type { APISilenceT } from "Models/APITypes";
+import type { APISilenceT, ReadOnly } from "Models/APITypes";
 import type { AlertStore } from "Stores/AlertStore";
 import type { SilenceFormStore } from "Stores/SilenceFormStore";
 import { ManagedSilence } from "Components/ManagedSilence";
@@ -19,7 +19,7 @@ const GetSilenceFromStore = (
   alertStore: AlertStore,
   cluster: string,
   silenceID: string,
-): APISilenceT | null => {
+): ReadOnly<APISilenceT> | null => {
   const amSilences = alertStore.data.silences[cluster];
   if (!amSilences) return null;
 
