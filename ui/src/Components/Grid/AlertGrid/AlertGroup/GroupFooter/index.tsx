@@ -2,7 +2,7 @@ import type { FC } from "react";
 
 import { observer } from "mobx-react-lite";
 
-import type { APIAlertGroupT } from "Models/APITypes";
+import type { APIAlertGroupT, ReadOnly } from "Models/APITypes";
 import { StaticLabels } from "Common/Query";
 import type { AlertStore } from "Stores/AlertStore";
 import type { SilenceFormStore } from "Stores/SilenceFormStore";
@@ -11,7 +11,7 @@ import { RenderNonLinkAnnotation, RenderLinkAnnotation } from "../Annotation";
 import { RenderSilence } from "../Silences";
 
 const GroupFooter: FC<{
-  group: APIAlertGroupT;
+  group: ReadOnly<APIAlertGroupT>;
   afterUpdate: () => void;
   alertStore: AlertStore;
   silenceFormStore: SilenceFormStore;

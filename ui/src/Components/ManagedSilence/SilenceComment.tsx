@@ -8,7 +8,7 @@ import { differenceInSeconds } from "date-fns";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBellSlash } from "@fortawesome/free-solid-svg-icons/faBellSlash";
 
-import type { APISilenceT } from "Models/APITypes";
+import type { APISilenceT, ReadOnly } from "Models/APITypes";
 import type { AlertStore } from "Stores/AlertStore";
 import FilteringCounterBadge from "Components/Labels/FilteringCounterBadge";
 import { ToggleIcon } from "Components/ToggleIcon";
@@ -16,7 +16,7 @@ import { DateFromNow } from "Components/DateFromNow";
 import { StaticLabels } from "Common/Query";
 
 const SilenceProgress: FC<{
-  silence: APISilenceT;
+  silence: ReadOnly<APISilenceT>;
 }> = ({ silence }) => {
   const [now] = useState(() => new Date());
   const diff = differenceInSeconds(parseISO(silence.endsAt), now);
@@ -40,7 +40,7 @@ const SilenceProgress: FC<{
 
 const SilenceComment: FC<{
   cluster: string;
-  silence: APISilenceT;
+  silence: ReadOnly<APISilenceT>;
   alertCount: number;
   collapsed: boolean;
   collapseToggle: () => void;

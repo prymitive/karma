@@ -1,5 +1,11 @@
 export type AlertStateT = "unprocessed" | "active" | "suppressed";
 
+export type ReadOnly<T> = T extends (infer R)[]
+  ? readonly ReadOnly<R>[]
+  : T extends object
+    ? { readonly [K in keyof T]: ReadOnly<T[K]> }
+    : T;
+
 interface LabelT {
   name: string;
   value: string;

@@ -17,7 +17,7 @@ import { faHome } from "@fortawesome/free-solid-svg-icons/faHome";
 import { faFingerprint } from "@fortawesome/free-solid-svg-icons/faFingerprint";
 import { faCopy } from "@fortawesome/free-solid-svg-icons/faCopy";
 
-import type { APISilenceT } from "Models/APITypes";
+import type { APISilenceT, ReadOnly } from "Models/APITypes";
 import type { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore, MatcherToOperator } from "Stores/SilenceFormStore";
 import { TooltipWrapper } from "Components/TooltipWrapper";
@@ -53,7 +53,7 @@ const SilenceIDCopyButton: FC<{
 const SilenceDetails: FC<{
   alertStore: AlertStore;
   silenceFormStore: SilenceFormStore;
-  silence: APISilenceT;
+  silence: ReadOnly<APISilenceT>;
   cluster: string;
   onEditSilence: () => void;
   isUpper?: boolean;

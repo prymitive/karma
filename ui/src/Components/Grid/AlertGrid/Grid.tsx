@@ -27,7 +27,7 @@ import { faAngleDoubleDown } from "@fortawesome/free-solid-svg-icons/faAngleDoub
 import type { AlertStore } from "Stores/AlertStore";
 import type { Settings } from "Stores/Settings";
 import type { SilenceFormStore } from "Stores/SilenceFormStore";
-import type { APIGridT } from "Models/APITypes";
+import type { APIGridT, ReadOnly } from "Models/APITypes";
 import { useGrid } from "Hooks/useGrid";
 import { ThemeContext } from "Components/Theme";
 import { DefaultDetailsCollapseValue } from "./AlertGroup/DetailsToggle";
@@ -118,7 +118,7 @@ const Grid: FC<{
   settingsStore: Settings;
   gridSizesConfig: SizeDetail[];
   groupWidth: number;
-  grid: APIGridT;
+  grid: ReadOnly<APIGridT>;
   outerPadding: number;
   paddingTop: number;
   zIndex: number;

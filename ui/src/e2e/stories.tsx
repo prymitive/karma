@@ -267,13 +267,19 @@ const makeGridAlertStore = (): AlertStore => {
   unprocessedGroup.totalAlerts = 3;
 
   const grids = alertStore.data.grids;
-  grids[0].alertGroups = [
+  const alertGroups = [
     suppressedGroup,
     unprocessedGroup,
     ...grids[0].alertGroups,
   ];
-  grids[0].totalGroups = grids[0].alertGroups.length;
-  alertStore.data.setGrids(grids);
+  alertStore.data.setGrids([
+    {
+      ...grids[0],
+      alertGroups: alertGroups,
+      totalGroups: alertGroups.length,
+    },
+    ...grids.slice(1),
+  ]);
 
   return alertStore;
 };

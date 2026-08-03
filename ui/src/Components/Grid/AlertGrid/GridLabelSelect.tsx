@@ -18,7 +18,7 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons/faCaretDown";
 
 import type { AlertStore } from "Stores/AlertStore";
 import type { Settings } from "Stores/Settings";
-import type { APIGridT } from "Models/APITypes";
+import type { APIGridT, ReadOnly } from "Models/APITypes";
 import { StringToOption, OptionT } from "Common/Select";
 import { DropdownSlide } from "Components/Animations/DropdownSlide";
 import { ThemeContext } from "Components/Theme";
@@ -36,7 +36,7 @@ const NullContainer: FC = () => null;
 const GridLabelNameSelect: FC<{
   alertStore: AlertStore;
   settingsStore: Settings;
-  grid: APIGridT;
+  grid: ReadOnly<APIGridT>;
   onClose: () => void;
 }> = ({ alertStore, settingsStore, grid, onClose }) => {
   const loadOptions = (
@@ -94,7 +94,7 @@ const Dropdown: FC<{
   strategy: CSSProperties["position"];
   alertStore: AlertStore;
   settingsStore: Settings;
-  grid: APIGridT;
+  grid: ReadOnly<APIGridT>;
   onClose: () => void;
 }> = ({
   x,
@@ -131,7 +131,7 @@ const Dropdown: FC<{
 const GridLabelSelect: FC<{
   alertStore: AlertStore;
   settingsStore: Settings;
-  grid: APIGridT;
+  grid: ReadOnly<APIGridT>;
 }> = ({ alertStore, settingsStore, grid }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const hide = useCallback(() => setIsVisible(false), []);

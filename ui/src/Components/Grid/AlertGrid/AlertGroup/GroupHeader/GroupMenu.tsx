@@ -12,7 +12,7 @@ import { faShareSquare } from "@fortawesome/free-solid-svg-icons/faShareSquare";
 import { faBellSlash } from "@fortawesome/free-solid-svg-icons/faBellSlash";
 import { faWrench } from "@fortawesome/free-solid-svg-icons/faWrench";
 
-import type { APIAlertGroupT } from "Models/APITypes";
+import type { APIAlertGroupT, ReadOnly } from "Models/APITypes";
 import { FormatAlertsQ } from "Stores/AlertStore";
 import type { AlertStore } from "Stores/AlertStore";
 import {
@@ -28,7 +28,7 @@ import { MenuLink } from "Components/Grid/AlertGrid/AlertGroup/MenuLink";
 const onSilenceClick = (
   alertStore: AlertStore,
   silenceFormStore: SilenceFormStore,
-  group: APIAlertGroupT,
+  group: ReadOnly<APIAlertGroupT>,
 ) => {
   const clusters: { [cluster: string]: string[] } = {};
   Object.entries(alertStore.data.clustersWithoutReadOnly).forEach(
@@ -56,7 +56,7 @@ const MenuContent: FC<{
   y: number;
   floating: Ref<HTMLDivElement> | null;
   strategy: CSSProperties["position"];
-  group: APIAlertGroupT;
+  group: ReadOnly<APIAlertGroupT>;
   afterClick: () => void;
   alertStore: AlertStore;
   silenceFormStore: SilenceFormStore;
@@ -146,7 +146,7 @@ const MenuContent: FC<{
 );
 
 const GroupMenu: FC<{
-  group: APIAlertGroupT;
+  group: ReadOnly<APIAlertGroupT>;
   alertStore: AlertStore;
   silenceFormStore: SilenceFormStore;
   themed: boolean;

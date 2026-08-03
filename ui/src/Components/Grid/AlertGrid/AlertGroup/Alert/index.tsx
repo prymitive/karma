@@ -6,6 +6,7 @@ import type {
   APIAlertT,
   APIAlertGroupT,
   APIAlertmanagerStateT,
+  ReadOnly,
 } from "Models/APITypes";
 import type { AlertStore } from "Stores/AlertStore";
 import type { SilenceFormStore } from "Stores/SilenceFormStore";
@@ -18,8 +19,8 @@ import { AlertMenu } from "./AlertMenu";
 import { RenderSilence } from "../Silences";
 
 const Alert: FC<{
-  group: APIAlertGroupT;
-  alert: APIAlertT;
+  group: ReadOnly<APIAlertGroupT>;
+  alert: ReadOnly<APIAlertT>;
   showReceiver: boolean;
   showOnlyExpandedAnnotations: boolean;
   afterUpdate: () => void;
@@ -48,7 +49,7 @@ const Alert: FC<{
 
   const silences: {
     [cluster: string]: {
-      alertmanager: APIAlertmanagerStateT;
+      alertmanager: ReadOnly<APIAlertmanagerStateT>;
       silences: string[];
     };
   } = {};

@@ -1,4 +1,9 @@
-import type { AlertStateT, APIAlertT, APIAlertGroupT } from "Models/APITypes";
+import type {
+  AlertStateT,
+  APIAlertT,
+  APIAlertGroupT,
+  ReadOnly,
+} from "Models/APITypes";
 
 export interface VanillaAlertT {
   labels: { [key: string]: string };
@@ -15,8 +20,8 @@ export interface VanillaAlertT {
 }
 
 export const alertToJSON = (
-  group: APIAlertGroupT,
-  alert: APIAlertT,
+  group: ReadOnly<APIAlertGroupT>,
+  alert: ReadOnly<APIAlertT>,
 ): VanillaAlertT[] => {
   const alerts: VanillaAlertT[] = [];
 
@@ -36,8 +41,8 @@ export const alertToJSON = (
       startsAt: am.startsAt,
       generatorURL: am.source,
       status: {
-        inhibitedBy: am.inhibitedBy,
-        silencedBy: am.silencedBy,
+        inhibitedBy: [...am.inhibitedBy],
+        silencedBy: [...am.silencedBy],
         state: am.state,
       },
     }))

@@ -16,7 +16,12 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
 import { faMinus } from "@fortawesome/free-solid-svg-icons/faMinus";
 import { faEllipsisH } from "@fortawesome/free-solid-svg-icons/faEllipsisH";
 
-import type { APIGridT, APIAlertGroupT, AlertStateT } from "Models/APITypes";
+import type {
+  APIGridT,
+  APIAlertGroupT,
+  AlertStateT,
+  ReadOnly,
+} from "Models/APITypes";
 import type { Settings } from "Stores/Settings";
 import type { AlertStore } from "Stores/AlertStore";
 import type { SilenceFormStore } from "Stores/SilenceFormStore";
@@ -48,8 +53,8 @@ const LoadButton: FC<{
 };
 
 interface AlertGroupProps {
-  grid: APIGridT;
-  group: APIAlertGroupT;
+  grid: ReadOnly<APIGridT>;
+  group: ReadOnly<APIAlertGroupT>;
   afterUpdate: () => void;
   alertStore: AlertStore;
   settingsStore: Settings;
