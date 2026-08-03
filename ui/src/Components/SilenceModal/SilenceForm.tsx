@@ -5,8 +5,6 @@ import { observer } from "mobx-react-lite";
 
 import copy from "copy-to-clipboard";
 
-import { CSSTransition } from "react-transition-group";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
 import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
@@ -73,7 +71,7 @@ const ShareButton: FC<{
     window.location.pathname,
   ].join("");
 
-  const { ref, props, nodeRef } = useFlashTransition(clickCount);
+  const { ref } = useFlashTransition(clickCount);
 
   return (
     <div className="input-group mb-3">
@@ -89,7 +87,6 @@ const ShareButton: FC<{
         onChange={() => {}}
       />
       <span
-        ref={ref}
         className="input-group-text text-muted cursor-pointer"
         onClick={() => {
           void copy(`${baseURL}?m=${silenceFormStore.data.toBase64}`);
@@ -97,14 +94,9 @@ const ShareButton: FC<{
         }}
       >
         <TooltipWrapper title="Copy to clipboard">
-          <CSSTransition {...props}>
-            <span
-              ref={nodeRef as React.RefObject<HTMLSpanElement>}
-              className="d-inline-block"
-            >
-              <FontAwesomeIcon icon={faCopy} />
-            </span>
-          </CSSTransition>
+          <span ref={ref} className="d-inline-block">
+            <FontAwesomeIcon icon={faCopy} />
+          </span>
         </TooltipWrapper>
       </span>
     </div>

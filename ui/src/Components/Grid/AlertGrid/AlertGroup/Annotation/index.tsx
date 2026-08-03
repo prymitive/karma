@@ -2,8 +2,6 @@ import { FC, useEffect, useRef, useState, memo } from "react";
 
 import Linkify from "react-linkify";
 
-import { CSSTransition } from "react-transition-group";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons/faExternalLinkAlt";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
@@ -31,7 +29,7 @@ const RenderNonLinkAnnotation: FC<{
     }
   });
 
-  const { ref, props } = useFlashTransition(value);
+  const { ref } = useFlashTransition(value);
 
   const className =
     "mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100";
@@ -60,16 +58,14 @@ const RenderNonLinkAnnotation: FC<{
                 rel: "noopener noreferrer",
               }}
             >
-              <CSSTransition {...props}>
-                {allowHTML ? (
-                  <span
-                    ref={ref}
-                    dangerouslySetInnerHTML={{ __html: value }}
-                  ></span>
-                ) : (
-                  <span ref={ref}>{value}</span>
-                )}
-              </CSSTransition>
+              {allowHTML ? (
+                <span
+                  ref={ref}
+                  dangerouslySetInnerHTML={{ __html: value }}
+                ></span>
+              ) : (
+                <span ref={ref}>{value}</span>
+              )}
             </Linkify>
           </>
         ) : (

@@ -6,8 +6,6 @@ import { parseISO } from "date-fns/parseISO";
 
 import copy from "copy-to-clipboard";
 
-import { CSSTransition } from "react-transition-group";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons/faEdit";
 import { faCalendarCheck } from "@fortawesome/free-solid-svg-icons/faCalendarCheck";
@@ -30,22 +28,20 @@ const SilenceIDCopyButton: FC<{
   id: string;
 }> = ({ id }) => {
   const [clickCount, setClickCount] = useState<number>(0);
-  const { ref, props } = useFlashTransition(clickCount);
+  const { ref } = useFlashTransition(clickCount);
 
   return (
     <TooltipWrapper title="Copy silence ID to the clipboard">
-      <CSSTransition {...props}>
-        <span
-          ref={ref}
-          className="badge bg-secondary px-1 me-1 components-label cursor-pointer"
-          onClick={() => {
-            void copy(id);
-            setClickCount(clickCount + 1);
-          }}
-        >
-          <FontAwesomeIcon icon={faCopy} />
-        </span>
-      </CSSTransition>
+      <span
+        ref={ref}
+        className="badge bg-secondary px-1 me-1 components-label cursor-pointer"
+        onClick={() => {
+          void copy(id);
+          setClickCount(clickCount + 1);
+        }}
+      >
+        <FontAwesomeIcon icon={faCopy} />
+      </span>
     </TooltipWrapper>
   );
 };
