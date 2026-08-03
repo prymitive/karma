@@ -2,8 +2,6 @@ import React, { FC, useState, useCallback } from "react";
 
 import { observer } from "mobx-react-lite";
 
-import { CSSTransition } from "react-transition-group";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
 
@@ -26,22 +24,20 @@ const OverviewModal: FC<{
 
   const toggle = useCallback(() => setIsVisible(!isVisible), [isVisible]);
 
-  const { ref, props } = useFlashTransition(alertStore.info.totalAlerts);
+  const { ref } = useFlashTransition(alertStore.info.totalAlerts);
 
   return (
     <>
       <TooltipWrapper title="Show alert overview">
-        <CSSTransition {...props}>
-          <div
-            ref={ref}
-            className={`text-center d-inline-block cursor-pointer navbar-brand m-0 components-navbar-button  ${
-              isVisible ? "border-info" : ""
-            }`}
-            onClick={toggle}
-          >
-            {alertStore.info.totalAlerts}
-          </div>
-        </CSSTransition>
+        <div
+          ref={ref}
+          className={`text-center d-inline-block cursor-pointer navbar-brand m-0 components-navbar-button  ${
+            isVisible ? "border-info" : ""
+          }`}
+          onClick={toggle}
+        >
+          {alertStore.info.totalAlerts}
+        </div>
       </TooltipWrapper>
       <Modal size="modal-xl" isOpen={isVisible} toggleOpen={toggle}>
         <React.Suspense

@@ -2,8 +2,6 @@ import { FC, useCallback, MouseEvent } from "react";
 
 import { observer } from "mobx-react-lite";
 
-import { CSSTransition } from "react-transition-group";
-
 import type { AlertStore } from "Stores/AlertStore";
 import { QueryOperators, FormatQuery } from "Common/Query";
 import { TooltipWrapper } from "Components/TooltipWrapper";
@@ -32,7 +30,7 @@ const FilteringCounterBadge: FC<{
   defaultColor = "bg-light",
   isAppend = true,
 }) => {
-  const { ref, props } = useFlashTransition(counter);
+  const { ref } = useFlashTransition(counter);
 
   const handleClick = useCallback(
     (event: MouseEvent) => {
@@ -70,24 +68,22 @@ const FilteringCounterBadge: FC<{
     <TooltipWrapper
       title={`Click to only show ${name}=${value} alerts or Alt+Click to hide them`}
     >
-      <CSSTransition {...props}>
-        <span
-          ref={ref}
-          className={
-            themed
-              ? cs.className
-              : [
-                  `${defaultColor}`,
-                  "rounded-pill components-label-with-hover",
-                  ...cs.baseClassNames,
-                ].join(" ")
-          }
-          style={themed ? {} : cs.style}
-          onClick={handleClick}
-        >
-          {counter}
-        </span>
-      </CSSTransition>
+      <span
+        ref={ref}
+        className={
+          themed
+            ? cs.className
+            : [
+                `${defaultColor}`,
+                "rounded-pill components-label-with-hover",
+                ...cs.baseClassNames,
+              ].join(" ")
+        }
+        style={themed ? {} : cs.style}
+        onClick={handleClick}
+      >
+        {counter}
+      </span>
     </TooltipWrapper>
   );
 };

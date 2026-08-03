@@ -189,7 +189,7 @@ const Grid: FC<{
   }, [debouncedRepack, onAlertGridCollapseEvent]);
 
   useEffect(() => {
-    repack();
+    debouncedRepack();
   });
 
   return (
