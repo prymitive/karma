@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.132
+
+### Changed
+
+- Upgraded react & mobx to the latest version.
+
 ## v0.131
 
 ### Fixed
