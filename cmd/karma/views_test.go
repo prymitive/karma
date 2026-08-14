@@ -138,6 +138,18 @@ func TestIndex(t *testing.T) {
 			status:  200,
 		},
 		{
+			prefix:   "",
+			request:  "/index.html",
+			redirect: "/",
+			status:   301,
+		},
+		{
+			prefix:   "/prefix",
+			request:  "/prefix/index.html",
+			redirect: "/prefix/",
+			status:   301,
+		},
+		{
 			prefix:  "",
 			request: "/alertList.json",
 			status:  200,

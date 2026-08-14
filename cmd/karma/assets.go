@@ -45,6 +45,11 @@ func serverStaticFiles(prefix, root string) func(next http.Handler) http.Handler
 			fixedPath := strings.TrimPrefix(r.URL.Path, prefix)
 			filePath := strings.TrimSuffix(root, "/") + "/" + strings.TrimPrefix(fixedPath, "/")
 
+			if filepath.Base(filePath) == "index.html" {
+				next.ServeHTTP(w, r)
+				return
+			}
+
 			slog.Debug(
 				"Static file request",
 				slog.String("path", r.URL.Path),
