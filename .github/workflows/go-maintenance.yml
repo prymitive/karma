@@ -16,7 +16,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v7
         with:
-          go-version: 1.26.5
+          go-version: 1.26.6
           cache: false
 
       - name: Mock web assets
