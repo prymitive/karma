@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.133
+
+### Changed
+
+- Requests for `/index.html` will now be redirected to `/` - #7069.
+
 ## v0.132
 
 ### Changed

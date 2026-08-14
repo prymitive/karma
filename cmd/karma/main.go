@@ -143,6 +143,9 @@ func setupRouter(router *chi.Mux, historyPoller *historyPoller) {
 	if config.Config.Listen.Prefix != "/" {
 		router.Get(getViewURL(""), redirectIndex)
 	}
+	router.Get(getViewURL("/index.html"), func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, getViewURL("/"), http.StatusMovedPermanently)
+	})
 	router.Get(getViewURL("/"), index)
 	router.Get(getViewURL("/version"), versionHandler)
 	router.Get(getViewURL("/health"), pong)
