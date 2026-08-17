@@ -48,7 +48,7 @@ require (
 	github.com/prometheus/procfs v0.21.1 // indirect
 	github.com/sergi/go-diff v1.4.0 // indirect
 	golang.org/x/sys v0.47.0 // indirect
-	golang.org/x/text v0.40.0 // indirect
-	golang.org/x/tools v0.47.0 // indirect
-	google.golang.org/protobuf v1.36.11 // indirect
+	golang.org/x/text v0.41.0 // indirect
+	golang.org/x/tools v0.48.0 // indirect
+	google.golang.org/protobuf v1.36.12 // indirect
 )
