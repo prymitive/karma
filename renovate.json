@@ -94,6 +94,16 @@
       "groupName": "mobx"
     },
     {
+      "description": "Koanf packages",
+      "matchDatasources": [
+        "go"
+      ],
+      "matchPackageNames": [
+        "/^github.com/knadh/koanf/"
+      ],
+      "groupName": "koanf"
+    },
+    {
       "description": "Update snapshots after npm upgrades",
       "matchManagers": [
         "npm"
