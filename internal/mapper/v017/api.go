@@ -2,6 +2,7 @@ package v017
 
 import (
 	"context"
+	"encoding/json/jsontext"
 	"fmt"
 	"io"
 	"net/http"
@@ -10,8 +11,8 @@ import (
 	"sort"
 	"time"
 
-	json "github.com/go-json-experiment/json"
-	"github.com/go-json-experiment/json/jsontext"
+	json "encoding/json/v2"
+
 	"github.com/prometheus/prometheus/model/labels"
 
 	"github.com/prymitive/karma/internal/mapper"

@@ -20,7 +20,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/beme/abide"
 	"github.com/rogpeppe/go-internal/testscript"
 )
 
@@ -28,10 +27,6 @@ func TestMain(m *testing.M) {
 	testscript.Main(m, map[string]func(){
 		"karma": main,
 	})
-	err := abide.Cleanup()
-	if err != nil {
-		fmt.Printf("abide.Cleanup() error: %v\n", err)
-	}
 }
 
 func TestScripts(t *testing.T) {

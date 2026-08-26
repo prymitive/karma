@@ -1,12 +1,11 @@
 package models_test
 
 import (
-	"bytes"
 	"encoding/json"
 	"slices"
 	"testing"
 
-	"github.com/beme/abide"
+	"github.com/google/go-cmp/cmp"
 	"github.com/prometheus/prometheus/model/labels"
 
 	"github.com/prymitive/karma/internal/models"
@@ -146,7 +145,236 @@ func TestDedupSharedMaps(t *testing.T) {
 	apiAG := models.NewAPIAlertGroup(ag, shared, allLabels, len(ag.Alerts))
 
 	agJSON, _ := json.MarshalIndent(apiAG, "", "  ")
-	abide.AssertReader(t, "SharedMaps", bytes.NewReader(agJSON))
+
+	// Compare semantically: unmarshal both actual and expected JSON into
+	// map[string]any so map key ordering does not affect the result.
+	expectedJSON := `{
+  "allLabels": {
+    "unprocessed": {},
+    "active": {
+      "alertname": [
+        "FakeAlert"
+      ],
+      "instance": [
+        "2"
+      ],
+      "job": [
+        "node_exporter"
+      ]
+    },
+    "suppressed": {
+      "job": [
+        "blackbox",
+        "node_exporter"
+      ],
+      "alertname": [
+        "FakeAlert"
+      ],
+      "instance": [
+        "1",
+        "3"
+      ]
+    }
+  },
+  "alertmanagerCount": {},
+  "stateCount": {},
+  "receiver": "default",
+  "id": "",
+  "shared": {
+    "annotations": [
+      {
+        "name": "summary",
+        "value": "this is summary",
+        "visible": false,
+        "isLink": false,
+        "isAction": false
+      }
+    ],
+    "labels": [],
+    "silences": {
+      "fakeCluster": [
+        "fakeSilence1",
+        "fakeSilence2"
+      ]
+    },
+    "sources": [
+      "https://am.example.com",
+      "https://am.example.com/graph",
+      "https://prom.example.com/",
+      "https://prom.example.com/subdir/"
+    ],
+    "clusters": [
+      "fakeCluster"
+    ]
+  },
+  "labels": [
+    {
+      "name": "alertname",
+      "value": "FakeAlert"
+    }
+  ],
+  "alerts": [
+    {
+      "startsAt": "0001-01-01T00:00:00Z",
+      "state": "suppressed",
+      "receiver": "default",
+      "id": "",
+      "annotations": [
+        {
+          "name": "foo",
+          "value": "bar",
+          "visible": false,
+          "isLink": false,
+          "isAction": false
+        }
+      ],
+      "labels": [
+        {
+          "name": "instance",
+          "value": "1"
+        },
+        {
+          "name": "job",
+          "value": "node_exporter"
+        }
+      ],
+      "alertmanager": [
+        {
+          "startsAt": "0001-01-01T00:00:00Z",
+          "fingerprint": "1",
+          "name": "am1",
+          "cluster": "fakeCluster",
+          "source": "https://prom.example.com/graph?foo",
+          "silencedBy": [
+            "fakeSilence1",
+            "fakeSilence2"
+          ],
+          "inhibitedBy": [],
+          "state": "suppressed"
+        },
+        {
+          "startsAt": "0001-01-01T00:00:00Z",
+          "fingerprint": "2",
+          "name": "am2",
+          "cluster": "fakeCluster",
+          "source": "https://prom.example.com/subdir/graph?bar",
+          "silencedBy": [
+            "fakeSilence1",
+            "fakeSilence2"
+          ],
+          "inhibitedBy": [],
+          "state": "suppressed"
+        }
+      ]
+    },
+    {
+      "startsAt": "0001-01-01T00:00:00Z",
+      "state": "active",
+      "receiver": "default",
+      "id": "",
+      "annotations": [],
+      "labels": [
+        {
+          "name": "instance",
+          "value": "2"
+        },
+        {
+          "name": "job",
+          "value": "node_exporter"
+        }
+      ],
+      "alertmanager": [
+        {
+          "startsAt": "0001-01-01T00:00:00Z",
+          "fingerprint": "1",
+          "name": "am1",
+          "cluster": "fakeCluster",
+          "source": "https://am.example.com",
+          "silencedBy": [
+            "fakeSilence1",
+            "fakeSilence2"
+          ],
+          "inhibitedBy": [],
+          "state": "active"
+        },
+        {
+          "startsAt": "0001-01-01T00:00:00Z",
+          "fingerprint": "1",
+          "name": "am2",
+          "cluster": "fakeCluster",
+          "source": "https://am.example.com",
+          "silencedBy": [
+            "fakeSilence1",
+            "fakeSilence2"
+          ],
+          "inhibitedBy": [],
+          "state": "active"
+        }
+      ]
+    },
+    {
+      "startsAt": "0001-01-01T00:00:00Z",
+      "state": "suppressed",
+      "receiver": "default",
+      "id": "",
+      "annotations": [],
+      "labels": [
+        {
+          "name": "extra",
+          "value": "ignore"
+        },
+        {
+          "name": "instance",
+          "value": "3"
+        },
+        {
+          "name": "job",
+          "value": "blackbox"
+        }
+      ],
+      "alertmanager": [
+        {
+          "startsAt": "0001-01-01T00:00:00Z",
+          "fingerprint": "1",
+          "name": "am1",
+          "cluster": "fakeCluster",
+          "source": "https://am.example.com/graph",
+          "silencedBy": [
+            "fakeSilence1",
+            "fakeSilence2"
+          ],
+          "inhibitedBy": [],
+          "state": "suppressed"
+        },
+        {
+          "startsAt": "0001-01-01T00:00:00Z",
+          "fingerprint": "1",
+          "name": "am2",
+          "cluster": "fakeCluster",
+          "source": "https://am.example.com/graph",
+          "silencedBy": [
+            "fakeSilence1",
+            "fakeSilence2"
+          ],
+          "inhibitedBy": [],
+          "state": "suppressed"
+        }
+      ]
+    }
+  ],
+  "totalAlerts": 3
+}`
+
+	var got, want map[string]any
+	if err := json.Unmarshal(agJSON, &got); err != nil {
+		t.Fatalf("failed to unmarshal actual JSON: %v", err)
+	}
+	if err := json.Unmarshal([]byte(expectedJSON), &want); err != nil {
+		t.Fatalf("failed to unmarshal expected JSON: %v", err)
+	}
+	if diff := cmp.Diff(want, got); diff != "" {
+		t.Errorf("DedupSharedMaps mismatch (-want +got):\n%s", diff)
+	}
 }
 
 func TestDedupSharedMapsSingleGroup(t *testing.T) {
