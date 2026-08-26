@@ -2,13 +2,14 @@ package models
 
 import (
 	"cmp"
+	"encoding/json/jsontext"
 	"slices"
 	"strconv"
 	"time"
 
 	"github.com/cespare/xxhash/v2"
 	"github.com/fvbommel/sortorder"
-	"github.com/go-json-experiment/json/jsontext"
+
 	"github.com/prometheus/prometheus/model/labels"
 
 	"github.com/prymitive/karma/internal/config"

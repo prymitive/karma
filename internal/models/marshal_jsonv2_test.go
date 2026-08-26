@@ -1,12 +1,11 @@
 package models_test
 
 import (
-	"encoding/json"
+	jsonv1 "encoding/json"
+	"encoding/json/v2"
 	"reflect"
 	"testing"
 	"time"
-
-	jsonv2 "github.com/go-json-experiment/json"
 
 	"github.com/prymitive/karma/internal/models"
 )
@@ -545,13 +544,13 @@ func TestMarshalJSONTo_MatchesV1(t *testing.T) {
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			// v1 encoding/json is the reference output
-			v1Bytes, err := json.Marshal(tc.val)
+			v1Bytes, err := jsonv1.Marshal(tc.val)
 			if err != nil {
 				t.Fatalf("v1 Marshal failed: %v", err)
 			}
 
 			// v2 will dispatch to our MarshalJSONTo methods
-			v2Bytes, err := jsonv2.Marshal(tc.val)
+			v2Bytes, err := json.Marshal(tc.val)
 			if err != nil {
 				t.Fatalf("v2 Marshal failed: %v", err)
 			}
@@ -559,10 +558,10 @@ func TestMarshalJSONTo_MatchesV1(t *testing.T) {
 			// unmarshal both into any for comparison, this handles
 			// non-deterministic map key ordering
 			var v1Any, v2Any any
-			if err := json.Unmarshal(v1Bytes, &v1Any); err != nil {
+			if err := jsonv1.Unmarshal(v1Bytes, &v1Any); err != nil {
 				t.Fatalf("v1 Unmarshal failed: %v", err)
 			}
-			if err := json.Unmarshal(v2Bytes, &v2Any); err != nil {
+			if err := jsonv1.Unmarshal(v2Bytes, &v2Any); err != nil {
 				t.Fatalf("v2 Unmarshal failed: %v", err)
 			}
 

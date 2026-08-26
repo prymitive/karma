@@ -1,9 +1,8 @@
 package models
 
 import (
+	"encoding/json/jsontext"
 	"time"
-
-	"github.com/go-json-experiment/json/jsontext"
 )
 
 // AlertmanagerInstance describes the Alertmanager instance alert was collected

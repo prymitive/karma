@@ -3,14 +3,14 @@ package v017
 import (
 	"bytes"
 	"context"
+	"encoding/json/jsontext"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
 	"testing"
 	"time"
 
-	json "github.com/go-json-experiment/json"
-	"github.com/go-json-experiment/json/jsontext"
+	json "encoding/json/v2"
 )
 
 func TestDateTimeUnmarshalJSONFromValid(t *testing.T) {

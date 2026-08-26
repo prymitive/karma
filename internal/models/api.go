@@ -2,6 +2,7 @@ package models
 
 import (
 	"cmp"
+	"encoding/json/jsontext"
 	"fmt"
 	"net/url"
 	"slices"
@@ -10,7 +11,7 @@ import (
 	"time"
 
 	"github.com/fvbommel/sortorder"
-	"github.com/go-json-experiment/json/jsontext"
+
 	"github.com/prometheus/prometheus/model/labels"
 )
 

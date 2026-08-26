@@ -1,12 +1,12 @@
 package models
 
 import (
+	"encoding/json/jsontext"
 	"net/url"
 	"slices"
 	"strings"
 
 	"github.com/fvbommel/sortorder"
-	"github.com/go-json-experiment/json/jsontext"
 
 	"github.com/prymitive/karma/internal/config"
 )

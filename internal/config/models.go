@@ -1,11 +1,10 @@
 package config
 
 import (
+	"encoding/json/jsontext"
+	"encoding/json/v2"
 	"regexp"
 	"time"
-
-	jsonv2 "github.com/go-json-experiment/json"
-	"github.com/go-json-experiment/json/jsontext"
 )
 
 type AlertmanagerCORS struct {
@@ -245,5 +244,5 @@ func (ui UIConfig) MarshalJSON() ([]byte, error) {
 		uiAlias: uiAlias(ui),
 		Refresh: int64(ui.Refresh),
 	}
-	return jsonv2.Marshal(aux, jsontext.EscapeForHTML(true))
+	return json.Marshal(aux, jsontext.EscapeForHTML(true))
 }

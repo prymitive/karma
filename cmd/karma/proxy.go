@@ -35,38 +35,31 @@ func proxyPath(name, path string) string {
 func NewAlertmanagerProxy(alertmanager *alertmanager.Alertmanager) *httputil.ReverseProxy {
 	upstreamURL, _ := url.Parse(alertmanager.URI)
 	proxy := httputil.ReverseProxy{
-		Director: func(req *http.Request) {
-			req.URL.Scheme = upstreamURL.Scheme
-			req.URL.Host = upstreamURL.Host
+		Rewrite: func(preq *httputil.ProxyRequest) {
+			preq.SetURL(upstreamURL)
+			preq.Out.Host = upstreamURL.Host
+			preq.SetXForwarded()
 
 			if upstreamURL.User.Username() != "" {
 				username := upstreamURL.User.Username()
 				password, _ := upstreamURL.User.Password()
-				req.SetBasicAuth(username, password)
+				preq.Out.SetBasicAuth(username, password)
 			}
 
 			for key, val := range alertmanager.HTTPHeaders {
-				req.Header.Set(key, val)
+				preq.Out.Header.Set(key, val)
 			}
 
 			// drop Accept-Encoding header so we always get uncompressed responses from
 			// upstream, there's a gzip middleware that's global so we don't want it
 			// to gzip twice
-			req.Header.Del("Accept-Encoding")
-
-			// set hostname of proxied target
-			req.Host = upstreamURL.Host
-
-			// Prepend with upstream URL path if exists
-			if len(upstreamURL.Path) > 0 {
-				req.URL.Path = strings.TrimSuffix(upstreamURL.Path, "/") + req.URL.Path
-			}
+			preq.Out.Header.Del("Accept-Encoding")
 
 			slog.Debug(
 				"Forwarding request",
 				slog.String("alertmanager", alertmanager.Name),
-				slog.String("uri", req.RequestURI),
-				slog.String("forwardedURI", req.URL.String()),
+				slog.String("uri", preq.In.RequestURI),
+				slog.String("forwardedURI", preq.Out.URL.String()),
 			)
 		},
 		Transport: alertmanager.HTTPTransport,

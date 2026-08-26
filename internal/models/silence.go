@@ -1,10 +1,9 @@
 package models
 
 import (
+	"encoding/json/jsontext"
 	"regexp"
 	"time"
-
-	"github.com/go-json-experiment/json/jsontext"
 
 	"github.com/prymitive/karma/internal/regex"
 )

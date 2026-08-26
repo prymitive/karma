@@ -33,16 +33,11 @@ $(GOBIN)/golangci-lint: tools/golangci-lint/go.mod tools/golangci-lint/go.sum
 	go install -modfile=tools/golangci-lint/go.mod github.com/golangci/golangci-lint/v2/cmd/golangci-lint
 .PHONY: lint-go
 lint-go: $(GOBIN)/golangci-lint
-	$(ENV) golangci-lint run -v
+	$(ENV) golangci-lint run
 
-$(GOBIN)/goimports: tools/goimports/go.mod tools/goimports/go.sum
-	go install -modfile=tools/goimports/go.mod golang.org/x/tools/cmd/goimports
-$(GOBIN)/gofumpt: tools/gofumpt/go.mod tools/gofumpt/go.sum
-	go install -modfile=tools/gofumpt/go.mod mvdan.cc/gofumpt
 .PHONY: format-go
-format-go: $(GOBIN)/goimports $(GOBIN)/gofumpt
-	gofumpt -extra -w .
-	goimports -local github.com/prymitive/karma -w .
+format-go: $(GOBIN)/golangci-lint
+	$(ENV) golangci-lint fmt
 
 .PHONY: download-deps-go
 download-deps-go:

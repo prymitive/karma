@@ -3,6 +3,8 @@ package main
 import (
 	"encoding/base64"
 	"encoding/hex"
+	"encoding/json/jsontext"
+	"encoding/json/v2"
 	"fmt"
 	"log/slog"
 	"net/http"
@@ -14,8 +16,7 @@ import (
 
 	"github.com/cnf/structhash"
 	"github.com/fvbommel/sortorder"
-	jsonv2 "github.com/go-json-experiment/json"
-	"github.com/go-json-experiment/json/jsontext"
+
 	promlabels "github.com/prometheus/prometheus/model/labels"
 
 	"github.com/prymitive/karma/internal/alertmanager"
@@ -27,7 +28,7 @@ import (
 )
 
 func marshalJSON(v any) ([]byte, error) {
-	return jsonv2.Marshal(v, jsontext.EscapeForHTML(true))
+	return json.Marshal(v, jsontext.EscapeForHTML(true))
 }
 
 func noCache(w http.ResponseWriter) {
@@ -55,7 +56,7 @@ func versionHandler(w http.ResponseWriter, _ *http.Request) {
 		Version: version,
 		Golang:  runtime.Version(),
 	}
-	data, _ := jsonv2.Marshal(ver, jsontext.Multiline(true), jsontext.WithIndent("  "))
+	data, _ := json.Marshal(ver, jsontext.Multiline(true), jsontext.WithIndent("  "))
 	_, _ = w.Write(data)
 }
 
@@ -169,7 +170,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var request models.AlertsRequest
-	err := jsonv2.UnmarshalRead(r.Body, &request)
+	err := json.UnmarshalRead(r.Body, &request)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
@@ -181,7 +182,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 	if found {
 		// need to overwrite settings as they can have user specific data
 		newResp := models.AlertsResponse{}
-		_ = jsonv2.Unmarshal(data, &newResp)
+		_ = json.Unmarshal(data, &newResp)
 		labels := newResp.Settings.Labels
 		newResp.Settings = resp.Settings
 		newResp.Settings.Labels = labels
