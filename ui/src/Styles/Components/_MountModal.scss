@@ -1,17 +1,9 @@
 $duration: 0.2s;
 $move: -50px;
 
-::view-transition-old(.components-animation-modal) {
-  // Fill-mode keeps the snapshot at the end state after the animation
-  // ends, until React removes it.
-  animation: components-animation-modal-exit $duration ease-out forwards;
-}
-
-::view-transition-new(.components-animation-modal) {
-  animation: components-animation-modal-enter $duration ease-out;
-}
-
-@keyframes components-animation-modal-enter {
+// The enter animation plays on mount, the exit animation plays while the
+// modal waits for the delayed unmount.
+@keyframes components-animation-modal-in {
   from {
     opacity: 0;
     transform: translate(0, $move) scale(0.95);
@@ -23,7 +15,7 @@ $move: -50px;
   }
 }
 
-@keyframes components-animation-modal-exit {
+@keyframes components-animation-modal-out {
   from {
     opacity: 1;
     transform: translate(0, 0) scale(1);
@@ -33,6 +25,30 @@ $move: -50px;
     opacity: 0;
     transform: translate(0, $move) scale(0.95);
   }
+}
+
+.components-animation-modal-enter .modal-dialog {
+  animation: components-animation-modal-in $duration ease-out;
+}
+
+.components-animation-modal-exit .modal-dialog {
+  animation: components-animation-modal-out $duration ease-out forwards;
+}
+
+// The backdrop fades out with the dialog, it is removed at once when the
+// modal unmounts.
+@keyframes components-animation-backdrop-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+.components-animation-backdrop-exit {
+  animation: components-animation-backdrop-out $duration ease-out forwards;
 }
 
 .modal-backdrop.d-block {
@@ -40,12 +56,10 @@ $move: -50px;
   backdrop-filter: saturate(50%) blur(12px);
 }
 
-// Alert group and fade snapshots render in the top layer, they would paint
-// over open modals. Hiding them keeps grid updates instant while a modal
-// is open.
+// Alert group snapshots render in the top layer, they would paint over
+// open modals. Hiding them keeps grid updates instant while a modal is
+// open.
 :root.modal-open::view-transition-old(.components-animation-alergroup),
-:root.modal-open::view-transition-new(.components-animation-alergroup),
-:root.modal-open::view-transition-old(.components-animation-fade),
-:root.modal-open::view-transition-new(.components-animation-fade) {
+:root.modal-open::view-transition-new(.components-animation-alergroup) {
   visibility: hidden;
 }

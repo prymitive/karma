@@ -1,5 +1,5 @@
 import React from "react";
-import { act } from "react";
+import { act, useEffect } from "react";
 
 import { render } from "@testing-library/react";
 
@@ -79,7 +79,8 @@ describe("<ModalInner />", () => {
         <div data-testid="modal-child" />
       </Modal>,
     );
-    expect(document.body.className.split(" ")).not.toContain("modal-open");
+    // The modal stays mounted while the exit animation runs.
+    expect(document.body.className.split(" ")).toContain("modal-open");
   });
 
   it("'modal-open' class is not removed if Modal isUpper=true and is unmounted", () => {
@@ -115,6 +116,7 @@ describe("<ModalInner />", () => {
   });
 
   it("calls onExited when modal is updated to be hidden", () => {
+    jest.useFakeTimers();
     const onExited = jest.fn();
     const { rerender } = render(
       <Modal isOpen={true} toggleOpen={fakeToggle} onExited={onExited}>
@@ -128,7 +130,13 @@ describe("<ModalInner />", () => {
         <div />
       </Modal>,
     );
+    expect(onExited).not.toHaveBeenCalled();
+
+    act(() => {
+      jest.advanceTimersByTime(200);
+    });
     expect(onExited).toHaveBeenCalledTimes(1);
+    jest.useRealTimers();
   });
 
   it("doesn't call onExited while modal stays open", () => {
@@ -182,6 +190,77 @@ describe("<ModalInner />", () => {
     expect(document.documentElement.className.split(" ")).not.toContain(
       "modal-open",
     );
+  });
+
+  it("renders the dialog with the enter animation class when open and animated", () => {
+    render(
+      <ThemeContext value={MockThemeContext}>
+        <Modal isOpen={true} toggleOpen={fakeToggle}>
+          <div />
+        </Modal>
+      </ThemeContext>,
+    );
+    expect(
+      document.querySelector(".components-animation-modal-enter .modal-dialog"),
+    ).toBeInTheDocument();
+  });
+
+  it("keeps the modal mounted with the exit class until the exit animation is done", () => {
+    jest.useFakeTimers();
+    const { rerender } = render(
+      <ThemeContext value={MockThemeContext}>
+        <Modal isOpen={true} toggleOpen={fakeToggle}>
+          <div />
+        </Modal>
+      </ThemeContext>,
+    );
+
+    rerender(
+      <ThemeContext value={MockThemeContext}>
+        <Modal isOpen={false} toggleOpen={fakeToggle}>
+          <div />
+        </Modal>
+      </ThemeContext>,
+    );
+    expect(document.querySelector(".modal")).toBeInTheDocument();
+    expect(
+      document.querySelector(".components-animation-modal-exit .modal-dialog"),
+    ).toBeInTheDocument();
+
+    act(() => {
+      jest.advanceTimersByTime(200);
+    });
+    expect(document.querySelector(".modal")).not.toBeInTheDocument();
+    jest.useRealTimers();
+  });
+
+  it("does not remount children when the animations setting changes", () => {
+    let mounts = 0;
+    const ChildWithState: React.FC = () => {
+      useEffect(() => {
+        mounts++;
+      }, []);
+      return <div data-testid="modal-child" />;
+    };
+
+    const { rerender } = render(
+      <ThemeContext value={MockThemeContext}>
+        <Modal isOpen={true} toggleOpen={fakeToggle}>
+          <ChildWithState />
+        </Modal>
+      </ThemeContext>,
+    );
+    const mountsAfterOpen = mounts;
+    expect(mountsAfterOpen).toBe(1);
+
+    rerender(
+      <ThemeContext value={MockThemeContextWithoutAnimations}>
+        <Modal isOpen={true} toggleOpen={fakeToggle}>
+          <ChildWithState />
+        </Modal>
+      </ThemeContext>,
+    );
+    expect(mounts).toBe(mountsAfterOpen);
   });
 
   it("toggleOpen is called after pressing 'esc'", () => {

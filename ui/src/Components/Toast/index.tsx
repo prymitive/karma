@@ -63,13 +63,12 @@ const ToastContainer: FC<{ children: ReactNode }> = ({ children }) => {
     <div className="components-toast-container d-flex flex-column">
       {React.Children.map(children, (toast, i) => {
         if (!toast) return null;
-        if (!isAnimated) return toast;
         return (
           <ViewTransition
             key={i}
             default="none"
-            enter="components-animation-fade"
-            exit="components-animation-fade"
+            enter={isAnimated ? "components-animation-fade" : "none"}
+            exit={isAnimated ? "components-animation-fade" : "none"}
           >
             {toast}
           </ViewTransition>

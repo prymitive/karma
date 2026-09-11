@@ -4,6 +4,7 @@ import {
   useRef,
   useState,
   FC,
+  ReactNode,
   useDeferredValue,
   startTransition,
   ViewTransition,
@@ -24,9 +25,23 @@ import type { Settings } from "Stores/Settings";
 import { ThemeContext } from "Components/Theme";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 
-const PauseButton: FC<{ alertStore: AlertStore }> = ({ alertStore }) => {
+// The boundary must not be toggled by the animations setting, that would
+// remount the children and reset their state.
+const ButtonViewTransition: FC<{
+  children: ReactNode;
+}> = ({ children }) => {
   const context = use(ThemeContext);
-  const button = (
+  const enterAnimation =
+    context.animations.duration !== 0 ? "components-animation-fade" : "none";
+  return (
+    <ViewTransition default="none" enter={enterAnimation}>
+      {children}
+    </ViewTransition>
+  );
+};
+
+const PauseButton: FC<{ alertStore: AlertStore }> = ({ alertStore }) => (
+  <ButtonViewTransition>
     <TooltipWrapper title="Click to resume updates">
       <FontAwesomeIcon
         className="cursor-pointer text-muted components-fetcher-icon mx-2 fa-fw"
@@ -34,18 +49,11 @@ const PauseButton: FC<{ alertStore: AlertStore }> = ({ alertStore }) => {
         onClick={alertStore.status.resume}
       />
     </TooltipWrapper>
-  );
-  if (!context.animations.duration) return button;
-  return (
-    <ViewTransition default="none" enter="components-animation-fade">
-      {button}
-    </ViewTransition>
-  );
-};
+  </ButtonViewTransition>
+);
 
-const PlayButton: FC<{ alertStore: AlertStore }> = ({ alertStore }) => {
-  const context = use(ThemeContext);
-  const button = (
+const PlayButton: FC<{ alertStore: AlertStore }> = ({ alertStore }) => (
+  <ButtonViewTransition>
     <TooltipWrapper title="Click to pause updates">
       <FontAwesomeIcon
         className="cursor-pointer text-muted components-fetcher-icon mx-2 fa-fw"
@@ -53,14 +61,8 @@ const PlayButton: FC<{ alertStore: AlertStore }> = ({ alertStore }) => {
         onClick={alertStore.status.pause}
       />
     </TooltipWrapper>
-  );
-  if (!context.animations.duration) return button;
-  return (
-    <ViewTransition default="none" enter="components-animation-fade">
-      {button}
-    </ViewTransition>
-  );
-};
+  </ButtonViewTransition>
+);
 
 const Dots: FC<{ alertStore: AlertStore; dots: number }> = observer(
   ({ alertStore, dots }) => {
