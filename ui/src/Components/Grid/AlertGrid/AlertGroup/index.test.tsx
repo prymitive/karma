@@ -128,16 +128,17 @@ describe("<AlertGroup />", () => {
     unmount();
   });
 
-  it("uses 'animate' class when settingsStore.themeConfig.config.animations is true", () => {
+  it("uses 'animate' classes when settingsStore.themeConfig.config.animations is true", () => {
     MockAlerts(5, 5);
     const { container } = renderAlertGroup(jest.fn(), MockThemeContext);
     const groupEl = container.querySelector(
       "div.components-grid-alertgrid-alertgroup",
     );
     expect(groupEl?.classList.contains("animate")).toBe(true);
+    expect(groupEl?.classList.contains("animate-done")).toBe(true);
   });
 
-  it("doesn't use 'animate' class when settingsStore.themeConfig.config.animations is false", () => {
+  it("doesn't use 'animate' classes when settingsStore.themeConfig.config.animations is false", () => {
     MockAlerts(5, 5);
     const { container } = renderAlertGroup(
       jest.fn(),
@@ -147,6 +148,7 @@ describe("<AlertGroup />", () => {
       "div.components-grid-alertgrid-alertgroup",
     );
     expect(groupEl?.classList.contains("animate")).toBe(false);
+    expect(groupEl?.classList.contains("animate-done")).toBe(false);
   });
 
   it("renders Alertmanager cluster labels in footer if shared", () => {

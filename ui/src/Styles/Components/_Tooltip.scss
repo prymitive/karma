@@ -5,18 +5,16 @@
 
 $duration: 0.2s;
 
-.components-animation-tooltip-appear,
-.components-animation-tooltip-enter {
-  opacity: 0;
+::view-transition-new(.components-animation-tooltip) {
+  animation: components-animation-tooltip-enter $duration ease-in;
 }
 
-.components-animation-tooltip-appear-active,
-.components-animation-tooltip-enter-active {
-  opacity: 1;
-  transition: opacity $duration ease-in;
-}
+@keyframes components-animation-tooltip-enter {
+  from {
+    opacity: 0;
+  }
 
-.components-animation-tooltip-appear-done,
-.components-animation-tooltip-enter-done {
-  opacity: 1;
+  to {
+    opacity: 1;
+  }
 }

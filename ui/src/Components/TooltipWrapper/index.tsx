@@ -1,7 +1,6 @@
-import { useState, useEffect, ReactNode, FC, useRef } from "react";
+import { useState, useEffect, ReactNode, FC, startTransition } from "react";
+import { ViewTransition } from "react";
 import { createPortal } from "react-dom";
-
-import { CSSTransition } from "react-transition-group";
 
 import { useFloating, shift, flip } from "@floating-ui/react-dom";
 
@@ -14,23 +13,11 @@ const TooltipContent: FC<{
   x: number | null;
   y: number | null;
 }> = ({ title, setFloating, strategy, x, y }) => {
-  const nodeRef = useRef<HTMLDivElement>(null);
   return (
-    <CSSTransition
-      classNames="components-animation-tooltip"
-      timeout={200}
-      appear
-      enter
-      in
-      unmountOnExit
-      nodeRef={nodeRef}
-    >
+    <ViewTransition default="none" enter="components-animation-tooltip">
       <div
         className="tooltip tooltip-inner"
-        ref={(el) => {
-          setFloating(el);
-          nodeRef.current = el;
-        }}
+        ref={setFloating}
         style={{
           position: strategy,
           top: y ?? "",
@@ -39,7 +26,7 @@ const TooltipContent: FC<{
       >
         {title}
       </div>
-    </CSSTransition>
+    </ViewTransition>
   );
 };
 
@@ -77,7 +64,11 @@ const TooltipWrapper: FC<{
       setIsVisible(false);
     } else if (!isVisible) {
       clearTimeout(timerHide);
-      timerShow = window.setTimeout(() => setIsVisible(true), 1000);
+      // Wrapped in a Transition so the tooltip mount animates.
+      timerShow = window.setTimeout(
+        () => startTransition(() => setIsVisible(true)),
+        1000,
+      );
     }
     return () => {
       clearTimeout(timerShow);

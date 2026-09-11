@@ -25,3 +25,14 @@
   max-width: 25%;
 }
 }
+
+// Users who ask the system for less motion get no view transition
+// animations.
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-image-pair(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}

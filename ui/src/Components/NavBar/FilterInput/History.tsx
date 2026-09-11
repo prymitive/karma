@@ -268,7 +268,7 @@ const History: FC<{
       >
         <FontAwesomeIcon icon={faCaretDown} />
       </button>
-      <DropdownSlide in={isVisible} unmountOnExit>
+      <DropdownSlide in={isVisible}>
         <HistoryMenu
           filters={history.config.filters}
           onClear={() => {

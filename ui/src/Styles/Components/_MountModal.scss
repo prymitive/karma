@@ -1,65 +1,41 @@
-$duration-modal: 0.2s;
+$duration: 0.2s;
 $move: -50px;
-$opacity-modal: 0;
-$duration-bg: 0.2s;
-$easing-enter: ease-out;
-$easing-exit: ease-in;
 
-.components-animation-modal {
-  will-change: opacity, transform;
-  transform: translateZ(0) scale(1);
+::view-transition-old(.components-animation-modal) {
+  // Fill-mode keeps the snapshot at the end state after the animation
+  // ends, until React removes it.
+  animation: components-animation-modal-exit $duration ease-out forwards;
 }
 
-.components-animation-modal-enter .modal-dialog {
-  opacity: $opacity-modal;
-  transform: translate(0, $move) scale(0.95);
+::view-transition-new(.components-animation-modal) {
+  animation: components-animation-modal-enter $duration ease-out;
 }
 
-.components-animation-modal-enter-active .modal-dialog {
-  opacity: 1;
-  transition: transform $duration-modal $easing-enter,
-    opacity $duration-modal $easing-enter;
-  transform: translate(0, 0) scale(1);
+@keyframes components-animation-modal-enter {
+  from {
+    opacity: 0;
+    transform: translate(0, $move) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
 }
 
-.components-animation-modal-exit .modal-dialog {
-  opacity: 1;
-  transform: translate(0, 0) scale(1);
+@keyframes components-animation-modal-exit {
+  from {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translate(0, $move) scale(0.95);
+  }
 }
 
-.components-animation-modal-exit-active .modal-dialog {
-  opacity: $opacity-modal;
-  transform: translate(0, $move) scale(0.95);
-  transition: transform $duration-modal $easing-enter,
-    opacity $duration-modal $easing-enter;
-}
-
-.components-animation-backdrop {
-  will-change: background-color;
-  transform: translateZ(0);
-}
-
-.components-animation-backdrop-enter {
-  background-color: rgb(30 30 30 / 1%);
-}
-
-.components-animation-backdrop-enter-active {
+.modal-backdrop.d-block {
   background-color: rgb(30 30 30 / 80%);
-  transition: opacity $duration-bg $easing-exit;
   backdrop-filter: saturate(50%) blur(12px);
-}
-
-.components-animation-backdrop-enter-done {
-  background-color: rgb(30 30 30 / 80%);
-  transition: opacity $duration-bg $easing-exit;
-  backdrop-filter: saturate(50%) blur(12px);
-}
-
-.components-animation-backdrop-exit {
-  background-color: rgb(30 30 30 / 80%);
-}
-
-.components-animation-backdrop-exit-active {
-  background-color: rgb(30 30 30 / 1%);
-  transition: opacity $duration-bg $easing-exit;
 }

@@ -155,7 +155,7 @@ export const SilenceDelete: FC<{
           ref={refs.setReference}
           onClick={toggle}
         ></button>
-        <DropdownSlide in={isOpen} unmountOnExit>
+        <DropdownSlide in={isOpen}>
           <SilenceDeleteMenu
             x={x}
             y={y}

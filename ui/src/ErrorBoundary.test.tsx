@@ -2,7 +2,7 @@ import { act } from "react";
 
 import { render, screen } from "@testing-library/react";
 
-import { ErrorBoundary } from "./ErrorBoundary";
+import { ErrorBoundary, InternalError } from "./ErrorBoundary";
 
 let consoleSpy: jest.SpyInstance;
 
@@ -121,5 +121,28 @@ describe("<ErrorBoundary />", () => {
 
     expect(setIntervalSpy).not.toHaveBeenCalled();
     setIntervalSpy.mockRestore();
+  });
+});
+
+describe("<InternalError />", () => {
+  it("renders error message and countdown progress", () => {
+    render(
+      <InternalError
+        message="fake message"
+        secondsLeft={7}
+        progressLeft={42}
+      />,
+    );
+    expect(screen.getByText("Internal error")).toBeInTheDocument();
+    expect(screen.getByText("fake message")).toBeInTheDocument();
+    expect(
+      screen.getByText("This page will auto refresh in 7s"),
+    ).toBeInTheDocument();
+
+    const bar = screen.getByRole("progressbar");
+    expect(bar).toHaveAttribute("aria-valuenow", "42");
+    expect(bar).toHaveAttribute("aria-valuemin", "0");
+    expect(bar).toHaveAttribute("aria-valuemax", "100");
+    expect(bar.style.width).toBe("42%");
   });
 });

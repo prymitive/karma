@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, Ref } from "react";
+import { useLayoutEffect, useRef, useState, Ref } from "react";
 
 import Bricks, { SizeDetail, Instance } from "bricks.js";
 
@@ -9,7 +9,10 @@ const useGrid = (
   const gridRef = useRef<Instance | null>(null);
   const [repack, setRepack] = useState<() => void>(() => () => {});
 
-  useEffect(() => {
+  // A layout effect is needed so the first pack runs before the browser
+  // captures the new state of a view transition; a passive effect would
+  // let groups render at unpacked positions and jump after the animation.
+  useLayoutEffect(() => {
     if (!gridRef.current && ref.current) {
       gridRef.current = Bricks({
         container: ref.current,

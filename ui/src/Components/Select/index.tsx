@@ -8,7 +8,7 @@ import type { MultiValueOptionT, OptionT } from "Common/Select";
 export const AnimatedMenu = (
   props: MenuProps<OptionT, false>,
 ): ReactElement => (
-  <DropdownSlide in unmountOnExit>
+  <DropdownSlide in>
     <components.Menu {...props}>{props.children}</components.Menu>
   </DropdownSlide>
 );
@@ -16,7 +16,7 @@ export const AnimatedMenu = (
 export const AnimatedMenuMultiple = (
   props: MenuProps<OptionT, true>,
 ): ReactElement => (
-  <DropdownSlide in unmountOnExit>
+  <DropdownSlide in>
     <components.Menu {...props}>{props.children}</components.Menu>
   </DropdownSlide>
 );
@@ -25,7 +25,7 @@ export const AnimatedMultiMenu = (
   props: MenuProps<MultiValueOptionT, true>,
 ): ReactElement => {
   return (
-    <DropdownSlide in unmountOnExit>
+    <DropdownSlide in>
       <components.Menu {...props}>{props.children}</components.Menu>
     </DropdownSlide>
   );

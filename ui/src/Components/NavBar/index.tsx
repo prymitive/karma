@@ -1,4 +1,4 @@
-import { use, FC, useState, useEffect, useCallback, useRef } from "react";
+import { use, FC, useState, useEffect, useCallback } from "react";
 
 import { reaction } from "mobx";
 import { observer } from "mobx-react-lite";
@@ -6,8 +6,6 @@ import { observer } from "mobx-react-lite";
 import useDimensions from "react-cool-dimensions";
 
 import { useIdleTimer } from "react-idle-timer";
-
-import { CSSTransition } from "react-transition-group";
 
 import type { AlertStore } from "Stores/AlertStore";
 import type { Settings } from "Stores/Settings";
@@ -32,7 +30,6 @@ const NavBar: FC<{
 
   const context = use(ThemeContext);
 
-  const ref = useRef<HTMLElement>(null);
   const { observe, height } = useDimensions({});
 
   const updateBodyPaddingTop = useCallback(
@@ -97,63 +94,44 @@ const NavBar: FC<{
     [],
   );
 
-  const navRef = useRef<HTMLElement>(null);
-
   return (
     <div className={`container p-0 m-0 mw-100 ${containerClass}`}>
-      <CSSTransition
-        classNames="components-animation-navbar"
-        in={!alertStore.ui.isIdle}
-        timeout={context.animations.duration}
-        onEntering={() => {}}
-        onExited={() => {}}
-        enter
-        exit
-        nodeRef={navRef}
+      <nav
+        ref={(el) => {
+          observe(el as HTMLElement);
+        }}
+        className={`navbar navbar-expand navbar-dark p-1 bg-primary-transparent d-flex ${
+          fixedTop ? "fixed-top" : "w-100"
+        } align-items-start ${
+          context.animations.duration ? "components-navbar-animated" : ""
+        } ${alertStore.ui.isIdle ? "components-navbar-idle" : ""}`}
       >
-        <nav
-          ref={(el) => {
-            observe(el as HTMLElement);
-            ref.current = el as HTMLElement;
-            navRef.current = el;
-          }}
-          className={`navbar navbar-expand navbar-dark p-1 bg-primary-transparent d-flex ${
-            fixedTop ? "fixed-top" : "w-100"
-          } align-items-start`}
-        >
-          <span className="navbar-nav d-flex flex-row">
-            {alertStore.info.timestamp !== "" &&
-            alertStore.data.upstreams.instances.length === 0 ? null : (
-              <span className="navbar-brand p-0 my-0 mx-2 h1 d-none d-sm-block">
-                <OverviewModal alertStore={alertStore} />
-              </span>
-            )}
-            <Fetcher alertStore={alertStore} settingsStore={settingsStore} />
-          </span>
+        <span className="navbar-nav d-flex flex-row">
           {alertStore.info.timestamp !== "" &&
           alertStore.data.upstreams.instances.length === 0 ? null : (
-            <FilterInput
+            <span className="navbar-brand p-0 my-0 mx-2 h1 d-none d-sm-block">
+              <OverviewModal alertStore={alertStore} />
+            </span>
+          )}
+          <Fetcher alertStore={alertStore} settingsStore={settingsStore} />
+        </span>
+        {alertStore.info.timestamp !== "" &&
+        alertStore.data.upstreams.instances.length === 0 ? null : (
+          <FilterInput alertStore={alertStore} settingsStore={settingsStore} />
+        )}
+        {alertStore.info.timestamp !== "" &&
+        alertStore.data.upstreams.instances.length === 0 ? null : (
+          <ul className="navbar-nav flex-wrap flex-shrink-1 ms-1">
+            <AppToasts alertStore={alertStore} />
+            <SilenceModal
               alertStore={alertStore}
+              silenceFormStore={silenceFormStore}
               settingsStore={settingsStore}
             />
-          )}
-          {alertStore.info.timestamp !== "" &&
-          alertStore.data.upstreams.instances.length === 0 ? null : (
-            <ul className="navbar-nav flex-wrap flex-shrink-1 ms-1">
-              <AppToasts alertStore={alertStore} />
-              <SilenceModal
-                alertStore={alertStore}
-                silenceFormStore={silenceFormStore}
-                settingsStore={settingsStore}
-              />
-              <MainModal
-                alertStore={alertStore}
-                settingsStore={settingsStore}
-              />
-            </ul>
-          )}
-        </nav>
-      </CSSTransition>
+            <MainModal alertStore={alertStore} settingsStore={settingsStore} />
+          </ul>
+        )}
+      </nav>
     </div>
   );
 };

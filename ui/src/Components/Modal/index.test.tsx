@@ -78,7 +78,7 @@ describe("<ModalInner />", () => {
         <div data-testid="modal-child" />
       </Modal>,
     );
-    expect(document.body.className.split(" ")).toContain("modal-open");
+    expect(document.body.className.split(" ")).not.toContain("modal-open");
   });
 
   it("'modal-open' class is not removed if Modal isUpper=true and is unmounted", () => {
@@ -103,7 +103,7 @@ describe("<ModalInner />", () => {
     expect(document.body.className.split(" ")).toContain("modal-open");
   });
 
-  it("passes extra props down to the CSSTransition animation component", () => {
+  it("renders modal when onExited callback is passed", () => {
     const onExited = jest.fn();
     render(
       <Modal isOpen={true} toggleOpen={fakeToggle} onExited={onExited}>
@@ -113,7 +113,39 @@ describe("<ModalInner />", () => {
     expect(document.body.querySelector(".modal")).toBeInTheDocument();
   });
 
-  it("uses components-animation-modal class when animations are enabled", () => {
+  it("calls onExited when modal is updated to be hidden", () => {
+    const onExited = jest.fn();
+    const { rerender } = render(
+      <Modal isOpen={true} toggleOpen={fakeToggle} onExited={onExited}>
+        <div />
+      </Modal>,
+    );
+    expect(onExited).not.toHaveBeenCalled();
+
+    rerender(
+      <Modal isOpen={false} toggleOpen={fakeToggle} onExited={onExited}>
+        <div />
+      </Modal>,
+    );
+    expect(onExited).toHaveBeenCalledTimes(1);
+  });
+
+  it("doesn't call onExited while modal stays open", () => {
+    const onExited = jest.fn();
+    const { rerender } = render(
+      <Modal isOpen={true} toggleOpen={fakeToggle} onExited={onExited}>
+        <div />
+      </Modal>,
+    );
+    rerender(
+      <Modal isOpen={true} toggleOpen={fakeToggle} onExited={onExited}>
+        <div />
+      </Modal>,
+    );
+    expect(onExited).not.toHaveBeenCalled();
+  });
+
+  it("renders modal when animations are enabled", () => {
     const onExited = jest.fn();
     render(
       <ThemeContext value={MockThemeContext}>
@@ -125,7 +157,7 @@ describe("<ModalInner />", () => {
     expect(document.body.querySelector(".modal")).toBeInTheDocument();
   });
 
-  it("doesn't use components-animation-modal class when animations are disabled", () => {
+  it("renders modal when animations are disabled", () => {
     const onExited = jest.fn();
     render(
       <ThemeContext value={MockThemeContextWithoutAnimations}>

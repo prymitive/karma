@@ -223,7 +223,7 @@ const AlertMenu: FC<AlertMenuProps> = ({
         />
         <DateFromNow timestamp={alert.startsAt} />
       </span>
-      <DropdownSlide in={!isHidden} unmountOnExit>
+      <DropdownSlide in={!isHidden}>
         <MenuContent
           group={group}
           alert={alert}

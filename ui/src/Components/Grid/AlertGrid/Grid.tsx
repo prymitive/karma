@@ -1,13 +1,16 @@
-import React, {
+import {
   use,
   FC,
   useEffect,
   useState,
   useCallback,
   useMemo,
+  useLayoutEffect,
+  useDeferredValue,
   useRef,
+  startTransition,
   MouseEvent,
-  ReactNode,
+  ViewTransition,
 } from "react";
 
 import { observer } from "mobx-react-lite";
@@ -15,9 +18,6 @@ import { observer } from "mobx-react-lite";
 import { debounce } from "es-toolkit";
 
 import type { SizeDetail } from "bricks.js";
-
-import TransitionGroup from "react-transition-group/TransitionGroup";
-import { CSSTransition } from "react-transition-group";
 
 import FontFaceObserver from "fontfaceobserver";
 
@@ -33,84 +33,6 @@ import { ThemeContext } from "Components/Theme";
 import { DefaultDetailsCollapseValue } from "./AlertGroup/DetailsToggle";
 import AlertGroup from "./AlertGroup";
 import { Swimlane } from "./Swimlane";
-
-const SwimlaneTransition: FC<{
-  children: React.ReactElement<{ ref?: React.Ref<HTMLHeadingElement> }>;
-  labelValue: string;
-  inProp: boolean;
-  timeout: number;
-}> = ({ children, labelValue, inProp, timeout }) => {
-  const nodeRef = useRef<HTMLHeadingElement>(null);
-  return (
-    <CSSTransition
-      key={labelValue}
-      in={inProp}
-      classNames="components-animation-fade"
-      timeout={timeout}
-      appear
-      unmountOnExit
-      nodeRef={nodeRef}
-    >
-      {React.cloneElement(children, { ref: nodeRef })}
-    </CSSTransition>
-  );
-};
-
-const AlertGroupTransition: FC<{
-  children: React.ReactElement<{ ref?: React.Ref<HTMLDivElement> }>;
-  groupId: string;
-  classNames: string;
-  timeout: number;
-  onEntering: () => void;
-  onExited: () => void;
-  in?: boolean;
-  appear?: boolean;
-}> = ({
-  children,
-  groupId,
-  classNames,
-  timeout,
-  onEntering,
-  onExited,
-  in: inProp,
-  appear,
-}) => {
-  const nodeRef = useRef<HTMLDivElement>(null);
-  return (
-    <CSSTransition
-      key={groupId}
-      classNames={classNames}
-      timeout={timeout}
-      onEntering={onEntering}
-      onExited={onExited}
-      unmountOnExit
-      nodeRef={nodeRef}
-      in={inProp}
-      appear={appear}
-    >
-      {React.cloneElement(children, { ref: nodeRef })}
-    </CSSTransition>
-  );
-};
-
-const LoadMoreTransition: FC<{
-  children: ReactNode;
-  timeout: number;
-  in?: boolean;
-}> = ({ children, timeout, in: inProp }) => {
-  const nodeRef = useRef<HTMLDivElement>(null);
-  return (
-    <CSSTransition
-      classNames="components-animation-fade"
-      timeout={timeout}
-      unmountOnExit
-      nodeRef={nodeRef}
-      in={inProp}
-    >
-      <div ref={nodeRef}>{children}</div>
-    </CSSTransition>
-  );
-};
 
 const Grid: FC<{
   alertStore: AlertStore;
@@ -135,15 +57,43 @@ const Grid: FC<{
 }) => {
   const context = use(ThemeContext);
   const { ref, repack } = useGrid(gridSizesConfig);
-  const debouncedRepack = useMemo(() => debounce(() => repack(), 10), [repack]);
+
+  // Must be the same as exit animation duration of alert groups.
+  const alertGroupExitDuration = 500;
+
+  // While alert groups exit the grid keeps its space, every repack is
+  // held until the exit animation is done.
+  const repackHoldUntilRef = useRef(0);
+
+  const heldRepack = useCallback(() => {
+    const wait = repackHoldUntilRef.current - Date.now();
+    if (wait > 0) {
+      window.setTimeout(repack, wait);
+      return;
+    }
+    repack();
+  }, [repack]);
+
+  const debouncedRepack = useMemo(
+    () => debounce(() => heldRepack(), 10),
+    [heldRepack],
+  );
+
+  const isAnimated = context.animations.duration !== 0;
+  const fadeAnimation = isAnimated ? "components-animation-fade" : "none";
+  const alertGroupAnimation = isAnimated
+    ? "components-animation-alergroup"
+    : "none";
 
   const [isExpanded, setIsExpanded] = useState<boolean>(
     () => !DefaultDetailsCollapseValue(settingsStore),
   );
   const toggleIsExpanded = useCallback(() => {
-    setIsExpanded(!isExpanded);
-    debouncedRepack();
-  }, [debouncedRepack, isExpanded]);
+    // Wrapped in a Transition so groups animate in and out on toggle.
+    startTransition(() => {
+      setIsExpanded(!isExpanded);
+    });
+  }, [isExpanded]);
 
   const onCollapseClick = (event: MouseEvent) => {
     // left click       => toggle current grid
@@ -159,13 +109,9 @@ const Grid: FC<{
     }
   };
 
-  const onAlertGridCollapseEvent = useCallback(
-    (event: Event) => {
-      setIsExpanded((event as CustomEvent).detail);
-      debouncedRepack();
-    },
-    [debouncedRepack],
-  );
+  const onAlertGridCollapseEvent = useCallback((event: Event) => {
+    setIsExpanded((event as CustomEvent).detail);
+  }, []);
 
   useEffect(() => {
     // We have font-display:swap set for font assets, this means that on initial
@@ -192,6 +138,31 @@ const Grid: FC<{
     debouncedRepack();
   });
 
+  // Store changes render urgently, these values are deferred so group and
+  // label mounts render inside a Transition and animate.
+  const showSwimlane = useDeferredValue(grid.labelName !== "");
+  const showGroups = useDeferredValue(isExpanded || grid.labelName === "");
+  const alertGroups = useDeferredValue(grid.alertGroups);
+  const showLoadMore = useDeferredValue(
+    isExpanded && grid.totalGroups > grid.alertGroups.length,
+  );
+
+  const visibleGroupCount = showGroups ? alertGroups.length : 0;
+  const previousGroupCountRef = useRef(visibleGroupCount);
+
+  // Groups are positioned before the browser captures the new state, so
+  // they animate in at their final position; when groups are removed the
+  // exit animation keeps the space and holds every repack until it is
+  // done.
+  useLayoutEffect(() => {
+    if (visibleGroupCount < previousGroupCountRef.current && isAnimated) {
+      repackHoldUntilRef.current = Date.now() + alertGroupExitDuration;
+    } else {
+      repack();
+    }
+    previousGroupCountRef.current = visibleGroupCount;
+  }, [repack, visibleGroupCount, isAnimated]);
+
   return (
     <div
       style={{
@@ -199,20 +170,22 @@ const Grid: FC<{
         zIndex: zIndex,
       }}
     >
-      <SwimlaneTransition
-        labelValue={grid.labelValue}
-        inProp={grid.labelName !== ""}
-        timeout={context.animations.duration}
-      >
-        <Swimlane
-          alertStore={alertStore}
-          settingsStore={settingsStore}
-          grid={grid}
-          isExpanded={isExpanded}
-          onToggle={onCollapseClick}
-          paddingTop={paddingTop}
-        />
-      </SwimlaneTransition>
+      {showSwimlane ? (
+        <ViewTransition
+          default="none"
+          enter={fadeAnimation}
+          exit={fadeAnimation}
+        >
+          <Swimlane
+            alertStore={alertStore}
+            settingsStore={settingsStore}
+            grid={grid}
+            isExpanded={isExpanded}
+            onToggle={onCollapseClick}
+            paddingTop={paddingTop}
+          />
+        </ViewTransition>
+      ) : null}
       <div
         className="components-grid"
         ref={ref}
@@ -222,61 +195,55 @@ const Grid: FC<{
           paddingRight: outerPadding + "px",
         }}
       >
-        <TransitionGroup component={null} appear enter exit>
-          {isExpanded || grid.labelName === ""
-            ? grid.alertGroups.map((group) => (
-                <AlertGroupTransition
-                  key={group.id}
-                  groupId={group.id}
-                  classNames={
-                    context.animations.duration
-                      ? "components-animation-alergroup"
-                      : ""
-                  }
-                  timeout={context.animations.duration}
-                  onEntering={repack}
-                  onExited={debouncedRepack}
-                >
-                  <AlertGroup
-                    grid={grid}
-                    group={group}
-                    afterUpdate={debouncedRepack}
-                    alertStore={alertStore}
-                    settingsStore={settingsStore}
-                    silenceFormStore={silenceFormStore}
-                    groupWidth={groupWidth}
-                    gridLabelValue={grid.labelValue}
-                  />
-                </AlertGroupTransition>
-              ))
-            : []}
-        </TransitionGroup>
+        {showGroups
+          ? alertGroups.map((group) => (
+              <ViewTransition
+                key={group.id}
+                default="none"
+                enter={alertGroupAnimation}
+                exit={alertGroupAnimation}
+              >
+                <AlertGroup
+                  grid={grid}
+                  group={group}
+                  afterUpdate={debouncedRepack}
+                  alertStore={alertStore}
+                  settingsStore={settingsStore}
+                  silenceFormStore={silenceFormStore}
+                  groupWidth={groupWidth}
+                  gridLabelValue={grid.labelValue}
+                />
+              </ViewTransition>
+            ))
+          : null}
       </div>
-      <TransitionGroup component={null} enter exit>
-        {isExpanded && grid.totalGroups > grid.alertGroups.length && (
-          <LoadMoreTransition timeout={context.animations.duration}>
-            <div className="d-flex flex-row justify-content-between">
-              <div className="flex-shrink-1 flex-grow-1 text-center">
-                <button
-                  type="button"
-                  className="btn btn-secondary mb-3"
-                  onClick={() => {
-                    alertStore.ui.setGridGroupLimit(
-                      grid.labelName,
-                      grid.labelValue,
-                      grid.alertGroups.length +
-                        alertStore.settings.values.gridGroupLimit,
-                    );
-                  }}
-                >
-                  <FontAwesomeIcon className="me-2" icon={faAngleDoubleDown} />
-                  Load more
-                </button>
-              </div>
+      {showLoadMore ? (
+        <ViewTransition
+          default="none"
+          enter={fadeAnimation}
+          exit={fadeAnimation}
+        >
+          <div className="d-flex flex-row justify-content-between">
+            <div className="flex-shrink-1 flex-grow-1 text-center">
+              <button
+                type="button"
+                className="btn btn-secondary mb-3"
+                onClick={() => {
+                  alertStore.ui.setGridGroupLimit(
+                    grid.labelName,
+                    grid.labelValue,
+                    grid.alertGroups.length +
+                      alertStore.settings.values.gridGroupLimit,
+                  );
+                }}
+              >
+                <FontAwesomeIcon className="me-2" icon={faAngleDoubleDown} />
+                Load more
+              </button>
             </div>
-          </LoadMoreTransition>
-        )}
-      </TransitionGroup>
+          </div>
+        </ViewTransition>
+      ) : null}
     </div>
   );
 };

@@ -84,6 +84,16 @@ const AlertGroup = ({
     DefaultDetailsCollapseValue(settingsStore),
   );
 
+  // Set after the first paint, so the initial grid position is set without
+  // the transform transition and groups fade in where they belong instead
+  // of sliding in from the corner.
+  const [isAnimationCompleted, setIsAnimationCompleted] =
+    useState<boolean>(false);
+
+  useEffect(() => {
+    setIsAnimationCompleted(true);
+  }, []);
+
   // Used to calculate step size when loading more alerts.
   // Step is calculated from the excessive alert count
   // (what's > defaultRenderCount) by dividing it into 5 clicks.
@@ -162,7 +172,7 @@ const AlertGroup = ({
       ref={ref}
       className={`components-grid-alertgrid-alertgroup ${
         context.animations.duration ? "animate" : ""
-      }`}
+      } ${context.animations.duration && isAnimationCompleted ? "animate-done" : ""}`}
       style={{
         width: groupWidth,
         zIndex: isMenuOpen ? 100 : undefined,

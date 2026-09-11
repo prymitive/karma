@@ -156,7 +156,7 @@ const GridLabelSelect: FC<{
       >
         <FontAwesomeIcon className="text-muted" icon={faCaretDown} />
       </span>
-      <DropdownSlide in={isVisible} unmountOnExit>
+      <DropdownSlide in={isVisible}>
         <Dropdown
           alertStore={alertStore}
           settingsStore={settingsStore}

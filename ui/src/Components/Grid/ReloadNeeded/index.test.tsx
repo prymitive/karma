@@ -47,4 +47,24 @@ describe("<ReloadNeeded />", () => {
     });
     expect(jest.getTimerCount()).toBeLessThan(timersAfterRender);
   });
+
+  it("reloads the page after the timer fires", () => {
+    // The jsdom environment cannot navigate, so a reload logs an error;
+    // the spy catches it and proves that the reload was attempted.
+    const consoleSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+
+    renderWithTheme(<ReloadNeeded reloadAfter={5000} />);
+    act(() => {
+      jest.advanceTimersByTime(5000);
+    });
+    // The error comes from jsdom's own realm, so it cannot be compared
+    // by value; the message is asserted in full instead.
+    expect(consoleSpy.mock.calls).toHaveLength(1);
+    expect((consoleSpy.mock.calls[0][0] as Error).message).toBe(
+      "Not implemented: navigation (except hash changes)",
+    );
+    consoleSpy.mockRestore();
+  });
 });
