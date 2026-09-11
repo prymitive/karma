@@ -49,9 +49,7 @@ export default defineConfig(
       "@eslint-react/set-state-in-effect": "off",
       // index keys are used in static display-only lists (split strings, SVG samples, error messages) with no stable ID
       "@eslint-react/no-array-index-key": "off",
-      // cloneElement is used by react-transition-group integration, replacing it would require a major refactor
-      "@eslint-react/no-clone-element": "off",
-      // Children.map is used by the Toast container with react-transition-group TransitionGroup
+      // Children.map is used by the Toast container to wrap toast children.
       "@eslint-react/no-children-map": "off",
       // dangerouslySetInnerHTML is intentional for rendering trusted server-provided HTML
       "@eslint-react/dom-no-dangerously-set-innerhtml": "off",

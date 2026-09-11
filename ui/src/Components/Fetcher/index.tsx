@@ -1,12 +1,19 @@
-import { use, useEffect, useRef, useState, FC } from "react";
+import {
+  use,
+  useEffect,
+  useRef,
+  useState,
+  FC,
+  useDeferredValue,
+  startTransition,
+  ViewTransition,
+} from "react";
 
 import { reaction, toJS } from "mobx";
 import { observer } from "mobx-react-lite";
 
 import { addSeconds } from "date-fns/addSeconds";
 import { differenceInSeconds } from "date-fns/differenceInSeconds";
-
-import { CSSTransition } from "react-transition-group";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPause } from "@fortawesome/free-solid-svg-icons/faPause";
@@ -19,49 +26,39 @@ import { TooltipWrapper } from "Components/TooltipWrapper";
 
 const PauseButton: FC<{ alertStore: AlertStore }> = ({ alertStore }) => {
   const context = use(ThemeContext);
-  const nodeRef = useRef<HTMLSpanElement>(null);
-  return (
+  const button = (
     <TooltipWrapper title="Click to resume updates">
-      <CSSTransition
-        in={true}
-        appear={true}
-        classNames="components-animation-fade"
-        timeout={context.animations.duration}
-        nodeRef={nodeRef}
-      >
-        <span ref={nodeRef} className="d-inline-block">
-          <FontAwesomeIcon
-            className="cursor-pointer text-muted components-fetcher-icon mx-2 fa-fw"
-            icon={faPause}
-            onClick={alertStore.status.resume}
-          />
-        </span>
-      </CSSTransition>
+      <FontAwesomeIcon
+        className="cursor-pointer text-muted components-fetcher-icon mx-2 fa-fw"
+        icon={faPause}
+        onClick={alertStore.status.resume}
+      />
     </TooltipWrapper>
+  );
+  if (!context.animations.duration) return button;
+  return (
+    <ViewTransition default="none" enter="components-animation-fade">
+      {button}
+    </ViewTransition>
   );
 };
 
 const PlayButton: FC<{ alertStore: AlertStore }> = ({ alertStore }) => {
   const context = use(ThemeContext);
-  const nodeRef = useRef<HTMLSpanElement>(null);
-  return (
+  const button = (
     <TooltipWrapper title="Click to pause updates">
-      <CSSTransition
-        in={true}
-        appear={true}
-        classNames="components-animation-fade"
-        timeout={context.animations.duration}
-        nodeRef={nodeRef}
-      >
-        <span ref={nodeRef} className="d-inline-block">
-          <FontAwesomeIcon
-            className="cursor-pointer text-muted components-fetcher-icon mx-2 fa-fw"
-            icon={faPlay}
-            onClick={alertStore.status.pause}
-          />
-        </span>
-      </CSSTransition>
+      <FontAwesomeIcon
+        className="cursor-pointer text-muted components-fetcher-icon mx-2 fa-fw"
+        icon={faPlay}
+        onClick={alertStore.status.pause}
+      />
     </TooltipWrapper>
+  );
+  if (!context.animations.duration) return button;
+  return (
+    <ViewTransition default="none" enter="components-animation-fade">
+      {button}
+    </ViewTransition>
   );
 };
 
@@ -104,6 +101,9 @@ const Fetcher: FC<{
   const timerRef = useRef<number | undefined>(undefined);
   const [percentLeft, setPercentLeft] = useState<number>(100);
   const [isHover, setIsHover] = useState(false);
+  // Store changes render urgently, the paused flag is deferred so the
+  // button swap renders inside a Transition and fades in.
+  const paused = useDeferredValue(alertStore.status.paused);
 
   const getSortSettings = () => {
     const sortSettings = {
@@ -252,10 +252,10 @@ const Fetcher: FC<{
   return (
     <div
       className="navbar-brand py-0 me-2 d-none d-sm-block"
-      onMouseEnter={() => setIsHover(true)}
-      onMouseLeave={() => setIsHover(false)}
+      onMouseEnter={() => startTransition(() => setIsHover(true))}
+      onMouseLeave={() => startTransition(() => setIsHover(false))}
     >
-      {alertStore.info.upgradeNeeded ? null : alertStore.status.paused ? (
+      {alertStore.info.upgradeNeeded ? null : paused ? (
         <PauseButton alertStore={alertStore} />
       ) : isHover ? (
         <PlayButton alertStore={alertStore} />

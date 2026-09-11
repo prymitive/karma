@@ -1,29 +1,35 @@
 $duration: 0.15s;
 
-.components-animation-slide-enter,
-.components-animation-slide-appear {
-  opacity: 0;
-  transform: scale(0.95) translateY(-0.25em);
+::view-transition-old(.components-animation-slide) {
+  // Fill-mode keeps the snapshot at the end state after the animation
+  // ends, until React removes it.
+  animation: components-animation-slide-exit $duration ease-out forwards;
 }
 
-.components-animation-slide-enter-active,
-.components-animation-slide-appear-active {
-  opacity: 1;
-  transform: scale(1) translateY(0);
-  transition-property: transform;
-  transition-duration: $duration;
-  transition-timing-function: ease-out;
+::view-transition-new(.components-animation-slide) {
+  animation: components-animation-slide-enter $duration ease-out;
 }
 
-.components-animation-slide-exit {
-  opacity: 1;
-  transform: scale(1) translateY(0);
+@keyframes components-animation-slide-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-0.25em);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
-.components-animation-slide-exit-active {
-  opacity: 0;
-  transform: scale(0.95) translateY(-0.25em);
-  transition-property: opacity, transform;
-  transition-duration: $duration;
-  transition-timing-function: ease-out;
+@keyframes components-animation-slide-exit {
+  from {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(0.95) translateY(-0.25em);
+  }
 }

@@ -1,6 +1,4 @@
-import { use, FC, ReactNode, useRef } from "react";
-
-import { CSSTransition } from "react-transition-group";
+import { use, FC, ReactNode, ViewTransition } from "react";
 
 import { ThemeContext } from "Components/Theme";
 
@@ -9,24 +7,23 @@ const CenteredMessage: FC<{
   className?: string;
 }> = ({ children, className }) => {
   const context = use(ThemeContext);
-  const nodeRef = useRef<HTMLHeadingElement>(null);
-  return (
-    <CSSTransition
-      in={true}
-      appear={true}
-      classNames="components-animation-fade"
-      timeout={context.animations.duration}
-      nodeRef={nodeRef}
+
+  const heading = (
+    <h1
+      className={`${
+        className ? className : "display-1 text-placeholder"
+      } screen-center`}
     >
-      <h1
-        ref={nodeRef}
-        className={`${
-          className ? className : "display-1 text-placeholder"
-        } screen-center`}
-      >
-        {children}
-      </h1>
-    </CSSTransition>
+      {children}
+    </h1>
+  );
+
+  if (!context.animations.duration) return heading;
+
+  return (
+    <ViewTransition default="none" enter="components-animation-fade">
+      {heading}
+    </ViewTransition>
   );
 };
 

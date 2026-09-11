@@ -36,7 +36,6 @@
     "react-media-hook": "0.5.1",
     "react-range": "1.10.0",
     "react-select": "5.10.2",
-    "react-transition-group": "4.4.5",
     "typeface-open-sans": "1.1.13"
   },
   "devDependencies": {

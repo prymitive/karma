@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect, useCallback } from "react";
+import React, { FC, useState, useEffect, useEffectEvent } from "react";
 
 import { observer } from "mobx-react-lite";
 
@@ -65,14 +65,11 @@ const App: FC<AppProps> = observer(({ defaultFilters, uiDefaults }) => {
     }
   }, [alertStore, defaultFilters, settingsStore]);
 
-  const onPopState = useCallback(
-    (event: PopStateEvent) => {
-      event.preventDefault();
-      const p = DecodeLocationSearch(window.location.search);
-      alertStore.filters.setWithoutLocation(p.params.q);
-    },
-    [alertStore],
-  );
+  const onPopState = useEffectEvent((event: PopStateEvent) => {
+    event.preventDefault();
+    const p = DecodeLocationSearch(window.location.search);
+    alertStore.filters.setWithoutLocation(p.params.q);
+  });
 
   useEffect(() => {
     window.addEventListener("popstate", onPopState);

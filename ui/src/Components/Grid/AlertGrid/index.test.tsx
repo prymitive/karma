@@ -12,6 +12,7 @@ import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { ThemeContext, ThemeCtx } from "Components/Theme";
+import Bricks from "bricks.js";
 import { GetGridElementWidth, GridSizesConfig } from "./GridSize";
 import Grid from "./Grid";
 import AlertGrid from ".";
@@ -21,6 +22,22 @@ jest.mock("Components/AlertHistory", () => ({
   AlertHistory: () => null,
 }));
 
+// Bricks pack calls are logged to verify when the grid repacks.
+jest.mock("bricks.js", () => {
+  const ActualBricks = jest.requireActual("bricks.js");
+  const wrapped = (options: unknown) => {
+    const instance = ActualBricks(options);
+    const realPack = instance.pack.bind(instance);
+    instance.pack = (...args: unknown[]) => {
+      wrapped.packLog.push(args);
+      return realPack(...args);
+    };
+    return instance;
+  };
+  wrapped.packLog = [] as unknown[][];
+  return wrapped;
+});
+
 let alertStore: AlertStore;
 let settingsStore: Settings;
 let silenceFormStore: SilenceFormStore;
@@ -29,6 +46,11 @@ let resizeCallback: any;
 declare let global: any;
 declare let document: any;
 declare let window: any;
+
+// The jsdom environment has no View Transition API, so the browser method
+// is mocked to run the update callback at once and resolve both lifecycle
+// promises.
+const startViewTransitionMock = jest.fn();
 
 beforeEach(() => {
   alertStore = new AlertStore([]);
@@ -55,18 +77,32 @@ beforeEach(() => {
     };
   });
   global.ResizeObserverEntry = jest.fn();
+
+  startViewTransitionMock.mockImplementation(
+    (options: { update: () => void }) => {
+      options.update();
+      return {
+        ready: Promise.resolve(),
+        finished: Promise.resolve(),
+      };
+    },
+  );
+  document.startViewTransition = startViewTransitionMock;
+  document.documentElement.getAnimations = () => [];
 });
 
 afterEach(() => {
   jest.clearAllTimers();
   jest.clearAllMocks();
+  delete document.startViewTransition;
+  delete document.documentElement.getAnimations;
   jest.restoreAllMocks();
   jest.useRealTimers();
 });
 
-const renderAlertGrid = () => {
+const renderAlertGrid = (theme?: ThemeCtx) => {
   return render(
-    <ThemeContext value={MockThemeContext}>
+    <ThemeContext value={theme || MockThemeContext}>
       <AlertGrid
         alertStore={alertStore}
         settingsStore={settingsStore}
@@ -134,6 +170,7 @@ const MockGroupList = (
   count: number,
   alertPerGroup: number,
   totalGroups?: number,
+  labelName?: string,
 ) => {
   const groups = [];
   for (let i = 1; i <= count; i++) {
@@ -162,8 +199,8 @@ const MockGroupList = (
   });
   alertStore.data.setGrids([
     {
-      labelName: "",
-      labelValue: "",
+      labelName: labelName || "",
+      labelValue: labelName ? "fake" : "",
       alertGroups: groups,
       totalGroups: totalGroups ? totalGroups : groups.length,
       stateCount: {
@@ -176,36 +213,83 @@ const MockGroupList = (
 };
 
 describe("<Grid />", () => {
-  it("uses animations when settingsStore.themeConfig.config.animations is true", async () => {
-    // Verifies animation classes are applied to the transition wrapper when animations are enabled
+  it("starts a view transition for a new alert group when animations are enabled", async () => {
+    // A store-driven group mount must render inside a Transition so the
+    // browser can animate it.
     act(() => {
       MockGroupList(1, 1);
     });
     let container: HTMLElement;
     await act(async () => {
-      const result = renderGrid(MockThemeContext);
+      const result = renderAlertGrid();
       container = result.container;
     });
+    expect(startViewTransitionMock).not.toHaveBeenCalled();
+
+    await act(async () => {
+      MockGroupList(2, 1);
+    });
     expect(
-      container!.querySelector("div.components-grid-alertgrid-alertgroup")
-        ?.parentElement?.outerHTML,
-    ).toMatch(/components-animation-alergroup-appear/);
+      container!.querySelectorAll(".components-grid-alertgrid-alertgroup"),
+    ).toHaveLength(2);
+    expect(startViewTransitionMock).toHaveBeenCalled();
   });
 
-  it("doesn't use animations when settingsStore.themeConfig.config.animations is false", async () => {
-    // Verifies animation classes are not applied when animations are disabled
+  it("renders a new alert group without a view transition when animations are disabled", async () => {
     act(() => {
       MockGroupList(1, 1);
     });
     let container: HTMLElement;
     await act(async () => {
-      const result = renderGrid(MockThemeContextWithoutAnimations);
+      const result = renderAlertGrid(MockThemeContextWithoutAnimations);
+      container = result.container;
+    });
+
+    await act(async () => {
+      MockGroupList(2, 1);
+    });
+    expect(
+      container!.querySelectorAll(".components-grid-alertgrid-alertgroup"),
+    ).toHaveLength(2);
+  });
+
+  it("doesn't repack a collapsed grid before the exit transition is done", async () => {
+    jest.useFakeTimers();
+    act(() => {
+      MockGroupList(3, 1, undefined, "cluster");
+    });
+    let container: HTMLElement;
+    await act(async () => {
+      const result = renderAlertGrid();
       container = result.container;
     });
     expect(
-      container!.querySelector("div.components-grid-alertgrid-alertgroup")
-        ?.outerHTML,
-    ).not.toMatch(/animate components-animation-alertgroup-appear/);
+      container!.querySelectorAll(".components-grid-alertgrid-alertgroup"),
+    ).toHaveLength(3);
+
+    const packLog = (Bricks as unknown as { packLog: unknown[][] }).packLog;
+    const packsBefore = packLog.length;
+
+    const toggle = container!.querySelector(
+      "h5.components-grid-swimlane svg.fa-chevron-down",
+    );
+    await act(async () => {
+      fireEvent.click(toggle!);
+    });
+
+    // Groups are unmounted but the grid keeps its space, so nothing
+    // repacked yet.
+    expect(
+      container!.querySelectorAll(".components-grid-alertgrid-alertgroup"),
+    ).toHaveLength(0);
+    expect(packLog.length).toBe(packsBefore);
+
+    // The repack runs after the exit animation is done.
+    await act(async () => {
+      jest.advanceTimersByTime(520);
+    });
+    expect(packLog.length).toBeGreaterThan(packsBefore);
+    jest.useRealTimers();
   });
 
   it("renders all alert groups", async () => {

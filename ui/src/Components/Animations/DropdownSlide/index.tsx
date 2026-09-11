@@ -1,29 +1,18 @@
-import React, { use, FC, useRef } from "react";
+import { FC, ReactElement } from "react";
 
-import { CSSTransition } from "react-transition-group";
-
-import { ThemeContext } from "Components/Theme";
+import { MountTransition } from "Components/Animations/MountTransition";
 
 const DropdownSlide: FC<{
-  children: React.ReactElement<{ ref?: React.Ref<HTMLDivElement> }>;
-  in?: boolean;
-  unmountOnExit?: boolean;
-}> = ({ children, ...props }) => {
-  const context = use(ThemeContext);
-  const nodeRef = useRef<HTMLDivElement>(null);
-
-  return (
-    <CSSTransition
-      classNames="components-animation-slide"
-      timeout={context.animations.duration ? 150 : 0}
-      appear={true}
-      exit={true}
-      nodeRef={nodeRef}
-      {...props}
-    >
-      {React.cloneElement(children, { ref: nodeRef })}
-    </CSSTransition>
-  );
-};
+  children: ReactElement;
+  in: boolean;
+}> = ({ children, in: inProp }) => (
+  <MountTransition
+    in={inProp}
+    enter="components-animation-slide"
+    exit="components-animation-slide"
+  >
+    {children}
+  </MountTransition>
+);
 
 export { DropdownSlide };

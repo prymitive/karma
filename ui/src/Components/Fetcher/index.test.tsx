@@ -5,9 +5,11 @@ import { render, fireEvent } from "@testing-library/react";
 import fetchMock from "@fetch-mock/jest";
 
 import { EmptyAPIResponse } from "__fixtures__/Fetch";
+import { MockThemeContextWithoutAnimations } from "__fixtures__/Theme";
 
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
+import { ThemeContext } from "Components/Theme";
 
 import { Fetcher, Dots } from ".";
 
@@ -445,6 +447,29 @@ describe("<Fetcher /> children", () => {
       alertStore.status.pause();
     });
     expect(container.innerHTML).toMatch(/fa-pause/);
+  });
+
+  it("renders PauseButton without a view transition wrapper when animations are disabled", () => {
+    const { container } = render(
+      <ThemeContext value={MockThemeContextWithoutAnimations}>
+        <Fetcher alertStore={alertStore} settingsStore={settingsStore} />
+      </ThemeContext>,
+    );
+    act(() => {
+      alertStore.status.pause();
+    });
+    expect(container.innerHTML).toMatch(/fa-pause/);
+  });
+
+  it("renders PlayButton without a view transition wrapper when animations are disabled", () => {
+    const { container } = render(
+      <ThemeContext value={MockThemeContextWithoutAnimations}>
+        <Fetcher alertStore={alertStore} settingsStore={settingsStore} />
+      </ThemeContext>,
+    );
+    const navbarBrand = container.querySelector(".navbar-brand");
+    fireEvent.mouseEnter(navbarBrand!);
+    expect(container.innerHTML).toMatch(/fa-play/);
   });
 
   it("renders PauseButton when paused and hovered", () => {

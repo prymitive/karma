@@ -1,9 +1,14 @@
 .components-grid-alertgrid-alertgroup {
   padding: 0.3rem;
 
-  &.components-animation-alergroup-appear-done.animate,
-  &.components-animation-alergroup-enter-done.animate {
+  &.animate {
     z-index: 1;
+  }
+
+  // The transform transition smooths repack moves; it must not apply
+  // when a group is first positioned or the group would slide in from
+  // the corner, so it starts only after the group is done.
+  &.animate.animate-done {
     transition-property: transform;
     transition-duration: 0.25s;
     transition-timing-function: ease-in-out;

@@ -184,7 +184,7 @@ const GroupMenu: FC<{
       >
         <FontAwesomeIcon icon={faBars} />
       </span>
-      <DropdownSlide in={!isHidden} unmountOnExit>
+      <DropdownSlide in={!isHidden}>
         <MenuContent
           group={group}
           alertStore={alertStore}

@@ -1,8 +1,6 @@
-import React, { use, FC, ReactNode, useState, useEffect, useRef } from "react";
+import React, { use, FC, ReactNode, useState, useEffect } from "react";
+import { ViewTransition } from "react";
 import ReactDOM from "react-dom";
-
-import TransitionGroup from "react-transition-group/TransitionGroup";
-import { CSSTransition } from "react-transition-group";
 
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -57,39 +55,26 @@ const Toast: FC<{
   );
 };
 
-const ToastTransition: FC<{
-  children: ReactNode;
-  timeout: number;
-  in?: boolean;
-}> = ({ children, timeout, in: inProp }) => {
-  const nodeRef = useRef<HTMLDivElement>(null);
-  return (
-    <CSSTransition
-      classNames="components-animation-fade"
-      timeout={timeout}
-      unmountOnExit
-      nodeRef={nodeRef}
-      in={inProp}
-    >
-      <div ref={nodeRef}>{children}</div>
-    </CSSTransition>
-  );
-};
-
 const ToastContainer: FC<{ children: ReactNode }> = ({ children }) => {
   const context = use(ThemeContext);
+  const isAnimated = context.animations.duration !== 0;
 
   return ReactDOM.createPortal(
     <div className="components-toast-container d-flex flex-column">
-      <TransitionGroup component={null} appear enter exit>
-        {React.Children.map(children, (toast, i) =>
-          toast ? (
-            <ToastTransition key={i} timeout={context.animations.duration}>
-              {toast}
-            </ToastTransition>
-          ) : null,
-        )}
-      </TransitionGroup>
+      {React.Children.map(children, (toast, i) => {
+        if (!toast) return null;
+        if (!isAnimated) return toast;
+        return (
+          <ViewTransition
+            key={i}
+            default="none"
+            enter="components-animation-fade"
+            exit="components-animation-fade"
+          >
+            {toast}
+          </ViewTransition>
+        );
+      })}
     </div>,
     document.body,
   );

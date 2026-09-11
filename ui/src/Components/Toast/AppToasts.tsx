@@ -1,4 +1,4 @@
-import { FC, Fragment, useCallback } from "react";
+import { FC, Fragment, useCallback, useDeferredValue } from "react";
 
 import { observer } from "mobx-react-lite";
 
@@ -19,6 +19,13 @@ const AppToasts: FC<{
     const e = new CustomEvent("showNotifications");
     window.dispatchEvent(e);
   }, []);
+
+  // Store changes render urgently, the toast lists are deferred so toast
+  // mounts and unmounts render inside a Transition and fade in and out.
+  const upstreamsWithErrors = useDeferredValue(
+    alertStore.data.upstreamsWithErrors,
+  );
+  const upgradeReady = useDeferredValue(alertStore.info.upgradeReady);
 
   if (alertStore.info.upgradeNeeded) {
     return null;
@@ -45,7 +52,7 @@ const AppToasts: FC<{
         </TooltipWrapper>
       </li>
       <ToastContainer>
-        {alertStore.data.upstreamsWithErrors.map((upstream) => (
+        {upstreamsWithErrors.map((upstream) => (
           <Toast
             key={upstream.name}
             icon={faExclamation}
@@ -59,7 +66,7 @@ const AppToasts: FC<{
             hasClose
           />
         ))}
-        {alertStore.info.upgradeReady ? (
+        {upgradeReady ? (
           <Toast
             key="upgrade"
             icon={faArrowUp}

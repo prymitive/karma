@@ -5,12 +5,11 @@ import {
   useEffect,
   ReactNode,
   useCallback,
-  useRef,
+  useDeferredValue,
+  ViewTransition,
 } from "react";
 
 import { observer } from "mobx-react-lite";
-
-import { CSSTransition } from "react-transition-group";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
@@ -48,20 +47,19 @@ const Placeholder: FC<{
   content: ReactNode;
 }> = ({ content }) => {
   const context = use(ThemeContext);
-  const nodeRef = useRef<HTMLDivElement>(null);
+
+  const body = (
+    <div className="px-2 py-5 bg-transparent">
+      <h1 className="display-5 text-placeholder text-center">{content}</h1>
+    </div>
+  );
+
+  if (!context.animations.duration) return body;
 
   return (
-    <CSSTransition
-      in={true}
-      appear={true}
-      classNames="components-animation-fade"
-      timeout={context.animations.duration}
-      nodeRef={nodeRef}
-    >
-      <div ref={nodeRef} className="px-2 py-5 bg-transparent">
-        <h1 className="display-5 text-placeholder text-center">{content}</h1>
-      </div>
-    </CSSTransition>
+    <ViewTransition default="none" enter="components-animation-fade">
+      {body}
+    </ViewTransition>
   );
 };
 
@@ -134,6 +132,12 @@ const Browser: FC<{
     [setSelected, setAllSelected],
   );
 
+  // Fetch state updates render urgently, the values are deferred so the
+  // placeholder mounts render inside a Transition and fade in.
+  const deferredIsLoading = useDeferredValue(isLoading);
+  const deferredResponse = useDeferredValue(response);
+  const deferredError = useDeferredValue(error);
+
   return (
     <>
       <div
@@ -176,7 +180,7 @@ const Browser: FC<{
           Sort order
         </button>
       </div>
-      {isLoading && response === null ? (
+      {deferredIsLoading && deferredResponse === null ? (
         <Placeholder
           content={
             <FontAwesomeIcon
@@ -187,13 +191,13 @@ const Browser: FC<{
             />
           }
         />
-      ) : error !== null ? (
-        <FetchError message={error} />
-      ) : response === null || response.length === 0 ? (
+      ) : deferredError !== null ? (
+        <FetchError message={deferredError} />
+      ) : deferredResponse === null || deferredResponse.length === 0 ? (
         <Placeholder content="Nothing to show" />
       ) : (
         <>
-          {response
+          {deferredResponse
             .slice((activePage - 1) * maxPerPage, activePage * maxPerPage)
             .map((silence) => (
               <SelectableSilence
@@ -223,7 +227,7 @@ const Browser: FC<{
                     const v = !allSelected;
                     if (v) {
                       setSelected(
-                        response
+                        deferredResponse
                           .filter((silence) => !silence.isExpired)
                           .map((silence) => ({
                             id: silence.silence.id,
@@ -243,9 +247,9 @@ const Browser: FC<{
             </div>
             <div className="mx-auto">
               <PageSelect
-                totalPages={Math.ceil(response.length / maxPerPage)}
+                totalPages={Math.ceil(deferredResponse.length / maxPerPage)}
                 maxPerPage={maxPerPage}
-                totalItemsCount={response.length}
+                totalItemsCount={deferredResponse.length}
                 setPageCallback={setActivePage}
               />
             </div>

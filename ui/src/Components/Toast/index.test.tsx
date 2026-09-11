@@ -4,7 +4,9 @@ import { render, screen, fireEvent } from "@testing-library/react";
 
 import { faExclamation } from "@fortawesome/free-solid-svg-icons/faExclamation";
 
-import { Toast } from ".";
+import { MockThemeContextWithoutAnimations } from "__fixtures__/Theme";
+import { ThemeContext } from "Components/Theme";
+import { Toast, ToastContainer } from ".";
 
 describe("<Toast />", () => {
   it("renders body by default", () => {
@@ -91,5 +93,27 @@ describe("<Toast />", () => {
       />,
     );
     unmount();
+  });
+});
+
+describe("<ToastContainer />", () => {
+  it("renders toasts in the container without a view transition wrapper when animations are disabled", () => {
+    render(
+      <ThemeContext value={MockThemeContextWithoutAnimations}>
+        <ToastContainer>
+          <Toast
+            icon={faExclamation}
+            iconClass="text-danger"
+            message="fake error"
+            hasClose
+          />
+        </ToastContainer>
+      </ThemeContext>,
+    );
+    const container = document.body.querySelector(
+      ".components-toast-container",
+    );
+    expect(container).toBeInTheDocument();
+    expect(screen.getByText("fake error")).toBeInTheDocument();
   });
 });

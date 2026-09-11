@@ -8,11 +8,12 @@ import { useFetchGetMock } from "__fixtures__/useFetchGet";
 import { MockSilence } from "__fixtures__/Alerts";
 import { PressKey } from "__fixtures__/PressKey";
 import { MockThemeContext } from "__fixtures__/Theme";
+import { MockThemeContextWithoutAnimations } from "__fixtures__/Theme";
 import type { APISilenceT, APIManagedSilenceT } from "Models/APITypes";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
-import { ThemeContext } from "Components/Theme";
+import { ThemeContext, ThemeCtx } from "Components/Theme";
 import Browser from ".";
 
 let alertStore: AlertStore;
@@ -81,9 +82,9 @@ const MockSilenceList = (count: number): APIManagedSilenceT[] => {
   return silences;
 };
 
-const renderBrowser = () => {
+const renderBrowser = (theme?: ThemeCtx) => {
   return render(
-    <ThemeContext value={MockThemeContext}>
+    <ThemeContext value={theme || MockThemeContext}>
       <Browser
         alertStore={alertStore}
         silenceFormStore={silenceFormStore}
@@ -209,6 +210,20 @@ describe("<Browser />", () => {
       cancelGet: jest.fn(),
     });
     const { container } = renderBrowser();
+    expect(container.innerHTML).toMatch(/Nothing to show/);
+  });
+
+  it("renders empty placeholder without a view transition wrapper when animations are disabled", () => {
+    useFetchGetMock.fetch.setMockedData({
+      response: [],
+      error: null,
+      isLoading: false,
+      isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
+    });
+    const { container } = renderBrowser(MockThemeContextWithoutAnimations);
     expect(container.innerHTML).toMatch(/Nothing to show/);
   });
 

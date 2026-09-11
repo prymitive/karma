@@ -1,7 +1,12 @@
-import React, { use, FC, useEffect, useRef } from "react";
+import React, {
+  use,
+  FC,
+  useEffect,
+  useRef,
+  useDeferredValue,
+  ViewTransition,
+} from "react";
 import ReactDOM from "react-dom";
-
-import { CSSTransition } from "react-transition-group";
 
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 
@@ -65,40 +70,41 @@ const Modal: FC<{
   children,
 }) => {
   const context = use(ThemeContext);
-  const modalRef = useRef<HTMLDivElement>(null);
-  const backdropRef = useRef<HTMLDivElement>(null);
+  const isAnimated = context.animations.duration !== 0;
+  // Store-driven open state renders urgently, deferring it makes the
+  // modal mount and unmount render inside a Transition so it animates.
+  const deferredIsOpen = useDeferredValue(isOpen);
+
+  // The modal DOM is removed at once when closing (only the snapshot
+  // animates), so onExited fires on close instead of after the animation.
+  const wasOpenRef = useRef(false);
+  useEffect(() => {
+    if (wasOpenRef.current && !deferredIsOpen) onExited?.();
+    wasOpenRef.current = deferredIsOpen;
+  }, [deferredIsOpen, onExited]);
 
   return ReactDOM.createPortal(
     <>
-      <CSSTransition
-        in={isOpen}
-        classNames={
-          context.animations.duration ? "components-animation-modal" : ""
-        }
-        timeout={context.animations.duration ? 300 : 0}
-        onExited={onExited}
-        enter
-        exit
-        unmountOnExit
-        nodeRef={modalRef}
-      >
-        <div ref={modalRef}>
+      {deferredIsOpen ? (
+        isAnimated ? (
+          <ViewTransition
+            default="none"
+            enter="components-animation-modal"
+            exit="components-animation-modal"
+          >
+            <ModalInner size={size} isUpper={isUpper} toggleOpen={toggleOpen}>
+              {children}
+            </ModalInner>
+          </ViewTransition>
+        ) : (
           <ModalInner size={size} isUpper={isUpper} toggleOpen={toggleOpen}>
             {children}
           </ModalInner>
-        </div>
-      </CSSTransition>
-      <CSSTransition
-        in={isOpen && !isUpper}
-        classNames="components-animation-backdrop"
-        timeout={context.animations.duration ? 300 : 0}
-        enter
-        exit
-        unmountOnExit
-        nodeRef={backdropRef}
-      >
-        <div ref={backdropRef} className="modal-backdrop d-block" />
-      </CSSTransition>
+        )
+      ) : null}
+      {deferredIsOpen && !isUpper ? (
+        <div className="modal-backdrop d-block" />
+      ) : null}
     </>,
     document.body,
   );

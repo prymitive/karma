@@ -1,6 +1,9 @@
 import { render, screen } from "@testing-library/react";
 
-import { MockThemeContext } from "__fixtures__/Theme";
+import {
+  MockThemeContext,
+  MockThemeContextWithoutAnimations,
+} from "__fixtures__/Theme";
 import { ThemeContext } from "Components/Theme";
 import { CenteredMessage } from ".";
 
@@ -40,5 +43,19 @@ describe("<CenteredMessage />", () => {
     const heading = screen.getByRole("heading");
     expect(heading).toHaveClass("bar-class");
     expect(heading).not.toHaveClass("display-1", "text-placeholder");
+  });
+
+  it("renders message without a view transition wrapper when animations are disabled", () => {
+    render(
+      <ThemeContext value={MockThemeContextWithoutAnimations}>
+        <CenteredMessage>
+          <Message />
+        </CenteredMessage>
+      </ThemeContext>,
+    );
+    expect(screen.getByRole("heading")).toHaveClass(
+      "display-1",
+      "text-placeholder",
+    );
   });
 });
