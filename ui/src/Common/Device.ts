@@ -1,5 +1,7 @@
+const mobileBreakpoint = 768;
+
 function IsMobile(): boolean {
-  return window.innerWidth < 768;
+  return window.innerWidth < mobileBreakpoint;
 }
 
-export { IsMobile };
+export { IsMobile, mobileBreakpoint };

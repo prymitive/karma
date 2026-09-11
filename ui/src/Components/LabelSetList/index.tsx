@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 
 import type { AlertStore } from "Stores/AlertStore";
-import { IsMobile } from "Common/Device";
+import { useIsMobile } from "Hooks/useIsMobile";
 import StaticLabel from "Components/Labels/StaticLabel";
 import { PageSelect } from "Components/Pagination";
 import type { LabelsT } from "Models/APITypes";
@@ -13,7 +13,7 @@ const LabelSetList: FC<{
 }> = ({ alertStore, labelsList, title }) => {
   const [activePage, setActivePage] = useState<number>(1);
 
-  const maxPerPage = IsMobile() ? 5 : 10;
+  const maxPerPage = useIsMobile() ? 5 : 10;
 
   return labelsList.length > 0 ? (
     <div>

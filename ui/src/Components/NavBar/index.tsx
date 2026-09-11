@@ -16,7 +16,7 @@ import type { AlertStore } from "Stores/AlertStore";
 import type { Settings } from "Stores/Settings";
 import type { SilenceFormStore } from "Stores/SilenceFormStore";
 import { useElementSize } from "Hooks/useElementSize";
-import { IsMobile } from "Common/Device";
+import { useIsMobile } from "Hooks/useIsMobile";
 import { OverviewModal } from "Components/OverviewModal";
 import { MainModal } from "Components/MainModal";
 import SilenceModal from "Components/SilenceModal";
@@ -57,8 +57,10 @@ const NavBar: FC<{
     alertStore.ui.setIsIdle(true);
   }, [alertStore.ui]);
 
+  const isMobile = useIsMobile();
+
   const { pause, reset } = useIdleTimer({
-    timeout: IsMobile() ? MobileIdleTimeout : DesktopIdleTimeout,
+    timeout: isMobile ? MobileIdleTimeout : DesktopIdleTimeout,
     onIdle: onIdle,
     onActive: onActive,
     debounce: 500,

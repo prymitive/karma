@@ -23,7 +23,7 @@ import type { SilenceFormStore } from "Stores/SilenceFormStore";
 import type { Settings } from "Stores/Settings";
 import { useFetchGet, FetchGetOptionsT } from "Hooks/useFetchGet";
 import { useDebounce } from "Hooks/useDebounce";
-import { IsMobile } from "Common/Device";
+import { useIsMobile } from "Hooks/useIsMobile";
 import { PageSelect } from "Components/Pagination";
 import { ThemeContext } from "Components/Theme";
 import {
@@ -68,7 +68,7 @@ const Browser: FC<{
   silenceFormStore: SilenceFormStore;
   settingsStore: Settings;
 }> = ({ alertStore, silenceFormStore, settingsStore }) => {
-  const maxPerPage = IsMobile() ? 4 : 6;
+  const maxPerPage = useIsMobile() ? 4 : 6;
   const [sortReverse, setSortReverse] = useState<boolean>(false);
   const [showExpired, setShowExpired] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>("");
