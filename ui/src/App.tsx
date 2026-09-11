@@ -2,12 +2,10 @@ import React, { FC, useState, useEffect, useEffectEvent } from "react";
 
 import { observer } from "mobx-react-lite";
 
-// no types, see react-app-env.d.ts
-import { useMediaPredicate } from "react-media-hook";
-
 import { AlertStore, DecodeLocationSearch } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
+import { useMediaQuery } from "Hooks/useMediaQuery";
 import {
   ReactSelectColors,
   ReactSelectStyles,
@@ -78,8 +76,8 @@ const App: FC<AppProps> = observer(({ defaultFilters, uiDefaults }) => {
     };
   }, [onPopState]);
 
-  const prefersColorScheme = useMediaPredicate("(prefers-color-scheme)");
-  const prefersDark = useMediaPredicate("(prefers-color-scheme: dark)");
+  const prefersColorScheme = useMediaQuery("(prefers-color-scheme)");
+  const prefersDark = useMediaQuery("(prefers-color-scheme: dark)");
 
   return (
     <ErrorBoundary>

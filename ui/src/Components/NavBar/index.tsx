@@ -3,13 +3,12 @@ import { use, FC, useState, useEffect, useCallback } from "react";
 import { reaction } from "mobx";
 import { observer } from "mobx-react-lite";
 
-import useDimensions from "react-cool-dimensions";
-
 import { useIdleTimer } from "react-idle-timer";
 
 import type { AlertStore } from "Stores/AlertStore";
 import type { Settings } from "Stores/Settings";
 import type { SilenceFormStore } from "Stores/SilenceFormStore";
+import { useElementSize } from "Hooks/useElementSize";
 import { IsMobile } from "Common/Device";
 import { OverviewModal } from "Components/OverviewModal";
 import { MainModal } from "Components/MainModal";
@@ -30,7 +29,7 @@ const NavBar: FC<{
 
   const context = use(ThemeContext);
 
-  const { observe, height } = useDimensions({});
+  const { ref: navSizeRef, height } = useElementSize();
 
   const updateBodyPaddingTop = useCallback(
     (idle: boolean) => {
@@ -97,9 +96,7 @@ const NavBar: FC<{
   return (
     <div className={`container p-0 m-0 mw-100 ${containerClass}`}>
       <nav
-        ref={(el) => {
-          observe(el as HTMLElement);
-        }}
+        ref={navSizeRef}
         className={`navbar navbar-expand navbar-dark p-1 bg-primary-transparent d-flex ${
           fixedTop ? "fixed-top" : "w-100"
         } align-items-start ${
