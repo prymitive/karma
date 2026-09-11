@@ -10,6 +10,7 @@ import type {
   ReadOnly,
 } from "Models/APITypes";
 import { useFetchAny, UpstreamT } from "Hooks/useFetchAny";
+import { useNow } from "Hooks/useNow";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 
 interface minMaxT {
@@ -33,6 +34,8 @@ export const AlertHistory: FC<{
 }> = ({ group, grid }) => {
   const [ref, inView] = useInView({ triggerOnce: true });
 
+  const now = useNow();
+
   const [lastUpdate, setLastUpdate] = useState<number>(() => GetUTCSeconds());
   const [upstreams, setUpstreams] = useState<UpstreamT[]>([]);
   const [labels] = useState<{ [key: string]: string }>({
@@ -53,14 +56,11 @@ export const AlertHistory: FC<{
   });
 
   useEffect(() => {
-    const timer = window.setInterval(() => {
-      const utcSeconds = GetUTCSeconds();
-      if (inView && utcSeconds - lastUpdate >= 300) {
-        setLastUpdate(utcSeconds);
-      }
-    }, 60 * 1000);
-    return () => clearInterval(timer);
-  }, [inView, lastUpdate]);
+    const utcSeconds = GetUTCSeconds();
+    if (inView && utcSeconds - lastUpdate >= 300) {
+      setLastUpdate(utcSeconds);
+    }
+  }, [now, inView, lastUpdate]);
 
   useEffect(() => {
     if (response !== null) {
