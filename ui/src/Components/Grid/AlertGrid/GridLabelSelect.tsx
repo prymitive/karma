@@ -6,7 +6,6 @@ import {
   useRef,
   useState,
   useCallback,
-  startTransition,
 } from "react";
 
 import { useFloating, shift, offset } from "@floating-ui/react-dom";
@@ -135,12 +134,9 @@ const GridLabelSelect: FC<{
   grid: ReadOnly<APIGridT>;
 }> = ({ alertStore, settingsStore, grid }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
-  const hide = useCallback(() => {
-    startTransition(() => setIsVisible(false));
-  }, []);
+  const hide = useCallback(() => setIsVisible(false), []);
   const toggle = useCallback(() => {
-    // Wrapped in a Transition so the mount and unmount animate at once.
-    startTransition(() => setIsVisible(!isVisible));
+    setIsVisible(!isVisible);
   }, [isVisible]);
   const ref = useRef<HTMLDivElement | null>(null);
   useOnClickOutside(ref, hide, isVisible);

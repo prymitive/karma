@@ -7,7 +7,6 @@ import {
   useRef,
   useState,
   useCallback,
-  startTransition,
 } from "react";
 
 import { observer } from "mobx-react-lite";
@@ -201,18 +200,13 @@ const AlertMenu: FC<AlertMenuProps> = ({
   const [isHidden, setIsHidden] = useState<boolean>(true);
 
   const toggle = useCallback(() => {
-    // Wrapped in a Transition so the mount and unmount animate at once.
-    startTransition(() => {
-      setIsMenuOpen(isHidden);
-      setIsHidden(!isHidden);
-    });
+    setIsMenuOpen(isHidden);
+    setIsHidden(!isHidden);
   }, [isHidden, setIsMenuOpen]);
 
   const hide = useCallback(() => {
-    startTransition(() => {
-      setIsHidden(true);
-      setIsMenuOpen(false);
-    });
+    setIsHidden(true);
+    setIsMenuOpen(false);
   }, [setIsMenuOpen]);
 
   const rootRef = useRef<FragmentInstance | null>(null);

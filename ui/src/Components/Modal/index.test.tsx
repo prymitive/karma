@@ -139,6 +139,28 @@ describe("<ModalInner />", () => {
     jest.useRealTimers();
   });
 
+  it("unmounts at once and calls onExited when animations are disabled", () => {
+    const onExited = jest.fn();
+    const { rerender } = render(
+      <ThemeContext value={MockThemeContextWithoutAnimations}>
+        <Modal isOpen={true} toggleOpen={fakeToggle} onExited={onExited}>
+          <div />
+        </Modal>
+      </ThemeContext>,
+    );
+    expect(document.querySelector(".modal")).toBeInTheDocument();
+
+    rerender(
+      <ThemeContext value={MockThemeContextWithoutAnimations}>
+        <Modal isOpen={false} toggleOpen={fakeToggle} onExited={onExited}>
+          <div />
+        </Modal>
+      </ThemeContext>,
+    );
+    expect(document.querySelector(".modal")).not.toBeInTheDocument();
+    expect(onExited).toHaveBeenCalledTimes(1);
+  });
+
   it("doesn't call onExited while modal stays open", () => {
     const onExited = jest.fn();
     const { rerender } = render(
@@ -203,6 +225,47 @@ describe("<ModalInner />", () => {
     expect(
       document.querySelector(".components-animation-modal-enter .modal-dialog"),
     ).toBeInTheDocument();
+  });
+
+  it("keeps the enter class applied while the animations setting is toggled", () => {
+    const { rerender } = render(
+      <ThemeContext value={MockThemeContext}>
+        <Modal isOpen={true} toggleOpen={fakeToggle}>
+          <div />
+        </Modal>
+      </ThemeContext>,
+    );
+    rerender(
+      <ThemeContext value={MockThemeContextWithoutAnimations}>
+        <Modal isOpen={true} toggleOpen={fakeToggle}>
+          <div />
+        </Modal>
+      </ThemeContext>,
+    );
+    // Removing and re-applying the class would replay the animation.
+    expect(
+      document.querySelector(".components-animation-modal-enter .modal-dialog"),
+    ).toBeInTheDocument();
+  });
+
+  it("does not add the enter class when animations are enabled after mount", () => {
+    const { rerender } = render(
+      <ThemeContext value={MockThemeContextWithoutAnimations}>
+        <Modal isOpen={true} toggleOpen={fakeToggle}>
+          <div />
+        </Modal>
+      </ThemeContext>,
+    );
+    rerender(
+      <ThemeContext value={MockThemeContext}>
+        <Modal isOpen={true} toggleOpen={fakeToggle}>
+          <div />
+        </Modal>
+      </ThemeContext>,
+    );
+    expect(
+      document.querySelector(".components-animation-modal-enter .modal-dialog"),
+    ).not.toBeInTheDocument();
   });
 
   it("keeps the modal mounted with the exit class until the exit animation is done", () => {

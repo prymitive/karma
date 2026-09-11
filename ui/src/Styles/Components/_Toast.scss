@@ -29,6 +29,20 @@
   }
 }
 
+.components-animation-toast-enter {
+  animation: components-animation-toast-enter 0.5s ease-in;
+}
+
+@keyframes components-animation-toast-enter {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
 .toast-upgrade-progressbar {
   animation-duration: 20s;
   animation-name: upgrade-progress;

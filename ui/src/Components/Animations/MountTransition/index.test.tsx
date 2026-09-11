@@ -1,105 +1,51 @@
-import { act, startTransition, useState, FC, ReactNode } from "react";
+import { act, useState, FC, ReactNode } from "react";
 
 import { render, screen, fireEvent } from "@testing-library/react";
-
-import { makeAutoObservable, action } from "mobx";
-import { observer } from "mobx-react-lite";
 
 import { ThemeContext } from "Components/Theme";
 import { MockThemeContextWithoutAnimations } from "__fixtures__/Theme";
 import { MountTransition } from ".";
 
-// The jsdom environment has no View Transition API, so the browser method
-// is mocked to run the update callback at once and resolve both lifecycle
-// promises. This is enough to assert that React decided to start a view
-// transition.
-const startViewTransitionMock = jest.fn();
-
-const mockViewTransitionAPI = () => {
-  startViewTransitionMock.mockImplementation(
-    (options: { update: () => void }) => {
-      options.update();
-      return {
-        ready: Promise.resolve(),
-        finished: Promise.resolve(),
-      };
-    },
-  );
-  (
-    document as unknown as {
-      startViewTransition: unknown;
-    }
-  ).startViewTransition = startViewTransitionMock;
-  (
-    document.documentElement as unknown as {
-      getAnimations: () => Array<Animation>;
-    }
-  ).getAnimations = () => [];
-};
-
-const unmockViewTransitionAPI = () => {
-  delete (
-    document as unknown as {
-      startViewTransition?: unknown;
-    }
-  ).startViewTransition;
-  delete (
-    document.documentElement as unknown as {
-      getAnimations?: () => Array<Animation>;
-    }
-  ).getAnimations;
-};
-
 const Child = () => <div data-testid="child" />;
 
-const TransitionToggle: FC<{
-  children: ReactNode;
-}> = ({ children }) => {
+const TransitionToggle: FC<{ children: ReactNode }> = ({ children }) => {
   const [show, setShow] = useState<boolean>(false);
   return (
     <>
-      <button
-        data-testid="toggle"
-        onClick={() => startTransition(() => setShow((v) => !v))}
-      >
+      <button data-testid="toggle" onClick={() => setShow((v) => !v)}>
         toggle
       </button>
-      <MountTransition in={show} enter="auto" exit="auto">
+      <MountTransition
+        in={show}
+        enter="components-animation-slide-enter"
+        exit="components-animation-slide-exit"
+      >
         {children}
       </MountTransition>
     </>
   );
 };
 
-const store = makeAutoObservable({ visible: false });
-const setVisible = action((visible: boolean) => {
-  store.visible = visible;
-});
-
-const MobxSubject = observer(() => (
-  <MountTransition in={store.visible} enter="auto" exit="auto">
-    <Child />
-  </MountTransition>
-));
-
-beforeEach(() => {
-  mockViewTransitionAPI();
-});
-
 afterEach(() => {
-  unmockViewTransitionAPI();
-  jest.resetAllMocks();
-  setVisible(false);
+  jest.useRealTimers();
 });
 
 describe("<MountTransition />", () => {
-  it("renders children when in=true on first render", () => {
+  it("renders children inside a wrapper with the enter class when in=true", () => {
     render(
-      <MountTransition in={true}>
+      <MountTransition
+        in={true}
+        enter="components-animation-slide-enter"
+        exit="components-animation-slide-exit"
+      >
         <Child />
       </MountTransition>,
     );
-    expect(screen.getByTestId("child")).toBeInTheDocument();
+    expect(
+      document.querySelector(
+        ".components-animation-slide-enter > [data-testid='child']",
+      ),
+    ).toBeInTheDocument();
   });
 
   it("renders nothing when in=false", () => {
@@ -111,68 +57,45 @@ describe("<MountTransition />", () => {
     expect(screen.queryByTestId("child")).not.toBeInTheDocument();
   });
 
-  it("starts a view transition when a startTransition update mounts children", async () => {
-    render(<TransitionToggle>{<Child />}</TransitionToggle>);
-    expect(screen.queryByTestId("child")).not.toBeInTheDocument();
+  it("keeps children mounted with the exit class until the exit animation is done", () => {
+    jest.useFakeTimers();
+    render(
+      <TransitionToggle>
+        <Child />
+      </TransitionToggle>,
+    );
 
     fireEvent.click(screen.getByTestId("toggle"));
-    await act(async () => {});
-
     expect(screen.getByTestId("child")).toBeInTheDocument();
-    expect(startViewTransitionMock).toHaveBeenCalledTimes(1);
-  });
-
-  it("starts a view transition when a startTransition update unmounts children", async () => {
-    render(<TransitionToggle>{<Child />}</TransitionToggle>);
-    fireEvent.click(screen.getByTestId("toggle"));
-    await act(async () => {});
 
     fireEvent.click(screen.getByTestId("toggle"));
-    await act(async () => {});
+    expect(
+      document.querySelector(
+        ".components-animation-slide-exit > [data-testid='child']",
+      ),
+    ).toBeInTheDocument();
 
+    act(() => {
+      jest.advanceTimersByTime(150);
+    });
     expect(screen.queryByTestId("child")).not.toBeInTheDocument();
-    expect(startViewTransitionMock).toHaveBeenCalledTimes(2);
   });
 
-  it("starts a view transition when a MobX store change mounts children", async () => {
-    render(<MobxSubject />);
-    expect(screen.queryByTestId("child")).not.toBeInTheDocument();
-
-    await act(async () => {
-      setVisible(true);
-    });
-
-    expect(screen.getByTestId("child")).toBeInTheDocument();
-    expect(startViewTransitionMock).toHaveBeenCalledTimes(1);
-  });
-
-  it("starts a view transition when a MobX store change unmounts children", async () => {
-    render(<MobxSubject />);
-    await act(async () => {
-      setVisible(true);
-    });
-
-    await act(async () => {
-      setVisible(false);
-    });
-
-    expect(screen.queryByTestId("child")).not.toBeInTheDocument();
-    expect(startViewTransitionMock).toHaveBeenCalledTimes(2);
-  });
-
-  it("renders children without a view transition when animations are disabled", async () => {
+  it("renders children without an animation class and unmounts at once when animations are disabled", () => {
     render(
       <ThemeContext value={MockThemeContextWithoutAnimations}>
-        <MobxSubject />
+        <TransitionToggle>
+          <Child />
+        </TransitionToggle>
       </ThemeContext>,
     );
+
+    fireEvent.click(screen.getByTestId("toggle"));
+    expect(screen.getByTestId("child").parentElement?.className).toBe(
+      "components-animation-mount",
+    );
+
+    fireEvent.click(screen.getByTestId("toggle"));
     expect(screen.queryByTestId("child")).not.toBeInTheDocument();
-
-    await act(async () => {
-      setVisible(true);
-    });
-
-    expect(screen.getByTestId("child")).toBeInTheDocument();
-    expect(startViewTransitionMock).not.toHaveBeenCalled();
   });
 });
