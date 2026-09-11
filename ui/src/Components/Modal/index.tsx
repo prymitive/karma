@@ -76,7 +76,7 @@ const Modal: FC<{
   const deferredIsOpen = useDeferredValue(isOpen);
 
   // The modal DOM is removed at once when closing (only the snapshot
-  // animates), so onExited fires on close instead of after the animation.
+  // animates), so onExited fires on close.
   const wasOpenRef = useRef(false);
   useEffect(() => {
     if (wasOpenRef.current && !deferredIsOpen) onExited?.();
