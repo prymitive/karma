@@ -6,17 +6,16 @@ import fetchMock from "@fetch-mock/jest";
 
 import { useIdleTimer } from "react-idle-timer";
 
-import { IsMobile } from "Common/Device";
 import { MockThemeContext } from "__fixtures__/Theme";
 import { EmptyAPIResponse } from "__fixtures__/Fetch";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { ThemeContext } from "Components/Theme";
+import { MobileIdleTimeout, DesktopIdleTimeout } from "./timeouts";
 import NavBar from ".";
 
 jest.mock("react-idle-timer");
-jest.mock("Common/Device");
 
 let alertStore: AlertStore;
 let settingsStore: Settings;
@@ -248,18 +247,26 @@ describe("<NavBar />", () => {
     ).toBe("44px");
   });
 
-  it("uses mobile idle timeout when IsMobile returns true", () => {
-    // Verifies that MobileIdleTimeout is used when IsMobile() returns true (line 61)
-    (IsMobile as jest.Mock).mockReturnValue(true);
+  it("uses mobile idle timeout on mobile widths", () => {
+    (useIdleTimer as jest.Mock).mockClear();
+    window.innerWidth = 500;
     renderNavbar();
 
-    expect(useIdleTimer).toHaveBeenCalledWith(
-      expect.objectContaining({
-        timeout: expect.any(Number),
-      }),
-    );
+    // The size store refreshes when the component subscribes, so the
+    // settled timeout is in the last call.
+    const calls = (useIdleTimer as jest.Mock).mock.calls;
+    const callArgs = calls[calls.length - 1][0];
+    expect(callArgs.timeout).toBe(MobileIdleTimeout);
+    window.innerWidth = 1024;
+  });
 
-    const callArgs = (useIdleTimer as jest.Mock).mock.calls[0][0];
-    expect(callArgs.timeout).toBeGreaterThan(0);
+  it("uses desktop idle timeout on desktop widths", () => {
+    (useIdleTimer as jest.Mock).mockClear();
+    window.innerWidth = 1024;
+    renderNavbar();
+
+    const calls = (useIdleTimer as jest.Mock).mock.calls;
+    const callArgs = calls[calls.length - 1][0];
+    expect(callArgs.timeout).toBe(DesktopIdleTimeout);
   });
 });

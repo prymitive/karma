@@ -1,30 +1,49 @@
-import { useState, useEffect } from "react";
+import { useSyncExternalStore } from "react";
 
 interface Dimensions {
   width: number;
   height: number;
 }
 
-function getSize(): Dimensions {
-  return {
+// All subscribers share one resize listener.
+let size: Dimensions = {
+  width: window.innerWidth,
+  height: window.innerHeight,
+};
+const listeners = new Set<() => void>();
+
+const onResize = () => {
+  size = {
     width: window.innerWidth,
     height: window.innerHeight,
   };
-}
+  for (const listener of listeners) listener();
+};
+
+const subscribe = (listener: () => void) => {
+  // Refreshing here makes React re-check the snapshot right after it
+  // subscribes, so a freshly mounted component never renders with a size
+  // from before its own mount.
+  size = {
+    width: window.innerWidth,
+    height: window.innerHeight,
+  };
+  listeners.add(listener);
+  if (listeners.size === 1) {
+    window.addEventListener("resize", onResize);
+  }
+  return () => {
+    listeners.delete(listener);
+    if (listeners.size === 0) {
+      window.removeEventListener("resize", onResize);
+    }
+  };
+};
+
+const getSnapshot = () => size;
 
 function useWindowSize(): Dimensions {
-  const [windowSize, setWindowSize] = useState<Dimensions>(() => getSize());
-
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowSize(getSize());
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  return windowSize;
+  return useSyncExternalStore(subscribe, getSnapshot);
 }
 
 export { useWindowSize };

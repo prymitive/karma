@@ -8,7 +8,7 @@ import { faAngleRight } from "@fortawesome/free-solid-svg-icons/faAngleRight";
 import { faAngleDoubleLeft } from "@fortawesome/free-solid-svg-icons/faAngleDoubleLeft";
 import { faAngleDoubleRight } from "@fortawesome/free-solid-svg-icons/faAngleDoubleRight";
 
-import { IsMobile } from "Common/Device";
+import { useIsMobile } from "Hooks/useIsMobile";
 
 type PageCallback = (page: number) => void;
 
@@ -27,6 +27,7 @@ const PageSelect: FC<{
 }) => {
   const [pages, setPages] = useState<number[]>([]);
   const [activePage, setActivePage] = useState<number>(initialPage);
+  const isMobile = useIsMobile();
 
   const onChange = (page: number) => {
     setActivePage(page);
@@ -35,7 +36,7 @@ const PageSelect: FC<{
 
   useEffect(() => {
     const allPages = Array.from(Array(totalPages).keys()).map((k) => k + 1);
-    const gap = IsMobile() ? 1 : 2;
+    const gap = isMobile ? 1 : 2;
 
     let minPage = activePage - gap;
     let maxPage = activePage + gap;
@@ -48,7 +49,7 @@ const PageSelect: FC<{
       maxPage = totalPages;
     }
     setPages(allPages.slice(minPage - 1, maxPage));
-  }, [activePage, totalPages]);
+  }, [activePage, totalPages, isMobile]);
 
   useEffect(() => {
     if (activePage > totalPages) {

@@ -24,7 +24,7 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
 
 import type { AlertStore, FilterT } from "Stores/AlertStore";
 import type { Settings } from "Stores/Settings";
-import { IsMobile } from "Common/Device";
+import { useIsMobile } from "Hooks/useIsMobile";
 import { localStored } from "Common/LocalStore";
 import { DropdownSlide } from "Components/Animations/DropdownSlide";
 import HistoryLabel from "Components/Labels/HistoryLabel";
@@ -90,7 +90,7 @@ const HistoryMenu: FC<{
   afterClick,
   onClear,
 }) => {
-  const maxItems = IsMobile() ? 4 : 8;
+  const maxItems = useIsMobile() ? 4 : 8;
 
   return (
     <div
