@@ -594,7 +594,7 @@ class SometimesSilenced(AlertGenerator):
         throw = random.randint(0, 100)
         if throw > 10:
             return []
-        now = datetime.datetime.utcnow().replace(microsecond=0)
+        now = datetime.datetime.now(datetime.UTC).replace(microsecond=0)
         return [
             (
                 [newMatcher("alertname", self.name, False)],

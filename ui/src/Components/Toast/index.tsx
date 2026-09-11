@@ -1,5 +1,4 @@
 import React, { use, FC, ReactNode, useState, useEffect } from "react";
-import { ViewTransition } from "react";
 import ReactDOM from "react-dom";
 
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
@@ -64,14 +63,14 @@ const ToastContainer: FC<{ children: ReactNode }> = ({ children }) => {
       {React.Children.map(children, (toast, i) => {
         if (!toast) return null;
         return (
-          <ViewTransition
+          <div
             key={i}
-            default="none"
-            enter={isAnimated ? "components-animation-fade" : "none"}
-            exit={isAnimated ? "components-animation-fade" : "none"}
+            className={
+              isAnimated ? "components-animation-toast-enter" : undefined
+            }
           >
             {toast}
-          </ViewTransition>
+          </div>
         );
       })}
     </div>,

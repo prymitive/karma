@@ -1,16 +1,6 @@
 $duration: 0.15s;
 
-::view-transition-old(.components-animation-slide) {
-  // Fill-mode keeps the snapshot at the end state after the animation
-  // ends, until React removes it.
-  animation: components-animation-slide-exit $duration ease-out forwards;
-}
-
-::view-transition-new(.components-animation-slide) {
-  animation: components-animation-slide-enter $duration ease-out;
-}
-
-@keyframes components-animation-slide-enter {
+@keyframes components-animation-slide-in {
   from {
     opacity: 0;
     transform: scale(0.95) translateY(-0.25em);
@@ -22,7 +12,7 @@ $duration: 0.15s;
   }
 }
 
-@keyframes components-animation-slide-exit {
+@keyframes components-animation-slide-out {
   from {
     opacity: 1;
     transform: scale(1) translateY(0);
@@ -32,4 +22,18 @@ $duration: 0.15s;
     opacity: 0;
     transform: scale(0.95) translateY(-0.25em);
   }
+}
+
+// The wrapper does not take part in layout, the children render as if it
+// did not exist.
+.components-animation-mount {
+  display: contents;
+}
+
+.components-animation-slide-enter > * {
+  animation: components-animation-slide-in $duration ease-out;
+}
+
+.components-animation-slide-exit > * {
+  animation: components-animation-slide-out $duration ease-out forwards;
 }

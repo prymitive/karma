@@ -1,12 +1,14 @@
-import { use, useDeferredValue, FC, ReactNode, ViewTransition } from "react";
+import { use, FC, ReactNode, useEffect, useState } from "react";
 
 import { ThemeContext } from "Components/Theme";
 
-// Mounts and unmounts children with a View Transition. The `in` value is
-// deferred so that updates pushed outside a Transition (MobX store changes
-// render urgently) still activate the animation: React first renders with
-// the old value, then re-renders with the new one in a background
-// Transition, which is what <ViewTransition> needs to animate.
+// Must be the same as the exit animation duration of the class prop CSS.
+const exitDuration = 150;
+
+// Mounts and unmounts children with a CSS animation. The wrapper only
+// carries the animation class, the CSS animates the child element: the
+// child is usually positioned with floating-ui and a transform on a
+// wrapper would break that positioning.
 const MountTransition: FC<{
   in: boolean;
   enter?: string;
@@ -15,20 +17,38 @@ const MountTransition: FC<{
 }> = ({ in: inProp, enter, exit, children }) => {
   const context = use(ThemeContext);
   const isAnimated = context.animations.duration !== 0;
-  const deferredIn = useDeferredValue(inProp);
-  // With animations off the raw value is used so mounts are instant.
-  const visible = isAnimated ? deferredIn : inProp;
-  // The boundary must not be toggled by the animations setting, that would
-  // remount the children and reset their state.
-  const enterAnimation = isAnimated ? enter : "none";
-  const exitAnimation = isAnimated ? exit : "none";
 
-  if (!visible) return null;
+  // The DOM is kept mounted while the exit animation runs.
+  const [isVisible, setIsVisible] = useState<boolean>(inProp);
+
+  useEffect(() => {
+    if (inProp) {
+      setIsVisible(true);
+      return;
+    }
+    if (!isVisible) return;
+    if (!isAnimated) {
+      setIsVisible(false);
+      return;
+    }
+    const timer = window.setTimeout(() => setIsVisible(false), exitDuration);
+    return () => window.clearTimeout(timer);
+  }, [inProp, isVisible, isAnimated]);
+
+  if (!isVisible) return null;
+
+  const animationClass = !inProp ? exit : isAnimated ? enter : undefined;
 
   return (
-    <ViewTransition default="none" enter={enterAnimation} exit={exitAnimation}>
+    <div
+      className={
+        animationClass
+          ? `components-animation-mount ${animationClass}`
+          : "components-animation-mount"
+      }
+    >
       {children}
-    </ViewTransition>
+    </div>
   );
 };
 

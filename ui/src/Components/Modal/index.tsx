@@ -16,6 +16,14 @@ const ModalInner: FC<{
 }> = ({ size, isUpper, toggleOpen, className, children }) => {
   // needed for tests to spy on useRef
   const ref = React.useRef<HTMLDivElement | null>(null);
+  const context = use(ThemeContext);
+
+  // The enter animation is decided once at mount: applying the class
+  // again after the animations setting changes would replay the
+  // animation.
+  const [enterClass] = useState(
+    context.animations.duration !== 0 ? "components-animation-modal-enter" : "",
+  );
 
   useEffect(() => {
     if (ref.current !== null) {
@@ -37,7 +45,7 @@ const ModalInner: FC<{
   useHotkeys("esc", toggleOpen);
 
   return (
-    <div className={`modal-open ${className ? className : ""}`}>
+    <div className={`modal-open ${className ?? enterClass}`}>
       <div ref={ref} className="modal d-block" role="dialog">
         <div
           className={`modal-dialog ${size} ${
@@ -99,12 +107,11 @@ const Modal: FC<{
     return () => window.clearTimeout(timer);
   }, [isOpen, isVisible, isAnimated, callOnExited]);
 
-  // The dialog animates through CSS, the classes carry the keyframes.
+  // The enter animation is decided by ModalInner at mount, the exit class
+  // is applied while the modal waits for the delayed unmount.
   const dialogClassName = !isOpen
     ? "components-animation-modal-exit"
-    : isAnimated
-      ? "components-animation-modal-enter"
-      : "";
+    : undefined;
 
   return (
     <>
