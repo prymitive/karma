@@ -18,6 +18,7 @@ beforeEach(() => {
 afterEach(() => {
   jest.restoreAllMocks();
   document.body.className = "";
+  document.documentElement.className = "";
 });
 
 const fakeToggle = jest.fn();
@@ -167,6 +168,20 @@ describe("<ModalInner />", () => {
       </ThemeContext>,
     );
     expect(document.body.querySelector(".modal")).toBeInTheDocument();
+  });
+
+  it("toggles the 'modal-open' class on the document element", () => {
+    const { unmount } = renderModal(true);
+    expect(document.documentElement.className.split(" ")).toContain(
+      "modal-open",
+    );
+
+    act(() => {
+      unmount();
+    });
+    expect(document.documentElement.className.split(" ")).not.toContain(
+      "modal-open",
+    );
   });
 
   it("toggleOpen is called after pressing 'esc'", () => {

@@ -26,11 +26,15 @@ const ModalInner: FC<{
   useEffect(() => {
     if (ref.current !== null) {
       document.body.classList.add("modal-open");
+      document.documentElement.classList.add("modal-open");
       disableBodyScroll(ref.current, { reserveScrollBarGap: true });
 
       const modal = ref.current;
       return () => {
-        if (!isUpper) document.body.classList.remove("modal-open");
+        if (!isUpper) {
+          document.body.classList.remove("modal-open");
+          document.documentElement.classList.remove("modal-open");
+        }
         enableBodyScroll(modal);
       };
     }

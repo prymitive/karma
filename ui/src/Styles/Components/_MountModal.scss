@@ -39,3 +39,13 @@ $move: -50px;
   background-color: rgb(30 30 30 / 80%);
   backdrop-filter: saturate(50%) blur(12px);
 }
+
+// Alert group and fade snapshots render in the top layer, they would paint
+// over open modals. Hiding them keeps grid updates instant while a modal
+// is open.
+:root.modal-open::view-transition-old(.components-animation-alergroup),
+:root.modal-open::view-transition-new(.components-animation-alergroup),
+:root.modal-open::view-transition-old(.components-animation-fade),
+:root.modal-open::view-transition-new(.components-animation-fade) {
+  visibility: hidden;
+}
