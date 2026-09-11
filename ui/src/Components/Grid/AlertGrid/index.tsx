@@ -1,4 +1,4 @@
-import { FC, useEffect, useState, useCallback } from "react";
+import { FC, useEffect, useState, useEffectEvent } from "react";
 
 import { autorun } from "mobx";
 import { observer } from "mobx-react-lite";
@@ -56,9 +56,9 @@ const AlertGrid: FC<{
   useHotkeys("alt+space", alertStore.status.togglePause);
 
   const [paddingTop, setPaddingTop] = useState<number>(0);
-  const onNavbarResize = useCallback((event: Event) => {
+  const onNavbarResize = useEffectEvent((event: Event) => {
     setPaddingTop((event as CustomEvent).detail);
-  }, []);
+  });
   useEffect(() => {
     window.addEventListener("navbarResize", onNavbarResize);
     return () => {

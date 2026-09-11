@@ -1,6 +1,6 @@
 import { act, FC } from "react";
 
-import { render, screen } from "@testing-library/react";
+import { render, screen, renderHook } from "@testing-library/react";
 
 import { useElementSize } from "./useElementSize";
 
@@ -73,5 +73,10 @@ describe("useElementSize", () => {
     const { unmount } = render(<Size />);
     unmount();
     expect(ResizeObserverMock.instances[0].disconnect).toHaveBeenCalledTimes(1);
+  });
+
+  it("tolerates a null node", () => {
+    const { result } = renderHook(() => useElementSize());
+    expect(result.current.ref(null)).toBeUndefined();
   });
 });

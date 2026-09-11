@@ -1,4 +1,14 @@
-import { FC, useRef, useState, useCallback, Ref, CSSProperties } from "react";
+import {
+  FC,
+  Fragment,
+  FragmentInstance,
+  useRef,
+  useState,
+  useCallback,
+  startTransition,
+  Ref,
+  CSSProperties,
+} from "react";
 
 import { observer } from "mobx-react-lite";
 
@@ -155,16 +165,21 @@ const GroupMenu: FC<{
   const [isHidden, setIsHidden] = useState<boolean>(true);
 
   const toggle = useCallback(() => {
-    setIsMenuOpen(isHidden);
-    setIsHidden(!isHidden);
+    // Wrapped in a Transition so the mount and unmount animate at once.
+    startTransition(() => {
+      setIsMenuOpen(isHidden);
+      setIsHidden(!isHidden);
+    });
   }, [setIsMenuOpen, isHidden]);
 
   const hide = useCallback(() => {
-    setIsHidden(true);
-    setIsMenuOpen(false);
+    startTransition(() => {
+      setIsHidden(true);
+      setIsMenuOpen(false);
+    });
   }, [setIsMenuOpen]);
 
-  const rootRef = useRef<HTMLSpanElement | null>(null);
+  const rootRef = useRef<FragmentInstance | null>(null);
   useOnClickOutside(rootRef, hide, !isHidden);
 
   const { x, y, refs, strategy } = useFloating({
@@ -173,7 +188,7 @@ const GroupMenu: FC<{
   });
 
   return (
-    <span ref={rootRef}>
+    <Fragment ref={rootRef}>
       <span
         ref={refs.setReference}
         onClick={toggle}
@@ -196,7 +211,7 @@ const GroupMenu: FC<{
           strategy={strategy}
         />
       </DropdownSlide>
-    </span>
+    </Fragment>
   );
 };
 

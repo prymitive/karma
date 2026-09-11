@@ -1,4 +1,14 @@
-import { FC, Ref, CSSProperties, useRef, useState, useCallback } from "react";
+import {
+  FC,
+  Ref,
+  CSSProperties,
+  Fragment,
+  FragmentInstance,
+  useRef,
+  useState,
+  useCallback,
+  startTransition,
+} from "react";
 
 import { observer } from "mobx-react-lite";
 
@@ -191,16 +201,21 @@ const AlertMenu: FC<AlertMenuProps> = ({
   const [isHidden, setIsHidden] = useState<boolean>(true);
 
   const toggle = useCallback(() => {
-    setIsMenuOpen(isHidden);
-    setIsHidden(!isHidden);
+    // Wrapped in a Transition so the mount and unmount animate at once.
+    startTransition(() => {
+      setIsMenuOpen(isHidden);
+      setIsHidden(!isHidden);
+    });
   }, [isHidden, setIsMenuOpen]);
 
   const hide = useCallback(() => {
-    setIsHidden(true);
-    setIsMenuOpen(false);
+    startTransition(() => {
+      setIsHidden(true);
+      setIsMenuOpen(false);
+    });
   }, [setIsMenuOpen]);
 
-  const rootRef = useRef<HTMLSpanElement | null>(null);
+  const rootRef = useRef<FragmentInstance | null>(null);
   useOnClickOutside(rootRef, hide, !isHidden);
 
   const { x, y, refs, strategy } = useFloating({
@@ -209,7 +224,7 @@ const AlertMenu: FC<AlertMenuProps> = ({
   });
 
   return (
-    <span ref={rootRef}>
+    <Fragment ref={rootRef}>
       <span
         className="components-label components-label-with-hover px-1 me-1 badge bg-secondary cursor-pointer"
         ref={refs.setReference}
@@ -236,7 +251,7 @@ const AlertMenu: FC<AlertMenuProps> = ({
           strategy={strategy}
         />
       </DropdownSlide>
-    </span>
+    </Fragment>
   );
 };
 

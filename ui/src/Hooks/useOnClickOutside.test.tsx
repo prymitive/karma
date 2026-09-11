@@ -26,6 +26,14 @@ describe("useOnClickOutside", () => {
     );
   };
 
+  const NoRefComponent: FC = () => {
+    const ref = useRef<HTMLDivElement | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
+    useOnClickOutside(ref, () => setIsModalOpen(false), true);
+
+    return isModalOpen ? <div>Open</div> : <div>Hidden</div>;
+  };
+
   it("closes modal on click outside", () => {
     render(<Component enabled />);
     expect(screen.getByText("Open")).toBeInTheDocument();
@@ -62,7 +70,7 @@ describe("useOnClickOutside", () => {
   it("modal stays open on click inside", () => {
     render(<Component enabled />);
     expect(screen.getByText("Open")).toBeInTheDocument();
-    fireEvent.click(screen.getByText("Open"));
+    fireEvent.mouseDown(screen.getByText("Open"));
     expect(screen.getByText("Open")).toBeInTheDocument();
   });
 
@@ -85,6 +93,20 @@ describe("useOnClickOutside", () => {
       document.dispatchEvent(clickEvent);
     });
     expect(screen.getByText("Hidden")).toBeInTheDocument();
+  });
+
+  it("ignores events when the ref has no node", () => {
+    render(<NoRefComponent />);
+    expect(screen.getByText("Open")).toBeInTheDocument();
+
+    const clickEvent = new MouseEvent("mousedown", {
+      bubbles: true,
+      cancelable: true,
+    });
+    act(() => {
+      document.dispatchEvent(clickEvent);
+    });
+    expect(screen.getByText("Open")).toBeInTheDocument();
   });
 
   it("unmounts cleanly", () => {

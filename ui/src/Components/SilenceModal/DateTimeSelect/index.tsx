@@ -1,4 +1,4 @@
-import { FC, useEffect, useState, useCallback, ReactNode } from "react";
+import { FC, useEffect, useState, ReactNode } from "react";
 
 import { observer } from "mobx-react-lite";
 
@@ -252,16 +252,15 @@ const DateTimeSelect: FC<{
   const [currentTab, setCurrentTab] = useState<tabT>(openTab);
   const [timeNow, setTimeNow] = useState<Date>(() => nowZeroSeconds());
 
-  const updateTimeNow = useCallback(() => {
-    setTimeNow(nowZeroSeconds());
-  }, []);
-
   useEffect(() => {
-    const nowUpdateTimer = setInterval(updateTimeNow, 30 * 1000);
+    const nowUpdateTimer = setInterval(
+      () => setTimeNow(nowZeroSeconds()),
+      30 * 1000,
+    );
     return () => {
       clearInterval(nowUpdateTimer);
     };
-  }, [updateTimeNow]);
+  }, []);
 
   return (
     <>
