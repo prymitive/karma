@@ -25,7 +25,6 @@
     "mobx-react-lite": "5.0.3",
     "promise-retry": "2.0.1",
     "react": "19.3.0",
-    "react-cool-dimensions": "3.0.1",
     "react-day-picker": "10.0.1",
     "react-dom": "19.3.0",
     "react-hotkeys-hook": "5.3.3",
@@ -33,7 +32,6 @@
     "react-intersection-observer": "11.0.1",
     "react-json-pretty": "2.2.0",
     "react-linkify": "0.2.2",
-    "react-media-hook": "0.5.1",
     "react-range": "1.10.0",
     "react-select": "5.10.2",
     "typeface-open-sans": "1.1.13"

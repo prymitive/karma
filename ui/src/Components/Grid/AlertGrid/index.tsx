@@ -1,18 +1,17 @@
-import { FC, useEffect, useState, useRef, useCallback } from "react";
+import { FC, useEffect, useState, useCallback } from "react";
 
 import { autorun } from "mobx";
 import { observer } from "mobx-react-lite";
 
-import useDimensions from "react-cool-dimensions";
+import { useHotkeys } from "react-hotkeys-hook";
 
 import type { SizeDetail } from "bricks.js";
-
-import { useHotkeys } from "react-hotkeys-hook";
 
 import type { AlertStore } from "Stores/AlertStore";
 import type { Settings } from "Stores/Settings";
 import type { SilenceFormStore } from "Stores/SilenceFormStore";
 import { useWindowSize } from "Hooks/useWindowSize";
+import { useElementSize } from "Hooks/useElementSize";
 import Grid from "./Grid";
 import { GridSizesConfig, GetGridElementWidth } from "./GridSize";
 
@@ -21,9 +20,8 @@ const AlertGrid: FC<{
   silenceFormStore: SilenceFormStore;
   settingsStore: Settings;
 }> = ({ alertStore, settingsStore, silenceFormStore }) => {
-  const ref = useRef<HTMLDivElement>(null);
   const { width: windowWidth } = useWindowSize();
-  const { observe, width: bodyWidth } = useDimensions();
+  const { ref: bodySizeRef, width: bodyWidth } = useElementSize();
 
   const [gridSizesConfig, setGridSizesConfig] = useState<SizeDetail[]>(() =>
     GridSizesConfig(settingsStore.gridConfig.config.groupWidth),
@@ -70,12 +68,7 @@ const AlertGrid: FC<{
 
   return (
     <>
-      <div
-        ref={(el) => {
-          observe(el as HTMLElement);
-          ref.current = el as HTMLDivElement;
-        }}
-      />
+      <div ref={bodySizeRef} />
       {alertStore.data.grids.map((grid, index) => (
         <Grid
           key={`${grid.labelName}/${grid.labelValue}`}

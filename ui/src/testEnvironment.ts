@@ -1,6 +1,6 @@
 import { TestEnvironment } from "jest-environment-jsdom";
 
-// ResizeObserver polyfill class for react-cool-dimensions
+// jsdom has no ResizeObserver implementation
 class ResizeObserverPolyfill {
   observe() {}
   unobserve() {}
