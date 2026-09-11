@@ -6,6 +6,7 @@ import {
   ReactNode,
   useCallback,
   useDeferredValue,
+  startTransition,
   ViewTransition,
 } from "react";
 
@@ -110,11 +111,13 @@ const Browser: FC<{
   }, [error, isLoading, response]);
 
   const [isDeleteMenuOpen, setIsDeleteMenuOpen] = useState<boolean>(false);
-  const hideDeleteMenu = useCallback(() => setIsDeleteMenuOpen(false), []);
-  const toggleDeleteMenu = useCallback(
-    () => setIsDeleteMenuOpen(!isDeleteMenuOpen),
-    [isDeleteMenuOpen],
-  );
+  const hideDeleteMenu = useCallback(() => {
+    startTransition(() => setIsDeleteMenuOpen(false));
+  }, []);
+  const toggleDeleteMenu = useCallback(() => {
+    // Wrapped in a Transition so the mount and unmount animate at once.
+    startTransition(() => setIsDeleteMenuOpen(!isDeleteMenuOpen));
+  }, [isDeleteMenuOpen]);
 
   const onSelect = useCallback(
     (cluster: string, id: string, checked: boolean) => {

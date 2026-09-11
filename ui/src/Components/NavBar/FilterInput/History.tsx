@@ -5,6 +5,7 @@ import {
   useRef,
   useState,
   useCallback,
+  startTransition,
   ReactNode,
   CSSProperties,
 } from "react";
@@ -194,8 +195,13 @@ const History: FC<{
   const [history] = useState<HistoryStorage>(() => new HistoryStorage());
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const [maxHeight, setMaxHeight] = useState<number | null>(null);
-  const hide = useCallback(() => setIsVisible(false), []);
-  const toggle = useCallback(() => setIsVisible(!isVisible), [isVisible]);
+  const hide = useCallback(() => {
+    startTransition(() => setIsVisible(false));
+  }, []);
+  const toggle = useCallback(() => {
+    // Wrapped in a Transition so the mount and unmount animate at once.
+    startTransition(() => setIsVisible(!isVisible));
+  }, [isVisible]);
 
   const { x, y, refs, strategy } = useFloating({
     placement: "bottom-end",
