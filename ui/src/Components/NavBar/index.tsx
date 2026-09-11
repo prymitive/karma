@@ -1,4 +1,11 @@
-import { use, FC, useState, useEffect, useCallback } from "react";
+import {
+  use,
+  FC,
+  useState,
+  useEffect,
+  useCallback,
+  useEffectEvent,
+} from "react";
 
 import { reaction } from "mobx";
 import { observer } from "mobx-react-lite";
@@ -31,20 +38,16 @@ const NavBar: FC<{
 
   const { ref: navSizeRef, height } = useElementSize();
 
-  const updateBodyPaddingTop = useCallback(
-    (idle: boolean) => {
-      const paddingTop = idle ? 0 : height + 8;
-      // eslint-disable-next-line react-compiler/react-compiler -- intentional DOM side-effect, not React state
-      document.body.style.paddingTop = `${paddingTop}px`;
-      setContainerClass(idle ? "invisible" : "visible");
+  const updateBodyPaddingTop = useEffectEvent((idle: boolean) => {
+    const paddingTop = idle ? 0 : height + 8;
+    document.body.style.paddingTop = `${paddingTop}px`;
+    setContainerClass(idle ? "invisible" : "visible");
 
-      const toggleEvent = new CustomEvent("navbarResize", {
-        detail: paddingTop,
-      });
-      window.dispatchEvent(toggleEvent);
-    },
-    [height],
-  );
+    const toggleEvent = new CustomEvent("navbarResize", {
+      detail: paddingTop,
+    });
+    window.dispatchEvent(toggleEvent);
+  });
 
   const onActive = useCallback(() => {
     alertStore.ui.setIsIdle(false);
@@ -72,12 +75,7 @@ const NavBar: FC<{
       updateBodyPaddingTop(false);
     }
     return () => window.clearTimeout(timer);
-  }, [
-    height,
-    updateBodyPaddingTop,
-    alertStore.ui.isIdle,
-    context.animations.duration,
-  ]);
+  }, [height, alertStore.ui.isIdle, context.animations.duration]);
 
   useEffect(
     () =>

@@ -1,16 +1,15 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 
 function useSupportsTouch(): boolean {
   const [supportsTouch, setSupportsTouch] = useState<boolean>(false);
 
-  const handler = useCallback(() => setSupportsTouch(true), []);
-
   useEffect(() => {
-    window.addEventListener("touchstart", handler);
+    const onTouchStart = () => setSupportsTouch(true);
+    window.addEventListener("touchstart", onTouchStart);
     return () => {
-      window.removeEventListener("touchstart", handler);
+      window.removeEventListener("touchstart", onTouchStart);
     };
-  }, [handler]);
+  }, []);
 
   return supportsTouch;
 }

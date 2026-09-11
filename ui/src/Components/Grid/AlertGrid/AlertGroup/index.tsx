@@ -3,7 +3,7 @@ import {
   FC,
   Ref,
   useEffect,
-  useCallback,
+  useEffectEvent,
   useState,
   ReactNode,
 } from "react";
@@ -128,15 +128,12 @@ const AlertGroup = ({
     );
   };
 
-  const onAlertGroupCollapseEvent = useCallback(
-    (event: Event) => {
-      const customEvent = event as CustomEvent;
-      if (customEvent.detail.gridLabelValue === gridLabelValue) {
-        setIsCollapsed(customEvent.detail.value);
-      }
-    },
-    [gridLabelValue],
-  );
+  const onAlertGroupCollapseEvent = useEffectEvent((event: Event) => {
+    const customEvent = event as CustomEvent;
+    if (customEvent.detail.gridLabelValue === gridLabelValue) {
+      setIsCollapsed(customEvent.detail.value);
+    }
+  });
 
   useEffect(() => {
     window.addEventListener("alertGroupCollapse", onAlertGroupCollapseEvent);

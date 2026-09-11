@@ -66,27 +66,25 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
         </div>
       </div>
     </div>
-    <span>
-      <span
-        class="components-label components-label-with-hover px-1 me-1 badge bg-secondary cursor-pointer"
-        data-toggle="dropdown"
+    <span
+      class="components-label components-label-with-hover px-1 me-1 badge bg-secondary cursor-pointer"
+      data-toggle="dropdown"
+    >
+      <svg
+        aria-hidden="true"
+        class="svg-inline--fa fa-caret-down pe-1"
+        data-icon="caret-down"
+        data-prefix="fas"
+        role="img"
+        style="width: 0.8rem;"
+        viewBox="0 0 320 512"
       >
-        <svg
-          aria-hidden="true"
-          class="svg-inline--fa fa-caret-down pe-1"
-          data-icon="caret-down"
-          data-prefix="fas"
-          role="img"
-          style="width: 0.8rem;"
-          viewBox="0 0 320 512"
-        >
-          <path
-            d="M140.3 376.8c12.6 10.2 31.1 9.5 42.8-2.2l128-128c9.2-9.2 11.9-22.9 6.9-34.9S301.4 192 288.5 192l-256 0c-12.9 0-24.6 7.8-29.6 19.8S.7 237.5 9.9 246.6l128 128 2.4 2.2z"
-            fill="currentColor"
-          />
-        </svg>
-        1 day ago
-      </span>
+        <path
+          d="M140.3 376.8c12.6 10.2 31.1 9.5 42.8-2.2l128-128c9.2-9.2 11.9-22.9 6.9-34.9S301.4 192 288.5 192l-256 0c-12.9 0-24.6 7.8-29.6 19.8S.7 237.5 9.9 246.6l128 128 2.4 2.2z"
+          fill="currentColor"
+        />
+      </svg>
+      1 day ago
     </span>
     <div
       class=" tooltip-trigger"
@@ -238,27 +236,25 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
         </div>
       </div>
     </div>
-    <span>
-      <span
-        class="components-label components-label-with-hover px-1 me-1 badge bg-secondary cursor-pointer"
-        data-toggle="dropdown"
+    <span
+      class="components-label components-label-with-hover px-1 me-1 badge bg-secondary cursor-pointer"
+      data-toggle="dropdown"
+    >
+      <svg
+        aria-hidden="true"
+        class="svg-inline--fa fa-caret-down pe-1"
+        data-icon="caret-down"
+        data-prefix="fas"
+        role="img"
+        style="width: 0.8rem;"
+        viewBox="0 0 320 512"
       >
-        <svg
-          aria-hidden="true"
-          class="svg-inline--fa fa-caret-down pe-1"
-          data-icon="caret-down"
-          data-prefix="fas"
-          role="img"
-          style="width: 0.8rem;"
-          viewBox="0 0 320 512"
-        >
-          <path
-            d="M140.3 376.8c12.6 10.2 31.1 9.5 42.8-2.2l128-128c9.2-9.2 11.9-22.9 6.9-34.9S301.4 192 288.5 192l-256 0c-12.9 0-24.6 7.8-29.6 19.8S.7 237.5 9.9 246.6l128 128 2.4 2.2z"
-            fill="currentColor"
-          />
-        </svg>
-        1 day ago
-      </span>
+        <path
+          d="M140.3 376.8c12.6 10.2 31.1 9.5 42.8-2.2l128-128c9.2-9.2 11.9-22.9 6.9-34.9S301.4 192 288.5 192l-256 0c-12.9 0-24.6 7.8-29.6 19.8S.7 237.5 9.9 246.6l128 128 2.4 2.2z"
+          fill="currentColor"
+        />
+      </svg>
+      1 day ago
     </span>
     <div
       class=" tooltip-trigger"

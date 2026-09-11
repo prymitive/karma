@@ -8,6 +8,7 @@ import {
   useLayoutEffect,
   useDeferredValue,
   useRef,
+  useEffectEvent,
   startTransition,
   MouseEvent,
   ViewTransition,
@@ -109,9 +110,9 @@ const Grid: FC<{
     }
   };
 
-  const onAlertGridCollapseEvent = useCallback((event: Event) => {
+  const onAlertGridCollapseEvent = useEffectEvent((event: Event) => {
     setIsExpanded((event as CustomEvent).detail);
-  }, []);
+  });
 
   useEffect(() => {
     // We have font-display:swap set for font assets, this means that on initial
@@ -132,7 +133,7 @@ const Grid: FC<{
     return () => {
       window.removeEventListener("alertGridCollapse", onAlertGridCollapseEvent);
     };
-  }, [debouncedRepack, onAlertGridCollapseEvent]);
+  }, [debouncedRepack]);
 
   useEffect(() => {
     debouncedRepack();
