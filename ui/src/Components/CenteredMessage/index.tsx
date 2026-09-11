@@ -7,22 +7,20 @@ const CenteredMessage: FC<{
   className?: string;
 }> = ({ children, className }) => {
   const context = use(ThemeContext);
-
-  const heading = (
-    <h1
-      className={`${
-        className ? className : "display-1 text-placeholder"
-      } screen-center`}
-    >
-      {children}
-    </h1>
-  );
-
-  if (!context.animations.duration) return heading;
+  // The boundary must not be toggled by the animations setting, that would
+  // remount the children and reset their state.
+  const enterAnimation =
+    context.animations.duration !== 0 ? "components-animation-fade" : "none";
 
   return (
-    <ViewTransition default="none" enter="components-animation-fade">
-      {heading}
+    <ViewTransition default="none" enter={enterAnimation}>
+      <h1
+        className={`${
+          className ? className : "display-1 text-placeholder"
+        } screen-center`}
+      >
+        {children}
+      </h1>
     </ViewTransition>
   );
 };

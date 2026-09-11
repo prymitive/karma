@@ -1,11 +1,4 @@
-import React, {
-  use,
-  FC,
-  useEffect,
-  useRef,
-  useDeferredValue,
-  ViewTransition,
-} from "react";
+import React, { use, FC, useEffect, useState, useEffectEvent } from "react";
 import ReactDOM from "react-dom";
 
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
@@ -18,8 +11,9 @@ const ModalInner: FC<{
   size: "modal-lg" | "modal-xl";
   isUpper: boolean;
   toggleOpen: () => void;
+  className?: string;
   children: React.ReactNode;
-}> = ({ size, isUpper, toggleOpen, children }) => {
+}> = ({ size, isUpper, toggleOpen, className, children }) => {
   // needed for tests to spy on useRef
   const ref = React.useRef<HTMLDivElement | null>(null);
 
@@ -43,7 +37,7 @@ const ModalInner: FC<{
   useHotkeys("esc", toggleOpen);
 
   return (
-    <div className="modal-open">
+    <div className={`modal-open ${className ? className : ""}`}>
       <div ref={ref} className="modal d-block" role="dialog">
         <div
           className={`modal-dialog ${size} ${
@@ -57,6 +51,9 @@ const ModalInner: FC<{
     </div>
   );
 };
+
+// Must be the same as the exit animation duration in _MountModal.scss.
+const modalExitDuration = 200;
 
 const Modal: FC<{
   size?: "modal-lg" | "modal-xl";
@@ -75,42 +72,68 @@ const Modal: FC<{
 }) => {
   const context = use(ThemeContext);
   const isAnimated = context.animations.duration !== 0;
-  // Store-driven open state renders urgently, deferring it makes the
-  // modal mount and unmount render inside a Transition so it animates.
-  const deferredIsOpen = useDeferredValue(isOpen);
 
-  // The modal DOM is removed at once when closing (only the snapshot
-  // animates), so onExited fires on close.
-  const wasOpenRef = useRef(false);
+  // The modal DOM is kept mounted while the exit animation runs.
+  const [isVisible, setIsVisible] = useState<boolean>(isOpen);
+
+  const callOnExited = useEffectEvent(() => {
+    onExited?.();
+  });
+
   useEffect(() => {
-    if (wasOpenRef.current && !deferredIsOpen) onExited?.();
-    wasOpenRef.current = deferredIsOpen;
-  }, [deferredIsOpen, onExited]);
+    if (isOpen) {
+      setIsVisible(true);
+      return;
+    }
+    if (!isVisible) return;
 
-  return ReactDOM.createPortal(
+    if (!isAnimated) {
+      setIsVisible(false);
+      callOnExited();
+      return;
+    }
+    const timer = window.setTimeout(() => {
+      setIsVisible(false);
+      callOnExited();
+    }, modalExitDuration);
+    return () => window.clearTimeout(timer);
+  }, [isOpen, isVisible, isAnimated, callOnExited]);
+
+  // The dialog animates through CSS, the classes carry the keyframes.
+  const dialogClassName = !isOpen
+    ? "components-animation-modal-exit"
+    : isAnimated
+      ? "components-animation-modal-enter"
+      : "";
+
+  return (
     <>
-      {deferredIsOpen ? (
-        isAnimated ? (
-          <ViewTransition
-            default="none"
-            enter="components-animation-modal"
-            exit="components-animation-modal"
-          >
-            <ModalInner size={size} isUpper={isUpper} toggleOpen={toggleOpen}>
+      {isVisible
+        ? ReactDOM.createPortal(
+            <ModalInner
+              size={size}
+              isUpper={isUpper}
+              toggleOpen={toggleOpen}
+              className={dialogClassName}
+            >
               {children}
-            </ModalInner>
-          </ViewTransition>
-        ) : (
-          <ModalInner size={size} isUpper={isUpper} toggleOpen={toggleOpen}>
-            {children}
-          </ModalInner>
-        )
-      ) : null}
-      {deferredIsOpen && !isUpper ? (
-        <div className="modal-backdrop d-block" />
-      ) : null}
-    </>,
-    document.body,
+            </ModalInner>,
+            document.body,
+          )
+        : null}
+      {isVisible && !isUpper
+        ? ReactDOM.createPortal(
+            <div
+              className={`modal-backdrop d-block ${
+                !isOpen && isAnimated
+                  ? "components-animation-backdrop-exit"
+                  : ""
+              }`}
+            />,
+            document.body,
+          )
+        : null}
+    </>
   );
 };
 

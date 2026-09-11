@@ -1,22 +1,8 @@
 $duration: 0.5s;
 
-// Plays once on mount.
-@keyframes components-navbar-slide-in {
-  from {
-    opacity: 0.01;
-    transform: translateY(-100%);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 // Handles the idle show/hide toggling.
 .components-navbar-animated {
   transition: opacity $duration ease-out, transform $duration ease-out;
-  animation: components-navbar-slide-in $duration ease-out;
 }
 
 .components-navbar-idle {

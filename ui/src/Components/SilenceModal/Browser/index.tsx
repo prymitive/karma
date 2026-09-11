@@ -48,18 +48,16 @@ const Placeholder: FC<{
   content: ReactNode;
 }> = ({ content }) => {
   const context = use(ThemeContext);
-
-  const body = (
-    <div className="px-2 py-5 bg-transparent">
-      <h1 className="display-5 text-placeholder text-center">{content}</h1>
-    </div>
-  );
-
-  if (!context.animations.duration) return body;
+  // The boundary must not be toggled by the animations setting, that would
+  // remount the children and reset their state.
+  const enterAnimation =
+    context.animations.duration !== 0 ? "components-animation-fade" : "none";
 
   return (
-    <ViewTransition default="none" enter="components-animation-fade">
-      {body}
+    <ViewTransition default="none" enter={enterAnimation}>
+      <div className="px-2 py-5 bg-transparent">
+        <h1 className="display-5 text-placeholder text-center">{content}</h1>
+      </div>
     </ViewTransition>
   );
 };

@@ -18,12 +18,15 @@ const MountTransition: FC<{
   const deferredIn = useDeferredValue(inProp);
   // With animations off the raw value is used so mounts are instant.
   const visible = isAnimated ? deferredIn : inProp;
+  // The boundary must not be toggled by the animations setting, that would
+  // remount the children and reset their state.
+  const enterAnimation = isAnimated ? enter : "none";
+  const exitAnimation = isAnimated ? exit : "none";
 
   if (!visible) return null;
-  if (!isAnimated) return <>{children}</>;
 
   return (
-    <ViewTransition default="none" enter={enter} exit={exit}>
+    <ViewTransition default="none" enter={enterAnimation} exit={exitAnimation}>
       {children}
     </ViewTransition>
   );
