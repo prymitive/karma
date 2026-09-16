@@ -290,6 +290,7 @@ describe("<Grid />", () => {
 
     const packLog = (Bricks as unknown as { packLog: unknown[][] }).packLog;
     const packsBefore = packLog.length;
+    startViewTransitionMock.mockClear();
 
     const toggle = container!.querySelector(
       "h5.components-grid-swimlane svg.fa-chevron-down",
@@ -303,6 +304,7 @@ describe("<Grid />", () => {
     expect(
       container!.querySelectorAll(".components-grid-alertgrid-alertgroup"),
     ).toHaveLength(0);
+    expect(startViewTransitionMock).toHaveBeenCalledTimes(1);
     expect(packLog.length).toBe(packsBefore);
 
     // The repack runs after the exit animation is done.
