@@ -139,14 +139,20 @@ const Grid: FC<{
     debouncedRepack();
   });
 
-  // Store changes render urgently, these values are deferred so group and
-  // label mounts render inside a Transition and animate.
-  const showSwimlane = useDeferredValue(grid.labelName !== "");
-  const showGroups = useDeferredValue(isExpanded || grid.labelName === "");
-  const alertGroups = useDeferredValue(grid.alertGroups, []);
-  const showLoadMore = useDeferredValue(
-    isExpanded && grid.totalGroups > grid.alertGroups.length,
-  );
+  // Store changes are deferred only when animations are on.
+  const rawShowSwimlane = grid.labelName !== "";
+  const rawShowGroups = isExpanded || grid.labelName === "";
+  const rawAlertGroups = grid.alertGroups;
+  const rawShowLoadMore =
+    isExpanded && grid.totalGroups > grid.alertGroups.length;
+  const deferredShowSwimlane = useDeferredValue(rawShowSwimlane);
+  const deferredShowGroups = useDeferredValue(rawShowGroups);
+  const deferredAlertGroups = useDeferredValue(rawAlertGroups, []);
+  const deferredShowLoadMore = useDeferredValue(rawShowLoadMore);
+  const showSwimlane = isAnimated ? deferredShowSwimlane : rawShowSwimlane;
+  const showGroups = isAnimated ? deferredShowGroups : rawShowGroups;
+  const alertGroups = isAnimated ? deferredAlertGroups : rawAlertGroups;
+  const showLoadMore = isAnimated ? deferredShowLoadMore : rawShowLoadMore;
 
   const visibleGroupCount = showGroups ? alertGroups.length : 0;
   const previousGroupCountRef = useRef(visibleGroupCount);
