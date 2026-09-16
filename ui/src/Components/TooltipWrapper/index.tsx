@@ -21,7 +21,7 @@ const TooltipContent: FC<{
 
   return (
     <div
-      className={`tooltip tooltip-inner${
+      className={`tooltip tooltip-inner show${
         animationClass ? ` ${animationClass}` : ""
       }`}
       ref={setFloating}
