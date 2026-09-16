@@ -8,10 +8,11 @@ import { GetClassAndStyle } from "Components/Labels/Utils";
 
 const HistoryLabel: FC<{
   alertStore: AlertStore;
+  raw: string;
   name: string;
   matcher: string;
   value: string;
-}> = ({ alertStore, name, matcher, value }) => {
+}> = ({ alertStore, raw, name, matcher, value }) => {
   const cs = GetClassAndStyle(
     alertStore,
     matcher === QueryOperators.Equal ? name : "",
@@ -21,8 +22,7 @@ const HistoryLabel: FC<{
 
   return (
     <span className={cs.className} style={cs.style}>
-      {name ? `${name}${matcher}` : null}
-      {value}
+      {raw}
     </span>
   );
 };
