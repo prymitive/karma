@@ -368,6 +368,77 @@ describe("useFetchGet", () => {
     expect(result.current.error).toBeNull();
   });
 
+  it("ignores a stale response after a newer request succeeds", async () => {
+    // Resolve requests in reverse order.
+    // Only the latest request can update state.
+    const pending: Array<(value: Response) => void> = [];
+    const fetcher = jest.fn(
+      () =>
+        new Promise<Response>((resolve) => {
+          pending.push(resolve);
+        }),
+    );
+    const response = (body: string) =>
+      ({
+        ok: true,
+        headers: new Headers({ "content-type": "text/plain" }),
+        text: async () => body,
+      }) as Response;
+    const { result } = renderHook(() =>
+      useFetchGet<string>("http://localhost/overlap", {
+        fetcher,
+        autorun: false,
+      }),
+    );
+
+    act(() => {
+      void result.current.get();
+      void result.current.get();
+    });
+    await waitFor(() => expect(fetcher.mock.calls.length).toBe(2));
+
+    await act(async () => pending[1](response("new")));
+    expect(result.current.response).toBe("new");
+
+    await act(async () => pending[0](response("old")));
+    expect(result.current.response).toBe("new");
+    expect(result.current.error).toBeNull();
+  });
+
+  it("ignores a body parsing error after cancellation", async () => {
+    // Body parsing can reject after the request is canceled.
+    let rejectBody: (reason?: unknown) => void = () => {};
+    const parseBody = jest.fn(
+      () =>
+        new Promise<unknown>((_, reject) => {
+          rejectBody = reject;
+        }),
+    );
+    const fetcher = jest.fn(() =>
+      Promise.resolve({
+        ok: true,
+        headers: new Headers({ "content-type": "application/json" }),
+        json: parseBody,
+      } as unknown as Response),
+    );
+    const { result } = renderHook(() =>
+      useFetchGet<string>("http://localhost/cancel/body", {
+        fetcher,
+        autorun: false,
+      }),
+    );
+
+    act(() => {
+      void result.current.get();
+    });
+    await waitFor(() => expect(parseBody).toHaveBeenCalledTimes(1));
+    act(() => result.current.cancelGet());
+    await act(async () => rejectBody(new Error("late body error")));
+
+    expect(result.current.response).toBeNull();
+    expect(result.current.error).toBeNull();
+  });
+
   it("doesn't update response on 200 response after cleanup", async () => {
     fetchMock.route("http://localhost/slow/ok", {
       delay: 1000,
