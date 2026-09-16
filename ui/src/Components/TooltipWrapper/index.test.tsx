@@ -131,7 +131,7 @@ describe("TooltipWrapper", () => {
     expect(tooltip.style.top).toBe("");
     expect(tooltip.style.left).toBe("");
     expect(tooltip.className).toBe(
-      "tooltip tooltip-inner components-animation-tooltip-enter",
+      "tooltip tooltip-inner show components-animation-tooltip-enter",
     );
   });
 
@@ -148,6 +148,6 @@ describe("TooltipWrapper", () => {
       </ThemeContext>,
     );
     const tooltip = container.querySelector(".tooltip") as HTMLElement;
-    expect(tooltip.className).toBe("tooltip tooltip-inner");
+    expect(tooltip.className).toBe("tooltip tooltip-inner show");
   });
 });
