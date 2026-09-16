@@ -103,9 +103,10 @@ const Fetcher: FC<{
   const timerRef = useRef<number | undefined>(undefined);
   const [percentLeft, setPercentLeft] = useState<number>(100);
   const [isHover, setIsHover] = useState(false);
-  // Store changes render urgently, the paused flag is deferred so the
-  // button swap renders inside a Transition and fades in.
-  const paused = useDeferredValue(alertStore.status.paused);
+  const context = use(ThemeContext);
+  const rawPaused = alertStore.status.paused;
+  const deferredPaused = useDeferredValue(rawPaused);
+  const paused = context.animations.duration !== 0 ? deferredPaused : rawPaused;
 
   const getSortSettings = () => {
     const sortSettings = {

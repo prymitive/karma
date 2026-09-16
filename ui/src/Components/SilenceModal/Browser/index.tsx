@@ -1,12 +1,4 @@
-import {
-  use,
-  FC,
-  useState,
-  useEffect,
-  ReactNode,
-  useCallback,
-  useDeferredValue,
-} from "react";
+import { use, FC, useState, useEffect, ReactNode, useCallback } from "react";
 
 import { observer } from "mobx-react-lite";
 
@@ -129,12 +121,6 @@ const Browser: FC<{
     [setSelected, setAllSelected],
   );
 
-  // Fetch state updates render urgently, the values are deferred so the
-  // placeholder mounts render inside a Transition and fade in.
-  const deferredIsLoading = useDeferredValue(isLoading);
-  const deferredResponse = useDeferredValue(response);
-  const deferredError = useDeferredValue(error);
-
   return (
     <>
       <div
@@ -177,7 +163,7 @@ const Browser: FC<{
           Sort order
         </button>
       </div>
-      {deferredIsLoading && deferredResponse === null ? (
+      {isLoading && response === null ? (
         <Placeholder
           content={
             <FontAwesomeIcon
@@ -188,13 +174,13 @@ const Browser: FC<{
             />
           }
         />
-      ) : deferredError !== null ? (
-        <FetchError message={deferredError} />
-      ) : deferredResponse === null || deferredResponse.length === 0 ? (
+      ) : error !== null ? (
+        <FetchError message={error} />
+      ) : response === null || response.length === 0 ? (
         <Placeholder content="Nothing to show" />
       ) : (
         <>
-          {deferredResponse
+          {response
             .slice((activePage - 1) * maxPerPage, activePage * maxPerPage)
             .map((silence) => (
               <SelectableSilence
@@ -224,7 +210,7 @@ const Browser: FC<{
                     const v = !allSelected;
                     if (v) {
                       setSelected(
-                        deferredResponse
+                        response
                           .filter((silence) => !silence.isExpired)
                           .map((silence) => ({
                             id: silence.silence.id,
@@ -244,9 +230,9 @@ const Browser: FC<{
             </div>
             <div className="mx-auto">
               <PageSelect
-                totalPages={Math.ceil(deferredResponse.length / maxPerPage)}
+                totalPages={Math.ceil(response.length / maxPerPage)}
                 maxPerPage={maxPerPage}
-                totalItemsCount={deferredResponse.length}
+                totalItemsCount={response.length}
                 setPageCallback={setActivePage}
               />
             </div>

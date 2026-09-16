@@ -1,10 +1,11 @@
-import { useDeferredValue, FC } from "react";
+import { use, useDeferredValue, FC } from "react";
 
 import { observer } from "mobx-react-lite";
 
 import type { AlertStore } from "Stores/AlertStore";
 import type { Settings } from "Stores/Settings";
 import type { SilenceFormStore } from "Stores/SilenceFormStore";
+import { ThemeContext } from "Components/Theme";
 import AlertGrid from "./AlertGrid";
 import { FatalError } from "./FatalError";
 import { UpgradeNeeded } from "./UpgradeNeeded";
@@ -44,9 +45,10 @@ const Grid: FC<{
   settingsStore: Settings;
   silenceFormStore: SilenceFormStore;
 }> = ({ alertStore, settingsStore, silenceFormStore }) => {
-  // Store changes render urgently, which skips view transitions, so the
-  // mode is deferred to make the view swap render inside a Transition.
-  const mode = useDeferredValue(getGridMode(alertStore));
+  const context = use(ThemeContext);
+  const rawMode = getGridMode(alertStore);
+  const deferredMode = useDeferredValue(rawMode);
+  const mode = context.animations.duration !== 0 ? deferredMode : rawMode;
 
   switch (mode) {
     case "upgrade":

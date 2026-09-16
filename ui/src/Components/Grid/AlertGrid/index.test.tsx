@@ -265,6 +265,7 @@ describe("<Grid />", () => {
     expect(
       container!.querySelectorAll(".components-grid-alertgrid-alertgroup"),
     ).toHaveLength(2);
+    expect(startViewTransitionMock).toHaveBeenCalledTimes(0);
   });
 
   it("doesn't repack a collapsed grid before the exit transition is done", async () => {

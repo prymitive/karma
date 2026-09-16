@@ -1,9 +1,12 @@
 import { render, screen } from "@testing-library/react";
 
 import { mockMatchMedia } from "__fixtures__/matchMedia";
+import { MockThemeContextWithoutAnimations } from "__fixtures__/Theme";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
+import { ThemeContext } from "Components/Theme";
+import type { ThemeCtx } from "Components/Theme";
 import Grid from ".";
 
 let alertStore: AlertStore;
@@ -34,13 +37,16 @@ afterEach(() => {
   global.innerWidth = originalInnerWidth;
 });
 
-const renderGrid = () => {
-  return render(
+const renderGrid = (theme?: ThemeCtx) => {
+  const grid = (
     <Grid
       alertStore={alertStore}
       settingsStore={settingsStore}
       silenceFormStore={silenceFormStore}
-    />,
+    />
+  );
+  return render(
+    theme ? <ThemeContext value={theme}>{grid}</ThemeContext> : grid,
   );
 };
 
@@ -60,6 +66,12 @@ describe("<Grid />", () => {
   it("renders only AlertGrid when all upstreams are healthy", () => {
     setupGrids();
     const { container } = renderGrid();
+    expect(container.querySelector(".components-grid")).toBeInTheDocument();
+  });
+
+  it("renders AlertGrid when animations are disabled", () => {
+    setupGrids();
+    const { container } = renderGrid(MockThemeContextWithoutAnimations);
     expect(container.querySelector(".components-grid")).toBeInTheDocument();
   });
 
