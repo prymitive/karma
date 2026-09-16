@@ -143,7 +143,7 @@ const Grid: FC<{
   // label mounts render inside a Transition and animate.
   const showSwimlane = useDeferredValue(grid.labelName !== "");
   const showGroups = useDeferredValue(isExpanded || grid.labelName === "");
-  const alertGroups = useDeferredValue(grid.alertGroups);
+  const alertGroups = useDeferredValue(grid.alertGroups, []);
   const showLoadMore = useDeferredValue(
     isExpanded && grid.totalGroups > grid.alertGroups.length,
   );
