@@ -1,4 +1,12 @@
-import { use, FC, useEffect, useEffectEvent, useState, ReactNode } from "react";
+import {
+  use,
+  FC,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  ReactNode,
+} from "react";
 
 import { observer } from "mobx-react-lite";
 
@@ -44,6 +52,11 @@ const LoadButton: FC<{
   );
 };
 
+interface AlertGroupCollapseCommand {
+  version: number;
+  value: boolean;
+}
+
 interface AlertGroupProps {
   grid: ReadOnly<APIGridT>;
   group: ReadOnly<APIAlertGroupT>;
@@ -53,6 +66,7 @@ interface AlertGroupProps {
   silenceFormStore: SilenceFormStore;
   groupWidth: number;
   gridLabelValue: string;
+  collapseCommand: AlertGroupCollapseCommand;
 }
 
 const AlertGroup = ({
@@ -64,6 +78,7 @@ const AlertGroup = ({
   settingsStore,
   groupWidth,
   gridLabelValue,
+  collapseCommand,
 }: AlertGroupProps) => {
   const context = use(ThemeContext);
   const defaultRenderCount =
@@ -124,22 +139,13 @@ const AlertGroup = ({
     );
   };
 
-  const onAlertGroupCollapseEvent = useEffectEvent((event: Event) => {
-    const customEvent = event as CustomEvent;
-    if (customEvent.detail.gridLabelValue === gridLabelValue) {
-      setIsCollapsed(customEvent.detail.value);
+  const collapseCommandVersionRef = useRef(collapseCommand.version);
+  useLayoutEffect(() => {
+    if (collapseCommandVersionRef.current !== collapseCommand.version) {
+      collapseCommandVersionRef.current = collapseCommand.version;
+      setIsCollapsed(collapseCommand.value);
     }
-  });
-
-  useEffect(() => {
-    window.addEventListener("alertGroupCollapse", onAlertGroupCollapseEvent);
-    return () => {
-      window.removeEventListener(
-        "alertGroupCollapse",
-        onAlertGroupCollapseEvent,
-      );
-    };
-  }, [onAlertGroupCollapseEvent]);
+  }, [collapseCommand]);
 
   useEffect(() => {
     afterUpdate();
@@ -266,4 +272,5 @@ const AlertGroup = ({
   );
 };
 
+export type { AlertGroupCollapseCommand };
 export default observer(AlertGroup);
