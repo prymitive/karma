@@ -44,14 +44,15 @@ const useFetchGet = <T>(
     isRetrying: false,
     retryCount: 0,
   });
-  const isCanceledRef = useRef<boolean>(false);
+  const requestIDRef = useRef<number>(0);
 
   const cancelGet = useCallback(() => {
-    isCanceledRef.current = true;
+    requestIDRef.current++;
   }, []);
 
   const get = useCallback(async () => {
-    isCanceledRef.current = false;
+    const requestID = ++requestIDRef.current;
+    const isCurrentRequest = () => requestIDRef.current === requestID;
 
     try {
       setResponse((r) => ({
@@ -68,7 +69,7 @@ const useFetchGet = <T>(
             ...CommonOptions,
             mode: n <= FetchRetryConfig.retries ? "cors" : "no-cors",
           } as RequestInit).catch((err: Error) => {
-            if (!isCanceledRef.current) {
+            if (isCurrentRequest()) {
               setResponse((r) => ({
                 ...r,
                 isRetrying: true,
@@ -80,7 +81,7 @@ const useFetchGet = <T>(
         FetchRetryConfig,
       );
 
-      if (res !== undefined && !isCanceledRef.current) {
+      if (res !== undefined && isCurrentRequest()) {
         let body;
         const contentType = res.headers.get("content-type");
         if (contentType && contentType.indexOf("application/json") !== -1) {
@@ -89,7 +90,7 @@ const useFetchGet = <T>(
           body = await res.text();
         }
 
-        if (!isCanceledRef.current) {
+        if (isCurrentRequest()) {
           if (res.ok) {
             setResponse({
               response: body,
@@ -110,13 +111,15 @@ const useFetchGet = <T>(
         }
       }
     } catch (error) {
-      setResponse((r) => ({
-        ...r,
-        error:
-          error instanceof Error ? error.message : `unknown error: ${error}`,
-        isLoading: false,
-        isRetrying: false,
-      }));
+      if (isCurrentRequest()) {
+        setResponse((r) => ({
+          ...r,
+          error:
+            error instanceof Error ? error.message : `unknown error: ${error}`,
+          isLoading: false,
+          isRetrying: false,
+        }));
+      }
     }
   }, [uri, fetcher]);
 
