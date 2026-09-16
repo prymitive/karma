@@ -213,9 +213,23 @@ const MockGroupList = (
 };
 
 describe("<Grid />", () => {
-  it("starts a view transition for a new alert group when animations are enabled", async () => {
-    // A store-driven group mount must render inside a Transition so the
-    // browser can animate it.
+  it("starts one view transition for alert groups on the first response", async () => {
+    act(() => {
+      MockGroupList(2, 1);
+    });
+    let container: HTMLElement;
+    await act(async () => {
+      const result = renderAlertGrid();
+      container = result.container;
+    });
+
+    expect(
+      container!.querySelectorAll(".components-grid-alertgrid-alertgroup"),
+    ).toHaveLength(2);
+    expect(startViewTransitionMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("starts one view transition for a later alert group", async () => {
     act(() => {
       MockGroupList(1, 1);
     });
@@ -224,7 +238,7 @@ describe("<Grid />", () => {
       const result = renderAlertGrid();
       container = result.container;
     });
-    expect(startViewTransitionMock).not.toHaveBeenCalled();
+    startViewTransitionMock.mockClear();
 
     await act(async () => {
       MockGroupList(2, 1);
@@ -232,7 +246,7 @@ describe("<Grid />", () => {
     expect(
       container!.querySelectorAll(".components-grid-alertgrid-alertgroup"),
     ).toHaveLength(2);
-    expect(startViewTransitionMock).toHaveBeenCalled();
+    expect(startViewTransitionMock).toHaveBeenCalledTimes(1);
   });
 
   it("renders a new alert group without a view transition when animations are disabled", async () => {
