@@ -49,6 +49,23 @@ describe("<ErrorBoundary />", () => {
     expect(consoleSpy).toHaveBeenCalled();
   });
 
+  it("clears an active reload timer on unmount", () => {
+    // Exercise unmount with and without an active countdown.
+    const normal = render(
+      <ErrorBoundary>
+        <span>Content</span>
+      </ErrorBoundary>,
+    );
+    expect(jest.getTimerCount()).toBe(0);
+    normal.unmount();
+    expect(jest.getTimerCount()).toBe(0);
+
+    const failed = renderFailingComponent();
+    expect(jest.getTimerCount()).toBe(1);
+    failed.unmount();
+    expect(jest.getTimerCount()).toBe(0);
+  });
+
   it("renders error message when component fails", () => {
     renderFailingComponent();
     expect(

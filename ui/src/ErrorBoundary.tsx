@@ -68,6 +68,13 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     }
   };
 
+  componentWillUnmount(): void {
+    if (this.timer !== null) {
+      clearInterval(this.timer);
+      this.timer = null;
+    }
+  }
+
   componentDidCatch(
     error: Error,
     { componentStack: _componentStack }: ErrorInfo,
