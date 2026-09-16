@@ -6,7 +6,7 @@ $duration: 0.5s;
   animation: components-animation-alergroup-exit $duration ease-out forwards;
 }
 
-::view-transition-new(.components-animation-alergroup) {
+.components-animation-alergroup-enter {
   animation: components-animation-alergroup-enter $duration ease-in;
 }
 

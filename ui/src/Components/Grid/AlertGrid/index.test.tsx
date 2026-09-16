@@ -219,9 +219,10 @@ const MockGroupList = (
 };
 
 describe("<Grid />", () => {
-  it("starts one view transition for alert groups on the first response", async () => {
+  it("adds all mobile alert groups with the CSS enter animation", async () => {
+    global.window.innerWidth = 500;
     act(() => {
-      MockGroupList(2, 1);
+      MockGroupList(4, 1);
     });
     let container: HTMLElement;
     await act(async () => {
@@ -231,11 +232,15 @@ describe("<Grid />", () => {
 
     expect(
       container!.querySelectorAll(".components-grid-alertgrid-alertgroup"),
-    ).toHaveLength(2);
-    expect(startViewTransitionMock).toHaveBeenCalledTimes(1);
+    ).toHaveLength(4);
+    expect(
+      container!.querySelectorAll(".components-animation-alergroup-enter"),
+    ).toHaveLength(4);
+    expect(startViewTransitionMock).toHaveBeenCalledTimes(0);
+    global.window.innerWidth = 1024;
   });
 
-  it("starts one view transition for a later alert group", async () => {
+  it("adds a later alert group with the CSS enter animation", async () => {
     act(() => {
       MockGroupList(1, 1);
     });
@@ -249,6 +254,30 @@ describe("<Grid />", () => {
     await act(async () => {
       MockGroupList(2, 1);
     });
+    expect(
+      container!.querySelectorAll(".components-grid-alertgrid-alertgroup"),
+    ).toHaveLength(2);
+    expect(
+      container!.querySelectorAll(".components-animation-alergroup-enter"),
+    ).toHaveLength(2);
+    expect(startViewTransitionMock).toHaveBeenCalledTimes(0);
+  });
+
+  it("uses one exit transition when an API update removes a group", async () => {
+    act(() => {
+      MockGroupList(3, 1);
+    });
+    let container: HTMLElement;
+    await act(async () => {
+      const result = renderAlertGrid();
+      container = result.container;
+    });
+    startViewTransitionMock.mockClear();
+
+    await act(async () => {
+      MockGroupList(2, 1);
+    });
+
     expect(
       container!.querySelectorAll(".components-grid-alertgrid-alertgroup"),
     ).toHaveLength(2);
@@ -311,7 +340,7 @@ describe("<Grid />", () => {
     await act(async () => {
       jest.advanceTimersByTime(520);
     });
-    expect(packLog.length).toBeGreaterThan(packsBefore);
+    expect(packLog.length).toBe(packsBefore + 1);
     jest.useRealTimers();
   });
 

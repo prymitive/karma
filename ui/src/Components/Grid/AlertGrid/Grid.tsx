@@ -98,7 +98,7 @@ const Grid: FC<{
 
   const isAnimated = context.animations.duration !== 0;
   const fadeAnimation = isAnimated ? "components-animation-fade" : "none";
-  const alertGroupAnimation = isAnimated
+  const alertGroupExitAnimation = isAnimated
     ? "components-animation-alergroup"
     : "none";
 
@@ -148,11 +148,14 @@ const Grid: FC<{
     isExpanded && grid.totalGroups > grid.alertGroups.length;
   const deferredShowSwimlane = useDeferredValue(rawShowSwimlane);
   const deferredShowGroups = useDeferredValue(rawShowGroups);
-  const deferredAlertGroups = useDeferredValue(rawAlertGroups, []);
+  const deferredAlertGroups = useDeferredValue(rawAlertGroups);
   const deferredShowLoadMore = useDeferredValue(rawShowLoadMore);
   const showSwimlane = isAnimated ? deferredShowSwimlane : rawShowSwimlane;
   const showGroups = isAnimated ? deferredShowGroups : rawShowGroups;
-  const alertGroups = isAnimated ? deferredAlertGroups : rawAlertGroups;
+  const alertGroups =
+    isAnimated && rawAlertGroups.length < deferredAlertGroups.length
+      ? deferredAlertGroups
+      : rawAlertGroups;
   const showLoadMore = isAnimated ? deferredShowLoadMore : rawShowLoadMore;
 
   const visibleGroupCount = showGroups ? alertGroups.length : 0;
@@ -165,11 +168,12 @@ const Grid: FC<{
   useLayoutEffect(() => {
     if (visibleGroupCount < previousGroupCountRef.current && isAnimated) {
       repackHoldUntilRef.current = Date.now() + alertGroupExitDuration;
+      heldRepack();
     } else {
       repack();
     }
     previousGroupCountRef.current = visibleGroupCount;
-  }, [repack, visibleGroupCount, isAnimated]);
+  }, [heldRepack, repack, visibleGroupCount, isAnimated]);
 
   return (
     <div
@@ -208,8 +212,8 @@ const Grid: FC<{
               <ViewTransition
                 key={group.id}
                 default="none"
-                enter={alertGroupAnimation}
-                exit={alertGroupAnimation}
+                enter="none"
+                exit={alertGroupExitAnimation}
               >
                 <AlertGroup
                   grid={grid}
