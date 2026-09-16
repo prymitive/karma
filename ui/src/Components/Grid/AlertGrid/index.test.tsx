@@ -814,6 +814,20 @@ describe("<AlertGrid />", () => {
     }
   });
 
+  it("adds one alert-group collapse listener per grid", () => {
+    // Render many groups inside one grid.
+    const addEventListenerSpy = jest.spyOn(window, "addEventListener");
+    MockGroupList(20, 1);
+    renderAlertGrid();
+
+    const calls = addEventListenerSpy.mock.calls.filter(
+      ([event]) => event === "alertGroupCollapse",
+    );
+    expect(calls).toHaveLength(1);
+    expect(calls[0][0]).toBe("alertGroupCollapse");
+    expect(typeof calls[0][1]).toBe("function");
+  });
+
   it("alt+click on a grid toggle toggles all grid groups", () => {
     MockGroupList(3, 1);
     const groups = alertStore.data.grids[0].alertGroups;

@@ -32,7 +32,7 @@ import type { APIGridT, ReadOnly } from "Models/APITypes";
 import { useGrid } from "Hooks/useGrid";
 import { ThemeContext } from "Components/Theme";
 import { DefaultDetailsCollapseValue } from "./AlertGroup/DetailsToggle";
-import AlertGroup from "./AlertGroup";
+import AlertGroup, { type AlertGroupCollapseCommand } from "./AlertGroup";
 import { Swimlane } from "./Swimlane";
 
 let fontsReady: Promise<unknown> | null = null;
@@ -105,6 +105,11 @@ const Grid: FC<{
   const [isExpanded, setIsExpanded] = useState<boolean>(
     () => !DefaultDetailsCollapseValue(settingsStore),
   );
+  const [alertGroupCollapseCommand, setAlertGroupCollapseCommand] =
+    useState<AlertGroupCollapseCommand>({
+      version: 0,
+      value: false,
+    });
   const toggleIsExpanded = useCallback(() => {
     // Wrapped in a Transition so groups animate in and out on toggle.
     startTransition(() => {
@@ -130,11 +135,31 @@ const Grid: FC<{
     setIsExpanded((event as CustomEvent).detail);
   });
 
+  const onAlertGroupCollapseEvent = useEffectEvent((event: Event) => {
+    const detail = (
+      event as CustomEvent<{
+        gridLabelValue: string;
+        value: boolean;
+      }>
+    ).detail;
+    if (detail.gridLabelValue === grid.labelValue) {
+      setAlertGroupCollapseCommand((command) => ({
+        version: command.version + 1,
+        value: detail.value,
+      }));
+    }
+  });
+
   useEffect(() => {
     waitForFonts().then(debouncedRepack);
     window.addEventListener("alertGridCollapse", onAlertGridCollapseEvent);
+    window.addEventListener("alertGroupCollapse", onAlertGroupCollapseEvent);
     return () => {
       window.removeEventListener("alertGridCollapse", onAlertGridCollapseEvent);
+      window.removeEventListener(
+        "alertGroupCollapse",
+        onAlertGroupCollapseEvent,
+      );
       window.clearTimeout(repackTimerRef.current);
       debouncedRepack.cancel();
     };
@@ -213,6 +238,7 @@ const Grid: FC<{
                   silenceFormStore={silenceFormStore}
                   groupWidth={groupWidth}
                   gridLabelValue={grid.labelValue}
+                  collapseCommand={alertGroupCollapseCommand}
                 />
               </ViewTransition>
             ))

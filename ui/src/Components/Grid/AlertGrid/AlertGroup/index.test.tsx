@@ -99,6 +99,10 @@ const renderAlertGroup = (afterUpdate: () => void, theme?: ThemeCtx) => {
         silenceFormStore={silenceFormStore}
         gridLabelValue=""
         groupWidth={420}
+        collapseCommand={{
+          version: 0,
+          value: false,
+        }}
       />
     </ThemeContext>,
   );
