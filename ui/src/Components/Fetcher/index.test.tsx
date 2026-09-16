@@ -439,17 +439,22 @@ describe("<Fetcher /> children", () => {
     );
   });
 
-  it("renders PauseButton when paused", () => {
+  it("renders an animated PauseButton when paused", () => {
     const { container } = render(
       <Fetcher alertStore={alertStore} settingsStore={settingsStore} />,
     );
     act(() => {
       alertStore.status.pause();
     });
-    expect(container.innerHTML).toMatch(/fa-pause/);
+    expect(
+      container.querySelector("[data-icon='pause']")?.getAttribute("data-icon"),
+    ).toBe("pause");
+    expect(container.querySelector(".tooltip-trigger")?.className).toBe(
+      "components-animation-fade-enter tooltip-trigger",
+    );
   });
 
-  it("renders PauseButton without a view transition wrapper when animations are disabled", () => {
+  it("renders PauseButton without animation when animations are disabled", () => {
     const { container } = render(
       <ThemeContext value={MockThemeContextWithoutAnimations}>
         <Fetcher alertStore={alertStore} settingsStore={settingsStore} />
@@ -458,10 +463,15 @@ describe("<Fetcher /> children", () => {
     act(() => {
       alertStore.status.pause();
     });
-    expect(container.innerHTML).toMatch(/fa-pause/);
+    expect(
+      container.querySelector("[data-icon='pause']")?.getAttribute("data-icon"),
+    ).toBe("pause");
+    expect(container.querySelector(".tooltip-trigger")?.className).toBe(
+      " tooltip-trigger",
+    );
   });
 
-  it("renders PlayButton without a view transition wrapper when animations are disabled", () => {
+  it("renders PlayButton without animation when animations are disabled", () => {
     const { container } = render(
       <ThemeContext value={MockThemeContextWithoutAnimations}>
         <Fetcher alertStore={alertStore} settingsStore={settingsStore} />
@@ -469,7 +479,12 @@ describe("<Fetcher /> children", () => {
     );
     const navbarBrand = container.querySelector(".navbar-brand");
     fireEvent.mouseEnter(navbarBrand!);
-    expect(container.innerHTML).toMatch(/fa-play/);
+    expect(
+      container.querySelector("[data-icon='play']")?.getAttribute("data-icon"),
+    ).toBe("play");
+    expect(container.querySelector(".tooltip-trigger")?.className).toBe(
+      " tooltip-trigger",
+    );
   });
 
   it("renders PauseButton when paused and hovered", () => {
