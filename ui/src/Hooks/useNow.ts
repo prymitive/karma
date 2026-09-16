@@ -11,12 +11,11 @@ const tick = () => {
 };
 
 const subscribe = (listener: () => void) => {
-  // Refreshing here makes React re-check the snapshot right after it
-  // subscribes, so a freshly mounted component never renders with a value
-  // older than its own mount.
-  currentTime = Date.now();
   listeners.add(listener);
   if (timer === null) {
+    // The cached time is stale after the timer stopped with the last
+    // subscriber.
+    currentTime = Date.now();
     timer = setInterval(tick, 30 * 1000);
   }
   return () => {

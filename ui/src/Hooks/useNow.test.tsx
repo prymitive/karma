@@ -14,8 +14,9 @@ describe("useNow", () => {
     const before = Date.now();
     render(<Now />);
     const value = Number(screen.getByTestId("now").textContent);
-    // The value is refreshed when the component subscribes, so it sits
-    // between the time before render and the time of the assert.
+    // The timer starts with the first subscriber and refreshes the cached
+    // time then, so the value sits between the time before render and the
+    // time of the assert.
     expect(value).toBeGreaterThanOrEqual(before);
     expect(value).toBeLessThanOrEqual(Date.now());
   });
@@ -68,6 +69,44 @@ describe("useNow", () => {
     expect(setIntervalSpy).toHaveBeenCalledTimes(1);
     setIntervalSpy.mockRestore();
     clearIntervalSpy.mockRestore();
+    jest.useRealTimers();
+  });
+
+  it("keeps the cached time while more components mount and the timer runs", () => {
+    jest.useFakeTimers();
+    jest.setSystemTime(new Date("2020-01-01T00:00:00Z"));
+    const first = new Date("2020-01-01T00:00:00Z").getTime();
+    const { rerender } = render(<Now />);
+    expect(screen.getByTestId("now").textContent).toBe(String(first));
+
+    act(() => {
+      jest.setSystemTime(new Date("2020-01-01T00:05:00Z"));
+    });
+    rerender(
+      <>
+        <Now />
+        <Now />
+      </>,
+    );
+    expect(screen.getAllByTestId("now")[0].textContent).toBe(String(first));
+    expect(screen.getAllByTestId("now")[1].textContent).toBe(String(first));
+    jest.useRealTimers();
+  });
+
+  it("refreshes the time when the timer restarts after all subscribers left", () => {
+    jest.useFakeTimers();
+    jest.setSystemTime(new Date("2020-01-01T00:00:00Z"));
+    const first = new Date("2020-01-01T00:00:00Z").getTime();
+    const later = new Date("2020-01-01T00:05:00Z").getTime();
+    const { unmount } = render(<Now />);
+    expect(screen.getByTestId("now").textContent).toBe(String(first));
+
+    unmount();
+    act(() => {
+      jest.setSystemTime(new Date("2020-01-01T00:05:00Z"));
+    });
+    render(<Now />);
+    expect(screen.getByTestId("now").textContent).toBe(String(later));
     jest.useRealTimers();
   });
 });
