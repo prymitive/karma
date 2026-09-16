@@ -32,6 +32,7 @@ jest.mock("fontfaceobserver", () =>
 jest.mock("bricks.js", () => {
   const ActualBricks = jest.requireActual("bricks.js");
   const wrapped = (options: unknown) => {
+    wrapped.instanceLog.push(options);
     const instance = ActualBricks(options);
     const realPack = instance.pack.bind(instance);
     instance.pack = (...args: unknown[]) => {
@@ -41,6 +42,7 @@ jest.mock("bricks.js", () => {
     return instance;
   };
   wrapped.packLog = [] as unknown[][];
+  wrapped.instanceLog = [] as unknown[];
   return wrapped;
 });
 
@@ -59,6 +61,7 @@ declare let window: any;
 const startViewTransitionMock = jest.fn();
 
 beforeEach(() => {
+  (Bricks as unknown as { instanceLog: unknown[] }).instanceLog.length = 0;
   alertStore = new AlertStore([]);
   settingsStore = new Settings(null);
   silenceFormStore = new SilenceFormStore();
@@ -738,6 +741,9 @@ describe("<AlertGrid />", () => {
     window.innerWidth = 1980;
 
     const { container } = renderAlertGrid();
+    const instanceLog = (Bricks as unknown as { instanceLog: unknown[] })
+      .instanceLog;
+    expect(instanceLog).toHaveLength(1);
     const alertGroups = container.querySelectorAll(
       ".components-grid-alertgrid-alertgroup",
     );
@@ -750,6 +756,22 @@ describe("<AlertGrid />", () => {
       window.dispatchEvent(new Event("resize"));
       resizeCallback([{ contentRect: { width: 1000, height: 1000 } }]);
     });
+    expect(instanceLog).toHaveLength(1);
+  });
+
+  it("rebuilds Bricks when the configured group width changes", () => {
+    // Change the value that defines the Bricks size configuration.
+    MockGroupList(2, 1);
+    renderAlertGrid();
+    const instanceLog = (Bricks as unknown as { instanceLog: unknown[] })
+      .instanceLog;
+    expect(instanceLog).toHaveLength(1);
+
+    act(() => {
+      settingsStore.gridConfig.setGroupWidth(500);
+    });
+
+    expect(instanceLog).toHaveLength(2);
   });
 
   it("scrollbar render doesn't resize alert groups", () => {
