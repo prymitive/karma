@@ -1,14 +1,4 @@
-import {
-  use,
-  useEffect,
-  useRef,
-  useState,
-  FC,
-  ReactNode,
-  useDeferredValue,
-  startTransition,
-  ViewTransition,
-} from "react";
+import { use, useEffect, useRef, useState, FC, ReactNode } from "react";
 
 import { reaction, toJS } from "mobx";
 import { observer } from "mobx-react-lite";
@@ -25,43 +15,38 @@ import type { Settings } from "Stores/Settings";
 import { ThemeContext } from "Components/Theme";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 
-// The boundary must not be toggled by the animations setting, that would
-// remount the children and reset their state.
-const ButtonViewTransition: FC<{
+const ButtonTooltip: FC<{
+  title: string;
   children: ReactNode;
-}> = ({ children }) => {
+}> = ({ title, children }) => {
   const context = use(ThemeContext);
-  const enterAnimation =
-    context.animations.duration !== 0 ? "components-animation-fade" : "none";
+  const animationClass =
+    context.animations.duration !== 0 ? "components-animation-fade-enter" : "";
   return (
-    <ViewTransition default="none" enter={enterAnimation}>
+    <TooltipWrapper title={title} className={animationClass}>
       {children}
-    </ViewTransition>
+    </TooltipWrapper>
   );
 };
 
 const PauseButton: FC<{ alertStore: AlertStore }> = ({ alertStore }) => (
-  <ButtonViewTransition>
-    <TooltipWrapper title="Click to resume updates">
-      <FontAwesomeIcon
-        className="cursor-pointer text-muted components-fetcher-icon mx-2 fa-fw"
-        icon={faPause}
-        onClick={alertStore.status.resume}
-      />
-    </TooltipWrapper>
-  </ButtonViewTransition>
+  <ButtonTooltip title="Click to resume updates">
+    <FontAwesomeIcon
+      className="cursor-pointer text-muted components-fetcher-icon mx-2 fa-fw"
+      icon={faPause}
+      onClick={alertStore.status.resume}
+    />
+  </ButtonTooltip>
 );
 
 const PlayButton: FC<{ alertStore: AlertStore }> = ({ alertStore }) => (
-  <ButtonViewTransition>
-    <TooltipWrapper title="Click to pause updates">
-      <FontAwesomeIcon
-        className="cursor-pointer text-muted components-fetcher-icon mx-2 fa-fw"
-        icon={faPlay}
-        onClick={alertStore.status.pause}
-      />
-    </TooltipWrapper>
-  </ButtonViewTransition>
+  <ButtonTooltip title="Click to pause updates">
+    <FontAwesomeIcon
+      className="cursor-pointer text-muted components-fetcher-icon mx-2 fa-fw"
+      icon={faPlay}
+      onClick={alertStore.status.pause}
+    />
+  </ButtonTooltip>
 );
 
 const Dots: FC<{ alertStore: AlertStore; dots: number }> = observer(
@@ -103,10 +88,7 @@ const Fetcher: FC<{
   const timerRef = useRef<number | undefined>(undefined);
   const [percentLeft, setPercentLeft] = useState<number>(100);
   const [isHover, setIsHover] = useState(false);
-  const context = use(ThemeContext);
-  const rawPaused = alertStore.status.paused;
-  const deferredPaused = useDeferredValue(rawPaused);
-  const paused = context.animations.duration !== 0 ? deferredPaused : rawPaused;
+  const paused = alertStore.status.paused;
 
   const getSortSettings = () => {
     const sortSettings = {
@@ -255,8 +237,8 @@ const Fetcher: FC<{
   return (
     <div
       className="navbar-brand py-0 me-2 d-none d-sm-block"
-      onMouseEnter={() => startTransition(() => setIsHover(true))}
-      onMouseLeave={() => startTransition(() => setIsHover(false))}
+      onMouseEnter={() => setIsHover(true)}
+      onMouseLeave={() => setIsHover(false)}
     >
       {alertStore.info.upgradeNeeded ? null : paused ? (
         <PauseButton alertStore={alertStore} />
