@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState, Ref } from "react";
+import { useCallback, useLayoutEffect, useRef, Ref } from "react";
 
 import Bricks, { SizeDetail, Instance } from "bricks.js";
 
@@ -7,11 +7,11 @@ const useGrid = (
 ): { ref: Ref<HTMLDivElement>; repack: () => void } => {
   const ref = useRef<HTMLDivElement | null>(null);
   const gridRef = useRef<Instance | null>(null);
-  const [repack, setRepack] = useState<() => void>(() => () => {});
+  const repack = useCallback(() => {
+    gridRef.current?.pack();
+  }, []);
 
-  // A layout effect is needed so the first pack runs before the browser
-  // captures the new state of a view transition; a passive effect would
-  // let groups render at unpacked positions and jump after the animation.
+  // The first pack must finish before view-transition capture.
   useLayoutEffect(() => {
     if (!gridRef.current && ref.current) {
       gridRef.current = Bricks({
@@ -22,9 +22,6 @@ const useGrid = (
       });
       window.addEventListener("resize", gridRef.current.pack);
       gridRef.current.pack();
-      setRepack(() => () => {
-        gridRef.current && gridRef.current.pack();
-      });
     }
 
     return () => {
