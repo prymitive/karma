@@ -450,7 +450,7 @@ describe("<Fetcher /> children", () => {
       container.querySelector("[data-icon='pause']")?.getAttribute("data-icon"),
     ).toBe("pause");
     expect(container.querySelector(".tooltip-trigger")?.className).toBe(
-      "components-animation-fade-enter tooltip-trigger",
+      "components-animation-fetcher-enter tooltip-trigger",
     );
   });
 

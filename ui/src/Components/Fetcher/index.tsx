@@ -21,7 +21,9 @@ const ButtonTooltip: FC<{
 }> = ({ title, children }) => {
   const context = use(ThemeContext);
   const animationClass =
-    context.animations.duration !== 0 ? "components-animation-fade-enter" : "";
+    context.animations.duration !== 0
+      ? "components-animation-fetcher-enter"
+      : "";
   return (
     <TooltipWrapper title={title} className={animationClass}>
       {children}

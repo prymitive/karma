@@ -122,3 +122,7 @@ $pix-size: math.div($fetcher-width, 5);
   min-height: 2.6rem;
   vertical-align: middle;
 }
+
+.components-animation-fetcher-enter {
+  animation: components-animation-fade-enter 0.15s ease-in;
+}
