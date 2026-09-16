@@ -1,17 +1,31 @@
-import { useState, useEffect } from "react";
+import { useSyncExternalStore } from "react";
 
-function useSupportsTouch(): boolean {
-  const [supportsTouch, setSupportsTouch] = useState<boolean>(false);
+let supportsTouch = false;
+const listeners = new Set<() => void>();
 
-  useEffect(() => {
-    const onTouchStart = () => setSupportsTouch(true);
+const onTouchStart = () => {
+  if (supportsTouch) return;
+  supportsTouch = true;
+  for (const listener of listeners) listener();
+};
+
+const subscribe = (listener: () => void) => {
+  if (listeners.size === 0) {
     window.addEventListener("touchstart", onTouchStart);
-    return () => {
+  }
+  listeners.add(listener);
+  return () => {
+    listeners.delete(listener);
+    if (listeners.size === 0) {
       window.removeEventListener("touchstart", onTouchStart);
-    };
-  }, []);
+      supportsTouch = false;
+    }
+  };
+};
 
-  return supportsTouch;
-}
+const getSnapshot = () => supportsTouch;
+
+const useSupportsTouch = (): boolean =>
+  useSyncExternalStore(subscribe, getSnapshot);
 
 export { useSupportsTouch };

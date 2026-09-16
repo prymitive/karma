@@ -55,17 +55,13 @@ describe("TooltipWrapper", () => {
     });
   });
 
-  it("on touch devices it renders tooltip on touchStart and hides on touchEnd", async () => {
+  it("renders the tooltip on the first touch and hides it on touchEnd", async () => {
+    // Keep the initial touch active until the tooltip delay ends.
     const { container } = render(
       <TooltipWrapper title="my title">
         <span>Hover me</span>
       </TooltipWrapper>,
     );
-
-    act(() => {
-      const event = new Event("touchstart");
-      global.window.dispatchEvent(event);
-    });
 
     fireEvent.touchStart(container.firstChild as Element);
     act(() => {
