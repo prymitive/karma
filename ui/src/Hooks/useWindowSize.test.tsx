@@ -31,6 +31,30 @@ describe("useWindowSize", () => {
     expect(screen.getByTestId("size").textContent).toBe("500x400");
   });
 
+  it("does not render consumers for equal resize dimensions", () => {
+    // Send one equal resize and one changed resize.
+    const renderSpy = jest.fn();
+    const Consumer = () => {
+      renderSpy();
+      useWindowSize();
+      return null;
+    };
+    setSize(800, 600);
+    render(<Consumer />);
+    renderSpy.mockClear();
+
+    act(() => {
+      window.dispatchEvent(new Event("resize"));
+    });
+    expect(renderSpy).toHaveBeenCalledTimes(0);
+
+    act(() => {
+      setSize(801, 600);
+      window.dispatchEvent(new Event("resize"));
+    });
+    expect(renderSpy).toHaveBeenCalledTimes(1);
+  });
+
   it("keeps one snapshot while more components subscribe", () => {
     setSize(800, 600);
     const { rerender } = render(<Size />);

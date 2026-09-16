@@ -13,6 +13,9 @@ let size: Dimensions = {
 const listeners = new Set<() => void>();
 
 const onResize = () => {
+  if (size.width === window.innerWidth && size.height === window.innerHeight) {
+    return;
+  }
   size = {
     width: window.innerWidth,
     height: window.innerHeight,
