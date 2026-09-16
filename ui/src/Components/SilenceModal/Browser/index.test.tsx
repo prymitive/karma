@@ -199,7 +199,7 @@ describe("<Browser />", () => {
     expect(container.innerHTML).toMatch(/text-danger/);
   });
 
-  it("renders empty placeholder after fetch with zero results", () => {
+  it("renders the empty placeholder with an animation class", () => {
     useFetchGetMock.fetch.setMockedData({
       response: [],
       error: null,
@@ -210,10 +210,14 @@ describe("<Browser />", () => {
       cancelGet: jest.fn(),
     });
     const { container } = renderBrowser();
-    expect(container.innerHTML).toMatch(/Nothing to show/);
+    const placeholder = container.querySelector("h1")?.parentElement;
+    expect(placeholder?.textContent).toBe("Nothing to show");
+    expect(placeholder?.className).toBe(
+      "px-2 py-5 bg-transparent components-animation-fade-enter",
+    );
   });
 
-  it("renders empty placeholder without a view transition wrapper when animations are disabled", () => {
+  it("renders the empty placeholder without an animation class when animations are disabled", () => {
     useFetchGetMock.fetch.setMockedData({
       response: [],
       error: null,
@@ -224,7 +228,9 @@ describe("<Browser />", () => {
       cancelGet: jest.fn(),
     });
     const { container } = renderBrowser(MockThemeContextWithoutAnimations);
-    expect(container.innerHTML).toMatch(/Nothing to show/);
+    const placeholder = container.querySelector("h1")?.parentElement;
+    expect(placeholder?.textContent).toBe("Nothing to show");
+    expect(placeholder?.className).toBe("px-2 py-5 bg-transparent");
   });
 
   it("renders silences after successful fetch", () => {

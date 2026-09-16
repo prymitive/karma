@@ -1,10 +1,10 @@
-import { useState, useEffect, ReactNode, FC, startTransition } from "react";
-import { ViewTransition } from "react";
+import { use, useState, useEffect, ReactNode, FC } from "react";
 import { createPortal } from "react-dom";
 
 import { useFloating, shift, flip } from "@floating-ui/react-dom";
 
 import { useSupportsTouch } from "Hooks/useSupportsTouch";
+import { ThemeContext } from "Components/Theme";
 
 const TooltipContent: FC<{
   title: ReactNode;
@@ -13,20 +13,26 @@ const TooltipContent: FC<{
   x: number | null;
   y: number | null;
 }> = ({ title, setFloating, strategy, x, y }) => {
+  const context = use(ThemeContext);
+  const animationClass =
+    context.animations.duration !== 0
+      ? "components-animation-tooltip-enter"
+      : "";
+
   return (
-    <ViewTransition default="none" enter="components-animation-tooltip">
-      <div
-        className="tooltip tooltip-inner"
-        ref={setFloating}
-        style={{
-          position: strategy,
-          top: y ?? "",
-          left: x ?? "",
-        }}
-      >
-        {title}
-      </div>
-    </ViewTransition>
+    <div
+      className={`tooltip tooltip-inner${
+        animationClass ? ` ${animationClass}` : ""
+      }`}
+      ref={setFloating}
+      style={{
+        position: strategy,
+        top: y ?? "",
+        left: x ?? "",
+      }}
+    >
+      {title}
+    </div>
   );
 };
 
@@ -64,11 +70,7 @@ const TooltipWrapper: FC<{
       setIsVisible(false);
     } else if (!isVisible) {
       clearTimeout(timerHide);
-      // Wrapped in a Transition so the tooltip mount animates.
-      timerShow = window.setTimeout(
-        () => startTransition(() => setIsVisible(true)),
-        1000,
-      );
+      timerShow = window.setTimeout(() => setIsVisible(true), 1000);
     }
     return () => {
       clearTimeout(timerShow);

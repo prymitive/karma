@@ -6,7 +6,8 @@ $duration: 0.5s;
   animation: components-animation-fade-exit $duration ease-out forwards;
 }
 
-::view-transition-new(.components-animation-fade) {
+::view-transition-new(.components-animation-fade),
+.components-animation-fade-enter {
   animation: components-animation-fade-enter $duration ease-in;
 }
 

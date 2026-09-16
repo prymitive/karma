@@ -2,6 +2,8 @@ import { act } from "react";
 
 import { render, screen, fireEvent } from "@testing-library/react";
 
+import { MockThemeContextWithoutAnimations } from "__fixtures__/Theme";
+import { ThemeContext } from "Components/Theme";
 import { TooltipWrapper, TooltipContent } from ".";
 
 describe("TooltipWrapper", () => {
@@ -132,5 +134,24 @@ describe("TooltipWrapper", () => {
     const tooltip = container.querySelector(".tooltip") as HTMLElement;
     expect(tooltip.style.top).toBe("");
     expect(tooltip.style.left).toBe("");
+    expect(tooltip.className).toBe(
+      "tooltip tooltip-inner components-animation-tooltip-enter",
+    );
+  });
+
+  it("TooltipContent has no animation class when animations are disabled", () => {
+    const { container } = render(
+      <ThemeContext value={MockThemeContextWithoutAnimations}>
+        <TooltipContent
+          title="my title"
+          setFloating={jest.fn()}
+          strategy="absolute"
+          x={null}
+          y={null}
+        />
+      </ThemeContext>,
+    );
+    const tooltip = container.querySelector(".tooltip") as HTMLElement;
+    expect(tooltip.className).toBe("tooltip tooltip-inner");
   });
 });
