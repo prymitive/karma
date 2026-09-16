@@ -5,7 +5,7 @@
 
 $duration: 0.2s;
 
-::view-transition-new(.components-animation-tooltip) {
+.components-animation-tooltip-enter {
   animation: components-animation-tooltip-enter $duration ease-in;
 }
 
