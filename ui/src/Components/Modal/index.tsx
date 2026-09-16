@@ -109,9 +109,8 @@ const Modal: FC<{
 
   // The enter animation is decided by ModalInner at mount, the exit class
   // is applied while the modal waits for the delayed unmount.
-  const dialogClassName = !isOpen
-    ? "components-animation-modal-exit"
-    : undefined;
+  const dialogClassName =
+    !isOpen && isAnimated ? "components-animation-modal-exit" : undefined;
 
   return (
     <>
