@@ -151,10 +151,14 @@ const Grid: FC<{
   });
 
   useEffect(() => {
-    waitForFonts().then(debouncedRepack);
+    let active = true;
+    waitForFonts().then(() => {
+      if (active) debouncedRepack();
+    });
     window.addEventListener("alertGridCollapse", onAlertGridCollapseEvent);
     window.addEventListener("alertGroupCollapse", onAlertGroupCollapseEvent);
     return () => {
+      active = false;
       window.removeEventListener("alertGridCollapse", onAlertGridCollapseEvent);
       window.removeEventListener(
         "alertGroupCollapse",

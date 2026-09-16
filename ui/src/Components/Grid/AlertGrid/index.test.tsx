@@ -948,10 +948,18 @@ describe("<AlertGrid />", () => {
       });
   });
 
-  it("doesn't crash on unmount", () => {
+  it("does not schedule a font repack after unmount", async () => {
+    // Unmount before the shared font completion callback runs.
+    jest.useFakeTimers();
+    const setTimeoutSpy = jest.spyOn(window, "setTimeout");
     MockGroupList(5, 1);
     const { unmount } = renderAlertGrid();
     unmount();
+    setTimeoutSpy.mockClear();
+
+    await act(async () => Promise.resolve());
+
+    expect(setTimeoutSpy.mock.calls.length).toBe(0);
   });
 
   it("alt+space hotkey toggles pause state", () => {
