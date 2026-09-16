@@ -148,6 +148,66 @@ describe("<AlertHistory />", () => {
     unmount();
   });
 
+  it("sends current group data after props change", async () => {
+    // Reuse one component instance for both request payloads.
+    fetchMock.route(
+      "*",
+      {
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(EmptyHistoryResponse),
+      },
+      {
+        overwriteRoutes: true,
+      },
+    );
+    const { rerender } = render(<AlertHistory group={group} grid={grid} />);
+    await act(async () => {
+      await fetchMock.callHistory.flush(true);
+    });
+
+    const updatedGroup = MockGroup("updatedGroup", [
+      {
+        name: "shared",
+        value: "updated",
+      },
+    ]);
+    updatedGroup.shared.sources = ["http://metrics.example.com/graph"];
+    const updatedGrid = {
+      ...grid,
+      labelValue: "updatedGrid",
+    };
+    rerender(<AlertHistory group={updatedGroup} grid={updatedGrid} />);
+    await act(async () => {
+      await fetchMock.callHistory.flush(true);
+    });
+
+    expect(fetchMock.callHistory.calls()).toHaveLength(2);
+    expect(
+      fetchMock.callHistory.calls().map((call) => call.options?.body),
+    ).toStrictEqual([
+      JSON.stringify({
+        sources: [
+          "https://secure.example.com/graph",
+          "http://plain.example.com/",
+        ],
+        labels: {
+          alertname: "Fake Alert",
+          groupName: "fakeGroup",
+          foo: "bar",
+        },
+      }),
+      JSON.stringify({
+        sources: ["http://metrics.example.com/graph"],
+        labels: {
+          alertname: "Fake Alert",
+          groupName: "updatedGroup",
+          shared: "updated",
+          foo: "updatedGrid",
+        },
+      }),
+    ]);
+  });
+
   it("send a correct payload with @cluster grid", async () => {
     fetchMock.mockClear();
     fetchMock.route(

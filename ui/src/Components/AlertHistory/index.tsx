@@ -38,14 +38,16 @@ export const AlertHistory: FC<{
 
   const [lastUpdate, setLastUpdate] = useState<number>(() => GetUTCSeconds());
   const [upstreams, setUpstreams] = useState<UpstreamT[]>([]);
-  const [labels] = useState<{ [key: string]: string }>({
-    ...Object.fromEntries(group.labels.map((l) => [l.name, l.value])),
-    ...Object.fromEntries(group.shared.labels.map((l) => [l.name, l.value])),
-    ...(grid.labelName !== "" && grid.labelName[0] !== "@"
-      ? { [grid.labelName]: grid.labelValue }
-      : {}),
+  const requestBody = JSON.stringify({
+    sources: group.shared.sources,
+    labels: {
+      ...Object.fromEntries(group.labels.map((l) => [l.name, l.value])),
+      ...Object.fromEntries(group.shared.labels.map((l) => [l.name, l.value])),
+      ...(grid.labelName !== "" && grid.labelName[0] !== "@"
+        ? { [grid.labelName]: grid.labelValue }
+        : {}),
+    },
   });
-  const [sources] = useState(group.shared.sources);
   const { response, error } = useFetchAny<HistoryResponseT>(upstreams);
   const [cachedResponse, setCachedResponse] = useState<HistoryResponseT | null>(
     null,
@@ -82,14 +84,11 @@ export const AlertHistory: FC<{
         uri: FormatBackendURI("history.json"),
         options: {
           method: "POST",
-          body: JSON.stringify({
-            sources: sources,
-            labels: labels,
-          }),
+          body: requestBody,
         },
       },
     ]);
-  }, [inView, lastUpdate, labels, sources]);
+  }, [inView, lastUpdate, requestBody]);
 
   return (
     <div className="w-100 d-flex">
