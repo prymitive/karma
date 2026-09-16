@@ -75,10 +75,16 @@ const AlertGroup = ({
   gridLabelValue,
   ref,
 }: AlertGroupProps) => {
+  const context = use(ThemeContext);
   const defaultRenderCount =
     settingsStore.alertGroupConfig.config.defaultRenderCount;
 
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [enterAnimation] = useState(() =>
+    context.animations.duration !== 0
+      ? "components-animation-alergroup-enter"
+      : "",
+  );
 
   const [isCollapsed, setIsCollapsed] = useState<boolean>(() =>
     DefaultDetailsCollapseValue(settingsStore),
@@ -162,12 +168,10 @@ const AlertGroup = ({
     }
   }
 
-  const context = use(ThemeContext);
-
   return (
     <div
       ref={ref}
-      className={`components-grid-alertgrid-alertgroup ${
+      className={`components-grid-alertgrid-alertgroup ${enterAnimation} ${
         context.animations.duration ? "animate" : ""
       } ${context.animations.duration && isAnimationCompleted ? "animate-done" : ""}`}
       style={{
