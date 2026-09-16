@@ -355,6 +355,40 @@ describe("History localStorage", () => {
     await act(() => promise);
   });
 
+  it("resets history when another tab removes its storage key", () => {
+    // Dispatch the browser event that reports deletion in another tab.
+    localStorage.setItem(
+      "filters",
+      JSON.stringify({
+        filters: [
+          [
+            {
+              raw: "cluster=prod",
+              name: "cluster",
+              matcher: "=",
+              value: "prod",
+            },
+          ],
+        ],
+      }),
+    );
+    const { container } = renderHistory();
+    fireEvent.click(container.querySelector("button.cursor-pointer")!);
+    expect(screen.getByText("cluster=prod")).toBeInTheDocument();
+
+    act(() => {
+      window.dispatchEvent(
+        new StorageEvent("storage", {
+          key: "filters",
+          newValue: null,
+        }),
+      );
+    });
+
+    expect(screen.getByText("Empty")).toBeInTheDocument();
+    expect(container.querySelectorAll("button.dropdown-item")).toHaveLength(0);
+  });
+
   // Verifies that localStored persists observable changes to localStorage
   // via a delayed reaction (setTimeout 0).
   it("localStored persists observable changes to localStorage", () => {

@@ -1,4 +1,4 @@
-import { observable, autorun, set, toJS, runInAction } from "mobx";
+import { observable, autorun, remove, set, toJS, runInAction } from "mobx";
 
 interface LocalStoreResult<T> {
   value: T;
@@ -30,12 +30,21 @@ function localStored<T extends object>(
   );
 
   const onStorageEvent = (e: StorageEvent) => {
-    if (e.key === key && e.newValue) {
-      try {
-        runInAction(() => set(obsVal, JSON.parse(e.newValue!)));
-      } catch {
-        // ignore malformed JSON from other tabs
-      }
+    if (e.key !== key) return;
+    if (e.newValue === null) {
+      runInAction(() => {
+        for (const storedKey of Object.keys(obsVal)) {
+          remove(obsVal, storedKey);
+        }
+        set(obsVal, defaultValue);
+      });
+      return;
+    }
+    const newValue = e.newValue;
+    try {
+      runInAction(() => set(obsVal, JSON.parse(newValue)));
+    } catch {
+      // ignore malformed JSON from other tabs
     }
   };
   window.addEventListener("storage", onStorageEvent);
