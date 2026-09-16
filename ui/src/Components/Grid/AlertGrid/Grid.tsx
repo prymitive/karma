@@ -35,6 +35,19 @@ import { DefaultDetailsCollapseValue } from "./AlertGroup/DetailsToggle";
 import AlertGroup from "./AlertGroup";
 import { Swimlane } from "./Swimlane";
 
+let fontsReady: Promise<unknown> | null = null;
+
+const waitForFonts = () => {
+  if (fontsReady === null) {
+    fontsReady = Promise.allSettled(
+      [300, 400, 600].map((weight) =>
+        new FontFaceObserver("Open Sans", { weight }).load(null, 30000),
+      ),
+    );
+  }
+  return fontsReady;
+};
+
 const Grid: FC<{
   alertStore: AlertStore;
   silenceFormStore: SilenceFormStore;
@@ -65,13 +78,16 @@ const Grid: FC<{
   // While alert groups exit the grid keeps its space, every repack is
   // held until the exit animation is done.
   const repackHoldUntilRef = useRef(0);
+  const repackTimerRef = useRef<number | undefined>(undefined);
 
   const heldRepack = useCallback(() => {
     const wait = repackHoldUntilRef.current - Date.now();
+    window.clearTimeout(repackTimerRef.current);
     if (wait > 0) {
-      window.setTimeout(repack, wait);
+      repackTimerRef.current = window.setTimeout(repack, wait);
       return;
     }
+    repackTimerRef.current = undefined;
     repack();
   }, [repack]);
 
@@ -115,29 +131,14 @@ const Grid: FC<{
   });
 
   useEffect(() => {
-    // We have font-display:swap set for font assets, this means that on initial
-    // render a fallback font might be used and later swapped for the final one
-    // (once the final font is loaded). This means that fallback font might
-    // render to a different size and the swap can result in component resize.
-    // For our grid this resize might leave gaps since everything uses fixed
-    // position, so we use font observer and trigger repack when fonts are loaded
-    for (const fontWeight of [300, 400, 600]) {
-      const font = new FontFaceObserver("Open Sans", {
-        weight: fontWeight,
-      });
-      // wait up to 30s, run no-op function on timeout
-      font.load(null, 30000).then(debouncedRepack, () => {});
-    }
-
+    waitForFonts().then(debouncedRepack);
     window.addEventListener("alertGridCollapse", onAlertGridCollapseEvent);
     return () => {
       window.removeEventListener("alertGridCollapse", onAlertGridCollapseEvent);
+      window.clearTimeout(repackTimerRef.current);
+      debouncedRepack.cancel();
     };
   }, [debouncedRepack]);
-
-  useEffect(() => {
-    debouncedRepack();
-  });
 
   // Store changes are deferred only when animations are on.
   const rawShowSwimlane = grid.labelName !== "";

@@ -22,6 +22,12 @@ jest.mock("Components/AlertHistory", () => ({
   AlertHistory: () => null,
 }));
 
+jest.mock("fontfaceobserver", () =>
+  jest.fn(() => ({
+    load: jest.fn(() => Promise.resolve()),
+  })),
+);
+
 // Bricks pack calls are logged to verify when the grid repacks.
 jest.mock("bricks.js", () => {
   const ActualBricks = jest.requireActual("bricks.js");
