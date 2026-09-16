@@ -97,6 +97,40 @@ describe("<Toast />", () => {
 });
 
 describe("<ToastContainer />", () => {
+  it("preserves keyed Toast state when an earlier sibling is removed", () => {
+    // Close the second Toast before removing its first sibling.
+    const renderToasts = (showFirst: boolean) => (
+      <ToastContainer>
+        {showFirst ? (
+          <Toast
+            key="first"
+            icon={faExclamation}
+            iconClass="text-danger"
+            message="first error"
+            hasClose
+          />
+        ) : null}
+        <Toast
+          key="second"
+          icon={faExclamation}
+          iconClass="text-danger"
+          message="second error"
+          hasClose
+        />
+      </ToastContainer>
+    );
+    const { rerender } = render(renderToasts(true));
+    const secondToast = screen.getByText("second error").closest(".bg-toast");
+    expect(secondToast).not.toBeNull();
+    fireEvent.click(secondToast!.querySelector("span.cursor-pointer")!);
+    expect(screen.queryByText("second error")).not.toBeInTheDocument();
+
+    rerender(renderToasts(false));
+
+    expect(screen.queryByText("first error")).not.toBeInTheDocument();
+    expect(screen.queryByText("second error")).not.toBeInTheDocument();
+  });
+
   it("renders toasts in the container without a view transition wrapper when animations are disabled", () => {
     render(
       <ThemeContext value={MockThemeContextWithoutAnimations}>

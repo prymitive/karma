@@ -60,11 +60,10 @@ const ToastContainer: FC<{ children: ReactNode }> = ({ children }) => {
 
   return ReactDOM.createPortal(
     <div className="components-toast-container d-flex flex-column">
-      {React.Children.map(children, (toast, i) => {
+      {React.Children.map(children, (toast) => {
         if (!toast) return null;
         return (
           <div
-            key={i}
             className={
               isAnimated ? "components-animation-toast-enter" : undefined
             }
