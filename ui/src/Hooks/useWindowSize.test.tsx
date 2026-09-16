@@ -31,6 +31,30 @@ describe("useWindowSize", () => {
     expect(screen.getByTestId("size").textContent).toBe("500x400");
   });
 
+  it("keeps one snapshot while more components subscribe", () => {
+    setSize(800, 600);
+    const { rerender } = render(<Size />);
+    expect(screen.getByTestId("size").textContent).toBe("800x600");
+
+    setSize(500, 400);
+    rerender(
+      <>
+        <Size />
+        <Size />
+      </>,
+    );
+    expect(
+      screen.getAllByTestId("size").map((node) => node.textContent),
+    ).toEqual(["800x600", "800x600"]);
+
+    act(() => {
+      window.dispatchEvent(new Event("resize"));
+    });
+    expect(
+      screen.getAllByTestId("size").map((node) => node.textContent),
+    ).toEqual(["500x400", "500x400"]);
+  });
+
   it("shares one resize listener between all subscribers", () => {
     const addEventListenerSpy = jest.spyOn(window, "addEventListener");
     render(
