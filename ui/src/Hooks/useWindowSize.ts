@@ -21,17 +21,14 @@ const onResize = () => {
 };
 
 const subscribe = (listener: () => void) => {
-  // Refreshing here makes React re-check the snapshot right after it
-  // subscribes, so a freshly mounted component never renders with a size
-  // from before its own mount.
-  size = {
-    width: window.innerWidth,
-    height: window.innerHeight,
-  };
-  listeners.add(listener);
-  if (listeners.size === 1) {
+  if (listeners.size === 0) {
+    size = {
+      width: window.innerWidth,
+      height: window.innerHeight,
+    };
     window.addEventListener("resize", onResize);
   }
+  listeners.add(listener);
   return () => {
     listeners.delete(listener);
     if (listeners.size === 0) {
