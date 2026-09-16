@@ -22,11 +22,13 @@ function useOnClickOutside(
       if (node === null) {
         return;
       }
-      // The flag is set when the event target is inside the node.
+      const target = event.target as Node;
+      // Ignore the root and its descendants.
       if (
-        (node.compareDocumentPosition(event.target as Node) &
+        node === target ||
+        (node.compareDocumentPosition(target) &
           Node.DOCUMENT_POSITION_CONTAINED_BY) !==
-        0
+          0
       ) {
         return;
       }
