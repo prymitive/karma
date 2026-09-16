@@ -37,7 +37,7 @@ const MountTransition: FC<{
 
   if (!isVisible) return null;
 
-  const animationClass = !inProp ? exit : isAnimated ? enter : undefined;
+  const animationClass = isAnimated ? (inProp ? enter : exit) : undefined;
 
   return (
     <div
