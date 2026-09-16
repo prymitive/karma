@@ -1,5 +1,3 @@
-@use "sass:math";
-
 $duration: 0.5s;
 
 ::view-transition-old(.components-animation-alergroup) {
@@ -8,10 +6,8 @@ $duration: 0.5s;
   animation: components-animation-alergroup-exit $duration ease-out forwards;
 }
 
-// Fill-mode keeps the group invisible during the enter delay.
 ::view-transition-new(.components-animation-alergroup) {
-  animation: components-animation-alergroup-enter
-    math.div($duration, 2) ease-in math.div($duration, 2) backwards;
+  animation: components-animation-alergroup-enter $duration ease-in;
 }
 
 @keyframes components-animation-alergroup-enter {
