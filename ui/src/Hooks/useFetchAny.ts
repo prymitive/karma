@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
 import { CommonOptions } from "Common/Fetch";
 
@@ -34,6 +34,7 @@ const useFetchAny = <T>(
   reset: () => void;
 } => {
   const [index, setIndex] = useState<number>(0);
+  const upstreamsRef = useRef(upstreams);
   const [response, setResponse] = useState<ResponseState<T>>({
     response: null,
     error: null,
@@ -52,6 +53,14 @@ const useFetchAny = <T>(
   }, []);
 
   useEffect(() => {
+    if (upstreamsRef.current !== upstreams) {
+      upstreamsRef.current = upstreams;
+      if (index !== 0) {
+        setIndex(0);
+        return;
+      }
+    }
+
     // https://dev.to/pallymore/clean-up-async-requests-in-useeffect-hooks-90h
     let isCancelled = false;
 

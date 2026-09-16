@@ -371,6 +371,42 @@ describe("useFetchAny", () => {
     expect(result.current.responseURI).toBe("http://localhost/ok");
   });
 
+  it("restarts at the first URI after the upstream list changes", async () => {
+    // Replace the list after the first request advances to its fallback URI.
+    const initialUpstreams = [
+      { uri: "http://localhost/500", options: {} },
+      { uri: "http://localhost/ok", options: {} },
+    ];
+    const { result, rerender } = renderHook(
+      ({ upstreams }) => useFetchAny(upstreams),
+      {
+        initialProps: {
+          upstreams: initialUpstreams,
+        },
+      },
+    );
+    await waitFor(() => expect(result.current.inProgress).toBe(false));
+
+    const nextUpstreams = [{ uri: "http://localhost/ok/json", options: {} }];
+    rerender({ upstreams: nextUpstreams });
+    await waitFor(() =>
+      expect(result.current.responseURI).toBe("http://localhost/ok/json"),
+    );
+
+    expect(fetchMock.callHistory.calls()).toHaveLength(3);
+    expect(fetchMock.callHistory.calls().map((call) => call.url)).toStrictEqual(
+      [
+        "http://localhost/500",
+        "http://localhost/ok",
+        "http://localhost/ok/json",
+      ],
+    );
+    expect(result.current.response).toStrictEqual({ status: "ok" });
+    expect(result.current.error).toBeNull();
+    expect(result.current.inProgress).toBe(false);
+    expect(result.current.responseURI).toBe("http://localhost/ok/json");
+  });
+
   it("first working URI sets the response", async () => {
     const upstreams = [
       { uri: "http://localhost/500", options: {} },
