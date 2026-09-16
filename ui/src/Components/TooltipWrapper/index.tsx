@@ -84,9 +84,9 @@ const TooltipWrapper: FC<{
         onClick={() => setWasClicked(true)}
         onMouseOver={supportsTouch ? undefined : showTooltip}
         onMouseLeave={supportsTouch ? undefined : hideTooltip}
-        onTouchStart={supportsTouch ? showTooltip : undefined}
-        onTouchCancel={supportsTouch ? hideTooltip : undefined}
-        onTouchEnd={supportsTouch ? hideTooltip : undefined}
+        onTouchStart={showTooltip}
+        onTouchCancel={hideTooltip}
+        onTouchEnd={hideTooltip}
         ref={refs.setReference}
         className={`${className ? className : ""} tooltip-trigger`}
       >
