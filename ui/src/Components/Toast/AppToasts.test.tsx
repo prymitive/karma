@@ -72,6 +72,16 @@ describe("<AppToasts />", () => {
     expect(container.innerHTML).toBe("");
   });
 
+  it("renders upstream error toasts immediately after a store update", () => {
+    render(<AppToasts alertStore={alertStore} />);
+    expect(document.body.querySelectorAll(".bg-toast")).toHaveLength(0);
+
+    act(() => {
+      makeErrors();
+    });
+    expect(document.body.querySelectorAll(".bg-toast")).toHaveLength(2);
+  });
+
   it("renders upstream error toasts for each unhealthy upstream", () => {
     // Verifies error toasts are rendered for each unhealthy upstream
     act(() => {
@@ -165,7 +175,7 @@ describe("<AppToasts />", () => {
     act(() => {
       makeErrors();
     });
-    const { rerender } = render(<AppToasts alertStore={alertStore} />);
+    render(<AppToasts alertStore={alertStore} />);
     expect(document.body.querySelectorAll(".bg-toast")).toHaveLength(2);
 
     act(() => {
@@ -212,7 +222,6 @@ describe("<AppToasts />", () => {
         clusters: { am1: ["am1"], am2: ["am2"], am3: ["am3"] },
       });
     });
-    rerender(<AppToasts alertStore={alertStore} />);
     expect(document.body.querySelectorAll(".bg-toast")).toHaveLength(0);
   });
 
