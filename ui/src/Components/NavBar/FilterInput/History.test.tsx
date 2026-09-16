@@ -106,6 +106,21 @@ describe("<History />", () => {
     await act(() => promise);
   });
 
+  it("shows the raw text for a fuzzy filter", async () => {
+    const promise = Promise.resolve();
+    const filter = AppliedFilter("", "=~", "(?i)foobar");
+    filter.raw = "foobar";
+    alertStore.filters.setFilterValues([filter]);
+
+    const { container } = renderHistory();
+    const toggle = container.querySelector("button.cursor-pointer");
+    fireEvent.click(toggle!);
+
+    expect(screen.getByText("foobar")).toBeInTheDocument();
+    expect(screen.queryByText("(?i)foobar")).not.toBeInTheDocument();
+    await act(() => promise);
+  });
+
   it("saves only applied filters to history", async () => {
     const promise = Promise.resolve();
     alertStore.filters.setFilterValues([

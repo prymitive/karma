@@ -10,10 +10,16 @@ beforeEach(() => {
   alertStore = new AlertStore([]);
 });
 
-const renderHistoryLabel = (name: string, matcher: string, value: string) => {
+const renderHistoryLabel = (
+  raw: string,
+  name: string,
+  matcher: string,
+  value: string,
+) => {
   return render(
     <HistoryLabel
       alertStore={alertStore}
+      raw={raw}
       name={name}
       matcher={matcher}
       value={value}
@@ -22,16 +28,23 @@ const renderHistoryLabel = (name: string, matcher: string, value: string) => {
 };
 
 describe("<HistoryLabel />", () => {
-  it("renders name, matcher and value if all are set", () => {
-    renderHistoryLabel("foo", "=", "bar");
+  it("renders raw filter text", () => {
+    renderHistoryLabel("foo=bar", "foo", "=", "bar");
     expect(screen.getByText("foo=bar")).toBeInTheDocument();
   });
 
-  it("renders only value if name is falsey", () => {
+  it("renders raw text for a fuzzy filter", () => {
     render(
-      <HistoryLabel alertStore={alertStore} name="" matcher="" value="bar" />,
+      <HistoryLabel
+        alertStore={alertStore}
+        raw="foobar"
+        name=""
+        matcher="=~"
+        value="(?i)foobar"
+      />,
     );
-    expect(screen.getByText("bar")).toBeInTheDocument();
+    expect(screen.getByText("foobar")).toBeInTheDocument();
+    expect(screen.queryByText("(?i)foobar")).not.toBeInTheDocument();
   });
 
   it("label with dark background color should have 'components-label-dark' class", () => {
@@ -44,7 +57,7 @@ describe("<HistoryLabel />", () => {
       },
       ...alertStore.data.colors,
     });
-    renderHistoryLabel("foo", "=", "bar");
+    renderHistoryLabel("foo=bar", "foo", "=", "bar");
     expect(
       screen.getByText("foo=bar").closest(".components-label"),
     ).toHaveClass("components-label-dark");
@@ -60,7 +73,7 @@ describe("<HistoryLabel />", () => {
       },
       ...alertStore.data.colors,
     });
-    renderHistoryLabel("foo", "=", "bar");
+    renderHistoryLabel("foo=bar", "foo", "=", "bar");
     expect(
       screen.getByText("foo=bar").closest(".components-label"),
     ).toHaveClass("components-label-bright");

@@ -124,6 +124,7 @@ const HistoryMenu: FC<{
                 <HistoryLabel
                   key={f.raw}
                   alertStore={alertStore}
+                  raw={f.raw}
                   name={f.name}
                   matcher={f.matcher}
                   value={f.value}
