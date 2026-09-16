@@ -1,11 +1,7 @@
-import { FC, useEffect, useState, useEffectEvent } from "react";
-
-import { autorun } from "mobx";
+import { FC, useEffect, useEffectEvent, useMemo, useState } from "react";
 import { observer } from "mobx-react-lite";
 
 import { useHotkeys } from "react-hotkeys-hook";
-
-import type { SizeDetail } from "bricks.js";
 
 import type { AlertStore } from "Stores/AlertStore";
 import type { Settings } from "Stores/Settings";
@@ -23,34 +19,16 @@ const AlertGrid: FC<{
   const { width: windowWidth } = useWindowSize();
   const { ref: bodySizeRef, width: bodyWidth } = useElementSize();
 
-  const [gridSizesConfig, setGridSizesConfig] = useState<SizeDetail[]>(() =>
-    GridSizesConfig(settingsStore.gridConfig.config.groupWidth),
+  const configuredGroupWidth = settingsStore.gridConfig.config.groupWidth;
+  const gridSizesConfig = useMemo(
+    () => GridSizesConfig(configuredGroupWidth),
+    [configuredGroupWidth],
   );
-  const [groupWidth, setGroupWidth] = useState<number>(() =>
-    GetGridElementWidth(
-      bodyWidth || document.body.clientWidth,
-      windowWidth,
-      alertStore.data.gridPadding * 2,
-      settingsStore.gridConfig.config.groupWidth,
-    ),
-  );
-
-  useEffect(
-    () =>
-      autorun(() => {
-        setGridSizesConfig(
-          GridSizesConfig(settingsStore.gridConfig.config.groupWidth),
-        );
-        setGroupWidth(
-          GetGridElementWidth(
-            bodyWidth || document.body.clientWidth,
-            windowWidth,
-            alertStore.data.gridPadding * 2,
-            settingsStore.gridConfig.config.groupWidth,
-          ),
-        );
-      }),
-    [windowWidth, bodyWidth],
+  const groupWidth = GetGridElementWidth(
+    bodyWidth || document.body.clientWidth,
+    windowWidth,
+    alertStore.data.gridPadding * 2,
+    configuredGroupWidth,
   );
 
   useHotkeys("alt+space", alertStore.status.togglePause);
