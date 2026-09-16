@@ -59,7 +59,6 @@ $move: -50px;
 // Alert group snapshots render in the top layer, they would paint over
 // open modals. Hiding them keeps grid updates instant while a modal is
 // open.
-:root.modal-open::view-transition-old(.components-animation-alergroup),
-:root.modal-open::view-transition-new(.components-animation-alergroup) {
+:root.modal-open::view-transition-old(.components-animation-alergroup) {
   visibility: hidden;
 }

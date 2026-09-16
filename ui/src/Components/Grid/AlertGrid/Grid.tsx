@@ -141,16 +141,14 @@ const Grid: FC<{
   }, [debouncedRepack]);
 
   // Store changes are deferred only when animations are on.
-  const rawShowSwimlane = grid.labelName !== "";
+  const showSwimlane = grid.labelName !== "";
   const rawShowGroups = isExpanded || grid.labelName === "";
   const rawAlertGroups = grid.alertGroups;
   const rawShowLoadMore =
     isExpanded && grid.totalGroups > grid.alertGroups.length;
-  const deferredShowSwimlane = useDeferredValue(rawShowSwimlane);
   const deferredShowGroups = useDeferredValue(rawShowGroups);
   const deferredAlertGroups = useDeferredValue(rawAlertGroups);
   const deferredShowLoadMore = useDeferredValue(rawShowLoadMore);
-  const showSwimlane = isAnimated ? deferredShowSwimlane : rawShowSwimlane;
   const showGroups = isAnimated ? deferredShowGroups : rawShowGroups;
   const alertGroups =
     isAnimated && rawAlertGroups.length < deferredAlertGroups.length
@@ -161,10 +159,7 @@ const Grid: FC<{
   const visibleGroupCount = showGroups ? alertGroups.length : 0;
   const previousGroupCountRef = useRef(visibleGroupCount);
 
-  // Groups are positioned before the browser captures the new state, so
-  // they animate in at their final position; when groups are removed the
-  // exit animation keeps the space and holds every repack until it is
-  // done.
+  // Pack additions before paint. Hold removal packing until the exit fade ends.
   useLayoutEffect(() => {
     if (visibleGroupCount < previousGroupCountRef.current && isAnimated) {
       repackHoldUntilRef.current = Date.now() + alertGroupExitDuration;
@@ -183,20 +178,14 @@ const Grid: FC<{
       }}
     >
       {showSwimlane ? (
-        <ViewTransition
-          default="none"
-          enter={fadeAnimation}
-          exit={fadeAnimation}
-        >
-          <Swimlane
-            alertStore={alertStore}
-            settingsStore={settingsStore}
-            grid={grid}
-            isExpanded={isExpanded}
-            onToggle={onCollapseClick}
-            paddingTop={paddingTop}
-          />
-        </ViewTransition>
+        <Swimlane
+          alertStore={alertStore}
+          settingsStore={settingsStore}
+          grid={grid}
+          isExpanded={isExpanded}
+          onToggle={onCollapseClick}
+          paddingTop={paddingTop}
+        />
       ) : null}
       <div
         className="components-grid"

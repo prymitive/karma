@@ -1,12 +1,4 @@
-import {
-  use,
-  FC,
-  Ref,
-  useEffect,
-  useEffectEvent,
-  useState,
-  ReactNode,
-} from "react";
+import { use, FC, useEffect, useEffectEvent, useState, ReactNode } from "react";
 
 import { observer } from "mobx-react-lite";
 
@@ -61,7 +53,6 @@ interface AlertGroupProps {
   silenceFormStore: SilenceFormStore;
   groupWidth: number;
   gridLabelValue: string;
-  ref?: Ref<HTMLDivElement>;
 }
 
 const AlertGroup = ({
@@ -73,7 +64,6 @@ const AlertGroup = ({
   settingsStore,
   groupWidth,
   gridLabelValue,
-  ref,
 }: AlertGroupProps) => {
   const context = use(ThemeContext);
   const defaultRenderCount =
@@ -170,7 +160,6 @@ const AlertGroup = ({
 
   return (
     <div
-      ref={ref}
       className={`components-grid-alertgrid-alertgroup ${enterAnimation} ${
         context.animations.duration ? "animate" : ""
       } ${context.animations.duration && isAnimationCompleted ? "animate-done" : ""}`}

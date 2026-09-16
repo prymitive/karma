@@ -1,4 +1,4 @@
-import { MouseEvent, Ref } from "react";
+import { MouseEvent } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGrip } from "@fortawesome/free-solid-svg-icons/faGrip";
@@ -19,7 +19,6 @@ interface SwimlaneProps {
   isExpanded: boolean;
   onToggle: (event: MouseEvent) => void;
   paddingTop: number;
-  ref?: Ref<HTMLHeadingElement>;
 }
 
 const Swimlane = ({
@@ -29,11 +28,9 @@ const Swimlane = ({
   isExpanded,
   onToggle,
   paddingTop,
-  ref,
 }: SwimlaneProps) => {
   return (
     <h5
-      ref={ref}
       className="components-grid-swimlane d-flex flex-row justify-content-between rounded px-2 py-1 my-1 border border-dark"
       style={{ top: paddingTop }}
     >
