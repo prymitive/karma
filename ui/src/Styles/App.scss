@@ -26,13 +26,16 @@
 }
 }
 
-// Users who ask the system for less motion get no view transition
-// animations.
+// The system reduced-motion setting disables all motion effects.
 @media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after,
   ::view-transition-group(*),
   ::view-transition-image-pair(*),
   ::view-transition-old(*),
   ::view-transition-new(*) {
     animation: none !important;
+    transition: none !important;
   }
 }

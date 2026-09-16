@@ -426,14 +426,32 @@ describe("<App /> animations", () => {
   };
 
   it("enables animations in the context when set via UI defaults", async () => {
-    // Verifies animations are enabled when set via UI defaults
-    const { unmount } = await renderApp(true);
+    const { container, unmount } = await renderApp(true);
+    expect(
+      container.querySelectorAll(".components-navbar-animated"),
+    ).toHaveLength(1);
     unmount();
   });
 
   it("disables animations in the context when disabled via UI defaults", async () => {
-    // Verifies animations are disabled when set via UI defaults
-    const { unmount } = await renderApp(false);
+    const { container, unmount } = await renderApp(false);
+    expect(
+      container.querySelectorAll(".components-navbar-animated"),
+    ).toHaveLength(0);
+    unmount();
+  });
+
+  it("disables animations when the system requests reduced motion", async () => {
+    window.matchMedia = mockMatchMedia({
+      "(prefers-reduced-motion: reduce)": {
+        media: "(prefers-reduced-motion: reduce)",
+        matches: true,
+      },
+    });
+    const { container, unmount } = await renderApp(true);
+    expect(
+      container.querySelectorAll(".components-navbar-animated"),
+    ).toHaveLength(0);
     unmount();
   });
 });

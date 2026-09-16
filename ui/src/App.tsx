@@ -78,6 +78,9 @@ const App: FC<AppProps> = observer(({ defaultFilters, uiDefaults }) => {
 
   const prefersColorScheme = useMediaQuery("(prefers-color-scheme)");
   const prefersDark = useMediaQuery("(prefers-color-scheme: dark)");
+  const prefersReducedMotion = useMediaQuery(
+    "(prefers-reduced-motion: reduce)",
+  );
 
   return (
     <ErrorBoundary>
@@ -101,7 +104,11 @@ const App: FC<AppProps> = observer(({ defaultFilters, uiDefaults }) => {
                 ? ReactSelectStyles(ReactSelectColors.Dark)
                 : ReactSelectStyles(ReactSelectColors.Light),
           animations: {
-            duration: settingsStore.themeConfig.config.animations ? 500 : 0,
+            duration:
+              settingsStore.themeConfig.config.animations &&
+              !prefersReducedMotion
+                ? 500
+                : 0,
           },
         }}
       >
