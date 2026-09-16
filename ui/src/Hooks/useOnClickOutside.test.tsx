@@ -74,6 +74,27 @@ describe("useOnClickOutside", () => {
     expect(screen.getByText("Open")).toBeInTheDocument();
   });
 
+  it.each(["mousedown", "touchstart"])(
+    "stays open when %s targets the referenced element",
+    (eventName) => {
+      // Dispatch the event from the referenced element itself.
+      render(<Component enabled />);
+      const root = screen.getByText("Open").parentElement;
+      expect(root).not.toBeNull();
+
+      act(() => {
+        root!.dispatchEvent(
+          new Event(eventName, {
+            bubbles: true,
+            cancelable: true,
+          }),
+        );
+      });
+
+      expect(screen.getByText("Open")).toBeInTheDocument();
+    },
+  );
+
   it("only runs when enabled", () => {
     const { rerender } = render(<Component enabled={false} />);
     expect(screen.getByText("Open")).toBeInTheDocument();
