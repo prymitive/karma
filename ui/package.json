@@ -64,7 +64,7 @@
     "jest": "30.5.1",
     "jest-environment-jsdom": "30.5.1",
     "knip": "6.36.0",
-    "prettier": "3.9.7",
+    "prettier": "3.9.8",
     "sass": "1.104.1",
     "stylelint": "17.15.0",
     "stylelint-config-standard-scss": "17.0.0",
