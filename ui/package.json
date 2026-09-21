@@ -70,7 +70,7 @@
     "stylelint-config-standard-scss": "17.0.0",
     "terser": "5.51.2",
     "typescript": "6.0.3",
-    "typescript-eslint": "8.70.0",
+    "typescript-eslint": "8.70.1",
     "vite": "8.3.0"
   },
   "scripts": {
