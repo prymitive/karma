@@ -8,6 +8,10 @@ on:
   schedule:
     - cron: "0 12 * * 1"
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   renovate:
     name: Renovate
