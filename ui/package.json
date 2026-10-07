@@ -127,8 +127,8 @@
   },
   "allowScripts": {
     "@parcel/watcher": false,
-    "@swc/core": false,
-    "core-js": false,
+    "@swc/core": true,
+    "core-js": true,
     "unrs-resolver": false
   }
 }
