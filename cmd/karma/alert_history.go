@@ -323,7 +323,7 @@ func countAlerts(uri string, timeout time.Duration, transport http.RoundTripper,
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 
-	names, _, err := v1api.LabelNames(
+	names, _, _, err := v1api.LabelNames(
 		ctx,
 		[]string{`{__name__="ALERTS_FOR_STATE"}`},
 		time.Now().Add(time.Minute*-5),
@@ -354,7 +354,7 @@ func countAlerts(uri string, timeout time.Duration, transport http.RoundTripper,
 		slog.Duration("timeout", timeout),
 	)
 
-	result, _, err := v1api.QueryRange(ctx, q, r)
+	result, _, _, err := v1api.QueryRange(ctx, q, r)
 	if err != nil {
 		return nil, fmt.Errorf("failed to run a range query Prometheus for alerts: %w", err)
 	}
