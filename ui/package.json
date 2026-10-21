@@ -71,7 +71,7 @@
     "terser": "5.51.2",
     "typescript": "6.0.3",
     "typescript-eslint": "8.71.2",
-    "vite": "8.3.4"
+    "vite": "8.3.5"
   },
   "scripts": {
     "start": "vite",
