@@ -1,0 +1,39 @@
+# Raises an error if silence ACL rule uses invalid 'scope.operations' value
+! exec karma --check-config
+! stdout .
+cmp stderr stderr.txt
+
+-- stderr.txt --
+level=INFO msg="Reading configuration file" path=karma.yaml
+level=INFO msg="Version: dev"
+level=INFO msg="Configured Alertmanager source" name=default cluster=default uri=https://127.0.0.1:9093 proxy=false readonly=false
+level=INFO msg="Reading silence ACL config file" path=acl.yaml
+level=ERROR msg="Execution failed" error="invalid silence ACL rule at position 0: silence ACL rule requires 'scope.operations' entries to be one of [create edit delete], got \"foo\""
+-- karma.yaml --
+authentication:
+  header:
+    name: "X-User"
+    value_re: "(.+)"
+authorization:
+  groups:
+    - name: admins
+      members:
+        - alice
+        - bob
+    - name: users
+      members:
+        - john
+  acl:
+    silences: acl.yaml
+alertmanager:
+  servers:
+    - name: default
+      uri: https://127.0.0.1:9093
+
+-- acl.yaml --
+rules:
+  - action: block
+    reason: block deletions
+    scope:
+      operations:
+        - foo

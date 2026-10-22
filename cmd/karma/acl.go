@@ -16,9 +16,15 @@ const (
 	aclActionRequireMatcher = "requireMatcher"
 	aclActionBlock          = "block"
 	aclActionAllow          = "allow"
+
+	aclOperationCreate = "create"
+	aclOperationEdit   = "edit"
+	aclOperationDelete = "delete"
 )
 
 var allACLActions = []string{aclActionAllow, aclActionBlock, aclActionRequireMatcher}
+
+var allACLOperations = []string{aclOperationCreate, aclOperationEdit, aclOperationDelete}
 
 type silenceFilter struct {
 	NameRegex  *regexp.Regexp
@@ -102,6 +108,7 @@ type silenceACLScope struct {
 	Groups        []string
 	Alertmanagers []string
 	Filters       []silenceFilter
+	Operations    []string
 }
 
 type silenceACL struct {
@@ -111,7 +118,12 @@ type silenceACL struct {
 	Matchers aclMatchers
 }
 
-func (acl *silenceACL) isAllowed(amName string, silence *models.Silence, groups []string) (bool, error) {
+func (acl *silenceACL) isAllowed(operation, amName string, silence *models.Silence, groups []string) (bool, error) {
+	opMatch := len(acl.Scope.Operations) == 0
+	if slices.Contains(acl.Scope.Operations, operation) {
+		opMatch = true
+	}
+
 	groupMatch := len(acl.Scope.Groups) == 0
 	for _, aclGroup := range acl.Scope.Groups {
 		if slices.Contains(groups, aclGroup) {
@@ -132,7 +144,7 @@ func (acl *silenceACL) isAllowed(amName string, silence *models.Silence, groups 
 		}
 	}
 
-	if groupMatch && amMatch && filterMatch {
+	if opMatch && groupMatch && amMatch && filterMatch {
 		switch acl.Action {
 		case aclActionAllow:
 			return true, nil
@@ -162,12 +174,20 @@ func newSilenceACLFromConfig(cfg config.SilenceACLRule) (*silenceACL, error) {
 			Groups:        []string{},
 			Alertmanagers: []string{},
 			Filters:       []silenceFilter{},
+			Operations:    []string{},
 		},
 		Matchers: aclMatchers{},
 	}
 
 	if !slices.Contains(allACLActions, acl.Action) {
 		return nil, fmt.Errorf("silence ACL rule requires 'action' to be one of %v, got %q", allACLActions, acl.Action)
+	}
+
+	for _, operation := range cfg.Scope.Operations {
+		if !slices.Contains(allACLOperations, operation) {
+			return nil, fmt.Errorf("silence ACL rule requires 'scope.operations' entries to be one of %v, got %q", allACLOperations, operation)
+		}
+		acl.Scope.Operations = append(acl.Scope.Operations, operation)
 	}
 
 	if acl.Reason == "" {

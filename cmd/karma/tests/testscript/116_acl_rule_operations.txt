@@ -1,0 +1,48 @@
+# Config is valid with silence ACL rules scoped to operations
+exec karma --check-config
+! stdout .
+cmp stderr stderr.txt
+
+-- stderr.txt --
+level=INFO msg="Reading configuration file" path=karma.yaml
+level=INFO msg="Version: dev"
+level=INFO msg="Configured Alertmanager source" name=default cluster=default uri=https://127.0.0.1:9093 proxy=false readonly=false
+level=INFO msg="Reading silence ACL config file" path=acl.yaml
+level=INFO msg="Parsed ACL rules" rules=2
+level=INFO msg="Configuration is valid"
+-- karma.yaml --
+authentication:
+  header:
+    name: "X-User"
+    value_re: "(.+)"
+authorization:
+  groups:
+    - name: admins
+      members:
+        - alice
+        - bob
+    - name: users
+      members:
+        - john
+  acl:
+    silences: acl.yaml
+alertmanager:
+  servers:
+    - name: default
+      uri: https://127.0.0.1:9093
+
+-- acl.yaml --
+rules:
+  - action: block
+    reason: deletions are blocked for users
+    scope:
+      operations:
+        - delete
+      groups:
+        - users
+  - action: allow
+    reason: everything else is allowed
+    scope:
+      operations:
+        - create
+        - delete

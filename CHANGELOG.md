@@ -1,5 +1,16 @@
 # Changelog
 
+## v0.134
+
+### Fixed
+
+- Silence ACL rules are now enforced when deleting silences via the proxy - #7170.
+
+### Added
+
+- Silence ACL rules can now be scoped to specific operations (`create`, `edit`,
+  `delete`), see [ACLs.md](docs/ACLs.md) - #7170.
+
 ## v0.133
 
 ### Changed

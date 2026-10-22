@@ -17,6 +17,7 @@ import (
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/mapper"
+	"github.com/prymitive/karma/internal/models"
 )
 
 func proxyPathPrefix(name string) string {
@@ -73,6 +74,21 @@ func NewAlertmanagerProxy(alertmanager *alertmanager.Alertmanager) *httputil.Rev
 	return &proxy
 }
 
+func validateSilenceAgainstACLs(operation, amName string, silence *models.Silence, r *http.Request) error {
+	for i, acl := range silenceACLs {
+		groups := getGroupsFromContext(r)
+		isAllowed, err := acl.isAllowed(operation, amName, silence, groups)
+		slog.Debug("ACL rule check", slog.Int("index", i), slog.Bool("allowed", isAllowed), slog.Any("error", err))
+		if err != nil {
+			return err
+		}
+		if isAllowed {
+			return nil
+		}
+	}
+	return nil
+}
+
 func handlePostRequest(alertmanager *alertmanager.Alertmanager, h http.Handler) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		slog.Debug("Proxy request", slog.String("alertmanager", alertmanager.Name), slog.String("uri", r.RequestURI))
@@ -119,24 +135,21 @@ func handlePostRequest(alertmanager *alertmanager.Alertmanager, h http.Handler) 
 				return
 			}
 
-			for i, acl := range silenceACLs {
-				groups := getGroupsFromContext(r)
-				isAllowed, err := acl.isAllowed(alertmanager.Name, silence, groups)
-				slog.Debug("ACL rule check", slog.Int("index", i), slog.Bool("allowed", isAllowed), slog.Any("error", err))
-				if err != nil {
-					slog.Warn(
-						"Proxy request was blocked by ACL rule",
-						slog.Any("error", err),
-						slog.String("alertmanager", alertmanager.Name),
-						slog.String("method", r.Method),
-						slog.String("uri", r.RequestURI),
-					)
-					http.Error(w, err.Error(), http.StatusBadRequest)
-					return
-				}
-				if isAllowed {
-					break
-				}
+			// silence posted with an ID is an edit of an existing silence
+			operation := aclOperationCreate
+			if silence.ID != "" {
+				operation = aclOperationEdit
+			}
+			if err := validateSilenceAgainstACLs(operation, alertmanager.Name, silence, r); err != nil {
+				slog.Warn(
+					"Proxy request was blocked by ACL rule",
+					slog.Any("error", err),
+					slog.String("alertmanager", alertmanager.Name),
+					slog.String("method", r.Method),
+					slog.String("uri", r.RequestURI),
+				)
+				http.Error(w, err.Error(), http.StatusBadRequest)
+				return
 			}
 		}
 
@@ -166,6 +179,43 @@ func handlePostRequest(alertmanager *alertmanager.Alertmanager, h http.Handler) 
 	}
 }
 
+func handleDeleteRequest(alertmanager *alertmanager.Alertmanager, h http.Handler) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		slog.Debug("Proxy request", slog.String("alertmanager", alertmanager.Name), slog.String("uri", r.RequestURI))
+
+		if len(silenceACLs) > 0 {
+			// ACL rules can only be evaluated against a silence we know about,
+			// unknown silence ID means the request cannot be verified
+			silence, err := alertmanager.SilenceByID(chi.URLParam(r, "id"))
+			if err != nil {
+				slog.Warn(
+					"Proxy request was blocked, silence not found",
+					slog.Any("error", err),
+					slog.String("alertmanager", alertmanager.Name),
+					slog.String("method", r.Method),
+					slog.String("uri", r.RequestURI),
+				)
+				http.Error(w, err.Error(), http.StatusBadRequest)
+				return
+			}
+
+			if err := validateSilenceAgainstACLs(aclOperationDelete, alertmanager.Name, &silence, r); err != nil {
+				slog.Warn(
+					"Proxy request was blocked by ACL rule",
+					slog.Any("error", err),
+					slog.String("alertmanager", alertmanager.Name),
+					slog.String("method", r.Method),
+					slog.String("uri", r.RequestURI),
+				)
+				http.Error(w, err.Error(), http.StatusBadRequest)
+				return
+			}
+		}
+
+		h.ServeHTTP(w, r)
+	}
+}
+
 func setupRouterProxyHandlers(router *chi.Mux, alertmanager *alertmanager.Alertmanager) {
 	proxy := NewAlertmanagerProxy(alertmanager)
 	router.Post(
@@ -174,10 +224,7 @@ func setupRouterProxyHandlers(router *chi.Mux, alertmanager *alertmanager.Alertm
 	)
 	router.Delete(
 		proxyPath(alertmanager.Name, "/api/v2/silence/{id}"),
-		http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			h := http.StripPrefix(proxyPathPrefix(alertmanager.Name), proxy)
-			h.ServeHTTP(w, r)
-		}),
+		handleDeleteRequest(alertmanager, http.StripPrefix(proxyPathPrefix(alertmanager.Name), proxy)),
 	)
 }
 

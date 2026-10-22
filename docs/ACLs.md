@@ -173,6 +173,7 @@ scope:
   groups: list of strings
   alertmanagers: list of strings
   filters: list of filters
+  operations: list of strings
 matchers:
   required: list of silence matchers
 ```
@@ -194,6 +195,13 @@ matchers:
 - `scope:alertmanagers` - list of alertmanager names as specified in
   `alertmanager:servers`, if no name is specified here then this ACL will be
   applied to silences for all alertmanager servers
+- `scope:operations` - list of silence operations this ACL rule applies to,
+  valid operations are:
+  - `create` - creating new silences
+  - `edit` - editing existing silences
+  - `delete` - deleting silences
+  If no operation is specified here then this ACL will be applied to all
+  silence operations.
 - `scope:filters` - list of matcher filters evaluated when checking if this ACL
   should be applied to given silence. Those filters can be used to enforce
   ACL rules only to some silences and are compared against silence matchers.
@@ -399,4 +407,25 @@ rules:
       required:
         - name: team
           value_re: .+
+```
+
+### Block silence deletions for everyone except admins
+
+First allow all members of the `admins` group to do anything, then block
+deletions for everyone else. Since ACL rules are evaluated in the order
+specified and first `allow` or `block` rule stops other rule processing this
+will allow `admins` to delete silences while everyone else is blocked from it.
+
+```YAML
+rules:
+  - action: allow
+    reason: admins are allowed
+    scope:
+      groups:
+        - admins
+  - action: block
+    reason: deleting silences is only allowed for admins
+    scope:
+      operations:
+        - delete
 ```
