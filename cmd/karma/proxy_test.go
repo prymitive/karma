@@ -631,6 +631,104 @@ func TestProxySilenceACL(t *testing.T) {
 			responseCode:        200,
 		},
 		{
+			name:       "block scoped to create, new silence blocked",
+			authGroups: map[string][]string{},
+			silenceACLs: []*silenceACL{
+				{
+					Action: "block",
+					Reason: "block creation",
+					Scope: silenceACLScope{
+						Filters:       []silenceFilter{},
+						Groups:        []string{},
+						Alertmanagers: []string{},
+						Operations:    []string{"create"},
+					},
+					Matchers: aclMatchers{},
+				},
+			},
+			requestUsername:     "bob",
+			frontednRequestBody: defaultBody,
+			responseCode:        400,
+		},
+		{
+			name:       "block scoped to create, edit allowed",
+			authGroups: map[string][]string{},
+			silenceACLs: []*silenceACL{
+				{
+					Action: "block",
+					Reason: "block creation",
+					Scope: silenceACLScope{
+						Filters:       []silenceFilter{},
+						Groups:        []string{},
+						Alertmanagers: []string{},
+						Operations:    []string{"create"},
+					},
+					Matchers: aclMatchers{},
+				},
+			},
+			requestUsername: "bob",
+			frontednRequestBody: `{
+"comment": "comment",
+"createdBy": "alice",
+"id": "1234567890",
+"startsAt": "2000-02-01T00:00:00.000Z",
+"endsAt": "2000-02-01T00:02:03.000Z",
+"matchers": [
+{ "isRegex": false, "name": "alertname", "value": "Fake Alert" },
+{ "isRegex": true, "isEqual": true, "name": "foo", "value": "(bar|baz)"  }
+]}`,
+			responseCode: 200,
+		},
+		{
+			name:       "block scoped to edit, edit blocked",
+			authGroups: map[string][]string{},
+			silenceACLs: []*silenceACL{
+				{
+					Action: "block",
+					Reason: "block editing",
+					Scope: silenceACLScope{
+						Filters:       []silenceFilter{},
+						Groups:        []string{},
+						Alertmanagers: []string{},
+						Operations:    []string{"edit"},
+					},
+					Matchers: aclMatchers{},
+				},
+			},
+			requestUsername: "bob",
+			frontednRequestBody: `{
+"comment": "comment",
+"createdBy": "alice",
+"id": "1234567890",
+"startsAt": "2000-02-01T00:00:00.000Z",
+"endsAt": "2000-02-01T00:02:03.000Z",
+"matchers": [
+{ "isRegex": false, "name": "alertname", "value": "Fake Alert" },
+{ "isRegex": true, "isEqual": true, "name": "foo", "value": "(bar|baz)"  }
+]}`,
+			responseCode: 400,
+		},
+		{
+			name:       "block scoped to edit, new silence allowed",
+			authGroups: map[string][]string{},
+			silenceACLs: []*silenceACL{
+				{
+					Action: "block",
+					Reason: "block editing",
+					Scope: silenceACLScope{
+						Filters:       []silenceFilter{},
+						Groups:        []string{},
+						Alertmanagers: []string{},
+						Operations:    []string{"edit"},
+					},
+					Matchers: aclMatchers{},
+				},
+			},
+			requestUsername:     "bob",
+			frontednRequestBody: defaultBody,
+			responseCode:        200,
+		},
+		{
 			name: "matcher required, no match, allowed",
 			authGroups: map[string][]string{
 				"admins": {"bob"},
@@ -1346,6 +1444,312 @@ func TestProxySilenceACL(t *testing.T) {
 				r.ServeHTTP(resp, req)
 				if resp.Code != testCase.responseCode {
 					t.Errorf("Got response code %d instead of %d", resp.Code, testCase.responseCode)
+				}
+			}
+		})
+	}
+}
+
+func TestProxyDeleteACL(t *testing.T) {
+	type proxyTest struct {
+		name            string
+		authGroups      map[string][]string
+		silenceACLs     []*silenceACL
+		requestUsername string
+		// silenceMatcherValue picks the cached silence to delete by its
+		// matcher value
+		silenceMatcherValue string
+		unknownSilenceID    bool
+		responseBody        string
+		responseCode        int
+	}
+
+	proxyTests := []proxyTest{
+		{
+			name:                "no config, allowed",
+			authGroups:          map[string][]string{},
+			silenceACLs:         []*silenceACL{},
+			requestUsername:     "bob",
+			silenceMatcherValue: "server7",
+			responseBody:        "{\"status\":\"success\"}",
+			responseCode:        200,
+		},
+		{
+			name:       "block instance=server7 silences, blocked",
+			authGroups: map[string][]string{},
+			silenceACLs: []*silenceACL{
+				{
+					Action: "block",
+					Reason: "block server7 silences",
+					Scope: silenceACLScope{
+						Filters: []silenceFilter{
+							{Name: "instance", Value: "server7"},
+						},
+						Groups:        []string{},
+						Alertmanagers: []string{},
+						Operations:    []string{"delete"},
+					},
+					Matchers: aclMatchers{},
+				},
+			},
+			requestUsername:     "bob",
+			silenceMatcherValue: "server7",
+			responseBody:        "silence blocked by ACL rule: block server7 silences\n",
+			responseCode:        400,
+		},
+		{
+			name:       "block scoped to create, delete allowed",
+			authGroups: map[string][]string{},
+			silenceACLs: []*silenceACL{
+				{
+					Action: "block",
+					Reason: "block server7 silences",
+					Scope: silenceACLScope{
+						Filters: []silenceFilter{
+							{Name: "instance", Value: "server7"},
+						},
+						Groups:        []string{},
+						Alertmanagers: []string{},
+						Operations:    []string{"create"},
+					},
+					Matchers: aclMatchers{},
+				},
+			},
+			requestUsername:     "bob",
+			silenceMatcherValue: "server7",
+			responseBody:        "{\"status\":\"success\"}",
+			responseCode:        200,
+		},
+		{
+			name:       "block instance=server7 silences, other silence allowed",
+			authGroups: map[string][]string{},
+			silenceACLs: []*silenceACL{
+				{
+					Action: "block",
+					Reason: "block server7 silences",
+					Scope: silenceACLScope{
+						Filters: []silenceFilter{
+							{Name: "instance", Value: "server7"},
+						},
+						Groups:        []string{},
+						Alertmanagers: []string{},
+					},
+					Matchers: aclMatchers{},
+				},
+			},
+			requestUsername:     "bob",
+			silenceMatcherValue: "Host_Down",
+			responseBody:        "{\"status\":\"success\"}",
+			responseCode:        200,
+		},
+		{
+			name:       "requireMatcher alertname=Host_Down, matching silence allowed",
+			authGroups: map[string][]string{},
+			silenceACLs: []*silenceACL{
+				{
+					Action: "requireMatcher",
+					Reason: "require alertname=Host_Down matcher",
+					Scope: silenceACLScope{
+						Filters:       []silenceFilter{},
+						Groups:        []string{},
+						Alertmanagers: []string{},
+					},
+					Matchers: aclMatchers{
+						Required: []silenceMatcher{
+							{
+								Name:    "alertname",
+								Value:   "Host_Down",
+								IsEqual: truePtr(),
+							},
+						},
+					},
+				},
+			},
+			requestUsername:     "bob",
+			silenceMatcherValue: "Host_Down",
+			responseBody:        "{\"status\":\"success\"}",
+			responseCode:        200,
+		},
+		{
+			name:       "requireMatcher team label, blocked",
+			authGroups: map[string][]string{},
+			silenceACLs: []*silenceACL{
+				{
+					Action: "requireMatcher",
+					Reason: "require team label",
+					Scope: silenceACLScope{
+						Filters:       []silenceFilter{},
+						Groups:        []string{},
+						Alertmanagers: []string{},
+					},
+					Matchers: aclMatchers{
+						Required: []silenceMatcher{
+							{
+								Name:       "team",
+								ValueRegex: regexp.MustCompile("^.+$"),
+							},
+						},
+					},
+				},
+			},
+			requestUsername:     "bob",
+			silenceMatcherValue: "server7",
+			responseBody:        "silence blocked by ACL rule: require team label\n",
+			responseCode:        400,
+		},
+		{
+			name:       "unknown silence id, blocked",
+			authGroups: map[string][]string{},
+			silenceACLs: []*silenceACL{
+				{
+					Action: "block",
+					Reason: "block server7 silences",
+					Scope: silenceACLScope{
+						Filters: []silenceFilter{
+							{Name: "instance", Value: "server7"},
+						},
+						Groups:        []string{},
+						Alertmanagers: []string{},
+					},
+					Matchers: aclMatchers{},
+				},
+			},
+			requestUsername:  "bob",
+			unknownSilenceID: true,
+			responseBody:     "silence 'unknown-id' not found\n",
+			responseCode:     400,
+		},
+		{
+			name: "block server7 silences scoped to admins group, non-admin user allowed",
+			authGroups: map[string][]string{
+				"admins": {"bob"},
+				"users":  {"alice"},
+			},
+			silenceACLs: []*silenceACL{
+				{
+					Action: "block",
+					Reason: "block server7 silences",
+					Scope: silenceACLScope{
+						Filters: []silenceFilter{
+							{Name: "instance", Value: "server7"},
+						},
+						Groups:        []string{"admins"},
+						Alertmanagers: []string{},
+					},
+					Matchers: aclMatchers{},
+				},
+			},
+			requestUsername:     "alice",
+			silenceMatcherValue: "server7",
+			responseBody:        "{\"status\":\"success\"}",
+			responseCode:        200,
+		},
+		{
+			name: "block server7 silences scoped to admins group, admin user blocked",
+			authGroups: map[string][]string{
+				"admins": {"bob"},
+				"users":  {"alice"},
+			},
+			silenceACLs: []*silenceACL{
+				{
+					Action: "block",
+					Reason: "block server7 silences",
+					Scope: silenceACLScope{
+						Filters: []silenceFilter{
+							{Name: "instance", Value: "server7"},
+						},
+						Groups:        []string{"admins"},
+						Alertmanagers: []string{},
+					},
+					Matchers: aclMatchers{},
+				},
+			},
+			requestUsername:     "bob",
+			silenceMatcherValue: "server7",
+			responseBody:        "silence blocked by ACL rule: block server7 silences\n",
+			responseCode:        400,
+		},
+	}
+
+	for _, testCase := range proxyTests {
+		httpmock.Activate()
+		defer httpmock.DeactivateAndReset()
+
+		log.SetLevel(slog.LevelError)
+		t.Run(testCase.name, func(t *testing.T) {
+			for _, version := range mock.ListAllMocks() {
+				t.Logf("Testing alerts using mock files from Alertmanager %s", version)
+
+				config.Config.Listen.Prefix = "/"
+				config.Config.Authentication.Header.Name = "X-User"
+				config.Config.Authentication.Header.ValueRegex = "(.+)"
+
+				config.Config.Authorization.Groups = []config.AuthorizationGroup{}
+				for groupName, members := range testCase.authGroups {
+					g := config.AuthorizationGroup{Name: groupName, Members: members}
+					config.Config.Authorization.Groups = append(config.Config.Authorization.Groups, g)
+				}
+
+				silenceACLs = testCase.silenceACLs
+
+				r := testRouter()
+				setupRouter(r, nil)
+
+				am, err := alertmanager.NewAlertmanager(
+					"cluster",
+					"proxyACL",
+					"http://localhost",
+					alertmanager.WithRequestTimeout(time.Second*5),
+					alertmanager.WithProxy(true),
+				)
+				if err != nil {
+					t.Error(err)
+				}
+				setupRouterProxyHandlers(r, am)
+
+				apiCache, _ = lru.New[string, []byte](100)
+				httpmock.Reset()
+				mock.RegisterURL("http://localhost/metrics", version, "metrics")
+				mock.RegisterURL("http://localhost/api/v2/silences", version, "api/v2/silences")
+				mock.RegisterURL("http://localhost/api/v2/alerts/groups", version, "api/v2/alerts/groups")
+				_ = am.Pull()
+
+				silenceID := "unknown-id"
+				if !testCase.unknownSilenceID {
+					for _, silence := range am.Silences() {
+						for _, matcher := range silence.Matchers {
+							if matcher.Value == testCase.silenceMatcherValue {
+								silenceID = silence.ID
+							}
+						}
+					}
+				}
+				if silenceID == "unknown-id" && !testCase.unknownSilenceID {
+					t.Fatalf("No silence with matcher value %q found", testCase.silenceMatcherValue)
+				}
+
+				httpmock.RegisterResponder(
+					"DELETE",
+					"http://localhost/api/v2/silence/"+silenceID,
+					httpmock.NewStringResponder(200, "{\"status\":\"success\"}"),
+				)
+
+				req := httptest.NewRequest(
+					"DELETE",
+					"/proxy/alertmanager/proxyACL/api/v2/silence/"+silenceID,
+					nil,
+				)
+				req.Header.Set("X-User", testCase.requestUsername)
+
+				resp := newCloseNotifyingRecorder()
+				r.ServeHTTP(resp, req)
+				if resp.Code != testCase.responseCode {
+					t.Errorf("Got response code %d instead of %d", resp.Code, testCase.responseCode)
+				}
+
+				gotBody, _ := io.ReadAll(resp.Body)
+				if string(gotBody) != testCase.responseBody {
+					t.Errorf("Body mismatch:\ngot:      %s\nexpected: %s", gotBody, testCase.responseBody)
 				}
 			}
 		})

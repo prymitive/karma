@@ -33,6 +33,7 @@ type SilenceACLRuleScope struct {
 	Groups        []string
 	Alertmanagers []string
 	Filters       []SilenceFilters
+	Operations    []string
 }
 
 type SilenceACLRule struct {
