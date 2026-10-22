@@ -1,14 +1,12 @@
 import { act } from "react";
 
-function PressKey(key: string, code: number): void {
+function PressKey(key: string): void {
   act(() => {
-    const eventInit = {
+    const eventInit: KeyboardEventInit = {
       key: key,
       code: key,
-      keyCode: code,
-      which: code,
       bubbles: true,
-    } as KeyboardEventInit;
+    };
     document.dispatchEvent(new KeyboardEvent("keydown", eventInit));
     document.dispatchEvent(new KeyboardEvent("keyup", eventInit));
   });

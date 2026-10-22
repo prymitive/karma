@@ -118,7 +118,7 @@ describe("<DeleteSilence />", () => {
     fireEvent.click(button!);
     expect(document.body.querySelector(".modal-body")).toBeInTheDocument();
 
-    PressKey("Escape", 27);
+    PressKey("Escape");
     act(() => {
       jest.runOnlyPendingTimers();
     });
