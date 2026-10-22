@@ -344,7 +344,7 @@ describe("<Browser />", () => {
     const paginator = container.querySelector(".components-pagination");
     fireEvent.focus(paginator!);
 
-    PressKey("ArrowRight", 39);
+    PressKey("ArrowRight");
     expect(
       container
         .querySelectorAll("li.page-item")[2]
@@ -354,7 +354,7 @@ describe("<Browser />", () => {
       container.querySelectorAll(".components-managed-silence"),
     ).toHaveLength(6);
 
-    PressKey("ArrowRight", 39);
+    PressKey("ArrowRight");
     expect(
       container
         .querySelectorAll("li.page-item")[3]
@@ -364,7 +364,7 @@ describe("<Browser />", () => {
       container.querySelectorAll(".components-managed-silence"),
     ).toHaveLength(1);
 
-    PressKey("ArrowRight", 39);
+    PressKey("ArrowRight");
     expect(
       container
         .querySelectorAll("li.page-item")[3]
@@ -374,7 +374,7 @@ describe("<Browser />", () => {
       container.querySelectorAll(".components-managed-silence"),
     ).toHaveLength(1);
 
-    PressKey("ArrowLeft", 37);
+    PressKey("ArrowLeft");
     expect(
       container
         .querySelectorAll("li.page-item")[2]
@@ -384,7 +384,7 @@ describe("<Browser />", () => {
       container.querySelectorAll(".components-managed-silence"),
     ).toHaveLength(6);
 
-    PressKey("ArrowLeft", 37);
+    PressKey("ArrowLeft");
     expect(
       container
         .querySelectorAll("li.page-item")[1]
@@ -394,7 +394,7 @@ describe("<Browser />", () => {
       container.querySelectorAll(".components-managed-silence"),
     ).toHaveLength(6);
 
-    PressKey("ArrowLeft", 37);
+    PressKey("ArrowLeft");
     expect(
       container
         .querySelectorAll("li.page-item")[1]
@@ -739,7 +739,7 @@ describe("<SilenceDelete />", () => {
       await fetchMock.callHistory.flush(true);
     });
 
-    PressKey("Escape", 27);
+    PressKey("Escape");
 
     await act(() => promise);
   });

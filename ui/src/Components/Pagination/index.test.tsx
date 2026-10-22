@@ -33,28 +33,28 @@ describe("<PageSelect />", () => {
     );
     fireEvent.focus(container.firstChild as Element);
 
-    PressKey("ArrowRight", 39);
+    PressKey("ArrowRight");
     expect(setPageCallback).toHaveBeenLastCalledWith(2);
 
-    PressKey("ArrowRight", 39);
+    PressKey("ArrowRight");
     expect(setPageCallback).toHaveBeenLastCalledWith(3);
 
-    PressKey("ArrowRight", 39);
+    PressKey("ArrowRight");
     expect(setPageCallback).toHaveBeenLastCalledWith(4);
 
-    PressKey("ArrowRight", 39);
+    PressKey("ArrowRight");
     expect(setPageCallback).toHaveBeenLastCalledWith(4);
 
-    PressKey("ArrowLeft", 37);
+    PressKey("ArrowLeft");
     expect(setPageCallback).toHaveBeenLastCalledWith(3);
 
-    PressKey("ArrowLeft", 37);
+    PressKey("ArrowLeft");
     expect(setPageCallback).toHaveBeenLastCalledWith(2);
 
-    PressKey("ArrowLeft", 37);
+    PressKey("ArrowLeft");
     expect(setPageCallback).toHaveBeenLastCalledWith(1);
 
-    PressKey("ArrowLeft", 37);
+    PressKey("ArrowLeft");
     expect(setPageCallback).toHaveBeenLastCalledWith(1);
   });
 

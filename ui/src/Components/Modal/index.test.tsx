@@ -328,7 +328,7 @@ describe("<ModalInner />", () => {
 
   it("toggleOpen is called after pressing 'esc'", () => {
     renderModal(true);
-    PressKey("Escape", 27);
+    PressKey("Escape");
     expect(fakeToggle).toHaveBeenCalled();
   });
 

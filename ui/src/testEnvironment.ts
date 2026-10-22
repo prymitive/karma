@@ -14,12 +14,10 @@ const matchMediaPolyfill = (query: string, width: number) => {
     matches: maxWidth !== null && width <= Number(maxWidth[1]),
     media: query,
     onchange: null,
-    addListener() {},
-    removeListener() {},
     addEventListener() {},
     removeEventListener() {},
     dispatchEvent: () => false,
-  } as MediaQueryList;
+  } as unknown as MediaQueryList;
 };
 
 type MatchMediaPolyfill = (query: string) => MediaQueryList;
