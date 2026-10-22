@@ -5,6 +5,8 @@
 ### Fixed
 
 - Silence ACL rules are now enforced when deleting silences via the proxy - #7170.
+- Silence matcher sliders and label value suggestions now update correctly
+  when editing a silence or changing the label name - #7221.
 
 ### Added
 

@@ -1,6 +1,7 @@
 import { use, FC, useEffect, useMemo } from "react";
 
 import { action } from "mobx";
+import { observer } from "mobx-react-lite";
 
 import {
   ActionMeta,
@@ -83,7 +84,7 @@ const LabelValueInput: FC<{
   silenceFormStore: SilenceFormStore;
   matcher: MatcherWithIDT;
   isValid: boolean;
-}> = ({ silenceFormStore, matcher, isValid }) => {
+}> = observer(({ silenceFormStore, matcher, isValid }) => {
   const { response, get, cancelGet } = useFetchGet<string[]>(
     FormatBackendURI(`labelValues.json?name=${matcher.name}`),
     { autorun: false },
@@ -129,6 +130,6 @@ const LabelValueInput: FC<{
       }}
     />
   );
-};
+});
 
 export { LabelValueInput };
