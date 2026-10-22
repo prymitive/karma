@@ -1,6 +1,7 @@
 import type { FC } from "react";
 
 import { action } from "mobx";
+import { observer } from "mobx-react-lite";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
@@ -30,84 +31,86 @@ const SilenceMatch: FC<{
   showDelete: boolean;
   onDelete: () => void;
   isValid: boolean;
-}> = ({ silenceFormStore, matcher, showDelete, onDelete, isValid }) => {
-  return (
-    <div className="d-flex flex-fill flex-lg-row align-items-center flex-column mb-3">
-      <div
-        className="flex-shrink-0 flex-grow-0 pe-lg-2 pb-2 pb-lg-0 w-100 mw-md-25"
-        style={{ flexBasis: "25%" }}
-      >
-        <LabelNameInput matcher={matcher} isValid={isValid} />
-      </div>
-      <div
-        className="flex-shrink-0 flex-grow-0 pe-lg-2 pb-2 pb-lg-0 w-100"
-        style={{ flexBasis: "40%" }}
-      >
-        <LabelValueInput
-          silenceFormStore={silenceFormStore}
-          matcher={matcher}
-          isValid={isValid}
-        />
-      </div>
-      <div
-        className="flex-shrink-0 flex-grow-1 w-100"
-        style={{ flexBasis: "15%" }}
-      >
-        <div className="d-flex justify-content-between form-check form-check-inline m-0 p-0">
-          <div>
-            <span className="form-check form-switch">
-              <input
-                id={`isEqual-${matcher.id}`}
-                className="form-check-input"
-                type="checkbox"
-                value=""
-                checked={matcher.isEqual}
-                onChange={(event) =>
-                  setMatcherIsEqual(matcher, event.target.checked)
-                }
-              />
-              <label
-                className="form-check-label cursor-pointer me-3"
-                htmlFor={`isEqual-${matcher.id}`}
-              >
-                {matcher.isEqual ? "Silence matches" : "Exclude matches"}
-              </label>
-            </span>
-            <span className="form-check form-switch">
-              <input
-                id={`isRegex-${matcher.id}`}
-                className="form-check-input"
-                type="checkbox"
-                value=""
-                checked={matcher.isRegex}
-                onChange={(event) =>
-                  setMatcherIsRegex(matcher, event.target.checked)
-                }
-                disabled={matcher.values.length > 1}
-              />
-              <label
-                className="form-check-label cursor-pointer me-3"
-                htmlFor={`isRegex-${matcher.id}`}
-              >
-                Regex
-              </label>
-            </span>
+}> = observer(
+  ({ silenceFormStore, matcher, showDelete, onDelete, isValid }) => {
+    return (
+      <div className="d-flex flex-fill flex-lg-row align-items-center flex-column mb-3">
+        <div
+          className="flex-shrink-0 flex-grow-0 pe-lg-2 pb-2 pb-lg-0 w-100 mw-md-25"
+          style={{ flexBasis: "25%" }}
+        >
+          <LabelNameInput matcher={matcher} isValid={isValid} />
+        </div>
+        <div
+          className="flex-shrink-0 flex-grow-0 pe-lg-2 pb-2 pb-lg-0 w-100"
+          style={{ flexBasis: "40%" }}
+        >
+          <LabelValueInput
+            silenceFormStore={silenceFormStore}
+            matcher={matcher}
+            isValid={isValid}
+          />
+        </div>
+        <div
+          className="flex-shrink-0 flex-grow-1 w-100"
+          style={{ flexBasis: "15%" }}
+        >
+          <div className="d-flex justify-content-between form-check form-check-inline m-0 p-0">
+            <div>
+              <span className="form-check form-switch">
+                <input
+                  id={`isEqual-${matcher.id}`}
+                  className="form-check-input"
+                  type="checkbox"
+                  value=""
+                  checked={matcher.isEqual}
+                  onChange={(event) =>
+                    setMatcherIsEqual(matcher, event.target.checked)
+                  }
+                />
+                <label
+                  className="form-check-label cursor-pointer me-3"
+                  htmlFor={`isEqual-${matcher.id}`}
+                >
+                  {matcher.isEqual ? "Silence matches" : "Exclude matches"}
+                </label>
+              </span>
+              <span className="form-check form-switch">
+                <input
+                  id={`isRegex-${matcher.id}`}
+                  className="form-check-input"
+                  type="checkbox"
+                  value=""
+                  checked={matcher.isRegex}
+                  onChange={(event) =>
+                    setMatcherIsRegex(matcher, event.target.checked)
+                  }
+                  disabled={matcher.values.length > 1}
+                />
+                <label
+                  className="form-check-label cursor-pointer me-3"
+                  htmlFor={`isRegex-${matcher.id}`}
+                >
+                  Regex
+                </label>
+              </span>
+            </div>
+            {showDelete ? (
+              <TooltipWrapper title="Remove this matcher">
+                <button
+                  type="button"
+                  className="btn btn-sm btn-outline-danger"
+                  onClick={onDelete}
+                >
+                  <FontAwesomeIcon icon={faTrash} className="fa-fw" />
+                </button>
+              </TooltipWrapper>
+            ) : null}
           </div>
-          {showDelete ? (
-            <TooltipWrapper title="Remove this matcher">
-              <button
-                type="button"
-                className="btn btn-sm btn-outline-danger"
-                onClick={onDelete}
-              >
-                <FontAwesomeIcon icon={faTrash} className="fa-fw" />
-              </button>
-            </TooltipWrapper>
-          ) : null}
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  },
+);
 
 export default SilenceMatch;

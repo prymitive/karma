@@ -16,8 +16,10 @@ let matcher: MatcherWithIDT;
 
 beforeEach(() => {
   silenceFormStore = new SilenceFormStore();
-  matcher = NewEmptyMatcher();
-  matcher.name = "cluster";
+  const m = NewEmptyMatcher();
+  m.name = "cluster";
+  silenceFormStore.data.setMatchers([m]);
+  matcher = silenceFormStore.data.matchers[0];
 });
 
 afterEach(() => {
