@@ -8,7 +8,7 @@ import { Tab } from "Components/Modal/Tab";
 import { Configuration } from "./Configuration";
 import { Help } from "./Help";
 
-export type OpenTabT = "configuration" | "help";
+type OpenTabT = "configuration" | "help";
 
 const MainModalContent: FC<{
   alertStore: AlertStore;
