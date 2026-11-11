@@ -54,8 +54,8 @@
     "@types/promise-retry": "1.1.6",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
-    "@vitejs/plugin-legacy": "8.2.3",
-    "@vitejs/plugin-react": "6.2.1",
+    "@vitejs/plugin-legacy": "8.2.4",
+    "@vitejs/plugin-react": "6.3.0",
     "eslint": "10.14.0",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-jest": "29.17.0",
@@ -71,7 +71,7 @@
     "terser": "5.51.2",
     "typescript": "6.0.3",
     "typescript-eslint": "8.72.2",
-    "vite": "8.3.5"
+    "vite": "8.3.8"
   },
   "scripts": {
     "start": "vite",
