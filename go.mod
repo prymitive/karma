@@ -26,7 +26,7 @@ require (
 	github.com/prometheus/prometheus v0.316.0
 	github.com/prymitive/randomcolor v0.0.0-20210705210145-26c3401033a6
 	github.com/rogpeppe/go-internal v1.16.0
-	github.com/spf13/pflag v1.0.10
+	github.com/spf13/pflag v1.1.0
 	go.yaml.in/yaml/v3 v3.0.6
 	gopkg.in/go-playground/colors.v1 v1.2.0
 )
