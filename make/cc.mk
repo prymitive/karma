@@ -9,7 +9,7 @@ cc-%: go.mod go.sum $(SOURCES_GO) ui/dist/index.html
 	$(eval GOEXT := $(patsubst $(GOOS),,$(patsubst windows,.exe,$(GOOS))))
 	$(eval BINARY := "karma-$(GOOS)-$(GOARCH)$(GOARMBIN)$(GOEXT)")
 	@awk -v bin=$(BINARY) -v goos=$(GOOS) -v goarch=$(GOARCH) -v goarm=$(GOARM) 'BEGIN { printf "[+] %-25s GOOS=%-10s GOARCH=%-10s GOARM=%1s\n", bin, goos, goarch, goarm }'
-	@env CGO_ENABLED=0 GOOS=$(GOOS) GOARCH=$(GOARCH) GOARM=$(GOARM) go build -o $(BINARY) -ldflags="-X main.version=$(shell make show-version)" ./cmd/karma
+	@env CGO_ENABLED=0 GOOS=$(GOOS) GOARCH=$(GOARCH) GOARM=$(GOARM) go build -o $(BINARY) -ldflags="-X main.version=$(VERSION)" ./cmd/karma
 	@test -f $(BINARY)
 	@awk -v bin=$(BINARY) -v size=`du -h $(BINARY) | awk '{print $$1}'` -v type="`file -b $(BINARY)`" 'BEGIN { printf "[-] %-25s SIZE=%-10s TYPE=%s\n", bin, size, type }'
 

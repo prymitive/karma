@@ -454,19 +454,19 @@ jobs:
           echo 'ghcr.io/prymitive/karma:latest' >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
 
-      - name: "Setup docker plaforms (merge/release)"
+      - name: "Setup docker platforms (merge/release)"
         if: github.event_name != 'pull_request'
         run: |
           echo "DOCKER_PATFORMS=linux/amd64,linux/arm64" >> $GITHUB_ENV
 
-      - name: "Setup docker plaforms (PR)"
+      - name: "Setup docker platforms (PR)"
         if: github.event_name == 'pull_request'
         run: |
           echo "DOCKER_PATFORMS=linux/amd64" >> $GITHUB_ENV
 
       - name: "Setup image version"
         run: |
-          echo "VERSION=$(make show-version)" >> $GITHUB_ENV
+          echo "VERSION=$(make --no-print-directory show-version)" >> $GITHUB_ENV
 
       - name: Build and push
         id: docker_build
