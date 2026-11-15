@@ -144,6 +144,16 @@
         ],
         "executionMode": "branch"
       }
+    },
+    {
+      "description": "stylelint",
+      "matchDatasources": [
+        "npm"
+      ],
+      "matchPackageNames": [
+        "/^stylelint/"
+      ],
+      "groupName": "stylelint"
     }
   ]
 }
