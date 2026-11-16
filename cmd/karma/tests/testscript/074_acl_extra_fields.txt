@@ -8,7 +8,7 @@ level=INFO msg="Reading configuration file" path=karma.yaml
 level=INFO msg="Version: dev"
 level=INFO msg="Configured Alertmanager source" name=default cluster=default uri=https://127.0.0.1:9093 proxy=false readonly=false
 level=INFO msg="Reading silence ACL config file" path=acl.yaml
-level=ERROR msg="Execution failed" error="failed to parse silence ACL configuration file \"acl.yaml\": yaml: unmarshal errors:\n  line 6: field nameFoo not found in type config.SilenceFilters"
+level=ERROR msg="Execution failed" error="failed to parse silence ACL configuration file \"acl.yaml\": yaml: construct errors: line 6: field nameFoo not found in type config.SilenceFilters"
 -- karma.yaml --
 authentication:
   header:
