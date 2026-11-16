@@ -14,7 +14,7 @@ import (
 
 	"github.com/pmezard/go-difflib/difflib"
 
-	yaml "go.yaml.in/yaml/v3"
+	yaml "go.yaml.in/yaml/v4"
 )
 
 func testReadConfig(t *testing.T) {
