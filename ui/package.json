@@ -63,7 +63,7 @@
     "identity-obj-proxy": "3.0.0",
     "jest": "30.5.2",
     "jest-environment-jsdom": "30.5.2",
-    "knip": "6.47.0",
+    "knip": "6.48.0",
     "prettier": "3.10.1",
     "sass": "1.108.2",
     "stylelint": "18.1.0",
